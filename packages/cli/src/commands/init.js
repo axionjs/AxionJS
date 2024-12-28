@@ -6,7 +6,6 @@ import { highlighter } from "../utils/highlighter.js";
 import { logger } from "../utils/logger.js";
 import { handleError } from "../utils/handle-error.js";
 import * as ERRORS from "../utils/errors.js";
-// import { spinner } from "../utils/spinner.js"
 import { preFlightInit } from "../preflights/preflight-init.js";
 import { createProject } from "../utils/create-project.js";
 import { getProjectConfig, getProjectInfo } from "../utils/get-project-info.js";
@@ -19,16 +18,14 @@ import {
   rawConfigSchema,
   resolveConfigPaths,
 } from "../utils/get-config.js";
-import kleur from "kleur";
-// import figlet from "figlet";
-// import prompts from "prompts"
-// import { addComponents } from "../utils/add-components"
+import { addComponents } from "../utils/add-components.js";
 import {
   getRegistryBaseColors,
   getRegistryStyles,
 } from "../utils/registry/index.js";
-// import { updateTailwindContent } from "../utils/updaters/update-tailwind-content"
+import { updateTailwindContent } from "../utils/updaters/update-tailwind-content.js";
 import { text, select, intro, confirm, spinner } from "@clack/prompts";
+import kleur from "kleur";
 
 export const initOptionsSchema = z.object({
   cwd: z.string(),
@@ -67,19 +64,7 @@ export const init = new Command()
         components,
         ...opts,
       });
-
-
-intro(kleur.green('Welcome to ⍺xion.js CLI'));
-
-
-// const renderLogo = (text) => {
-//   console.log(
-//     kleur
-//       .green(figlet.textSync(text, { font: 'Standard', horizontalLayout: 'default' }))
-//   );
-// };
-
-// renderLogo('axion.js');
+      intro(kleur.green("Welcome to ⍺xion.js CLI"));
 
       await runInit(options);
 
@@ -145,25 +130,25 @@ export async function runInit(options) {
   // Add components.
   const fullConfig = await resolveConfigPaths(options.cwd, config);
   const components = ["index", ...(options.components || [])];
-  // await addComponents(components, fullConfig, {
-  //   // Init will always overwrite files.
-  //   overwrite: true,
-  //   silent: options.silent,
-  //   isNewProject:
-  //     options.isNewProject || projectInfo?.framework.name === "next-app",
-  // })
+  await addComponents(components, fullConfig, {
+    // Init will always overwrite files.
+    overwrite: true,
+    silent: options.silent,
+    isNewProject:
+      options.isNewProject || projectInfo?.framework.name === "next-app",
+  });
 
   // If a new project is using src dir, let's update the tailwind content config.
   // TODO: Handle this per framework.
-  // if (options.isNewProject && options.srcDir) {
-  //   await updateTailwindContent(
-  //     ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
-  //     fullConfig,
-  //     {
-  //       silent: options.silent,
-  //     }
-  //   )
-  // }
+  if (options.isNewProject && options.srcDir) {
+    await updateTailwindContent(
+      ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+      fullConfig,
+      {
+        silent: options.silent,
+      }
+    );
+  }
 
   return fullConfig;
 }
