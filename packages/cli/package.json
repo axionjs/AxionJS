@@ -1,0 +1,37 @@
+{
+  "name": "axionjs-ui",
+  "version": "1.0.0",
+  "description": "Add components directly in to your project",
+  "bin": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "axionjs",
+  "license": "ISC",
+  "dependencies": {
+    "@antfu/ni": "^0.23.1",
+    "@babel/core": "^7.26.0",
+    "@babel/parser": "^7.26.3",
+    "@babel/plugin-transform-typescript": "^7.26.3",
+    "@clack/prompts": "^0.8.2",
+    "commander": "^12.1.0",
+    "cosmiconfig": "^9.0.0",
+    "deepmerge": "^4.3.1",
+    "execa": "^9.5.1",
+    "fast-glob": "^3.3.2",
+    "figlet": "^1.8.0",
+    "fs-extra": "^11.2.0",
+    "https-proxy-agent": "^7.0.5",
+    "kleur": "^4.1.5",
+    "node-fetch": "^3.3.2",
+    "ora": "^8.1.1",
+    "postcss": "^8.4.49",
+    "prompts": "^2.4.2",
+    "recast": "^0.23.9",
+    "stringify-object": "^5.0.0",
+    "ts-morph": "^24.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "zod": "^3.23.8"
+  }
+}
