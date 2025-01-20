@@ -29,6 +29,18 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env*.local
 
 # vercel
 .vercel
+
+# generated content
+.contentlayer
+.content-collections
+.source
+
+# test & build
+*.tsbuildinfo
+
+# others
+next-env.d.ts

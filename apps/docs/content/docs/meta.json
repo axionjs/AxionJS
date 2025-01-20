@@ -1,0 +1,22 @@
+{
+  "title": "Documentation",
+  "root": "docs",
+  "pages": [
+    "Button",
+    "---Getting Started---",
+    "Introduction",
+    "Installation",
+    "Theming",
+    "Dark-Mode",
+    "CLI",
+    "Typography",
+    "---Accessibility---",
+    "accessibility",
+    "---Dynamic Components---",
+    "dynamic-components",
+    "---Components---",
+    "components",
+    "hooks",
+    "modern-ui-blocks"
+  ]
+}

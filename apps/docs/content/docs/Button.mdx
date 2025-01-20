@@ -1,0 +1,378 @@
+---
+title: Button
+description: A versatile button component that supports different variants, sizes, and custom animations.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { File, Folder, Files } from "fumadocs-ui/components/files";
+import { ButtonPreview } from "../../app/components/docs/button-preview";
+import { ButtonCustomizer } from "../../app/components/docs/button-customizer";
+import { Button } from "@/app/components/ui/button.tsx";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center"  >
+    <div className=" gap-4 " >
+      <Button>Button</Button>
+    </div>
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx
+    import { Button } from "@/components/ui/button"
+
+    export default function ButtonDemo() {
+      return (
+        <div className="flex gap-4">
+          <Button>Button</Button>
+        </div>
+      )
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    ```bash
+    npx axionjs add button
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+    
+    ```bash
+    npm install class-variance-authority clsx tailwind-merge lucide-react
+    ```
+
+    ### 2. Add Button Component
+
+    Create `components/ui/button.tsx` with the following code:
+
+    ```tsx ts2js
+import * as React from "react";
+import { Slot, Slottable } from "@radix-ui/react-slot";
+import { cva, VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
+
+const buttonVariants = cva("inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",{
+        variants: {
+              variant: {
+                default: "bg-primary text-primary-foreground hover:bg-primary/90",
+                destructive:
+                  "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+                outline:
+                  "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+                secondary:
+                  "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+                ghost: "hover:bg-accent hover:text-accent-foreground",
+                link: "text-primary underline-offset-4 hover:underline",
+                ringHover:
+                  "bg-primary text-primary-foreground transition-all duration-300 hover:bg-primary/90 hover:ring-2 hover:ring-primary/90 hover:ring-offset-2",
+                linkHover:
+                  "relative after:absolute after:bg-primary after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 hover:after:origin-bottom-right hover:after:scale-x-0 after:transition-transform after:ease-in-out after:duration-300",
+                expandIcon:
+                  "group relative bg-primary text-primary-foreground px-4 py-2 hover:bg-primary/90",
+                shine:
+                  "text-primary-foreground animate-shine bg-gradient-to-r from-primary via-primary/75 to-primary bg-[length:400%_100%]",
+                gooeyRight:
+                  "text-primary-foreground relative bg-primary z-0 overflow-hidden transition-all duration-500 before:absolute before:inset-0 before:-z-10 before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5] before:rounded-[100%] before:bg-gradient-to-r from-zinc-400 before:transition-transform before:duration-1000 hover:before:translate-x-0 hover:before:translate-y-0",
+                gooeyLeft:
+                  "text-primary-foreground relative bg-primary z-0 overflow-hidden transition-all duration-500 after:absolute after:inset-0 after:-z-10 after:translate-x-[-150%] after:translate-y-[150%] after:scale-[2.5] after:rounded-[100%] after:bg-gradient-to-l from-zinc-400 after:transition-transform after:duration-1000 hover:after:translate-x-0 hover:after:translate-y-0",
+              },
+              size: {
+                default: "h-10 px-4 py-2",
+                sm: "h-9 rounded-md px-3",
+                lg: "h-11 rounded-md px-8",
+                icon: "h-10 w-10",
+              },
+            },
+            defaultVariants: {
+              variant: "default",
+              size: "default",
+            },
+      }
+);
+
+interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-expanded"?: boolean;
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      children,
+      disabled = false,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledby,
+      "aria-expanded": ariaExpanded,
+      ...props
+    },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : "button";
+
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        role="button"
+        aria-disabled={disabled}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        aria-expanded={ariaExpanded}
+        disabled={disabled}
+        {...props}
+      >
+        <Slottable>{children}</Slottable>
+        {variant === "expandIcon" && (
+          <div
+            className="w-0 opacity-0 translate-x-[100%] pl-0 transition-all duration-300 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 group-hover:pl-2"
+            aria-hidden="true"
+          >
+            <ArrowRight />
+          </div>
+        )}
+      </Comp>
+    );
+  }
+);
+
+Button.displayName = "Button";
+
+export { Button, buttonVariants };
+
+
+    ```
+
+    ### 3. Usage Example
+
+    ```tsx
+    import { Button } from "@/components/ui/button"
+
+    export default function App() {
+      return <Button>Click me</Button>
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+## Variants
+
+### Default
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button>Default Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button>Default Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Secondary
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="secondary">Secondary Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="secondary">Secondary Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Destructive
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="destructive">Destructive Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="destructive">Destructive Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Outline
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="outline">Outline Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="outline">Outline Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Ghost
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="ghost">Ghost Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="ghost">Ghost Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Link
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="link">Link Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="link">Link Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Ring Hover
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="ringHover">Ring Hover Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="ringHover">Ring Hover Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Link Hover
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="linkHover">Link Hover Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="linkHover">Link Hover Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Expand Icon
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="expandIcon">Expand Icon Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="expandIcon">Expand Icon Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Shine
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="shine">Shine Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="shine">Shine Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Gooey Right
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="gooeyRight">Gooey Right Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="gooeyRight">Gooey Right Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+### Gooey Left
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Button variant="gooeyLeft">Gooey Left Button</Button>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="gooeyLeft">Gooey Left Button</Button>
+    ```
+  </Tab>
+</Tabs>
+
+
+### Sizes
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center" className="aspect-w-16 aspect-h-9">
+    <div className="flex items-center gap-4">
+      <Button variant="outline" size="sm">
+        Small
+      </Button>
+      <Button variant="outline" size="default">
+        Default
+      </Button>
+      <Button variant="outline" size="lg">
+        Large
+      </Button>
+      <Button
+        size="icon"
+        className="border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+      >
+        🎉
+      </Button>
+    </div>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Button variant="outline" size="sm">
+      Small
+    </Button>
+    <Button variant="outline" size="default">
+      Default
+    </Button>
+    <Button variant="outline" size="lg">
+      Large
+    </Button>
+    <Button variant="outline" size="icon">
+      🎉
+    </Button>
+    ```
+  </Tab>
+</Tabs>
+
+## Custom Button Builder
+
+Use the interactive controls below to customize your button.
+
+<ButtonCustomizer />
+
+<ButtonPreview />
