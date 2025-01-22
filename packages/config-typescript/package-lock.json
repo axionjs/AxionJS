@@ -1,0 +1,20 @@
+{
+  "name": "@repo/typescript-config",
+  "version": "0.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "@repo/typescript-config",
+      "version": "0.0.0",
+      "license": "MIT",
+      "dependencies": {
+        "@repo/typescript-config": "file:"
+      }
+    },
+    "node_modules/@repo/typescript-config": {
+      "resolved": "",
+      "link": true
+    }
+  }
+}

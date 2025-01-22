@@ -15,6 +15,7 @@
     "@babel/parser": "^7.26.3",
     "@babel/plugin-transform-typescript": "^7.26.3",
     "@clack/prompts": "^0.8.2",
+    "axionjs-ui": "file:",
     "commander": "^12.1.0",
     "cosmiconfig": "^9.0.0",
     "deepmerge": "^4.3.1",

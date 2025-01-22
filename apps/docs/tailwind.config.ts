@@ -38,9 +38,9 @@ const config: Config = {
     createFumadocsPreset({
       layoutWidth: "1600px",
     }),
-    createPreset({
-      preset: "ocean",
-    }),
+    // createPreset({
+    //   preset: "ocean",
+    // }),
     shadcnPreset,
   ],
   plugins: [tailwindAnimate],

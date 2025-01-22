@@ -5,5 +5,8 @@
   "devDependencies": {
     "@vercel/style-guide": "^5.2.0",
     "eslint-config-turbo": "^2.0.0"
+  },
+  "dependencies": {
+    "@repo/eslint-config": "file:"
   }
 }

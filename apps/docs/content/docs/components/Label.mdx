@@ -1,6 +1,171 @@
 ---
 title: Label
+description: A flexible and accessible label component with variants for errors, helper text, and required indicators.
 ---
-# Label
 
-Documentation for the Label component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import LabelPreview from "@/app/components/docs/LabelPreview.tsx";
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-6 content-center">
+    <LabelPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+
+import React from "react";
+import { Label } from "@/app/components/ui/label";
+
+export default function LabelPreview() {
+  return (
+    <div className="space-y-6">
+      {/* Example 1: Basic Label */}
+      <div>
+        <Label htmlFor="username">Simple Label</Label>
+      </div>
+
+      {/* Example 2: Label with Helper Text */}
+      <div>
+        <Label htmlFor="email" helperText="Enter your email address">
+          Label with `helperText`
+        </Label>
+      </div>
+
+      {/* Example 3: Label with Error */}
+      <div>
+        <Label
+          htmlFor="password"
+          error="Password is required"
+          helperText="Your password must be at least 8 characters."
+        >
+          Password
+        </Label>
+      </div>
+
+      {/* Example 4: Required Label */}
+      <div>
+        <Label htmlFor="phone" required>
+          Phone Number
+        </Label>
+      </div>
+    </div>
+  );
+}
+
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+The `Label` component is a lightweight and customizable utility for form labels. Designed for accessibility and ease of use, it integrates seamlessly with form inputs.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add label
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install @radix-ui/react-label class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `label.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full component code provided in your query
+    ```
+
+    ### 3. Add Preview Component (Optional)
+
+    To demonstrate usage, create a `LabelPreview.tsx` file:
+    ```tsx
+    // Full LabelPreview.tsx code above
+    ```
+  </Tab>
+</Tabs>
+
+## Props
+
+The `Label` component offers various props for flexibility and customization. Here's a breakdown of its supported props:
+
+<TypeTable
+  type={{
+    htmlFor: {
+      description: "The `id` of the input element associated with this label.",
+      type: "string",
+      required: true,
+    },
+    helperText: {
+      description: "Additional helper text displayed below the label.",
+      type: "string",
+    },
+    error: {
+      description: "Error message displayed below the label.",
+      type: "string",
+    },
+    required: {
+      description: "Whether the input associated with this label is required.",
+      type: "boolean",
+      default: "false",
+    },
+    children: {
+      description: "The content of the label, typically text.",
+      type: "React.ReactNode",
+      required: true,
+    },
+    variant: {
+      description: "The visual style of the label.",
+      type: '"default" | "error"',
+      default: '"default"',
+    },
+    size: {
+      description: "The size of the label text.",
+      type: '"default" | "large"',
+      default: '"default"',
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+    },
+  }}
+/>
+
+## Features
+
+The `Label` component is designed to enhance the user experience with intuitive and accessible labels:
+
+- **Customizable Variants**:
+  - Offers default and error styles for different scenarios.
+- **Helper Text**:
+  - Displays context or instructions for the associated input.
+- **Error Handling**:
+  - Clearly indicates form validation errors with styled error messages.
+- **Required Indicator**:
+  - Adds an asterisk to indicate required fields, improving form usability.
+- **Accessibility**:
+  - Built with ARIA roles and best practices for screen reader compatibility.
+
+
+## Accessibility
+
+The `Label` component adheres to modern accessibility standards:
+
+- **Associations**:
+  - Links to form elements via the `htmlFor` attribute.
+- **Semantic Structure**:
+  - Uses ARIA attributes for clear roles and relationships.
+- **Visual and Textual Feedback**:
+  - Enhances clarity for users with disabilities.
+
+## Conclusion
+
+The `Label` component simplifies form construction with its rich features, accessibility compliance, and easy customization. Whether you need basic labels or advanced error handling, it’s a reliable solution for modern web applications.

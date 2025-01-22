@@ -1,0 +1,149 @@
+---
+title: Tags Input
+description: A customizable tags input component built with Emblor for managing and styling tag-based user inputs.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import TagsInputPreview from "@/app/components/docs/TagsInputPreview.tsx";
+
+Let’s start with a basic **TagInput** component that:
+
+1. Uses `EmblorTagInput` for the display and entry of tags.
+2. Enforces a `maxTags` limit.
+3. Shows a warning message when the user reaches the limit.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto content-center">
+    <TagsInputPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+   "use client";
+
+import React from "react";
+import { TagInput } from "@/app/components/ui/tag-input";
+
+export default function TagsInputPreview() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-medium">Pre-filled Tags</h3>
+        <TagInput
+          id="favoriteFruits"
+          label="Favorite Fruits"
+          initialTags={["apple", "banana"]}
+          maxTags={5}
+        />
+      </div>
+      <div>
+        <h3 className="text-lg font-medium  pt-4">Max tag limit</h3>
+        <h4 className="text-sm text-gray-500 font-medium">
+          You can enter max of 5 tags
+        </h4>
+        <TagInput id="favorite-fruits" label="Favorite Fruits" maxTags={5} />
+      </div>
+    </div>
+  );
+}
+
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+The `TagInput` component leverages the powerful [Emblor](https://github.com/JaleelB/emblor) library to provide seamless and customizable tag input functionality. Follow these steps to integrate it into your project.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component with:
+    ```bash
+    npx axionjs add tags-input
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Install the required library:
+    ```bash
+    npm install emblor
+    ```
+
+    ### 2. Add Tags Input Component
+
+    Create `components/ui/tag-input.tsx` and include the following:
+    ```tsx
+    // Full component code provided in your initial query
+    ```
+
+    ### 3. Add Preview Component (Optional)
+
+    To showcase different configurations of the `TagInput`, create a `TagsInputPreview.tsx` file:
+    ```tsx
+    // Full TagsInputPreview.tsx code above
+    ```
+  </Tab>
+</Tabs>
+
+## Props
+
+The `TagInput` component includes props for full customization, enabling dynamic tag management for diverse use cases.
+
+<TypeTable
+  type={{
+    id: {
+      description: "Unique identifier for the input field.",
+      type: "string",
+      required: true,
+    },
+    label: {
+      description: "Label displayed above the tag input field.",
+      type: "string",
+      required: true,
+    },
+    initialTags: {
+      description: "Initial tags to populate the input.",
+      type: "string[]",
+      default: "[]",
+    },
+  }}
+/>
+
+## Features
+
+The `TagInput` component is designed to provide a clean and user-friendly tag management experience. Here are its key features:
+
+- **Customizable Styles**: Built-in support for Tailwind classes for easy styling.
+- **Tag Management**: Add, edit, or delete tags dynamically.
+- **Keyboard Navigation**: Fully keyboard-accessible for power users.
+- **Emblor Integration**: Built using the robust and lightweight `emblor` library.
+- **Live Region Updates**: Accessible live updates to inform users of tag changes.
+
+## Previews
+
+Explore the power and flexibility of the `TagInput` component with the following use cases:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto  h-auto content-center">
+    <TagsInputPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import TagsInputPreview from "@/app/components/ui/TagsInputPreview";
+
+    export default function App() {
+      return <TagsInputPreview />;
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Accessibility
+
+The `TagInput` component is designed with accessibility in mind. It includes:
+- Semantic labels for screen readers.
+- A live region to announce tag changes dynamically.
+- Fully keyboard-navigable for efficient use.
+
+By combining these features with `Emblor`, you get a component that’s both powerful and inclusive.

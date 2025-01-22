@@ -1,179 +1,18 @@
----
-title: Form
-description: A powerful and flexible form component with React Hook Form integration, advanced validations, and dynamic fields.
----
-
-import  FormPreview  from "@/app/components/docs/FormPreview.tsx";
-import { Tabs, Tab } from "fumadocs-ui/components/tabs";
-import  FormPreviewComplex from "@/app/components/docs/FormPreviewComplex.tsx";
-import { Component } from "react";
-
-
-# Form Component
-
-Forms are essential in modern web applications. The `Form` component streamlines form creation with React Hook Form, ensuring accessible, validated, and visually consistent forms. Built with best practices in mind, it offers:
-
-- Semantic structure and accessibility.
-- Support for schema-based validation using `zod`.
-- Integration with React Hook Form.
-- Fully customizable styling and markup.
-
-## Features
-
-The `<Form />` component provides:
-
-- Composable form elements (`FormField`, `FormItem`, etc.).
-- Built-in accessibility with ARIA attributes.
-- Flexible validation powered by `zod`.
-- Integration with Radix UI for styling consistency.
-
-## Anatomy
-
-```tsx
-<Form>
-  <FormField name="...">
-    <FormItem>
-      <FormLabel />
-      <FormControl>{/* Form input */}</FormControl>
-      <FormDescription />
-      <FormMessage />
-    </FormItem>
-  </FormField>
-</Form>
-```
-
-## Basic Usage
-
-<Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto py-12 h-auto  content-center">
-    <FormPreview />
-  </Tab>
-
-  <Tab value="Code" className="w-auto h-auto">
-    ```tsx ts2js
-    "use client";
-
-import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/app/components/ui/button";
-import {Form, FormField, FormItem, FormLabel, FormControl,FormMessage} from "@/app/components/ui/form";
-import { Input } from "@/app/components/ui/input";
-
-const formSchema = z.object({
-  email: z
-    .string()
-    .nonempty("Email is required.")
-    .email("Please enter a valid email address."),
-  password: z.string().nonempty("Password is required."),
-});
-
-type FormData = z.infer<typeof formSchema>;
-
-const FormPreview = () => {
-  const formMethods = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  const { handleSubmit, control, formState } = formMethods;
-  const { errors } = formState;
-
-  const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data);
-    alert("Form submitted successfully!");
-  };
-
-  return (
-    <Form {...formMethods}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 p-4 max-w-lg"
-        aria-labelledby="Simple-form"
-      >
-        {/* Email Field */}
-        <FormField
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <FormControl>
-                <Input {...field} id="email" required type="email" />
-              </FormControl>
-              <FormMessage>{errors.email?.message}</FormMessage>
-            </FormItem>
-          )}
-        />
-
-        {/* Password Field */}
-        <FormField
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <FormControl>
-                <Input {...field} id="password" required type="password" />
-              </FormControl>
-              <FormMessage>{errors.password?.message}</FormMessage>
-            </FormItem>
-          )}
-        />
-
-        {/* Submit Button */}
-        <div className="text-right">
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
-        </div>
-      </form>
-    </Form>
-  );
-};
-
-export default FormPreview;
-    ```
-  </Tab>
-</Tabs>
-
-## Installation
-
-<Tabs items={["CLI", "Manual"]}>
-  <Tab value="CLI">
-    ```bash
-    npx Axionjs add form
-    ```
-  </Tab>
-
-  <Tab value="Manual">
-    ```bash
-    npm install react-hook-form zod @hookform/resolvers
-    ```
-  </Tab>
-</Tabs>
-
-## Advance Complex Form Usage
-
-<Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto py-12 h-auto  content-center">
-    <FormPreviewComplex />
-  </Tab>
-
-  <Tab value="Code" className="w-auto h-auto">
-    ```tsx ts2js
-    "use client";
+"use client";
 
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/app/components/ui/button";
-import {Form, FormField, FormItem, FormLabel, FormControl, FormMessage,} from "@/app/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/app/components/ui/form";
 import { Input } from "@/app/components/ui/input";
 import PasswordInput from "@/app/components/ui/password-input";
 import { TagInput } from "@/app/components/ui/tag-input";
@@ -303,7 +142,9 @@ const FormPreviewComplex = () => {
               <FormControl>
                 <TagInput
                   {...field}
-                  id="tags"
+                  id="prefilled"
+                  label="Skills"
+                  initialTags={["JavaScript", "TypeScript"]}
                   maxTags={5}
                   error={
                     field.value.length >= 5
@@ -329,10 +170,3 @@ const FormPreviewComplex = () => {
 };
 
 export default FormPreviewComplex;
-
-    ```
-  </Tab>
-</Tabs>
-
-
-
