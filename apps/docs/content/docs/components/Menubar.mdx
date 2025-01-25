@@ -1,6 +1,230 @@
 ---
 title: Menubar
+description: An accessible and customizable menubar component for navigation and interaction.
 ---
-# Menubar
 
-Documentation for the Menubar component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import {
+  SimpleMenubarPreview,
+  CheckboxMenubarPreview,
+  RadioMenubarPreview,
+} from "@/app/components/docs/MenubarPreview";
+
+## Introduction
+
+The `Menubar` component is a highly customizable and accessible navigation component. It supports dropdown menus, checkboxes, radio groups, and separators to create feature-rich interfaces.
+
+---
+
+## Default Use Case: Simple Menubar
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto py-12 h-48  content-center">
+    <SimpleMenubarPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import {
+      Menubar,
+      MenubarMenu,
+      MenubarTrigger,
+      MenubarContent,
+      MenubarItem,
+      MenubarSeparator,
+    } from "@/components/ui/menubar";
+
+    export function SimpleMenubarPreview() {
+      return (
+        <Menubar>
+          <MenubarMenu>
+            <MenubarTrigger>File</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>New File</MenubarItem>
+              <MenubarItem>Open...</MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>Save</MenubarItem>
+              <MenubarItem>Save As...</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Advanced Use Case: Checkbox Menubar
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto py-12 h-48  content-center">
+    <CheckboxMenubarPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import {
+      Menubar,
+      MenubarMenu,
+      MenubarTrigger,
+      MenubarContent,
+      MenubarCheckboxItem,
+    } from "@/components/ui/menubar";
+
+    export function CheckboxMenubarPreview() {
+      return (
+        <Menubar>
+          <MenubarMenu>
+            <MenubarTrigger>View</MenubarTrigger>
+            <MenubarContent>
+              <MenubarCheckboxItem>Show Toolbar</MenubarCheckboxItem>
+              <MenubarCheckboxItem checked>Show Status Bar</MenubarCheckboxItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Advanced Use Case: Radio Menubar
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto py-12 h-48  content-center">
+    <RadioMenubarPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import {
+      Menubar,
+      MenubarMenu,
+      MenubarTrigger,
+      MenubarContent,
+      MenubarRadioGroup,
+      MenubarRadioItem,
+    } from "@/components/ui/menubar";
+
+    export function RadioMenubarPreview() {
+      return (
+        <Menubar>
+          <MenubarMenu>
+            <MenubarTrigger>Sort By</MenubarTrigger>
+            <MenubarContent>
+              <MenubarLabel>Sort Options</MenubarLabel>
+              <MenubarRadioGroup value="name">
+                <MenubarRadioItem value="name">Name</MenubarRadioItem>
+                <MenubarRadioItem value="date">Date Modified</MenubarRadioItem>
+                <MenubarRadioItem value="size">File Size</MenubarRadioItem>
+              </MenubarRadioGroup>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Menubar` component:
+    ```bash
+    npx axionjs add menubar
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+    Install required packages:
+    ```bash
+    npm install @radix-ui/react-menubar lucide-react
+    ```
+
+    ### 2. Add the Component
+    Create `components/ui/menubar.tsx`:
+    ```tsx ts2js
+    // Full code from the provided Menubar component
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="menubar.tsx" />
+      </Folder>
+      <Folder name="docs">
+        <File name="MenubarPreview.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    align: {
+      description: "Alignment of the menubar content.",
+      type: `"start" | "center" | "end"`,
+      required: false,
+      default: `"start"`,
+    },
+    alignOffset: {
+      description: "Offset for content alignment.",
+      type: "number",
+      required: false,
+      default: "-4",
+    },
+    sideOffset: {
+      description: "Offset for positioning the content.",
+      type: "number",
+      required: false,
+      default: "8",
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Dropdown Menus**:
+  - Add nested dropdowns with smooth animations.
+- **Checkbox Menus**:
+  - Support multi-select options.
+- **Radio Groups**:
+  - Add grouped options with single selection.
+
+---
+
+## Accessibility
+
+- **Keyboard Support**:
+  - Navigate with `Tab`, `Arrow`, and `Enter` keys.
+- **ARIA Attributes**:
+  - Implements `aria-haspopup`, `aria-expanded`, and more.
+- **Screen Reader Support**:
+  - Fully compatible with screen readers.
+
+---
+
+## Conclusion
+
+The `Menubar` component is a robust and accessible solution for creating navigation menus with advanced features like nested menus, checkboxes, and radio groups.

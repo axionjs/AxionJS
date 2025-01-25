@@ -1,6 +1,145 @@
 ---
-title: AspectRatio
+title: Aspect Ratio
+description: A utility component for maintaining consistent aspect ratios with Next.js `Image` support for responsive designs.
 ---
-# AspectRatio
 
-Documentation for the AspectRatio component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { AspectRatioDemo } from "@/app/components/docs/AspectRatioPreview.tsx";
+
+
+## Introduction
+
+The `AspectRatio` component is a utility that ensures consistent width-to-height proportions for responsive media like images, videos, or custom layouts. Built with `@radix-ui/react-aspect-ratio` and integrated seamlessly with Next.js’s `Image` component, it provides a robust solution for maintaining proportional content in modern applications.
+
+---
+
+## Default Use Case
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-72 content-center">
+    <AspectRatioDemo />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx 
+    import Image from "next/image";
+    import { AspectRatio } from "@/app/components/ui/aspect-ratio";
+
+    export function AspectRatioDemo() {
+      return (
+        <AspectRatio ratio={16 / 9} className="bg-muted">
+          <Image
+            src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+            alt="Photo by Drew Beamer"
+            fill
+            className="h-full w-full rounded-md object-cover"
+          />
+        </AspectRatio>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `AspectRatio` component using the following command:
+    ```bash
+    npx axionjs add aspect-ratio
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the required dependency:
+    ```bash
+    npm install @radix-ui/react-aspect-ratio
+    ```
+
+    ### 2. Add AspectRatio Component
+
+    Create the `aspect-ratio.tsx` file in your `components/ui` directory:
+    ```tsx ts2js
+    "use client";
+
+    import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
+
+    const AspectRatio = AspectRatioPrimitive.Root;
+
+    export { AspectRatio };
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <File name="aspect-ratio.tsx" />
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+<TypeTable
+  type={{
+    ratio: {
+      description: "Defines the aspect ratio as a decimal (e.g., 16/9 or 4/3).",
+      type: "number",
+      required: true,
+    },
+    children: {
+      description: "The content to render inside the aspect ratio container.",
+      type: "React.ReactNode",
+      required: true,
+    },
+    className: {
+      description: "Optional class names for additional styling.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+The `AspectRatio` component provides the following features:
+
+- **Dynamic Aspect Ratios**:  
+  Easily enforce consistent width-to-height ratios for images, videos, or custom content.
+- **Next.js Image Compatibility**:  
+  Seamlessly integrates with the `Image` component for optimized and responsive image handling.
+- **Responsive Design**:  
+  Ensures media scales proportionally across devices without manual adjustments.
+- **Lightweight**:  
+  Built with `@radix-ui/react-aspect-ratio` for minimal overhead.
+
+---
+
+## Accessibility
+
+The `AspectRatio` component ensures accessibility by:
+
+- **Preserving Semantics**:  
+  Acts as a non-disruptive wrapper for its child content, allowing native roles and attributes to remain intact.
+- **Keyboard and Screen Reader Support**:  
+  Works naturally with semantic children such as `img` or `iframe`.
+- **Focus Management**:  
+  Ensures focusable child elements remain navigable and interactive.
+
+---
+
+## Conclusion
+
+The `AspectRatio` component simplifies responsive design by ensuring media like images and videos maintain their intended proportions. Its seamless integration with Next.js’s `Image` component makes it ideal for developers building modern, responsive applications. Lightweight and accessible, it's the perfect utility for creating beautiful, proportional layouts.

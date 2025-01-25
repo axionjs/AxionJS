@@ -113,9 +113,8 @@ const shadcnPreset: Partial<Config> = {
       boxShadow: {
         sm: "0 1px 2px 0 hsl(var(--shadow))",
         md: "0 4px 6px -1px hsl(var(--shadow))",
-        lg: "0 10px 15px -3px hsl(var(--shadow))",
-        xl: "0 20px 25px -5px hsl(var(--shadow))",
-        glow: "0 0 8px hsl(var(--shadow))",
+        lg: "0 4px 6px -1px hsl(var(--shadow))",
+        xl: "0 4px 6px -1px hsl(var(--shadow))",
       },
       spacing: {
         18: "4.5rem",

@@ -1,0 +1,212 @@
+---
+title: Toggle Group
+description: A versatile and accessible toggle group component for single and multiple selections, built with Radix UI primitives.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { SingleSelectToggleGroupPreview, MultiSelectToggleGroupPreview } from "@/app/components/docs/ToggleGroupPreview";
+
+## Previews with Code
+
+### Example 1: Single Select Toggle Group
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <SingleSelectToggleGroupPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+
+    import React from "react";
+    import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+    import { Bold, Italic, Underline } from "lucide-react";
+
+    export function SingleSelectToggleGroupPreview() {
+      return (
+        <div className="space-y-4 max-w-md mx-auto">
+          <h3 className="text-lg font-medium">Single Select Toggle Group</h3>
+          <ToggleGroup type="single" defaultValue="bold" aria-label="Text formatting">
+            <ToggleGroupItem value="bold" aria-label="Bold">
+              <Bold />
+            </ToggleGroupItem>
+            <ToggleGroupItem value="italic" aria-label="Italic">
+              <Italic />
+            </ToggleGroupItem>
+            <ToggleGroupItem value="underline" aria-label="Underline">
+              <Underline />
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Multi Select Toggle Group
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <MultiSelectToggleGroupPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+
+    import React from "react";
+    import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+    import { Bold, Italic, Underline } from "lucide-react";
+
+    export function MultiSelectToggleGroupPreview() {
+      return (
+        <div className="space-y-4 max-w-md mx-auto">
+          <h3 className="text-lg font-medium">Multi Select Toggle Group</h3>
+          <ToggleGroup type="multiple" defaultValue={["bold", "italic"]} aria-label="Text formatting">
+            <ToggleGroupItem value="bold" aria-label="Bold">
+              <Bold />
+            </ToggleGroupItem>
+            <ToggleGroupItem value="italic" aria-label="Italic">
+              <Italic />
+            </ToggleGroupItem>
+            <ToggleGroupItem value="underline" aria-label="Underline">
+              <Underline />
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `Toggle Group` component is a lightweight and accessible control for managing single or multiple selections.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add toggle-group
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install @radix-ui/react-toggle-group class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `toggle-group.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full ToggleGroup component code provided in the query
+    ```
+
+    ### 3. Add Preview Component
+
+    Create a `ToggleGroupPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full ToggleGroupPreview.tsx code provided above
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="toggle-group.tsx" />
+      </Folder>
+      
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+The `Toggle Group` component supports the following props:
+
+<TypeTable
+  type={{
+    type: {
+      description: "Specifies the selection mode for the group.",
+      type: `"single" | "multiple"`,
+      required: true,
+    },
+    defaultValue: {
+      description: "The initial value(s) of the toggle group.",
+      type: "string | string[]",
+      required: false,
+    },
+    ariaLabel: {
+      description: "Accessible label for the toggle group.",
+      type: "string",
+      required: true,
+    },
+    variant: {
+      description: "Style variant for the toggles within the group.",
+      type: `"default" | "outline"`,
+      default: `"default"`,
+    },
+    size: {
+      description: "Size of the toggles within the group.",
+      type: `"sm" | "default" | "lg"`,
+      default: `"default"`,
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+The `Toggle Group` component includes the following features:
+
+- **Single and Multi-Select Modes**:
+  - Choose between single or multiple selections for the group.
+- **Customizable Sizes and Variants**:
+  - Includes small (`sm`), default, and large (`lg`) sizes, with `default` and `outline` variants.
+- **Icon Support**:
+  - Add icons for additional visual feedback.
+- **Keyboard and Screen Reader Friendly**:
+  - Fully accessible for better usability.
+- **Responsive Design**:
+  - Adapts to various container sizes seamlessly.
+
+---
+
+## Accessibility
+
+The `Toggle Group` component is designed with accessibility in mind:
+
+- **ARIA Roles**:
+  - Uses proper roles like `button` for toggles and `group` for the container.
+- **Keyboard Navigation**:
+  - Use the `Space` key to toggle items on or off.
+- **Screen Reader Support**:
+  - Descriptive `aria-label` attributes ensure clear communication of the group’s purpose and functionality.
+
+---
+
+## Conclusion
+
+The `Toggle Group` component is a versatile and accessible solution for managing single or multiple selections in modern web applications. Its flexibility and customization options make it ideal for text formatting, settings, and other interactive features.

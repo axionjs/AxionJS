@@ -1,0 +1,215 @@
+---
+title: Carousel
+description: A flexible carousel component for creating interactive, scrollable sections with horizontal or vertical orientation.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import {
+  SingleCarousel,
+  MultiCarousel,
+  VerticalCarousel,
+} from "@/app/components/docs/CarouselPreview.tsx";
+
+## Introduction
+
+The `Carousel` component is an advanced UI utility for displaying interactive and scrollable sections of content. Built with `embla-carousel-react`, it supports both horizontal and vertical orientations and provides accessible navigation features.
+
+---
+
+## Default Use Case: Single Carousel
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-96 pb-8 content-center">
+    <SingleCarousel />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx
+    import {
+      Carousel,
+      CarouselContent,
+      CarouselItem,
+      CarouselNext,
+      CarouselPrevious,
+    } from "@/app/components/ui/carousel";
+
+    export function SingleCarousel() {
+      return (
+        <Carousel className="relative w-full max-w-lg">
+          <CarouselContent>
+            <CarouselItem>
+              <div className="h-48 bg-primary flex items-center justify-center text-primary-foreground">
+                Slide 1
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="h-48 bg-secondary flex items-center justify-center text-secondary-foreground">
+                Slide 2
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="h-48 bg-destructive flex items-center justify-center text-destructive-foreground">
+                Slide 3
+              </div>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Carousel` component using the following command:
+    ```bash
+    npx axionjs add carousel
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the required dependency:
+    ```bash
+    npm install embla-carousel-react
+    ```
+
+    ### 2. Add Carousel Component
+
+    Create the `carousel.tsx` file in your `components/ui` directory:
+    ```tsx
+    "use client";
+
+    import useEmblaCarousel from "embla-carousel-react";
+    import { ArrowLeft, ArrowRight } from "lucide-react";
+
+    // Add carousel code here
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Other Use Cases
+
+### Multiple Carousels
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-96 pb-8 content-center">
+    <MultiCarousel />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx
+    export function MultiCarousel() {
+      return (
+        <Carousel className="relative w-full max-w-3xl">
+          <CarouselContent>
+            <CarouselItem>
+              <div className="h-48 bg-primary flex items-center justify-center text-primary-foreground">
+                Slide 1
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="h-48 bg-secondary flex items-center justify-center text-secondary-foreground">
+                Slide 2
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="h-48 bg-destructive flex items-center justify-center text-destructive-foreground">
+                Slide 3
+              </div>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Vertical Carousel
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-96 pb-8 content-center">
+    <VerticalCarousel />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    export function VerticalCarousel() {
+      return (
+        <Carousel orientation="vertical" className="relative h-96 w-full max-w-lg">
+          <CarouselContent>
+            <CarouselItem>
+              <div className="h-48 bg-primary flex items-center justify-center text-primary-foreground">
+                Slide 1
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="h-48 bg-secondary flex items-center justify-center text-secondary-foreground">
+                Slide 2
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="h-48 bg-destructive flex items-center justify-center text-destructive-foreground">
+                Slide 3
+              </div>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Props
+
+<TypeTable
+  type={{
+    orientation: {
+      description: "Defines the scroll axis: `horizontal` or `vertical`.",
+      type: `"horizontal" | "vertical"`,
+      required: false,
+    },
+    ariaLabel: {
+      description: "Accessible label for the carousel region.",
+      type: "string",
+      required: false,
+      default: "Carousel",
+    },
+    ariaDescribedby: {
+      description: "References additional carousel instructions.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Horizontal & Vertical Orientation**: Use the `orientation` prop to change the scroll axis.
+- **Customizable Buttons**: Style the next/previous buttons using `Button` props.
+- **Accessibility Focus**: Includes ARIA labels and keyboard navigation for all users.
+
+---
+
+## Conclusion
+
+The `Carousel` component is a flexible and feature-rich utility for interactive content. With support for multiple layouts, smooth navigation, and accessibility-first design, it’s an essential tool for creating responsive, scrollable sections in modern web applications.

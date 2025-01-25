@@ -1,0 +1,194 @@
+---
+title: Swapy
+description: A sortable drag-and-drop list component with keyboard navigation and multiple handle options.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import {
+  DefaultSwapyPreview,
+  HandleSwapyPreview,
+  GhostHandleSwapyPreview,
+  KeyboardSwapyPreview,
+  NoHandleSwapyPreview,
+} from "@/app/components/docs/SwapyPreview";
+
+## Previews with Code
+
+### Example 1: Default Drag-and-Drop
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <DefaultSwapyPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for DefaultSwapyPreview
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Drag-and-Drop with Handle
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <HandleSwapyPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for HandleSwapyPreview
+    ```
+  </Tab>
+</Tabs>
+
+### Example 3: Ghost Handle Drag-and-Drop
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <GhostHandleSwapyPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for GhostHandleSwapyPreview
+    ```
+  </Tab>
+</Tabs>
+
+### Example 4: Keyboard Drag-and-Drop
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <KeyboardSwapyPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for KeyboardSwapyPreview
+    ```
+  </Tab>
+</Tabs>
+
+### Example 5: Drag-and-Drop without Handle
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <NoHandleSwapyPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for NoHandleSwapyPreview
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `Swapy` component provides a versatile and accessible drag-and-drop solution with various handle configurations and keyboard support.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add swapy
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities @radix-ui/react-slot lucide-react
+    ```
+
+    ### 2. Add the Component
+
+    Create a `swapy.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full Swapy component code provided in the query
+    ```
+
+    ### 3. Add Preview Components
+
+    Create a `SwapyPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full SwapyPreview.tsx code provided above
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="swapy.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+### SwapyRoot Props
+
+<TypeTable
+  type={{
+    items: {
+      description: "Array of sortable items, each with a unique ID and content.",
+      type: "SwapyItem[]",
+      required: true,
+    },
+    onReorder: {
+      description: "Callback triggered after items are reordered.",
+      type: "(items: SwapyItem[]) => void",
+      required: true,
+    },
+    handleVariant: {
+      description: "Specifies the drag handle style.",
+      type: `"handle" | "ghost" | "none"`,
+      default: `"handle"`,
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+      required: false,
+    },
+    ariaLabel: {
+      description: "Accessible label for the sortable list.",
+      type: "string",
+      default: `"Sortable list"`,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Flexible Drag-and-Drop**:
+  - Supports handle drag, ghost handle, and no-handle drag configurations.
+- **Keyboard Accessibility**:
+  - Full keyboard navigation for reordering items.
+- **Customizable Styling**:
+  - Modify styles via the `className` prop.
+- **Screen Reader Support**:
+  - Includes `aria-live` regions for accessible announcements.
+
+---
+
+## Accessibility
+
+The `Swapy` component is built with full WCAG compliance, including keyboard navigation and ARIA attributes for screen readers.
+
+---
+
+## Conclusion
+
+The `Swapy` component is a robust solution for creating accessible, flexible, and interactive sortable lists. Perfect for any drag-and-drop use case.

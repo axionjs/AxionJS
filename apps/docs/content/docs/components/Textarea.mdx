@@ -1,6 +1,187 @@
 ---
 title: Textarea
+description: A customizable and accessible textarea component for capturing multi-line text input.
 ---
-# Textarea
 
-Documentation for the Textarea component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { DefaultTextareaPreview, TextareaWithLabelPreview } from "@/app/components/docs/TextareaPreview";
+
+## Previews with Code
+
+### Example 1: Default Textarea
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <DefaultTextareaPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+
+    import React from "react";
+    import { Textarea } from "@/components/ui/textarea";
+
+    export function DefaultTextareaPreview() {
+      return (
+        <div className="max-w-md mx-auto space-y-4">
+          <h3 className="text-lg font-medium">Default Textarea</h3>
+          <Textarea placeholder="Type something..." />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Textarea with Label and Description
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <TextareaWithLabelPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+
+    import React from "react";
+    import { Textarea } from "@/components/ui/textarea";
+
+    export function TextareaWithLabelPreview() {
+      return (
+        <div className="max-w-md mx-auto space-y-4">
+          <h3 className="text-lg font-medium">Textarea with Label and Description</h3>
+          <div>
+            <label
+              htmlFor="textarea-with-label"
+              className="block text-sm font-medium text-foreground"
+            >
+              Your Message
+            </label>
+            <p className="text-sm text-muted-foreground">
+              Please provide a detailed description of your issue.
+            </p>
+            <Textarea
+              id="textarea-with-label"
+              placeholder="Type your message here..."
+              className="mt-2"
+            />
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `Textarea` component is a lightweight and accessible way to capture multi-line text input.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add textarea
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `textarea.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full Textarea component code provided in the query
+    
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="textarea.tsx" />
+      </Folder>
+      
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+The `Textarea` component accepts the following props for customization:
+
+<TypeTable
+  type={{
+    placeholder: {
+      description: "The placeholder text displayed inside the textarea.",
+      type: "string",
+      required: false,
+    },
+    id: {
+      description: "Unique identifier for the textarea.",
+      type: "string",
+      required: false,
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+      required: false,
+    },
+    disabled: {
+      description: "Disables the textarea, making it non-interactive.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+---
+
+## Features
+
+The `Textarea` component includes the following features:
+
+- **Responsive Design**:
+  - Fully responsive, adjusting to various container sizes.
+- **Accessible**:
+  - Includes support for labels and descriptions to enhance usability.
+- **Customizable Styling**:
+  - Easily style the textarea using Tailwind utility classes.
+- **Keyboard and Screen Reader Support**:
+  - Fully navigable via keyboard and compatible with screen readers.
+
+---
+
+## Accessibility
+
+The `Textarea` component is designed with accessibility in mind:
+
+- **Keyboard Navigation**:
+  - Focus the textarea using `Tab` and type as needed.
+- **Screen Reader Support**:
+  - Use labels and `aria-describedby` for additional context.
+- **Focusable States**:
+  - Includes clear focus styles for better visibility.
+
+---
+
+## Conclusion
+
+The `Textarea` component is a versatile, accessible, and customizable tool for capturing multi-line text input. Its responsive design and straightforward API make it a great choice for modern web applications.

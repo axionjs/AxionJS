@@ -1,6 +1,222 @@
 ---
-title: AlertDialog
+title: Alert Dialog
+description: A versatile and accessible alert dialog component for confirming actions or displaying critical messages.
 ---
-# AlertDialog
 
-Documentation for the AlertDialog component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import AlertDialogPreview from "@/app/components/docs/AlertDialogPreview.tsx";
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <AlertDialogPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+"use client";
+
+import React from "react";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/app/components/ui/alert-dialog";
+
+export default function AlertDialogPreview() {
+  return (
+    <div className="space-y-6 max-w-md mx-auto">
+      {/* Example 1: Default Alert Dialog */}
+      <div>
+        <h3 className="text-lg font-medium font-center">
+          Default Alert Dialog
+        </h3>
+        <AlertDialog>
+          <AlertDialogTrigger className="px-4 py-2 text-white bg-primary w-full rounded-md">
+            Open Dialog
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirm Action</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to perform this action? This action is
+                irreversible.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Confirm</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+
+      {/* Example 2: Destructive Alert Dialog */}
+      <div>
+        <h3 className="text-lg font-medium">Destructive Alert Dialog</h3>
+        <AlertDialog>
+          <AlertDialogTrigger className="px-4 py-2 text-white bg-destructive  w-full rounded-md">
+            Delete Item
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
+              <AlertDialogDescription>
+                Deleting this item will permanently remove it. Are you sure you
+                want to proceed?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction className="bg-red-600 text-white">
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </div>
+  );
+}
+
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+The `AlertDialog` component is perfect for creating accessible modal dialogs for user confirmations or critical alerts.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add alert-dialog
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure the following dependencies are installed:
+    ```bash
+    npm install @radix-ui/react-alert-dialog lucide-react class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `alert-dialog.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full component code provided in your query
+    ```
+
+    ### 3. Add Preview Component (Optional)
+
+    Create a `AlertDialogPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full AlertDialogPreview.tsx code above
+    ```
+  </Tab>
+</Tabs>
+
+## Props
+
+The `AlertDialog` component and its subcomponents offer extensive customization. Here's a detailed breakdown of their props:
+
+### AlertDialog Props
+
+<TypeTable
+  type={{
+    children: {
+      description: "The content of the alert dialog, including trigger, header, and footer.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+### Subcomponent Props
+
+<TypeTable
+  type={{
+    AlertDialogTrigger: {
+      description: "The button or element that opens the dialog.",
+      type: "React.ReactNode",
+      required: true,
+    },
+    AlertDialogContent: {
+      description: "The main content of the dialog, including the title and description.",
+      type: "React.ReactNode",
+      required: true,
+    },
+    AlertDialogHeader: {
+      description: "Wraps the dialog's title and description.",
+      type: "React.ReactNode",
+    },
+    AlertDialogFooter: {
+      description: "Wraps the dialog's action buttons (e.g., Confirm, Cancel).",
+      type: "React.ReactNode",
+    },
+    AlertDialogTitle: {
+      description: "The title of the dialog.",
+      type: "string | React.ReactNode",
+    },
+    AlertDialogDescription: {
+      description: "Additional text that describes the purpose of the dialog.",
+      type: "string | React.ReactNode",
+    },
+    AlertDialogAction: {
+      description: "The button for confirming the action.",
+      type: "React.ReactNode",
+    },
+    AlertDialogCancel: {
+      description: "The button for cancelling the action.",
+      type: "React.ReactNode",
+    },
+  }}
+/>
+
+## Features
+
+The `AlertDialog` component provides the following features:
+
+- **Dynamic Variants**:
+  - Use for confirmations, critical alerts, or informational dialogs.
+- **Built-In Accessibility**:
+  - Fully compliant with ARIA roles and attributes.
+- **Flexible Layout**:
+  - Combine triggers, headers, descriptions, and footers to create custom dialogs.
+- **Interactive Behavior**:
+  - Handles focus management, keyboard navigation, and dismissable overlays.
+
+## Use Cases
+
+The `AlertDialog` component is ideal for:
+
+- **User Confirmations**:
+  - Confirm critical actions like deletions, updates, or submissions.
+- **Error Notifications**:
+  - Alert users of issues requiring immediate attention.
+- **Custom Modals**:
+  - Build feature-rich modal dialogs with accessible defaults.
+
+## Accessibility
+
+The `AlertDialog` component is designed to meet the highest accessibility standards:
+
+- **ARIA Roles**:
+  - Uses `role="alertdialog"` to signal critical content.
+- **Focus Management**:
+  - Automatically manages focus when the dialog is opened or closed.
+- **Keyboard Navigation**:
+  - Supports `Tab` and `Escape` keys for easy interaction.
+
+
+
+## Conclusion
+
+The `AlertDialog` component is a powerful and accessible tool for creating dialogs that require user interaction. Its flexibility, built-in accessibility, and modern design make it an essential component for any application.

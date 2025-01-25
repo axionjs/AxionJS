@@ -1,6 +1,159 @@
 ---
 title: Toggle
+description: A versatile and accessible toggle component for controlling on/off states, built with Radix UI primitives.
 ---
-# Toggle
 
-Documentation for the Toggle component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { DefaultTogglePreview, IconTogglePreview } from "@/app/components/docs/TogglePreview";
+
+## Previews with Code
+
+### Example 1: Default Toggle
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <DefaultTogglePreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+
+    import React, { useState } from "react";
+    import { Toggle } from "@/components/ui/toggle";
+
+    export function DefaultTogglePreview() {
+      const [isActive, setIsActive] = useState(false);
+
+      return (
+        <div className="space-y-4 max-w-md mx-auto">
+          <h3 className="text-lg font-medium">Default Toggle</h3>
+          <Toggle
+            aria-label="Toggle Bold"
+            pressed={isActive}
+            onPressedChange={setIsActive}
+          >
+            {isActive ? "On" : "Off"}
+          </Toggle>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+---
+
+## Installation
+
+The `Toggle` component is a lightweight and accessible control for toggling between on/off states.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add toggle
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install @radix-ui/react-toggle class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `toggle.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full Toggle component code provided in the query
+    ```
+
+  
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="toggle.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+The `Toggle` component supports the following props:
+
+<TypeTable
+  type={{
+    pressed: {
+      description: "Whether the toggle is in the pressed (on) state.",
+      type: "boolean",
+      required: false,
+    },
+    onPressedChange: {
+      description: "Callback triggered when the pressed state changes.",
+      type: "(pressed: boolean) => void",
+      required: false,
+    },
+    size: {
+      description: "The size of the toggle.",
+      type: `"default" | "sm" | "lg"`,
+      default: `"default"`,
+    },
+    variant: {
+      description: "The style variant of the toggle.",
+      type: `"default" | "outline"`,
+      default: `"default"`,
+    },
+    className: {
+      description: "Additional classes for styling the toggle.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+The `Toggle` component includes the following features:
+
+- **Customizable Sizes and Variants**:
+  - Supports `sm`, `default`, and `lg` sizes, as well as `default` and `outline` variants.
+- **Icon Support**:
+  - Add icons for additional visual cues.
+- **Accessible**:
+  - Keyboard and screen-reader-friendly design.
+- **Responsive Design**:
+  - Adapts to various container sizes seamlessly.
+
+---
+
+## Accessibility
+
+The `Toggle` component is built with accessibility in mind:
+
+- **Keyboard Navigation**:
+  - Use the `Space` key to toggle the state.
+- **Screen Reader Support**:
+  - Proper `aria-pressed` attributes announce the toggle state.
+- **Focusable States**:
+  - Uses `focus-visible` styles for better interaction visibility.
+
+---
+
+## Conclusion
+
+The `Toggle` component is a lightweight, customizable, and accessible solution for managing on/off states in modern web applications. Its flexibility makes it ideal for feature toggles, formatting options, and more.

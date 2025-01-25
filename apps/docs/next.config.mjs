@@ -13,8 +13,18 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+
   images: {
-    domains: ["res.cloudinary.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+    ],
   },
   serverExternalPackages: ["ts-morph", "typescript", "oxc-transform"],
 };

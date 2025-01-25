@@ -1,6 +1,157 @@
 ---
 title: Switch
+description: A customizable and accessible switch component for toggling between states, built with Radix UI primitives.
 ---
-# Switch
 
-Documentation for the Switch component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import SwitchPreview from "@/app/components/docs/SwitchPreview.tsx";
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <SwitchPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+"use client";
+
+import React, { useState } from "react";
+import { Switch } from "@/app/components/ui/switch";
+
+export default function SwitchPreview() {
+  const [isChecked, setIsChecked] = useState(false);
+
+  return (
+    <div className="space-y-6 max-w-md mx-auto">
+      {/* Example 3: Custom Styling */}
+      <div>
+        <h3 className="text-lg font-medium">Normal Switch</h3>
+        <Switch
+          id="custom-switch"
+          className="data-[state=checked]:bg-emerald-500"
+          checked={isChecked}
+          onCheckedChange={(checked) => setIsChecked(checked)}
+        />
+        <label htmlFor="custom-switch" className="ml-4 text-sm">
+          {isChecked ? "On" : "Off"}
+        </label>
+      </div>
+      {/* Example 2: Disabled Switch */}
+      <div>
+        <h3 className="text-lg font-medium">Disabled Switch</h3>
+        <Switch id="disabled-switch" disabled />
+      </div>
+    </div>
+  );
+}
+
+
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+The `Switch` component is a lightweight and accessible UI element for toggling states, with full keyboard and screen reader support.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add switch
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure the following dependencies are installed:
+    ```bash
+    npm install @radix-ui/react-switch class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `switch.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full component code provided in your query
+    ```
+
+    ### 3. Add Preview Component (Optional)
+
+    Create a `SwitchPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full SwitchPreview.tsx code above
+    ```
+  </Tab>
+</Tabs>
+
+## Props
+
+The `Switch` component offers a simple API with the following props for customization:
+
+<TypeTable
+  type={{
+    checked: {
+      description: "Controls the switch's state (on/off).",
+      type: "boolean",
+    },
+    onCheckedChange: {
+      description: "Callback triggered when the state changes.",
+      type: "(checked: boolean) => void",
+    },
+    disabled: {
+      description: "Disables the switch, making it non-interactive.",
+      type: "boolean",
+      default: "false",
+    },
+    id: {
+      description: "Unique identifier for the switch.",
+      type: "string",
+      required: true,
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+    },
+  }}
+/>
+
+## Features
+
+The `Switch` component is designed for flexibility and accessibility:
+
+- **Accessible Design**:
+  - Fully keyboard navigable and screen reader compatible.
+- **Customizable Styles**:
+  - Easily style the switch using Tailwind classes or custom CSS.
+- **Interactive Behavior**:
+  - Provides visual feedback for on/off states.
+- **Lightweight and Flexible**:
+  - Built with Radix Primitives for minimal overhead and high performance.
+
+## Use Cases
+
+The `Switch` component is ideal for:
+
+- **Settings Toggles**:
+  - Enable or disable specific features in a settings menu.
+- **Theme Switchers**:
+  - Toggle between light and dark mode in your application.
+- **Form Inputs**:
+  - Use as a replacement for checkboxes in forms for better UI/UX.
+
+## Accessibility
+
+The `Switch` component is built with accessibility in mind:
+
+- **Keyboard Navigation**:
+  - Use the `Tab` key to focus the switch and `Space` or `Enter` to toggle it.
+- **Screen Reader Support**:
+  - Announces the current state of the switch to assistive technologies.
+- **Focusable States**:
+  - Uses `focus-visible` styles for better visibility during interaction.
+
+
+## Conclusion
+
+The `Switch` component is a versatile and accessible tool for toggling states in modern web applications. Its lightweight design and customizable styling make it a perfect addition to any UI.

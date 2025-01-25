@@ -1,6 +1,123 @@
 ---
-title: NavigationMenu
+title: Navigation Menu
+description: An accessible navigation menu with dropdowns, triggers, and submenus.
 ---
-# NavigationMenu
 
-Documentation for the NavigationMenu component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { NavigationMenuDemo } from "@/app/components/docs/NavigationMenuPreview";
+
+## Introduction
+
+The `NavigationMenu` component provides a flexible and accessible solution for creating advanced navigation menus with dropdowns, submenus, and interactive elements.
+
+---
+
+## Default Use Case
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="mx-auto py-12 h-[80vh] ">
+    <NavigationMenuDemo />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import { 
+      NavigationMenu, 
+      NavigationMenuList, 
+      NavigationMenuItem, 
+      NavigationMenuTrigger, 
+      NavigationMenuContent, 
+      NavigationMenuLink 
+    } from "@/components/ui/navigation-menu";
+
+    export function NavigationMenuDemo() {
+      return (
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid gap-3 p-4">
+                  <li>Documentation Link</li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `NavigationMenu` component:
+    ```bash
+    npx axionjs add navigation-menu
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### Step 1: Install Dependencies
+    ```bash
+    npm install @radix-ui/react-navigation-menu class-variance-authority lucide-react
+    ```
+
+    ### Step 2: Add the Component
+    Create a file `components/ui/navigation-menu.tsx`:
+    ```tsx ts2js
+    // Full code from NavigationMenu component provided earlier.
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="navigation-menu.tsx" />
+      </Folder>
+      <Folder name="docs">
+        <File name="NavigationMenuPreview.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Features
+
+- **Dropdowns and Submenus**:
+  - Use triggers to create dropdowns and nested submenus.
+- **Customizable Styles**:
+  - Style with Tailwind CSS and `class-variance-authority`.
+- **Accessible Design**:
+  - Built-in support for keyboard navigation and ARIA roles.
+
+---
+
+## Accessibility
+
+- **Keyboard Support**:
+  - Navigate dropdowns and links with arrow keys and `Enter`.
+- **Screen Reader Support**:
+  - Proper ARIA roles, states, and descriptions.
+- **Focus Management**:
+  - Ensures smooth tabbing and focus behavior.
+
+---
+
+## Conclusion
+
+The `NavigationMenu` component offers a robust and accessible solution for creating advanced navigation menus. Its customizable design and ARIA-compliant features make it a perfect choice for modern web applications.

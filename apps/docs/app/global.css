@@ -133,7 +133,7 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
-    --shadow: 0 0% 50%;
+    --shadow: 0 0% 90%;
     --gradient-start: 220 50% 40%;
     --gradient-end: 280 40% 30%;
     --chart-1: 12 76% 61%;
@@ -169,4 +169,48 @@
   body {
     @apply font-sans;
   }
+}
+
+/* Accessibility Tool CSS */
+/* High contrast example (very simplistic) */
+.high-contrast {
+  filter: contrast(200%);
+}
+
+/* Highlight links (underline them, or add background) */
+.highlight-links a {
+  outline: 2px solid yellow;
+  background-color: yellow;
+  color: black !important;
+}
+
+/* Hide images */
+.hide-images img {
+  display: none !important;
+}
+
+/* Dyslexia friendly could use a specific font if available (e.g., "OpenDyslexic") */
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("/fonts/OpenDyslexic-Regular.woff2") format("woff2");
+}
+
+.dyslexia-friendly * {
+  font-family: "OpenDyslexic", sans-serif !important;
+}
+
+/* Increased line height */
+.increased-line-height * {
+  line-height: 2 !important;
+}
+
+/* Low saturation (grayscale) */
+.low-saturation {
+  filter: grayscale(80%);
+}
+
+/* An example of text spacing (letter spacing, word spacing) */
+.text-spacing * {
+  letter-spacing: 0.05em;
+  word-spacing: 0.2em;
 }

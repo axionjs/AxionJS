@@ -1,6 +1,195 @@
 ---
 title: Progress
+description: An accessible progress component that supports simple progress bars, labeled progress, and multi-progress use cases.
 ---
-# Progress
 
-Documentation for the Progress component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import {
+  ProgressWithLabelPreview,
+  MultiProgressPreview,
+} from "@/app/components/docs/ProgressPreview";
+
+## Introduction
+
+The `Progress` component provides a sleek and accessible way to visualize completion states. It supports basic progress bars, labeled progress, and multi-progress implementations.
+
+---
+
+## Default Use Cases
+
+### Progress with Label
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-24 pb-8 h-48 content-center">
+    <ProgressWithLabelPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { Progress } from "@/components/ui/progress";
+
+    export function ProgressWithLabelPreview() {
+      const [progress, setProgress] = React.useState(60);
+
+      React.useEffect(() => {
+        const timer = setInterval(() => {
+          setProgress((prev) => (prev >= 100 ? 0 : prev + 10));
+        }, 1000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium">Progress with Label</h3>
+          <div className="flex items-center space-x-2">
+            <Progress value={progress} />
+            <span className="text-sm font-medium">{progress}%</span>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Progress` component:
+    ```bash
+    npx axionjs add progress
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### Step 1: Install Dependencies
+    ```bash
+    npm install @radix-ui/react-progress
+    ```
+
+    ### Step 2: Add the Component
+    Create a file `components/ui/progress.tsx`:
+    ```tsx ts2js
+    import * as React from "react";
+    import * as ProgressPrimitive from "@radix-ui/react-progress";
+
+    import { cn } from "@/lib/utils";
+
+    const Progress = React.forwardRef<
+      React.ElementRef<typeof ProgressPrimitive.Root>,
+      React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
+    >(({ className, value, ...props }, ref) => (
+      <ProgressPrimitive.Root
+        ref={ref}
+        className={cn(
+          "relative h-2 w-full overflow-hidden rounded-full bg-primary/20",
+          className
+        )}
+        {...props}
+      >
+        <ProgressPrimitive.Indicator
+          className="h-full w-full flex-1 bg-primary transition-all"
+          style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+        />
+      </ProgressPrimitive.Root>
+    ));
+    Progress.displayName = ProgressPrimitive.Root.displayName;
+
+    export { Progress };
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="progress.tsx" />
+      </Folder>
+      
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+
+### Multi-Progress
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-24 pb-8 h-48 content-center">
+    <MultiProgressPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { Progress } from "@/components/ui/progress";
+
+    export function MultiProgressPreview() {
+      return (
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium">Multi-Progress</h3>
+          <Progress value={30} />
+          <Progress value={50} />
+          <Progress value={90} />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    value: {
+      description: "The progress value, ranging from 0 to 100.",
+      type: "number",
+      required: true,
+    },
+    className: {
+      description: "Custom class names for additional styling.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Dynamic Progress**:
+  - Visualize completion states with dynamic progress bars.
+- **Label Support**:
+  - Display progress values with percentages or other labels.
+- **Multi-Progress Support**:
+  - Stack multiple progress bars for advanced use cases.
+- **Customizable**:
+  - Style and configure to match your application’s design.
+
+---
+
+## Accessibility
+
+- **Keyboard Navigation**:
+  - Easily focus and interact with progress elements via `Tab`.
+- **Screen Reader Support**:
+  - Includes ARIA roles and properties like `aria-valuenow` to convey progress information to assistive technologies.
+- **Dynamic Updates**:
+  - Ensure screen readers are notified of real-time progress updates.
+
+---
+
+## Conclusion
+
+The `Progress` component is a versatile and accessible tool for visualizing progress in your application. With built-in ARIA support and customization options, it’s ideal for modern web apps.

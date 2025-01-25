@@ -7,5 +7,5 @@ export default function Layout({
 }: {
   children: ReactNode;
 }): React.ReactElement {
-  return <HomeLayout {...baseOptions}>{children}</HomeLayout>;
+  return <HomeLayout {...baseOptions}> {children}</HomeLayout>;
 }

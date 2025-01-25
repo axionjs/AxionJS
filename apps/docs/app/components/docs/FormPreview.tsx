@@ -46,7 +46,7 @@ const FormPreview = () => {
     <Form {...formMethods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 p-4 max-w-lg"
+        className="space-y-3 p-4 max-w-lg"
         aria-labelledby="Simple-form"
       >
         {/* Email Field */}

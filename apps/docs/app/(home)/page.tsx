@@ -1,6 +1,5 @@
 import Link from "next/link";
 import "@/app/global.css";
-
 export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col justify-center text-center">

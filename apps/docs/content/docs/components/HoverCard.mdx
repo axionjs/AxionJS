@@ -1,6 +1,182 @@
 ---
-title: HoverCard
+title: Hover Card
+description: A customizable and accessible hover card component for displaying additional information on hover.
 ---
-# HoverCard
 
-Documentation for the HoverCard component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { HoverCardPreview } from "@/app/components/docs/HoverCardPreview";
+
+## Introduction
+
+The `HoverCard` component is a lightweight, accessible component for showing additional content when hovering over a trigger element, such as buttons or links.
+
+---
+
+## Default Use Case: Hover Card
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <HoverCardPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import React from "react";
+    import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
+    import { Button } from "@/components/ui/button";
+
+    export function HoverCardPreview() {
+      return (
+        <div className="flex justify-center items-center h-[200px] space-x-6">
+       
+
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <a
+                href="#"
+                className="text-primary underline hover:no-underline"
+              >
+                Hover over this link
+              </a>
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <p className="text-sm text-muted-foreground">
+                Learn more about this link by hovering over it!
+              </p>
+            </HoverCardContent>
+          </HoverCard>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `HoverCard` component using the following command:
+
+    ```bash
+    npx axionjs add hover-card
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Install the required dependencies:
+
+    ```bash
+    npm install @radix-ui/react-hover-card
+    ```
+
+    ### 2. Create the HoverCard Component
+
+    Add the following code to `components/ui/hover-card.tsx`:
+
+    ```tsx ts2js
+    import * as React from "react";
+    import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
+    import { cn } from "@/lib/utils";
+
+    const HoverCard = HoverCardPrimitive.Root;
+
+    const HoverCardTrigger = HoverCardPrimitive.Trigger;
+
+    const HoverCardContent = React.forwardRef<
+      React.ElementRef<typeof HoverCardPrimitive.Content>,
+      React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
+    >(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
+      <HoverCardPrimitive.Content
+        ref={ref}
+        align={align}
+        sideOffset={sideOffset}
+        className={cn(
+          "z-50 w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+          className
+        )}
+        {...props}
+      />
+    ));
+    HoverCardContent.displayName = HoverCardPrimitive.Content.displayName;
+
+    export { HoverCard, HoverCardTrigger, HoverCardContent };
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="hover-card.tsx" />
+      </Folder>
+      
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    align: {
+      description: "Aligns the hover card relative to the trigger.",
+      type: `"center" | "start" | "end"`,
+      required: false,
+      default: `"center"`,
+    },
+    sideOffset: {
+      description: "The distance in pixels from the trigger.",
+      type: "number",
+      required: false,
+      default: "4",
+    },
+    className: {
+      description: "Additional CSS classes for the hover card.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Customizable**:
+  - Adjust the alignment, offset, and appearance to match your design.
+- **Lightweight**:
+  - Adds minimal overhead while offering a great user experience.
+- **Easy to Use**:
+  - Wrap your content with `HoverCardTrigger` and `HoverCardContent`.
+
+---
+
+## Accessibility
+
+The `HoverCard` component is fully accessible:
+
+- **ARIA Roles**:
+  - Properly handles `aria-labelledby` and `aria-describedby`.
+- **Keyboard Navigation**:
+  - Supports `Tab` and `Shift+Tab` for focus management.
+- **Screen Reader Support**:
+  - Screen readers announce the hover card content when triggered.
+
+---
+
+## Conclusion
+
+The `HoverCard` component is perfect for displaying contextual information when users hover over elements like buttons or links. It combines flexibility, accessibility, and ease of use.

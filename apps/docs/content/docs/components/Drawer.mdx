@@ -1,0 +1,182 @@
+---
+title: Drawer
+description: A fully customizable and accessible drawer component for modern, responsive designs.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { SimpleDrawerPreview } from "@/app/components/docs/DrawerPreview";
+
+## Introduction
+
+The `Drawer` component is a versatile sliding panel for mobile and web applications. It can serve as a simple overlay or a bottom-drawer for mobile-friendly designs.
+
+---
+
+## Default Use Case: Simple Drawer
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <SimpleDrawerPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    import React from "react";
+    import {
+      Drawer,
+      DrawerTrigger,
+      DrawerContent,
+      DrawerTitle,
+      DrawerDescription,
+      DrawerHeader,
+      DrawerFooter,
+      DrawerClose,
+    } from "@/components/ui/drawer";
+    import { Button } from "@/components/ui/button";
+
+    export function SimpleDrawerPreview() {
+      return (
+        <Drawer>
+          <DrawerTrigger asChild>
+            <Button variant="default">Open Simple Drawer</Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Simple Drawer</DrawerTitle>
+              <DrawerDescription>
+                This is a simple drawer with customizable content.
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className="p-4">
+              <p>Place your custom content here.</p>
+            </div>
+            <DrawerFooter>
+              <DrawerClose asChild>
+                <Button variant="destructive">Close</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Drawer` component using the following command:
+
+    ```bash
+    npx axionjs add drawer
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Install the required dependencies:
+
+    ```bash
+    npm install vaul
+    ```
+
+    ### 2. Create the Drawer Component
+
+    Add the following code to `components/ui/drawer.tsx`:
+
+    ```tsx ts2js
+    // Full code as provided above for the Drawer component
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="drawer.tsx" />
+      </Folder>
+      <Folder name="docs">
+        <File name="DrawerPreview.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    "aria-label": {
+      description: "Accessible label for the drawer.",
+      type: "string",
+      required: false,
+    },
+    "aria-labelledby": {
+      description: "ID of an element that labels the drawer.",
+      type: "string",
+      required: false,
+    },
+    announcePosition: {
+      description: "Announce the drawer's position to screen readers.",
+      type: "boolean",
+      required: false,
+      default: "false",
+    },
+    open: {
+      description: "Control the open state of the drawer.",
+      type: "boolean",
+      required: false,
+    },
+    onOpenChange: {
+      description: "Callback when the drawer's open state changes.",
+      type: "(open: boolean) => void",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Customizable Positions**:
+  - Display drawers as simple overlays or bottom drawers for mobile screens.
+- **Accessible**:
+  - Fully ARIA-compliant with support for `aria-label` and `aria-labelledby`.
+- **Keyboard Support**:
+  - Fully navigable with keyboard inputs.
+- **Flexible Content**:
+  - Supports headers, descriptions, and customizable footers.
+
+---
+
+## Accessibility
+
+The `Drawer` component is designed to meet the highest accessibility standards:
+
+- **ARIA Roles**:
+  - Uses `role="dialog"` for screen reader support.
+- **Screen Reader Announcements**:
+  - Optionally announce the position of the drawer.
+- **Keyboard Navigation**:
+  - Navigate the drawer using `Tab`, `Escape`, and focusable controls.
+
+---
+
+## Conclusion
+
+The `Drawer` component is a modern, responsive, and accessible solution for creating sliding panels. With built-in keyboard navigation and flexible content options, it is perfect for any web or mobile application.

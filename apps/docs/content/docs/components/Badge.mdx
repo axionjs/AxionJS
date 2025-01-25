@@ -1,6 +1,217 @@
 ---
 title: Badge
+description: A flexible badge component for tagging, categorization, and status indication, supporting multiple variants and customizations.
 ---
-# Badge
 
-Documentation for the Badge component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { BadgePreview } from "@/app/components/docs/BadgePreview";
+import { Badge } from "@/app/components/ui/badge";
+
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <BadgePreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    import { Badge } from "@/app/components/ui/badge";
+
+    export default function App() {
+      return (
+        <div className="flex flex-col gap-4">
+          <Badge>Default Badge</Badge>
+         
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the badge component using:
+    ```bash
+    npx axionjs add badge
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure the following dependencies are installed:
+    ```bash
+    npm install class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Badge Component
+
+    Create the `badge.tsx` file in your `components/ui` directory:
+    ```tsx ts2js
+    import * as React from "react";
+    import { cva, type VariantProps } from "class-variance-authority";
+    import { cn } from "@/lib/utils";
+
+    const badgeVariants = cva(
+      "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+      {
+        variants: {
+          variant: {
+            default:
+              "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+            secondary:
+              "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+            destructive:
+              "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
+            outline: "text-foreground",
+          },
+        },
+        defaultVariants: {
+          variant: "default",
+        },
+      }
+    );
+
+    export interface BadgeProps
+      extends React.HTMLAttributes<HTMLDivElement>,
+        VariantProps<typeof badgeVariants> {}
+
+    const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
+      ({ className, variant, ...props }, ref) => (
+        <div
+          ref={ref}
+          className={cn(badgeVariants({ variant }), className)}
+          {...props}
+        />
+      )
+    );
+    Badge.displayName = "Badge";
+
+    export { Badge, badgeVariants };
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+Here’s the file structure for the Badge component:
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <File name="badge.tsx" />
+  </Folder>
+</Files>
+
+---
+
+
+## Variants
+
+### Default
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Badge>Default Badge</Badge>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge>Default Badge</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Secondary
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Badge variant="secondary">Secondary Badge</Badge>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge variant="secondary">Secondary Badge</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Destructive
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Badge variant="destructive">Error Badge</Badge>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge variant="destructive">Error Badge</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Outline
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <Badge variant="outline">Outline Badge</Badge>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge variant="outline">Outline Badge</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+## Props
+
+The `Badge` component comes with the following customizable props:
+
+<TypeTable
+  type={{
+    variant: {
+      description: "Defines the visual style of the badge.",
+      type: '"default" | "secondary" | "destructive" | "outline"',
+      default: '"default"',
+    },
+    className: {
+      description: "Additional classes for styling.",
+      type: "string",
+    },
+    children: {
+      description: "The content inside the badge.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+---
+
+## Use Cases
+
+The **Badge** component is perfect for:
+
+- **Status Indicators**:
+  Highlight statuses like "Active," "Inactive," or "Pending."
+- **Tags**:
+  Categorize or label items like filters, categories, or metadata.
+- **Notifications**:
+  Show counts for notifications or activities.
+
+---
+
+
+## Accessibility
+
+The Badge component is:
+
+- **Keyboard Accessible**:
+  Fully navigable when paired with focusable elements.
+- **Screen Reader Friendly**:
+  Uses meaningful content for badges to provide context to assistive technologies.
+
+---
+
+## Conclusion
+
+The **Badge** component is a versatile, accessible, and lightweight solution for adding labels, statuses, and categorization to your application. Its flexibility and design make it a valuable addition to any UI.

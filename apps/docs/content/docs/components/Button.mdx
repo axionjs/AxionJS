@@ -1,34 +1,31 @@
 ---
 title: Button
-description: A versatile button component that supports different variants, sizes, and custom animations.
+description: A versatile button component supporting multiple variants, sizes, and custom animations.
 ---
 
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
-import { File, Folder, Files } from "fumadocs-ui/components/files";
-import { ButtonPreview } from "@/app/components/docs/button-preview";
-import { ButtonCustomizer } from "@/app/components/docs/button-customizer";
-import { Button } from "@/app/components/ui/button.tsx";
-import { Step, Steps } from "fumadocs-ui/components/steps";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { ButtonPreview } from "@/app/components/docs/ButtonPreview";
+import { Button } from "@/app/components/ui/button";
 
 <Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto h-48 content-center"  >
-    <div className=" gap-4 " >
-      <Button>Button</Button>
-    </div>
+  <Tab value="Preview" className="m-auto h-48 pb-8 content-center">
+    <ButtonPreview />
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
-    ```tsx
-    import { Button } from "@/components/ui/button"
+    ```tsx ts2js
+    import { Button } from "@/app/components/ui/button";
 
-    export default function ButtonDemo() {
+    export default function App() {
       return (
-        <div className="flex gap-4">
-          <Button>Button</Button>
+        <div className="space-y-6">
+          <Button>Default Button</Button>
+         
         </div>
-      )
+      );
     }
     ```
-
   </Tab>
 </Tabs>
 
@@ -36,139 +33,37 @@ import { Step, Steps } from "fumadocs-ui/components/steps";
 
 <Tabs items={["CLI", "Manual"]}>
   <Tab value="CLI">
+    Install the button component using:
     ```bash
     npx axionjs add button
     ```
   </Tab>
   <Tab value="Manual">
     ### 1. Install Dependencies
-    
+
+    Install the required dependencies:
     ```bash
-    npm install class-variance-authority clsx tailwind-merge lucide-react
+    npm install class-variance-authority @radix-ui/react-slot lucide-react
     ```
 
     ### 2. Add Button Component
 
-    Create `components/ui/button.tsx` with the following code:
-
-    ```tsx ts2js
-import * as React from "react";
-import { Slot, Slottable } from "@radix-ui/react-slot";
-import { cva, VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
-
-const buttonVariants = cva("inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",{
-        variants: {
-              variant: {
-                default: "bg-primary text-primary-foreground hover:bg-primary/90",
-                destructive:
-                  "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-                outline:
-                  "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-                secondary:
-                  "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-                ghost: "hover:bg-accent hover:text-accent-foreground",
-                link: "text-primary underline-offset-4 hover:underline",
-                ringHover:
-                  "bg-primary text-primary-foreground transition-all duration-300 hover:bg-primary/90 hover:ring-2 hover:ring-primary/90 hover:ring-offset-2",
-                linkHover:
-                  "relative after:absolute after:bg-primary after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 hover:after:origin-bottom-right hover:after:scale-x-0 after:transition-transform after:ease-in-out after:duration-300",
-                expandIcon:
-                  "group relative bg-primary text-primary-foreground px-4 py-2 hover:bg-primary/90",
-                shine:
-                  "text-primary-foreground animate-shine bg-gradient-to-r from-primary via-primary/75 to-primary bg-[length:400%_100%]",
-                gooeyRight:
-                  "text-primary-foreground relative bg-primary z-0 overflow-hidden transition-all duration-500 before:absolute before:inset-0 before:-z-10 before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5] before:rounded-[100%] before:bg-gradient-to-r from-zinc-400 before:transition-transform before:duration-1000 hover:before:translate-x-0 hover:before:translate-y-0",
-                gooeyLeft:
-                  "text-primary-foreground relative bg-primary z-0 overflow-hidden transition-all duration-500 after:absolute after:inset-0 after:-z-10 after:translate-x-[-150%] after:translate-y-[150%] after:scale-[2.5] after:rounded-[100%] after:bg-gradient-to-l from-zinc-400 after:transition-transform after:duration-1000 hover:after:translate-x-0 hover:after:translate-y-0",
-              },
-              size: {
-                default: "h-10 px-4 py-2",
-                sm: "h-9 rounded-md px-3",
-                lg: "h-11 rounded-md px-8",
-                icon: "h-10 w-10",
-              },
-            },
-            defaultVariants: {
-              variant: "default",
-              size: "default",
-            },
-      }
-);
-
-interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
-  "aria-expanded"?: boolean;
-}
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      asChild = false,
-      children,
-      disabled = false,
-      "aria-label": ariaLabel,
-      "aria-labelledby": ariaLabelledby,
-      "aria-expanded": ariaExpanded,
-      ...props
-    },
-    ref
-  ) => {
-    const Comp = asChild ? Slot : "button";
-
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        role="button"
-        aria-disabled={disabled}
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledby}
-        aria-expanded={ariaExpanded}
-        disabled={disabled}
-        {...props}
-      >
-        <Slottable>{children}</Slottable>
-        {variant === "expandIcon" && (
-          <div
-            className="w-0 opacity-0 translate-x-[100%] pl-0 transition-all duration-300 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 group-hover:pl-2"
-            aria-hidden="true"
-          >
-            <ArrowRight />
-          </div>
-        )}
-      </Comp>
-    );
-  }
-);
-
-Button.displayName = "Button";
-
-export { Button, buttonVariants };
-
-
-    ```
-
-    ### 3. Usage Example
-
+    Create the `button.tsx` file in your `components/ui` directory:
     ```tsx
-    import { Button } from "@/components/ui/button"
-
-    export default function App() {
-      return <Button>Click me</Button>
-    }
+    // Full Button Component Code from Your Query
     ```
-
   </Tab>
 </Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <File name="button.tsx" />
+  </Folder>
+</Files>
+
+---
 
 ## Variants
 
@@ -237,58 +132,6 @@ export { Button, buttonVariants };
   </Tab>
 </Tabs>
 
-### Link
-
-<Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto h-48 content-center">
-    <Button variant="link">Link Button</Button>
-  </Tab>
-  <Tab value="Code">
-    ```tsx
-    <Button variant="link">Link Button</Button>
-    ```
-  </Tab>
-</Tabs>
-
-### Ring Hover
-
-<Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto h-48 content-center">
-    <Button variant="ringHover">Ring Hover Button</Button>
-  </Tab>
-  <Tab value="Code">
-    ```tsx
-    <Button variant="ringHover">Ring Hover Button</Button>
-    ```
-  </Tab>
-</Tabs>
-
-### Link Hover
-
-<Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto h-48 content-center">
-    <Button variant="linkHover">Link Hover Button</Button>
-  </Tab>
-  <Tab value="Code">
-    ```tsx
-    <Button variant="linkHover">Link Hover Button</Button>
-    ```
-  </Tab>
-</Tabs>
-
-### Expand Icon
-
-<Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto h-48 content-center">
-    <Button variant="expandIcon">Expand Icon Button</Button>
-  </Tab>
-  <Tab value="Code">
-    ```tsx
-    <Button variant="expandIcon">Expand Icon Button</Button>
-    ```
-  </Tab>
-</Tabs>
-
 ### Shine
 
 <Tabs items={["Preview", "Code"]}>
@@ -328,52 +171,105 @@ export { Button, buttonVariants };
   </Tab>
 </Tabs>
 
-
 ### Sizes
 
 <Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto h-48 content-center aspect-w-16 aspect-h-9">
-    <div className="flex items-center gap-4">
-      <Button variant="outline" size="sm">
-        Small
-      </Button>
-      <Button variant="outline" size="default">
-        Default
-      </Button>
-      <Button variant="outline" size="lg">
-        Large
-      </Button>
-      <Button
-        size="icon"
-        className="border border-input bg-background hover:bg-accent hover:text-accent-foreground"
-      >
-        🎉
-      </Button>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <div className="flex gap-4">
+      <Button size="sm">Small</Button>
+      <Button>Default</Button>
+      <Button size="lg">Large</Button>
+      <Button size="icon">🎉</Button>
     </div>
   </Tab>
   <Tab value="Code">
     ```tsx
-    <Button variant="outline" size="sm">
-      Small
-    </Button>
-    <Button variant="outline" size="default">
-      Default
-    </Button>
-    <Button variant="outline" size="lg">
-      Large
-    </Button>
-    <Button variant="outline" size="icon">
-      🎉
-    </Button>
+    <Button size="sm">Small</Button>
+    <Button>Default</Button>
+    <Button size="lg">Large</Button>
+    <Button size="icon">🎉</Button>
     ```
   </Tab>
 </Tabs>
 
-## Custom Button Builder
+## Props
 
-Use the interactive controls below to customize your button.
+<TypeTable
+  type={{
+    variant: {
+      description: "Defines the visual style of the button.",
+      type: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "ringHover" | "linkHover" | "expandIcon" | "shine" | "gooeyRight" | "gooeyLeft"',
+      default: '"default"',
+    },
+    size: {
+      description: "Defines the button size.",
+      type: '"default" | "sm" | "lg" | "icon"',
+      default: '"default"',
+    },
+    asChild: {
+      description: "Allows the button to act as a wrapper for another element.",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
 
-<ButtonCustomizer />
 
-<ButtonPreview />
-../../../app/components/docs/button-preview../../../app/components/docs/button-customizer
+
+---
+title: Button
+description: A versatile button component that supports multiple variants, sizes, and modern animations.
+---
+
+## Features
+
+The `Button` component provides the following features:
+
+- **Dynamic Variants**:
+  - Supports multiple styles such as `default`, `secondary`, `destructive`, `outline`, `ghost`, and more.
+- **Custom Animations**:
+  - Includes unique hover effects like `shine`, `gooeyRight`, and `expandIcon` for enhanced interactivity.
+- **Multiple Sizes**:
+  - Available in `small`, `default`, `large`, and `icon` sizes to fit various use cases.
+- **Accessibility Built-In**:
+  - Fully supports ARIA attributes, focus states, and keyboard navigation.
+- **Customizable**:
+  - Highly extensible with custom class names and the `asChild` prop for wrapping elements.
+
+---
+
+## Use Cases
+
+The `Button` component is ideal for:
+
+- **Call-to-Actions**:
+  - Use prominent buttons like `default` or `shine` for primary actions such as signing up or submitting forms.
+- **Destructive Actions**:
+  - Highlight critical actions such as deletions with the `destructive` variant.
+- **Secondary Actions**:
+  - Pair primary buttons with subtle options like `secondary` for less prominent actions.
+- **Toolbars and Icon Buttons**:
+  - Use the `icon` size for compact buttons in toolbars or quick actions.
+- **Dynamic UIs**:
+  - Enhance user interfaces with interactive effects like `ringHover` or `expandIcon`.
+
+---
+
+## Accessibility
+
+The `Button` component is built with accessibility in mind:
+
+- **ARIA Roles**:
+  - Supports attributes like `aria-label`, `aria-labelledby`, and `aria-expanded` for screen readers.
+- **Keyboard Navigation**:
+  - Fully operable using `Tab` and `Enter` keys.
+- **Focus Management**:
+  - Includes focus-visible styles to indicate active states clearly.
+- **Disabled State**:
+  - Buttons marked as `disabled` prevent all interactions while remaining visually distinguishable.
+
+---
+
+## Conclusion
+
+The `Button` component is a highly flexible and accessible solution for modern interfaces. With its wide range of variants, sizes, and animations, it provides developers with the tools they need to build engaging, inclusive, and user-friendly applications. Its focus on performance and customizability makes it a cornerstone for UI design.

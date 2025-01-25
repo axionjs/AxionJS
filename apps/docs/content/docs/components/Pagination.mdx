@@ -1,0 +1,176 @@
+---
+title: Pagination
+description: A fully accessible and customizable pagination component for navigating through pages.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { SimplePaginationPreview } from "@/app/components/docs/PaginationPreview";
+
+## Introduction
+
+The `Pagination` component is an accessible and flexible tool for navigating multi-page content. It includes features such as previous/next navigation, page numbers, ellipsis, and ARIA attributes for accessibility.
+
+---
+
+## Default Use Case
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <SimplePaginationPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import { 
+      Pagination, 
+      PaginationContent, 
+      PaginationItem, 
+      PaginationLink, 
+      PaginationPrevious, 
+      PaginationNext, 
+      PaginationEllipsis 
+    } from "@/components/ui/pagination";
+
+    export function SimplePaginationPreview() {
+      return (
+        <Pagination>
+          <PaginationContent>
+            <PaginationPrevious />
+            <PaginationItem>
+              <PaginationLink href="#" isActive>
+                1
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">2</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationEllipsis />
+            <PaginationItem>
+              <PaginationLink href="#">10</PaginationLink>
+            </PaginationItem>
+            <PaginationNext />
+          </PaginationContent>
+        </Pagination>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Pagination` component:
+    ```bash
+    npx axionjs add pagination
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### Step 1: Install Dependencies
+    ```bash
+    npm install class-variance-authority lucide-react
+    ```
+
+    ### Step 2: Add the Component
+    Create a file `components/ui/pagination.tsx`:
+    ```tsx ts2js
+    // Full code from the Pagination component provided earlier.
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="pagination.tsx" />
+      </Folder>
+     
+    </Folder>
+  </Folder>
+</Files>
+
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    "Pagination": {
+      description: "Wrapper for the pagination navigation.",
+      type: "React.ComponentProps<'nav'>",
+      required: false,
+    },
+    "PaginationContent": {
+      description: "Container for pagination items.",
+      type: "React.ComponentProps<'ul'>",
+      required: false,
+    },
+    "PaginationItem": {
+      description: "Individual pagination item.",
+      type: "React.ComponentProps<'li'>",
+      required: false,
+    },
+    "PaginationLink": {
+      description: "Clickable link for pagination navigation.",
+      type: "`React.ComponentProps<'a'> & { isActive?: boolean; size?: string; }`",
+      required: false,
+    },
+    "PaginationPrevious": {
+      description: "Link to the previous page.",
+      type: "React.ComponentProps<typeof PaginationLink>",
+      required: false,
+    },
+    "PaginationNext": {
+      description: "Link to the next page.",
+      type: "React.ComponentProps<typeof PaginationLink>",
+      required: false,
+    },
+    "PaginationEllipsis": {
+      description: "Ellipsis indicating skipped pages.",
+      type: "React.ComponentProps<'span'>",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Simple Navigation**:
+  - Navigate through pages with "Previous", "Next", and page numbers.
+- **Advanced Customization**:
+  - Add ellipsis for skipped pages or active state for the current page.
+- **Fully Accessible**:
+  - Built-in ARIA roles and screen-reader-friendly descriptions.
+
+---
+
+## Accessibility
+
+- **Keyboard Navigation**:
+  - Use `Tab` and arrow keys to move through pagination items.
+- **Screen Reader Support**:
+  - ARIA labels (`aria-current`, `aria-hidden`) ensure the component is accessible.
+- **Focus Management**:
+  - Maintains focus state for smoother navigation.
+
+---
+
+## Conclusion
+
+The `Pagination` component is a flexible and accessible solution for navigating multi-page content. Its ARIA support and customizable design make it ideal for modern web applications.

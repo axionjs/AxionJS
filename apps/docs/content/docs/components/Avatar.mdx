@@ -1,6 +1,237 @@
 ---
 title: Avatar
+description: A versatile and customizable avatar component with support for images, fallbacks, and grouped displays.
 ---
-# Avatar
 
-Documentation for the Avatar component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import AvatarPreview from "@/app/components/docs/AvatarPreview.tsx";
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <AvatarPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+  "use client";
+
+import React from "react";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  AvatarGroup,
+} from "@/app/components/ui/avatar";
+
+export default function AvatarPreview() {
+  return (
+    <div className="space-y-6 max-w-md mx-auto">
+      {/* Example 1: Basic Avatar */}
+      <div>
+        <h3 className="text-lg font-medium">Basic Avatar</h3>
+        <Avatar>
+          <AvatarImage src="https://via.placeholder.com/40" alt="User Avatar" />
+          <AvatarFallback>AB</AvatarFallback>
+        </Avatar>
+      </div>
+
+      {/* Example 2: Avatar with Fallback */}
+      <div>
+        <h3 className="text-lg font-medium">Avatar with Fallback</h3>
+        <Avatar>
+          <AvatarImage src="" alt="User Avatar" />
+          <AvatarFallback>CD</AvatarFallback>
+        </Avatar>
+      </div>
+
+      {/* Example 3: Avatar Group */}
+      <div>
+        <h3 className="text-lg font-medium">Avatar Group</h3>
+        <AvatarGroup>
+          <Avatar>
+            <AvatarImage src="https://via.placeholder.com/40" alt="User 1" />
+            <AvatarFallback>U1</AvatarFallback>
+          </Avatar>
+          <Avatar>
+            <AvatarImage src="https://via.placeholder.com/40" alt="User 2" />
+            <AvatarFallback>U2</AvatarFallback>
+          </Avatar>
+          <Avatar>
+            <AvatarImage src="https://via.placeholder.com/40" alt="User 3" />
+            <AvatarFallback>U3</AvatarFallback>
+          </Avatar>
+        </AvatarGroup>
+      </div>
+
+      {/* Example 4: Avatar Group with Hover Scale */}
+      <div>
+        <h3 className="text-lg font-medium">Avatar Group with Hover Scale</h3>
+        <AvatarGroup hoverScale>
+          <Avatar>
+            <AvatarImage src="https://via.placeholder.com/40" alt="User A" />
+            <AvatarFallback>UA</AvatarFallback>
+          </Avatar>
+          <Avatar>
+            <AvatarImage src="https://via.placeholder.com/40" alt="User B" />
+            <AvatarFallback>UB</AvatarFallback>
+          </Avatar>
+          <Avatar>
+            <AvatarImage src="https://via.placeholder.com/40" alt="User C" />
+            <AvatarFallback>UC</AvatarFallback>
+          </Avatar>
+        </AvatarGroup>
+      </div>
+    </div>
+  );
+}
+
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+The `Avatar` component is an excellent tool for visually representing users with images, initials, or grouped avatars. It’s lightweight, accessible, and customizable.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add avatar
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure the following dependencies are installed:
+    ```bash
+    npm install @radix-ui/react-avatar class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `avatar.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full component code provided in your query
+    ```
+
+    ### 3. Add Preview Component (Optional)
+
+    Create a `AvatarPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full AvatarPreview.tsx code above
+    ```
+  </Tab>
+</Tabs>
+
+## Props
+
+The `Avatar` component and its subcomponents (`AvatarImage`, `AvatarFallback`, and `AvatarGroup`) offer extensive customization. Here's a breakdown of their props:
+
+### Avatar Props
+
+<TypeTable
+  type={{
+    className: {
+      description: "Additional classes for styling the avatar.",
+      type: "string",
+    },
+  }}
+/>
+
+### AvatarImage Props
+
+<TypeTable
+  type={{
+    src: {
+      description: "The URL of the image to display.",
+      type: "string",
+    },
+    alt: {
+      description: "Alt text for the image.",
+      type: "string",
+      required: true,
+    },
+    className: {
+      description: "Additional classes for styling the image.",
+      type: "string",
+    },
+  }}
+/>
+
+### AvatarFallback Props
+
+<TypeTable
+  type={{
+    className: {
+      description: "Additional classes for styling the fallback.",
+      type: "string",
+    },
+    children: {
+      description: "The fallback content, typically initials.",
+      type: "React.ReactNode",
+    },
+  }}
+/>
+
+### AvatarGroup Props
+
+<TypeTable
+  type={{
+    overlap: {
+      description: "Defines the overlap between avatars in the group.",
+      type: "string",
+      default: '"-ml-2"',
+    },
+    hoverScale: {
+      description: "Adds a hover scale effect to the avatars in the group.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional classes for styling the group.",
+      type: "string",
+    },
+  }}
+/>
+
+## Features
+
+The `Avatar` component provides the following features:
+
+- **Customizable Display**:
+  - Supports images, initials, or any fallback content.
+- **Grouped Avatars**:
+  - Easily group avatars with overlap and hover effects.
+- **Responsive Design**:
+  - Automatically adjusts to container sizes for a seamless UI.
+- **Accessible Design**:
+  - Includes alt text for images and screen reader support for fallbacks.
+
+## Use Cases
+
+The `Avatar` component is ideal for:
+
+- **User Profiles**:
+  - Display user images or initials in profile sections.
+- **Team Displays**:
+  - Group avatars to represent teams or participants.
+- **Social Media**:
+  - Use as profile pictures or in feed designs.
+
+## Accessibility
+
+The `Avatar` component is designed with accessibility in mind:
+
+- **Alt Text Support**:
+  - Ensures screen readers describe the content of the avatar image.
+- **Fallback Content**:
+  - Provides meaningful content (e.g., initials) when the image fails to load.
+- **Keyboard Focus**:
+  - Fully keyboard-navigable when used within interactive contexts.
+
+
+
+## Conclusion
+
+The `Avatar` component is a versatile, accessible, and visually appealing way to represent users or groups in modern web applications. With its robust feature set and customizable options, it’s a must-have for user-centric interfaces.

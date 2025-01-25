@@ -1,0 +1,158 @@
+---
+title: Container
+description: A responsive and customizable layout container for consistent spacing and width management.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import {
+  DefaultContainerPreview,
+  VariantContainerPreview,
+  StyledContainerPreview,
+} from "@/app/components/docs/ContainerPreview";
+
+## Previews with Code
+
+### Example 1: Default Container Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 h-48 pb-8 content-center">
+    <DefaultContainerPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for DefaultContainerPreview provided above
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Variant Container Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 h-auto pb-8 content-center">
+    <VariantContainerPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for VariantContainerPreview provided above
+    ```
+  </Tab>
+</Tabs>
+
+### Example 3: Styled Container Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 h-48 pb-8 content-center">
+    <StyledContainerPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for StyledContainerPreview provided above
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `Container` component provides consistent width and spacing for layout management.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add container
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `container.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full Container component code provided in the query
+    ```
+
+    ### 3. Add Preview Component
+
+    Create a `ContainerPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full ContainerPreview.tsx code provided above
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="container.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+The `Container` component accepts the following props:
+
+<TypeTable
+  type={{
+    variant: {
+      description: "Defines the container's width variant.",
+      type: `"default" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl"`,
+      default: `"default"`,
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+      required: false,
+    },
+    otherProps: {
+      description: "All standard HTML div attributes.",
+      type: "React.HTMLAttributes<HTMLDivElement>",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+The `Container` component includes the following features:
+
+- **Predefined Width Variants**:
+  - Sizes range from `sm` to `7xl`, ensuring responsive design and consistent spacing.
+- **Customizable Styling**:
+  - Add custom classes via the `className` prop.
+- **Utility-First Design**:
+  - Built with utility classes for flexibility and reusability.
+- **Supports Standard HTML Props**:
+  - Includes all standard `div` element attributes.
+
+---
+
+## Accessibility
+
+The `Container` component is inherently accessible as it serves as a layout container. Ensure child elements follow accessibility standards.
+
+---
+
+## Conclusion
+
+The `Container` component is a simple yet powerful utility for building consistent, responsive layouts. Use it to manage widths and spacing efficiently across your application.

@@ -1,6 +1,213 @@
 ---
 title: Calendar
+description: A versatile and accessible calendar component with support for single-day, multiple-day, and range selection modes.
 ---
-# Calendar
 
-Documentation for the Calendar component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import {
+  MultipleSelectionCalendar,
+  CalendarSimple,
+  CalendarPreview,
+} from "@/app/components/docs/CalendarPreview";
+
+## Previews with Code
+
+### Example 1: Single-Day Selection Calendar
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <CalendarSimple />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for CalendarSimple
+    export function CalendarSimple() {
+      const [date, setDate] = useState<Date | undefined>(new Date());
+
+      return (
+        <div>
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            className="rounded-lg border border-border p-2"
+          />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Multiple-Day Selection Calendar
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <MultipleSelectionCalendar />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for MultipleSelectionCalendar
+    export function MultipleSelectionCalendar() {
+      const today = new Date();
+      const [date, setDate] = useState<Date[] | undefined>([
+        subDays(today, 17),
+        addDays(today, 2),
+        addDays(today, 6),
+        addDays(today, 8),
+      ]);
+
+      return (
+        <div>
+          <Calendar
+            mode="multiple"
+            selected={date}
+            onSelect={setDate}
+            className="rounded-lg border border-border p-2"
+          />
+        
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 3: Range Selection Calendar
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <CalendarPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for CalendarPreview
+    interface CalendarPreviewProps {
+      className?: string;
+    }
+
+    export function CalendarPreview({ className }: CalendarPreviewProps) {
+      const today = new Date();
+      const [date, setDate] = useState<DateRange | undefined>({
+        from: today,
+        to: addDays(today, 3),
+      });
+
+      return (
+        <div className={className}>
+          <Calendar mode="range" selected={date} onSelect={setDate} />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `Calendar` component offers a flexible and accessible solution for date selection.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add calendar
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install react-day-picker date-fns
+    ```
+
+    ### 2. Add the Component
+
+    Create a `calendar.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full Calendar component code provided in the query
+    ```
+
+    ### 3. Add Preview Components
+
+    Create a `CalendarPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full CalendarPreview.tsx code provided above
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="calendar.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+The `Calendar` component includes the following props:
+
+<TypeTable
+  type={{
+    mode: {
+      description: "The selection mode for the calendar.",
+      type: `"single" | "multiple" | "range"`,
+      default: `"single"`,
+    },
+    selected: {
+      description: "The currently selected date(s).",
+      type: `"Date | Date[] | DateRange"`,
+      required: true,
+    },
+    onSelect: {
+      description: "Callback triggered when a date is selected.",
+      type: "(date: Date | Date[] | DateRange) => void",
+      required: true,
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Multiple Selection Modes**:
+  - Supports `single`, `multiple`, and `range` selection.
+- **Integration with React DayPicker**:
+  - A powerful and customizable date-picker library.
+- **Customizable Styling**:
+  - Use the `className` prop to apply custom styles.
+- **Accessibility**:
+  - Built with `aria-live` and region attributes for screen reader compatibility.
+
+---
+
+## Accessibility
+
+The `Calendar` component is built using the React DayPicker library, which provides excellent accessibility out of the box. Ensure meaningful labels and descriptions are provided for selected dates.
+
+---
+
+## Conclusion
+
+The `Calendar` component is a robust and flexible tool for

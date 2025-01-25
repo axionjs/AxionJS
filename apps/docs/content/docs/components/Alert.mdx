@@ -1,6 +1,193 @@
 ---
 title: Alert
+description: A flexible and accessible alert component for displaying messages with titles, descriptions, and dynamic ARIA roles.
 ---
-# Alert
 
-Documentation for the Alert component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import AlertPreview from "@/app/components/docs/AlertPreview.tsx";
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <AlertPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+ "use client";
+
+import React from "react";
+import { Alert, AlertTitle, AlertDescription } from "@/app/components/ui/alert";
+
+export default function AlertPreview() {
+  return (
+    <div className="space-y-6 max-w-md mx-auto">
+      {/* Example 1: Default Alert */}
+      <div>
+        <h3 className="text-lg font-medium">Default Alert</h3>
+        <Alert variant="default">
+          <AlertTitle>Information</AlertTitle>
+          <AlertDescription>This is a default alert.</AlertDescription>
+        </Alert>
+      </div>
+
+      {/* Example 2: Destructive Alert */}
+      <div>
+        <h3 className="text-lg font-medium">Destructive Alert</h3>
+        <Alert variant="destructive">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>This is a destructive alert.</AlertDescription>
+        </Alert>
+      </div>
+    </div>
+  );
+}
+
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+The `Alert` component is ideal for displaying notifications, warnings, or error messages in an accessible and customizable way.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Add the component quickly with:
+    ```bash
+    npx axionjs add alert
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure the following dependencies are installed:
+    ```bash
+    npm install lucide-react class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `alert.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full component code provided in your query
+    ```
+
+    ### 3. Add Preview Component (Optional)
+
+    Create a `AlertPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full AlertPreview.tsx code above
+    ```
+  </Tab>
+</Tabs>
+
+## Props
+
+The `Alert` component and its subcomponents (`AlertTitle` and `AlertDescription`) offer extensive customization. Here's a breakdown of their props:
+
+### Alert Props
+
+<TypeTable
+  type={{
+    variant: {
+      description: "Defines the visual style of the alert.",
+      type: '"default" | "destructive"',
+      default: '"default"',
+    },
+    role: {
+      description: "Sets the ARIA role of the alert.",
+      type: '"alert" | "status"',
+      default: '"status" for default, "alert" for destructive',
+    },
+    "aria-live": {
+      description: "Defines the ARIA live region behavior.",
+      type: '"polite" | "assertive"',
+      default: '"polite" for default, "assertive" for destructive',
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+    },
+    children: {
+      description: "The content of the alert, typically including an icon, title, and description.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+### AlertTitle Props
+
+<TypeTable
+  type={{
+    className: {
+      description: "Additional classes for styling the title.",
+      type: "string",
+    },
+    children: {
+      description: "The content of the title, usually plain text.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+### AlertDescription Props
+
+<TypeTable
+  type={{
+    className: {
+      description: "Additional classes for styling the description.",
+      type: "string",
+    },
+    children: {
+      description: "The content of the description, such as text or HTML elements.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+## Features
+
+The `Alert` component provides the following features:
+
+- **Dynamic Variants**:
+  - Use `default` for general notifications or `destructive` for critical errors.
+- **Accessibility-First Design**:
+  - Built-in ARIA roles and attributes for screen reader compatibility.
+- **Customizable Content**:
+  - Easily combine titles, descriptions, and icons to create meaningful alerts.
+- **Interactive Feedback**:
+  - Alerts dynamically announce updates with `aria-live` and `aria-atomic` attributes.
+- **Flexible Layout**:
+  - Supports any combination of content, including custom children.
+
+## Use Cases
+
+The `Alert` component can be used in various scenarios:
+
+- **Informational Messages**:
+  - Notify users about updates, reminders, or tips.
+- **Error Handling**:
+  - Display errors or warnings in forms, modals, or pages.
+- **Critical Updates**:
+  - Announce system-critical issues with `destructive` alerts.
+- **Real-Time Feedback**:
+  - Use with APIs to display loading or success messages dynamically.
+
+
+## Accessibility
+
+The `Alert` component adheres to best practices for accessibility:
+
+- **Roles and Live Regions**:
+  - Uses `role="alert"` and `aria-live="assertive"` for destructive alerts, ensuring immediate attention.
+- **Atomic Announcements**:
+  - Ensures the entire alert is read as a single unit with `aria-atomic="true"`.
+- **Keyboard Support**:
+  - Fully navigable for seamless interaction in any environment.
+
+## Conclusion
+
+The `Alert` component is a powerful, accessible, and customizable tool for managing user notifications. Its flexibility and built-in accessibility features make it an essential component for modern applications.

@@ -1,6 +1,243 @@
 ---
 title: Table
+description: A fully customizable, accessible, and responsive table component for displaying structured data.
 ---
-# Table
 
-Documentation for the Table component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import TablePreview from "@/app/components/docs/TablePreview";
+
+## Introduction
+
+The `Table` component provides a responsive, accessible, and customizable way to display tabular data. With full support for sections like headers, bodies, footers, and additional features like captions, this table is designed to be lightweight and flexible.
+
+---
+
+## Example: Basic Table with Images
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 content-center ">
+    <TablePreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import {
+      Table,
+      TableBody,
+      TableCell,
+      TableHead,
+      TableHeader,
+      TableRow,
+    } from "@/components/ui/table";
+
+    const items = [
+      {
+        id: "1",
+        name: "Alex Thompson",
+        username: "@alexthompson",
+        image: "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358071/avatar-40-02_upqrxi.jpg",
+        email: "alex.t@company.com",
+        location: "San Francisco, US",
+        status: "Active",
+        balance: "$1,250.00",
+      },
+      {
+        id: "2",
+        name: "Sarah Chen",
+        username: "@sarahchen",
+        image: "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358073/avatar-40-01_ij9v7j.jpg",
+        email: "sarah.c@company.com",
+        location: "Singapore",
+        status: "Active",
+        balance: "$600.00",
+      },
+      {
+        id: "4",
+        name: "Maria Garcia",
+        username: "@mariagarcia",
+        image: "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358072/avatar-40-03_dkeufx.jpg",
+        email: "m.garcia@company.com",
+        location: "Madrid, Spain",
+        status: "Active",
+        balance: "$0.00",
+      },
+      {
+        id: "5",
+        name: "David Kim",
+        username: "@davidkim",
+        image: "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358070/avatar-40-05_cmz0mg.jpg",
+        email: "d.kim@company.com",
+        location: "Seoul, KR",
+        status: "Active",
+        balance: "-$1,000.00",
+      },
+    ];
+
+    export default function Component() {
+      return (
+        <div>
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Balance</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <img
+                        className="rounded-full"
+                        src={item.image}
+                        width={40}
+                        height={40}
+                        alt={item.name}
+                      />
+                      <div>
+                        <div className="font-medium">{item.name}</div>
+                        <span className="mt-0.5 text-xs text-muted-foreground">{item.username}</span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>{item.email}</TableCell>
+                  <TableCell>{item.location}</TableCell>
+                  <TableCell>{item.status}</TableCell>
+                  <TableCell className="text-right">{item.balance}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <p className="mt-4 text-center text-sm text-muted-foreground">Table with images</p>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="table.tsx" />
+      </Folder>
+      
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    Table: {
+      description: "The main table wrapper.",
+      type: "React.ForwardRefExoticComponent",
+      required: true,
+    },
+    TableHeader: {
+      description: "The header section of the table.",
+      type: "React.ForwardRefExoticComponent",
+      required: true,
+    },
+    TableBody: {
+      description: "The body section of the table.",
+      type: "React.ForwardRefExoticComponent",
+      required: true,
+    },
+    TableFooter: {
+      description: "The footer section of the table.",
+      type: "React.ForwardRefExoticComponent",
+      required: false,
+    },
+    TableRow: {
+      description: "Defines a single row in the table.",
+      type: "React.ForwardRefExoticComponent",
+      required: true,
+    },
+    TableCell: {
+      description: "Defines a single cell in a table row.",
+      type: "React.ForwardRefExoticComponent",
+      required: true,
+    },
+    TableHead: {
+      description: "Defines the header for a column in the table.",
+      type: "React.ForwardRefExoticComponent",
+      required: true,
+    },
+    TableCaption: {
+      description: "Adds a caption for the table.",
+      type: "React.ForwardRefExoticComponent",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Table` component:
+    ```bash
+    npm install your-design-system
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+    Install required dependencies:
+    ```bash
+    npm install @radix-ui/react-tooltip
+    ```
+
+    ### 2. Add the Component
+    Create `components/ui/table.tsx`:
+    ```tsx
+    // Full code from the provided Table component
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Features
+
+- **Responsive Design**:
+  - Automatically adjusts to fit its container.
+- **Customizable**:
+  - Supports custom classes, headers, footers, and cell alignment.
+- **Supports Images**:
+  - Integrates seamlessly with images, making it ideal for profile or item lists.
+- **Hover States**:
+  - Rows can include hover effects for better UX.
+
+---
+
+## Accessibility
+
+- **Keyboard Navigation**:
+  - Fully keyboard-navigable for headers, rows, and cells.
+- **ARIA Support**:
+  - Includes proper semantic tags like `<table>`, `<thead>`, `<tbody>`, `<th>`, and `<td>` for assistive technologies.
+- **Caption Support**:
+  - Add captions for better accessibility and context.
+
+---
+
+
+## Conclusion
+
+The `Table` component is a powerful and customizable way to display structured data in your application. With responsive design, accessibility features, and full customization, it's suitable for a wide range of use cases.

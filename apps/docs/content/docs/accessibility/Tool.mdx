@@ -1,3 +1,154 @@
 ---
-title: Accessibility Tool
+title: Accessibility Tools
+description: A complete and modular accessibility tool built with Zustand, React, and Tailwind CSS for enhancing user experiences.
 ---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { ImageZoom } from "fumadocs-ui/components/image-zoom";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+
+## Overview
+
+The **Accessibility Tools** feature provides users with dynamic settings to enhance the accessibility of a website. These tools include options like **High Contrast Mode**, **Highlight Links**, and **Dyslexia-Friendly Fonts**, making it easier for all users to navigate and interact with the site.
+
+Here’s how the implementation works:
+
+<Tabs items={["Overview", "Implementation Steps"]}>
+  <Tab value="Overview" className="mx-auto py-6">
+    <img src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1737578204/accessibility_b4qhgd.png" alt="Accessibility Menu" />
+  </Tab>
+  <Tab value="Implementation Steps">
+    <Files>
+      <Folder name="app" defaultOpen>
+        <File name="layout.tsx" />
+        <File name="global.css" />
+      </Folder>
+      <Folder name="components">
+        <File name="AccessibilityTool.tsx" />
+        <File name="AccessibilityTriggerAvatar.tsx" />
+        <File name="dialog.tsx" />
+        <File name="avatar.tsx" />
+      </Folder>
+      <Folder name="lib">
+        <File name="accessibility-store.ts" />
+      </Folder>
+    </Files>
+  </Tab>
+</Tabs>
+
+---
+
+## Features
+
+The **Accessibility Tools** component includes:
+
+- **Keyboard Shortcuts**:
+  Open the menu using `Ctrl + U` or `Cmd + U` on Mac.
+- **Dynamic Toggles**:
+  Adjust settings like high contrast, dyslexia-friendly fonts, or image hiding in real-time.
+- **Global State Management**:
+  Powered by Zustand, enabling a centralized and efficient store.
+- **Smooth Animations**:
+  Dialogs and toggles include polished animations for a seamless user experience.
+- **Customizable Styles**:
+  Tailored using Tailwind CSS with dynamic class additions.
+
+---
+
+## File Structure
+
+This tool is structured for scalability. Here’s the breakdown:
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <File name="layout.tsx" />
+    <File name="global.css" />
+  </Folder>
+  <Folder name="components">
+    <File name="AccessibilityTool.tsx" />
+    <File name="AccessibilityTriggerAvatar.tsx" />
+    <File name="dialog.tsx" />
+    <File name="avatar.tsx" />
+  </Folder>
+  <Folder name="lib">
+    <File name="accessibility-store.ts" />
+  </Folder>
+</Files>
+
+---
+
+## Accessibility Tool Components
+
+### AccessibilityTool.tsx
+
+This component defines the **Accessibility Menu**, managing user toggles for various accessibility features.
+
+```tsx
+"use client";
+
+import React from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/components/ui/dialog";
+import { useAccessibilityStore } from "@/lib/accessibility-store";
+import { Switch } from "@/app/components/ui/switch";
+import { LucideContrast, LucideEye, LucideText, LucideImageOff } from "lucide-react";
+
+export function AccessibilityTool() {
+  const {
+    isOpen,
+    toggleOpen,
+    highContrast,
+    toggleHighContrast,
+    highlightLinks,
+    toggleHighlightLinks,
+    biggerText,
+    toggleBiggerText,
+    hideImages,
+    toggleHideImages,
+  } = useAccessibilityStore();
+
+  return (
+    <Dialog open={isOpen} onOpenChange={toggleOpen}>
+      <DialogContent className="h-[70vh] w-80 overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Accessibility Tools</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <LucideContrast className="w-5 h-5" />
+              <span>High Contrast</span>
+            </div>
+            <Switch checked={highContrast} onCheckedChange={toggleHighContrast} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <LucideEye className="w-5 h-5" />
+              <span>Highlight Links</span>
+            </div>
+            <Switch checked={highlightLinks} onCheckedChange={toggleHighlightLinks} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <LucideText className="w-5 h-5" />
+              <span>Bigger Text</span>
+            </div>
+            <Switch checked={biggerText} onCheckedChange={toggleBiggerText} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <LucideImageOff className="w-5 h-5" />
+              <span>Hide Images</span>
+            </div>
+            <Switch checked={hideImages} onCheckedChange={toggleHideImages} />
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```

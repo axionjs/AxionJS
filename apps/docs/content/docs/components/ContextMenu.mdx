@@ -1,6 +1,218 @@
 ---
 title: ContextMenu
+description: A fully accessible and customizable context menu with options, checkboxes, and radio groups.
 ---
-# ContextMenu
 
-Documentation for the ContextMenu component.
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { ContextMenuPreview } from "@/app/components/docs/ContextMenuPreview";
+
+## Introduction
+
+The `ContextMenu` component provides a fully-featured, accessible context menu with support for dynamic options, checkboxes, and radio groups.
+
+---
+
+## Default Use Case: Context Menu with Options
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 content-center">
+    <ContextMenuPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    import React from "react";
+    import { Card, CardContent } from "@/components/ui/card";
+    import {
+      ContextMenu,
+      ContextMenuTrigger,
+      ContextMenuContent,
+      ContextMenuItem,
+      ContextMenuSeparator,
+      ContextMenuLabel,
+      ContextMenuCheckboxItem,
+      ContextMenuRadioGroup,
+      ContextMenuRadioItem,
+    } from "@/components/ui/context-menu";
+
+    export function ContextMenuPreview() {
+      return (
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <Card className="w-96 text-center">
+              <CardContent>
+                <p className="text-muted-foreground">Right-click anywhere on this card</p>
+              </CardContent>
+            </Card>
+          </ContextMenuTrigger>
+
+          <ContextMenuContent>
+            <ContextMenuLabel>Options</ContextMenuLabel>
+            <ContextMenuItem onClick={() => alert("Profile clicked")}>Profile</ContextMenuItem>
+            <ContextMenuItem onClick={() => alert("Settings clicked")}>Settings</ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuCheckboxItem checked onCheckedChange={() => alert("Dark mode toggled")}>
+              Dark Mode
+            </ContextMenuCheckboxItem>
+            <ContextMenuSeparator />
+            <ContextMenuRadioGroup defaultValue="English">
+              <ContextMenuLabel>Language</ContextMenuLabel>
+              <ContextMenuRadioItem value="English">English</ContextMenuRadioItem>
+              <ContextMenuRadioItem value="Spanish">Spanish</ContextMenuRadioItem>
+              <ContextMenuRadioItem value="French">French</ContextMenuRadioItem>
+            </ContextMenuRadioGroup>
+          </ContextMenuContent>
+        </ContextMenu>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `ContextMenu` component using the following command:
+
+    ```bash
+    npx axionjs add context-menu
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Install the required dependencies:
+
+    ```bash
+    npm install @radix-ui/react-context-menu lucide-react
+    ```
+
+    ### 2. Create the ContextMenu Component
+
+    Add the following code to `components/ui/context-menu.tsx`:
+
+    ```tsx ts2js
+    "use client";
+
+    import * as React from "react";
+    import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+    import { Check, ChevronRight, Circle } from "lucide-react";
+
+    import { cn } from "@/lib/utils";
+
+    const ContextMenu = ContextMenuPrimitive.Root;
+
+    const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
+
+    const ContextMenuGroup = ContextMenuPrimitive.Group;
+
+    const ContextMenuPortal = ContextMenuPrimitive.Portal;
+
+    const ContextMenuSub = ContextMenuPrimitive.Sub;
+
+    const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup;
+
+    const ContextMenuSubTrigger = React.forwardRef( /* See full code above */);
+
+    const ContextMenuSubContent = React.forwardRef( /* See full code above */);
+
+    const ContextMenuContent = React.forwardRef( /* See full code above */);
+
+    const ContextMenuItem = React.forwardRef( /* See full code above */);
+
+    const ContextMenuCheckboxItem = React.forwardRef( /* See full code above */);
+
+    const ContextMenuRadioItem = React.forwardRef( /* See full code above */);
+
+    const ContextMenuLabel = React.forwardRef( /* See full code above */);
+
+    const ContextMenuSeparator = React.forwardRef( /* See full code above */);
+
+    const ContextMenuShortcut = ( /* See full code above */);
+
+    export {
+      ContextMenu,
+      ContextMenuTrigger,
+      ContextMenuContent,
+      ContextMenuItem,
+      ContextMenuCheckboxItem,
+      ContextMenuRadioItem,
+      ContextMenuLabel,
+      ContextMenuSeparator,
+      ContextMenuShortcut,
+      ContextMenuGroup,
+      ContextMenuPortal,
+      ContextMenuSub,
+      ContextMenuSubContent,
+      ContextMenuSubTrigger,
+      ContextMenuRadioGroup,
+    };
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="context-menu.tsx" />
+      </Folder>
+      
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    children: {
+      description: "The content of the context menu.",
+      type: "React.ReactNode",
+      required: true,
+    },
+    onClick: {
+      description: "Callback when an item is clicked.",
+      type: "(event: MouseEvent) => void",
+      required: false,
+    },
+    className: {
+      description: "Custom class name for styling.",
+      type: "string",
+      required: false,
+    },
+    checked: {
+      description: "Controls the checked state of checkbox items.",
+      type: "boolean",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Dynamic Menu Options**:
+  - Create context menus with dynamic options, checkboxes, and radio groups.
+- **Keyboard Navigation**:
+  - Full keyboard navigation support.
+- **Built-In Accessibility**:
+  - Fully compliant with ARIA roles and attributes.
+
+---
+
+## Conclusion
+
+The `ContextMenu` component provides a flexible and accessible way to create context menus with advanced functionality, including multi-select options, radio groups, and customizable triggers.

@@ -1,0 +1,212 @@
+---
+title: Flex
+description: A utility-first and customizable flexbox component with support for alignment, direction, wrapping, and spacing.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { DefaultFlexPreview, AdvancedFlexPreview } from "@/app/components/docs/FlexPreview";
+
+## Previews with Code
+
+### Example 1: Default Flex Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <DefaultFlexPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+
+    import React from "react";
+    import { Flex } from "@/components/ui/flex";
+
+    export function DefaultFlexPreview() {
+      return (
+        <div className="space-y-4 max-w-lg mx-auto">
+          <h3 className="text-lg font-medium">Default Flex Example</h3>
+          <Flex className="border p-4 bg-muted">
+            <div className="w-12 h-12 bg-gray-800 text-white flex items-center justify-center">
+              1
+            </div>
+            <div className="w-12 h-12 bg-gray-800 text-white flex items-center justify-center">
+              2
+            </div>
+            <div className="w-12 h-12 bg-gray-800 text-white flex items-center justify-center">
+              3
+            </div>
+          </Flex>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Advanced Flex Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <AdvancedFlexPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+
+    import React from "react";
+    import { Flex } from "@/components/ui/flex";
+
+    export function AdvancedFlexPreview() {
+      return (
+        <div className="space-y-4 max-w-lg mx-auto">
+          <h3 className="text-lg font-medium">Advanced Flex Example</h3>
+          <Flex
+            direction="column"
+            align="center"
+            justify="between"
+            gap="md"
+            className="border p-4 bg-muted h-64"
+          >
+            <div className="w-12 h-12 bg-gray-800 text-white flex items-center justify-center">
+              A
+            </div>
+            <div className="w-12 h-12 bg-gray-800 text-white flex items-center justify-center">
+              B
+            </div>
+            <div className="w-12 h-12 bg-gray-800 text-white flex items-center justify-center">
+              C
+            </div>
+          </Flex>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `Flex` component is a utility-first flexbox container with full control over alignment, direction, wrapping, and spacing.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add flex
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install @radix-ui/react-slot class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `flex.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full Flex component code provided in the query
+    ```
+
+    ### 3. Add Preview Component
+
+    Create a `FlexPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full FlexPreview.tsx code provided above
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="flex.tsx" />
+      </Folder>
+     
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+The `Flex` component comes with the following props for customization:
+
+<TypeTable
+  type={{
+    direction: {
+      description: "Controls the flexbox direction.",
+      type: `"row" | "column" | "row-reverse" | "column-reverse"`,
+      default: `"row"`,
+    },
+    align: {
+      description: "Aligns items along the cross axis.",
+      type: `"start" | "center" | "end" | "stretch" | "baseline"`,
+      default: `"stretch"`,
+    },
+    justify: {
+      description: "Aligns items along the main axis.",
+      type: `"start" | "center" | "end" | "between" | "around" | "evenly"`,
+      default: `"start"`,
+    },
+    gap: {
+      description: "Sets the gap between items.",
+      type: `"none" | "sm" | "md" | "lg" | "xl"`,
+      default: `"none"`,
+    },
+    wrap: {
+      description: "Controls whether the flex container should wrap items.",
+      type: `"true" | "false"`,
+      default: `"false"`,
+    },
+    asChild: {
+      description: "Uses a custom component as the Flex container.",
+      type: "boolean",
+      default: "false",
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+The `Flex` component includes the following features:
+
+- **Utility-First Design**:
+  - Flexible configuration with direction, alignment, justification, and wrapping.
+- **Customizable Gap Sizes**:
+  - Supports predefined gap sizes (`sm`, `md`, `lg`, `xl`).
+- **Child Components**:
+  - Use custom components as children with the `asChild` prop.
+- **Responsive Design**:
+  - Easily adapts to various container sizes.
+
+---
+
+## Accessibility
+
+The `Flex` component is inherently accessible as it serves as a layout utility. Ensure child elements follow accessibility standards.
+
+---
+
+## Conclusion
+
+The `Flex` component is a powerful, customizable layout tool built for flexibility and efficiency. Use it for responsive designs, grid-like layouts, or flexible spacing needs.
