@@ -79,6 +79,8 @@ const shadcnPreset: Partial<Config> = {
         slideIn: "slideIn 0.5s ease-out",
         slideOut: "slideOut 0.5s ease-in",
         shine: "shine 8s ease-in-out infinite",
+        marquee: "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
       },
       keyframes: {
         shine: {
@@ -108,6 +110,14 @@ const shadcnPreset: Partial<Config> = {
         slideOut: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-100%)" },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
         },
       },
       boxShadow: {

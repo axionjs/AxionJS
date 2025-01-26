@@ -1,170 +1,199 @@
 ---
 title: Limited Input
-description: A flexible input component with built-in character limit handling, error display, and helper text for an enhanced user experience.
+description: A customizable input field with character limit and validation support.
 ---
 
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 import { TypeTable } from "fumadocs-ui/components/type-table";
-import LimitedInputPreview from "@/app/components/docs/LimitedInputPreview.tsx";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import {
+  SimpleLimitedInputPreview,
+  ValidatedLimitedInputPreview,
+} from "@/app/components/docs/LimitedInputPreview";
+
+## Previews with Code
+
+### Example 1: Simple Limited Input
 
 <Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto py-12 h-auto  content-center">
-    <LimitedInputPreview />
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <SimpleLimitedInputPreview />
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-   "use client";
-import React from "react";
-import LimitedInput from "@/app/components/ui/limited-input";
+    export function SimpleLimitedInputPreview() {
+      const [value, setValue] = useState("");
 
-export default function LimitedInputPreview() {
-  return (
-    <div className="flex flex-col gap-6">
-      {/* Example 1: Basic Limited Input */}
-      <LimitedInput
-        label="Name"
-        characterLimit={30}
-        helperText="Enter your name"
-        onChange={(value) => console.log("Name:", value)}
-      />
-
-      {/* Example 2: Email Field with Validation */}
-      <LimitedInput
-        label="Email"
-        id="password"
-        characterLimit={50}
-        helperText="Please Provide you details in 50 characters"
-        error="Details are required"
-        onChange={(value) => console.log("Email:", value)}
-      />
-
-      {/* Example 3: Required Field */}
-      <LimitedInput
-        label="Username"
-        id="username"
-        characterLimit={15}
-        required
-        helperText="Username is required"
-        onChange={(value) => console.log("Username:", value)}
-      />
-    </div>
-  );
-}
-
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Simple Limited Input</h3>
+          <LimitedInput
+            value={value}
+            onChange={setValue}
+            characterLimit={20}
+            placeholder="Type something..."
+          />
+        </div>
+      );
+    }
     ```
   </Tab>
 </Tabs>
 
+### Example 2: Validated Limited Input
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <ValidatedLimitedInputPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function ValidatedLimitedInputPreview() {
+      const [value, setValue] = useState("");
+      const isValid = value.length >= 5;
+      const error = !isValid ? "Input must be at least 5 characters long." : undefined;
+
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Validated Limited Input</h3>
+          <LimitedInput
+            label="Validated Input"
+            helperText="Please enter at least 5 characters."
+            value={value}
+            onChange={setValue}
+            characterLimit={30}
+            required
+            error={error}
+            placeholder="Enter your text here..."
+          />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
 ## Installation
 
-Modern applications require modular components that can handle edge cases effortlessly. The `LimitedInput` component is designed with simplicity and customization in mind. Here's how you can integrate it into your project.
+The `LimitedInput` component provides a user-friendly input field with character limit and validation capabilities.
 
 <Tabs items={["CLI", "Manual"]}>
-  <Tab value="CLI" >
-    To quickly add the component to your project, use the CLI:
+  <Tab value="CLI">
+    Quickly add the component using:
     ```bash
     npx axionjs add limited-input
     ```
   </Tab>
   <Tab value="Manual">
-    ### 1. Install Dependencies
+    ### 1. Add the Component
 
-    Install the required dependencies using npm:
-    ```bash
-    npm install class-variance-authority clsx tailwind-merge
+    Create a `limited-input.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full LimitedInput component code provided in the query
     ```
 
-    ### 2. Add Limited Input Component
+    ### 2. Add Preview Components
 
-    Create a file `components/ui/limited-input.tsx` and add the following code:
+    Create a `LimitedInputPreview.tsx` file for demonstration purposes:
     ```tsx
-    // Full component code provided in your initial query
-    ```
-
-    ### 3. Add Preview Component (Optional)
-
-    To showcase various configurations of the `LimitedInput`, create a `LimitedInputPreview.tsx` file with the following code:
-    ```tsx
-    // Full LimitedInputPreview.tsx code above
+    // Full LimitedInputPreview.tsx code provided above
     ```
   </Tab>
 </Tabs>
 
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="limited-input.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
 ## Props
 
-The `LimitedInput` component is packed with properties that provide full control over its behavior. Whether you're building simple forms or complex validation workflows, the component's props let you fine-tune its functionality.
+### LimitedInput Props
 
 <TypeTable
   type={{
     label: {
-      description: "Label displayed above the input field.",
+      description: "The label for the input field.",
       type: "string",
-      default: '"Input Label"',
+      default: `"Input Label"`,
     },
     id: {
-      description: "The unique ID for the input field.",
+      description: "The unique identifier for the input.",
       type: "string",
-      default: '"limited-input"',
+      default: `"limited-input"`,
     },
     value: {
-      description: "The current value of the input.",
+      description: "The value of the input field.",
       type: "string",
-      default: '""',
+      required: true,
     },
     onChange: {
-      description: "Callback triggered on input value change.",
+      description: "Callback triggered when the input value changes.",
       type: "(value: string) => void",
+      required: true,
     },
     characterLimit: {
       description: "The maximum number of characters allowed.",
       type: "number",
-      default: "50",
+      default: `50`,
     },
     required: {
-      description: "Whether the input field is required.",
+      description: "Marks the input as required.",
       type: "boolean",
-      default: "false",
+      default: `false`,
     },
     helperText: {
-      description: "Additional text displayed below the input.",
+      description: "Additional helper text displayed above the input.",
       type: "string",
+      required: false,
     },
     error: {
       description: "Error message displayed below the input.",
       type: "string",
+      required: false,
+    },
+    placeholder: {
+      description: "Placeholder text for the input field.",
+      type: "string",
+      required: false,
     },
   }}
 />
 
+---
+
 ## Features
 
-The `LimitedInput` component offers several features that make it a perfect choice for modern applications:
+- **Character Limit**:
+  - Restricts input to a specific number of characters.
+- **Validation**:
+  - Supports custom error messages and helper text.
+- **Customizable**:
+  - Allows flexible styling and behavior through props.
+- **Responsive**:
+  - Dynamically updates remaining character count.
 
-- **Character Limit Handling**: Automatically restricts input to the specified number of characters.
-- **Error Messaging**: Displays user-friendly error messages for validation failures.
-- **Helper Text**: Guides users with contextual information below the input field.
-- **Controlled Component**: Fully compatible with controlled form implementations.
-- **Customizable**: Easy to extend and style for different use cases.
+---
 
-## Previews
+## Accessibility
 
-The `LimitedInputPreview` component demonstrates how the `LimitedInput` component can be used in various scenarios, including:
+The `LimitedInput` component includes accessible labels, ARIA attributes, and dynamic feedback for users. Ensure that error messages and helper text are descriptive for screen readers.
 
-- Basic usage with character limits.
-- Validating email inputs with error messages.
-- Handling required fields with contextual helper text.
+---
 
-<Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto py-12 h-auto  content-center">
-    <LimitedInputPreview />
-  </Tab>
-  <Tab value="Code">
-    ```tsx
-    import LimitedInputPreview from "@/app/components/ui/LimitedInputPreview";
+## Conclusion
 
-    export default function App() {
-      return <LimitedInputPreview />;
-    }
-    ```
-  </Tab>
-</Tabs>
+The `LimitedInput` component is an essential tool for creating input fields with character limits and validation, improving user experience and ensuring consistent data entry.

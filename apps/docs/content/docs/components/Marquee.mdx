@@ -1,0 +1,209 @@
+---
+title: Marquee
+description: A customizable marquee component with horizontal and vertical scrolling, reverse directions, and pause-on-hover support.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import {
+  HorizontalMarqueePreview,
+  VerticalMarqueePreview,
+} from "@/app/components/docs/MarqueePreview";
+
+## Previews with Code
+
+### Example 1: Horizontal Marquee
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-72 pb-8 content-center">
+    <HorizontalMarqueePreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for HorizontalMarqueePreview
+    export function HorizontalMarqueePreview() {
+  return (
+    <div className="space-y-4 flex flex-col">
+      <Marquee pauseOnHover>
+        {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
+          (item, i) => (
+            <div
+              key={i}
+              className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md"
+            >
+              {item}
+            </div>
+          )
+        )}
+      </Marquee>
+      <Marquee pauseOnHover reverse>
+        {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
+          (item, i) => (
+            <div
+              key={i}
+              className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md"
+            >
+              {item}
+            </div>
+          )
+        )}
+      </Marquee>
+    </div>
+  );
+}
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Vertical Marquee
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-96 pb-8 content-center">
+    <VerticalMarqueePreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for VerticalMarqueePreview
+    export function VerticalMarqueePreview() {
+      return (
+         <Marquee pauseOnHover vertical>
+        {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
+          (item, i) => (
+            <div
+              key={i}
+              className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md"
+            >
+              {item}
+            </div>
+          )
+        )}
+      </Marquee>
+      <Marquee pauseOnHover reverse vertical>
+        {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
+          (item, i) => (
+            <div
+              key={i}
+              className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md"
+            >
+              {item}
+            </div>
+          )
+        )}
+      </Marquee>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `Marquee` component provides a flexible, animated scrolling layout for displaying items horizontally or vertically.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add marquee
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Add the Component
+
+    Create a `marquee.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full Marquee component code provided in the query
+    ```
+
+    ### 2. Add Preview Components
+
+    Create a `MarqueePreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full MarqueePreview.tsx code provided above
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="marquee.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+### Marquee Props
+
+<TypeTable
+  type={{
+    className: {
+      description: "Additional classes for styling the marquee container.",
+      type: "string",
+      required: false,
+    },
+    reverse: {
+      description: "Reverses the scrolling direction.",
+      type: "boolean",
+      default: "false",
+    },
+    pauseOnHover: {
+      description: "Pauses the marquee animation when hovered.",
+      type: "boolean",
+      default: "false",
+    },
+    children: {
+      description: "The content to display inside the marquee.",
+      type: "ReactNode",
+      required: true,
+    },
+    vertical: {
+      description: "Enables vertical scrolling instead of horizontal.",
+      type: "boolean",
+      default: "false",
+    },
+    repeat: {
+      description: "Number of times the children should repeat.",
+      type: "number",
+      default: "4",
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Horizontal and Vertical Scrolling**:
+  - Supports both horizontal and vertical animation for content.
+- **Pause on Hover**:
+  - Pause the animation dynamically by hovering over the marquee.
+- **Customizable Repetition**:
+  - Repeat content a specific number of times.
+- **Reverse Direction**:
+  - Scrolls in reverse when enabled.
+
+---
+
+## Accessibility
+
+Ensure the content within the `Marquee` component is accessible by providing meaningful descriptions or context for screen readers. Additionally, the pause-on-hover feature ensures usability for motion-sensitive users.
+
+---
+
+## Conclusion
+
+The `Marquee` component is a versatile tool for displaying dynamic, animated content in a scrolling layout. Whether for horizontal or vertical scrolling, it adapts seamlessly to your needs.

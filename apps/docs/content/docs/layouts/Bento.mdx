@@ -1,0 +1,170 @@
+---
+title: Bento Grid and Cards
+description: Flexible and interactive grid layout for showcasing features, actions, or content dynamically.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { BentoDemo } from "@/app/components/docs/BentoPreview";
+
+## Preview
+
+### Bento Grid Demo
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <BentoDemo />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    // Code for BentoDemo
+    export function BentoDemo() {
+      return (
+        <BentoGrid className="lg:grid-rows-3 lg:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
+            <BentoCard key={index} {...feature} />
+          ))}
+        </BentoGrid>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `BentoGrid` and `BentoCard` components provide a robust grid layout for building dynamic and interactive UI sections.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add bento
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install lucide-react @radix-ui/react-icons
+    ```
+
+    ### 2. Add the Component
+
+    Create a `bento.tsx` file in your `components/magicui` directory:
+    ```tsx
+    // Full Bento component code provided in the query
+    ```
+
+    ### 3. Add Preview Components
+
+    Create a `BentoPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full BentoDemoPreview.tsx code provided above
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="magicui">
+        <File name="bento-grid.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+### BentoGrid Props
+
+<TypeTable
+  type={{
+    children: {
+      description: "Child components to render inside the grid.",
+      type: "ReactNode",
+      required: true,
+    },
+    className: {
+      description: "Additional classes for custom styling.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+### BentoCard Props
+
+<TypeTable
+  type={{
+    name: {
+      description: "The title of the card.",
+      type: "string",
+      required: true,
+    },
+    className: {
+      description: "Additional classes for the card.",
+      type: "string",
+      required: true,
+    },
+    background: {
+      description: "ReactNode for the card's background.",
+      type: "ReactNode",
+      required: true,
+    },
+    Icon: {
+      description: "The icon component to display in the card.",
+      type: "React.ElementType",
+      required: true,
+    },
+    description: {
+      description: "Description text for the card.",
+      type: "string",
+      required: true,
+    },
+    href: {
+      description: "URL to navigate when the card is clicked.",
+      type: "string",
+      required: true,
+    },
+    cta: {
+      description: "Call-to-action text for the card button.",
+      type: "string",
+      required: true,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Interactive Grid**:
+  - Configurable grid layout with custom row and column spans.
+- **Dynamic Cards**:
+  - Cards with hover effects, call-to-actions, and icons.
+- **Customizable Styling**:
+  - Modify styles via the `className` prop.
+
+---
+
+## Accessibility
+
+The `BentoCard` and `BentoGrid` components ensure accessibility with ARIA attributes, focus states, and semantic elements.
+
+---
+
+## Conclusion
+
+The `BentoGrid` and `BentoCard` components are perfect for showcasing features, content, or actions in a structured and visually appealing layout.

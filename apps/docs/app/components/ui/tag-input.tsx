@@ -1,31 +1,17 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Label } from "@/app/components/ui/label";
 import { TagInput as EmblorTagInput } from "emblor";
 
 interface TagInputProps {
   id: string;
   label: string;
-  initialTags?: string[];
   maxTags?: number;
 }
 
-export function TagInput({
-  id,
-  label,
-  initialTags = [],
-  maxTags = 5,
-}: TagInputProps) {
-  const [tags, setTags] = useState<string[]>(initialTags);
-  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
+export function TagInput({ id, label, maxTags = 5 }: TagInputProps) {
+  const [tags, setTags] = useState<string[]>([]);
 
-  // Automatically update local state if parent changes initialTags later
-  useEffect(() => {
-    setTags(initialTags);
-  }, [initialTags]);
-
-  // Helper to enforce max tags
   const handleSetTags = (newTags: string[]) => {
     if (newTags.length <= maxTags) {
       setTags(newTags);
@@ -51,8 +37,6 @@ export function TagInput({
               "absolute -inset-y-px -end-px p-0 rounded-e-lg flex size-7 transition-colors outline-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground",
           },
         }}
-        activeTagIndex={activeTagIndex}
-        setActiveTagIndex={setActiveTagIndex}
       />
       {tags.length >= maxTags && (
         <p className="text-sm text-red-500">

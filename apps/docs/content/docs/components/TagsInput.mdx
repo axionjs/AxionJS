@@ -1,149 +1,157 @@
 ---
-title: Tags Input
-description: A customizable tags input component built with Emblor for managing and styling tag-based user inputs.
+title: Tag Input
+description: A dynamic tag input component for adding, editing, and managing tags with optional limits, including integration with a Select component.
 ---
 
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 import { TypeTable } from "fumadocs-ui/components/type-table";
-import TagsInputPreview from "@/app/components/docs/TagsInputPreview.tsx";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import {
+  SimpleTagInputPreview,
+  LimitedTagInputPreview,
+} from "@/app/components/docs/TagInputPreview";
 
-Let’s start with a basic **TagInput** component that:
+## Previews with Code
 
-1. Uses `EmblorTagInput` for the display and entry of tags.
-2. Enforces a `maxTags` limit.
-3. Shows a warning message when the user reaches the limit.
+### Example 1: Simple Tag Input
 
 <Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto h-auto content-center">
-    <TagsInputPreview />
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <SimpleTagInputPreview />
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-   "use client";
-
-import React from "react";
-import { TagInput } from "@/app/components/ui/tag-input";
-
-export default function TagsInputPreview() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Pre-filled Tags</h3>
-        <TagInput
-          id="favoriteFruits"
-          label="Favorite Fruits"
-          initialTags={["apple", "banana"]}
-          maxTags={5}
-        />
-      </div>
-      <div>
-        <h3 className="text-lg font-medium  pt-4">Max tag limit</h3>
-        <h4 className="text-sm text-gray-500 font-medium">
-          You can enter max of 5 tags
-        </h4>
-        <TagInput id="favorite-fruits" label="Favorite Fruits" maxTags={5} />
-      </div>
-    </div>
-  );
-}
-
-    ```
-  </Tab>
-</Tabs>
-
-## Installation
-
-The `TagInput` component leverages the powerful [Emblor](https://github.com/JaleelB/emblor) library to provide seamless and customizable tag input functionality. Follow these steps to integrate it into your project.
-
-<Tabs items={["CLI", "Manual"]}>
-  <Tab value="CLI">
-    Quickly add the component with:
-    ```bash
-    npx axionjs add tags-input
-    ```
-  </Tab>
-  <Tab value="Manual">
-    ### 1. Install Dependencies
-
-    Install the required library:
-    ```bash
-    npm install emblor
-    ```
-
-    ### 2. Add Tags Input Component
-
-    Create `components/ui/tag-input.tsx` and include the following:
-    ```tsx
-    // Full component code provided in your initial query
-    ```
-
-    ### 3. Add Preview Component (Optional)
-
-    To showcase different configurations of the `TagInput`, create a `TagsInputPreview.tsx` file:
-    ```tsx
-    // Full TagsInputPreview.tsx code above
-    ```
-  </Tab>
-</Tabs>
-
-## Props
-
-The `TagInput` component includes props for full customization, enabling dynamic tag management for diverse use cases.
-
-<TypeTable
-  type={{
-    id: {
-      description: "Unique identifier for the input field.",
-      type: "string",
-      required: true,
-    },
-    label: {
-      description: "Label displayed above the tag input field.",
-      type: "string",
-      required: true,
-    },
-    initialTags: {
-      description: "Initial tags to populate the input.",
-      type: "string[]",
-      default: "[]",
-    },
-  }}
-/>
-
-## Features
-
-The `TagInput` component is designed to provide a clean and user-friendly tag management experience. Here are its key features:
-
-- **Customizable Styles**: Built-in support for Tailwind classes for easy styling.
-- **Tag Management**: Add, edit, or delete tags dynamically.
-- **Keyboard Navigation**: Fully keyboard-accessible for power users.
-- **Emblor Integration**: Built using the robust and lightweight `emblor` library.
-- **Live Region Updates**: Accessible live updates to inform users of tag changes.
-
-## Previews
-
-Explore the power and flexibility of the `TagInput` component with the following use cases:
-
-<Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto  h-auto content-center">
-    <TagsInputPreview />
-  </Tab>
-  <Tab value="Code">
-    ```tsx
-    import TagsInputPreview from "@/app/components/ui/TagsInputPreview";
-
-    export default function App() {
-      return <TagsInputPreview />;
+    export function SimpleTagInputPreview() {
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Simple Tag Input</h3>
+          <TagInput id="simple-tag-input" label="Add Tags" maxTags={5} />
+        </div>
+      );
     }
     ```
   </Tab>
 </Tabs>
 
+### Example 2: Tag Input with Custom Limit
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <LimitedTagInputPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function LimitedTagInputPreview() {
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Tag Input with Custom Limit</h3>
+          <TagInput id="limited-tag-input" label="Add Tags (Max 3)" maxTags={3} />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `TagInput` component allows users to dynamically add and manage tags, with an optional integration to add tags via a `Select` component.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add tag-input
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install emblor
+    ```
+
+    ### 2. Add the Component
+
+    Create a `tag-input.tsx` file in your `components/ui` directory:
+    ```tsx
+    // Full TagInput component code provided in the query
+    ```
+
+    ### 3. Add Preview Components
+
+    Create a `TagInputPreview.tsx` file for demonstration purposes:
+    ```tsx
+    // Full TagInputPreview.tsx code provided above
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="tag-input.tsx" />
+        <File name="select.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+### TagInput Props
+
+<TypeTable
+  type={{
+    id: {
+      description: "The unique identifier for the tag input.",
+      type: "string",
+      required: true,
+    },
+    label: {
+      description: "The label for the tag input field.",
+      type: "string",
+      required: true,
+    },
+    maxTags: {
+      description: "The maximum number of tags allowed.",
+      type: "number",
+      default: `5`,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Dynamic Tag Management**:
+  - Add and remove tags with real-time feedback.
+- **Customizable Limits**:
+  - Enforce a maximum number of tags via the `maxTags` prop.
+- **Select Integration**:
+  - Use a dropdown to add predefined tags dynamically.
+- **Styling Support**:
+  - Fully customizable styles through the `styleClasses` prop.
+
+---
+
 ## Accessibility
 
-The `TagInput` component is designed with accessibility in mind. It includes:
-- Semantic labels for screen readers.
-- A live region to announce tag changes dynamically.
-- Fully keyboard-navigable for efficient use.
+The `TagInput` component includes accessible labels and ARIA attributes. Additionally, when integrated with `Select`, users can efficiently manage tags without typing errors.
 
-By combining these features with `Emblor`, you get a component that’s both powerful and inclusive.
+---
+
+## Conclusion
+
+The `TagInput` component is a robust solution for managing tags dynamically. Whether using simple inputs or integrating with dropdowns for predefined options, it offers flexibility and accessibility for a variety of use cases.

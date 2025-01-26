@@ -1,50 +1,42 @@
-import * as React from "react";
+import React from "react";
 import {
   DndContext,
-  KeyboardSensor,
+  closestCenter,
   PointerSensor,
+  KeyboardSensor,
   useSensor,
   useSensors,
-  type DragEndEvent,
-  type UniqueIdentifier,
+  DragEndEvent,
 } from "@dnd-kit/core";
 import {
-  SortableContext,
   arrayMove,
-  sortableKeyboardCoordinates,
+  SortableContext,
   useSortable,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
-import { Slot } from "@radix-ui/react-slot";
-import { GripVertical, Move } from "lucide-react";
+import { Button } from "@/app/components/ui/button";
+import { GripVertical } from "lucide-react";
 
-type SwapyItem = {
-  id: UniqueIdentifier;
-  content: React.ReactNode;
-};
-
-interface SwapyRootProps {
-  items: SwapyItem[];
-  onReorder: (items: SwapyItem[]) => void;
+interface DraggableProps<T> {
+  items: T[];
+  onItemsChange: (items: T[]) => void;
+  renderItem: (item: T, index: number) => React.ReactNode;
+  idKey?: keyof T;
   className?: string;
-  handleVariant?: "handle" | "ghost" | "none";
-  ariaLabel?: string;
 }
 
-const SwapyRoot = ({
+const Draggable = <T extends { id: string | number }>({
   items,
-  onReorder,
+  onItemsChange,
+  renderItem,
+  idKey = "id",
   className,
-  handleVariant = "handle",
-  ariaLabel = "Sortable list",
-}: SwapyRootProps) => {
+}: DraggableProps<T>) => {
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 5,
-      },
-    }),
+    useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -52,44 +44,58 @@ const SwapyRoot = ({
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = items.findIndex((i) => i.id === active.id);
-      const newIndex = items.findIndex((i) => i.id === over.id);
-      onReorder(arrayMove(items, oldIndex, newIndex));
+
+    if (active.id !== over?.id) {
+      const oldIndex = items.findIndex((item) => item[idKey] === active.id);
+      const newIndex = items.findIndex((item) => item[idKey] === over?.id);
+
+      const newItems = arrayMove(items, oldIndex, newIndex);
+      onItemsChange(newItems);
     }
   };
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <SortableContext items={items}>
-        <ul
-          className={cn("grid gap-2", className)}
-          role="list"
-          aria-label={ariaLabel}
-        >
-          {items.map((item) => (
-            <SwapyItem key={item.id} id={item.id} handleVariant={handleVariant}>
-              {item.content}
-            </SwapyItem>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={items.map((item) => item[idKey])}
+        strategy={verticalListSortingStrategy}
+      >
+        <div className={cn("space-y-2", className)}>
+          {items.map((item, index) => (
+            <SortableItem
+              key={item[idKey]}
+              id={item[idKey]}
+              item={item}
+              index={index}
+              renderItem={renderItem}
+              idKey={idKey}
+            />
           ))}
-        </ul>
+        </div>
       </SortableContext>
-
-      {/* Screen reader announcements */}
-      <div role="status" aria-live="polite" className="sr-only">
-        {items.map((item) => item.id).join(", ")}
-      </div>
     </DndContext>
   );
 };
 
-interface SwapyItemProps {
-  id: UniqueIdentifier;
-  children: React.ReactNode;
-  handleVariant?: "handle" | "ghost" | "none";
+interface SortableItemProps<T> {
+  id: string | number;
+  item: T;
+  index: number;
+  renderItem: (item: T, index: number) => React.ReactNode;
+  idKey: keyof T;
 }
 
-const SwapyItem = ({ id, children, handleVariant }: SwapyItemProps) => {
+const SortableItem = <T extends { id: string | number }>({
+  id,
+  item,
+  index,
+  renderItem,
+  idKey,
+}: SortableItemProps<T>) => {
   const {
     attributes,
     listeners,
@@ -102,102 +108,32 @@ const SwapyItem = ({ id, children, handleVariant }: SwapyItemProps) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    opacity: isDragging ? 0.5 : 1,
   };
 
   return (
-    <li
+    <div
       ref={setNodeRef}
       style={style}
       className={cn(
-        "relative rounded-lg border bg-background p-4",
-        "transition-shadow duration-200 ease-in-out",
-        "focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2",
-        isDragging && "opacity-50 shadow-lg"
+        "p-4 bg-background border border-border rounded-md shadow-sm flex items-center justify-between",
+        isDragging && "z-50"
       )}
-      role="listitem"
-      aria-roledescription="sortable item"
-      aria-describedby={`instruction-${id}`}
+      {...attributes}
+      {...listeners}
     >
-      {handleVariant !== "none" && (
-        <SwapyHandle variant={handleVariant} {...attributes} {...listeners} />
-      )}
-
-      <div className={handleVariant !== "none" ? "ps-8" : ""}>{children}</div>
-
-      <div id={`instruction-${id}`} className="sr-only">
-        Press space bar to pick up or drop item. Use arrow keys to reorder.
-      </div>
-    </li>
+      <div className="flex-1">{renderItem(item, index)}</div>
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label={`Drag handle for item ${index + 1}`}
+        className="ml-2"
+        {...listeners}
+      >
+        <GripVertical />
+      </Button>
+    </div>
   );
 };
 
-interface SwapyHandleProps extends React.HTMLAttributes<HTMLButtonElement> {
-  variant?: "handle" | "ghost";
-}
-
-const SwapyHandle = ({ variant, className, ...props }: SwapyHandleProps) => {
-  const Comp = variant === "ghost" ? Slot : "button";
-
-  return (
-    <Comp
-      className={cn(
-        "absolute left-2 top-1/2 -translate-y-1/2",
-        "rounded-sm p-2 hover:bg-accent",
-        "focus:outline-none focus:ring-2 focus:ring-primary",
-        "cursor-move touch-none",
-        variant === "ghost"
-          ? "text-transparent hover:text-muted-foreground"
-          : "text-muted-foreground",
-        className
-      )}
-      aria-label="Drag handle"
-      role="button"
-      tabIndex={0}
-      {...props}
-    >
-      {variant === "ghost" ? (
-        <Move className="h-4 w-4" />
-      ) : (
-        <GripVertical className="h-4 w-4" />
-      )}
-    </Comp>
-  );
-};
-
-// Keyboard accessible version for WCAG compliance
-const SwapyKeyboardControls = ({
-  onMoveUp,
-  onMoveDown,
-}: {
-  onMoveUp: () => void;
-  onMoveDown: () => void;
-}) => (
-  <div className="mt-2 flex gap-2">
-    <button
-      className={cn(
-        "px-2 py-1 text-sm rounded",
-        "bg-primary text-primary-foreground",
-        "hover:bg-primary/90",
-        "focus:ring-2 focus:ring-primary focus:ring-offset-2"
-      )}
-      onClick={onMoveUp}
-      aria-label="Move item up"
-    >
-      ↑
-    </button>
-    <button
-      className={cn(
-        "px-2 py-1 text-sm rounded",
-        "bg-primary text-primary-foreground",
-        "hover:bg-primary/90",
-        "focus:ring-2 focus:ring-primary focus:ring-offset-2"
-      )}
-      onClick={onMoveDown}
-      aria-label="Move item down"
-    >
-      ↓
-    </button>
-  </div>
-);
-
-export { SwapyRoot, SwapyItem, SwapyHandle, SwapyKeyboardControls };
+export default Draggable;
