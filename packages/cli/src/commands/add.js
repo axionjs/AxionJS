@@ -111,6 +111,7 @@ export const add = new Command()
           cwd: options.cwd,
           force: options.overwrite,
           srcDir: options.srcDir,
+          components: options.components,
         });
         if (!projectPath) {
           logger.break();

@@ -155,7 +155,7 @@ export async function getItemTargetPath(config, item, override) {
   return path.join(config.resolvedPaths[parent], type);
 }
 
-async function fetchRegistry(paths) {
+export async function fetchRegistry(paths) {
   try {
     const results = await Promise.all(
       paths.map(async (path) => {

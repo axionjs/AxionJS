@@ -1,10 +1,13 @@
 import path from "path";
-import { getPackageManager } from "../utils/get-package-manager.js";
-import { highlighter } from "../utils/highlighter.js";
-import { logger } from "../utils/logger.js";
+import { getPackageManager } from "./get-package-manager.js";
+import { highlighter } from "./highlighter.js";
+import { logger } from "./logger.js";
 // import { spinner } from "../utils/spinner.js";
 import { execa } from "execa";
+import { handleError } from "./handle-error.js";
+import { fetchRegistry } from "./registry/index.js";
 import fs from "fs-extra";
+import { z } from "zod";
 // import prompts from "prompts";
 import { text, confirm, spinner, intro, outro } from "@clack/prompts";
 export async function createProject(options) {
@@ -12,6 +15,9 @@ export async function createProject(options) {
     srcDir: false,
     ...options,
   };
+  // handling the version of the next.js project
+  let projectName = "my-app";
+  let nextVersion = "15.1.0";
 
   if (!options.force) {
     const proceed = await confirm({
@@ -35,7 +41,7 @@ export async function createProject(options) {
     withFallback: true,
   });
   intro("Welcome to the Next.js project generator");
-  const projectName = await text({
+  projectName = await text({
     message: `What is your project named?`,
     initialValue: "my-app",
     placeholder: "my-app",
@@ -72,42 +78,60 @@ export async function createProject(options) {
     process.exit(1);
   }
 
-  const createSpinner = spinner();
-  createSpinner.start(
-    `Creating a new Next.js project. This may take a few minutes.`
-  );
+  await createNextProject(projectPath, {
+    version: nextVersion,
+    cwd: options.cwd,
+    packageManager,
+    srcDir: !!options.srcDir,
+  });
 
-  // Note: pnpm fails here. Fallback to npx with --use-PACKAGE-MANAGER.
-  const args = [
-    "--tailwind",
-    "--eslint",
-    "--typescript",
-    "--app",
-    options.srcDir ? "--src-dir" : "--no-src-dir",
-    "--no-import-alias",
-    `--use-${packageManager}`,
-  ];
+  async function createNextProject(projectPath, options) {
+    const createSpinner = spinner();
+    createSpinner.start(
+      `Creating a new Next.js project. This may take a few minutes.`
+    );
 
-  try {
-    await execa(
-      "npx",
-      ["create-next-app@14.2.16", projectPath, "--silent", ...args],
-      {
-        cwd: options.cwd,
-      }
-    );
-  } catch (error) {
-    logger.break();
-    logger.error(
-      `Something went wrong creating a new Next.js project. Please try again.`
-    );
-    process.exit(1);
+    // Note: pnpm fails here. Fallback to npx with --use-PACKAGE-MANAGER.
+    const args = [
+      "--tailwind",
+      "--eslint",
+      "--typescript",
+      "--app",
+      options.srcDir ? "--src-dir" : "--no-src-dir",
+      "--no-import-alias",
+      `--use-${packageManager}`,
+    ];
+
+    if (nextVersion.startsWith("15")) {
+      args.push("--turbopack");
+    }
+
+    try {
+      await execa(
+        "npx",
+        [
+          `create-next-app@${options.version}`,
+          projectPath,
+          "--silent",
+          ...args,
+        ],
+        {
+          cwd: options.cwd,
+        }
+      );
+    } catch (error) {
+      logger.break();
+      logger.error(
+        `Something went wrong creating a new Next.js project. Please try again.`
+      );
+      process.exit(1);
+    }
+
+    createSpinner?.stop("Created a new Next.js project.");
   }
-
-  createSpinner?.stop("Created a new Next.js project.");
   outro("Next.js project created successfully");
   return {
     projectPath,
-    projectName: name,
+    projectName,
   };
 }
