@@ -9,7 +9,6 @@ export default function PasswordPreview() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium">Basic Password Input</h3>
         <PasswordInput
           value={password}
           onChange={setPassword}

@@ -13,10 +13,12 @@
     "accessibility",
     "---Layout---",
     "layouts",
-    "---Dynamic Components---",
-    "dynamic-components",
+    "---Charts---",
+    "Charts",
     "---Components---",
     "components",
+    "---Dynamic Components---",
+    "dynamic-components",
     "hooks",
     "modern-ui-blocks"
   ]

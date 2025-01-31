@@ -11,9 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "../ui/label";
+import { Label } from "../app/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "../ui/button";
+import { Button } from "../app/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 const commonEmojis = [

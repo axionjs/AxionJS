@@ -111,7 +111,6 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
@@ -133,7 +132,7 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
-    --shadow: 0 0% 90%;
+    --shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
     --gradient-start: 220 50% 40%;
     --gradient-end: 280 40% 30%;
     --chart-1: 12 76% 61%;
@@ -213,4 +212,14 @@
 .text-spacing * {
   letter-spacing: 0.05em;
   word-spacing: 0.2em;
+}
+
+.fd-codeblock code {
+  display: grid;
+  font-size: 16px;
+}
+
+* {
+  scroll-behavior: smooth;
+  scrollbar-width: 2px;
 }

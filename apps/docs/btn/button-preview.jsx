@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useButtonStore } from "./button-store";
-import { Button } from "../ui/button";
+import { Button } from "../app/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 export function ButtonPreview() {
