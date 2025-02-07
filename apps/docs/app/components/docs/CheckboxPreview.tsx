@@ -4,9 +4,9 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Checkbox } from "@/app/components/ui/checkbox";
-import { Label } from "@/app/components/ui/label";
-import { Button } from "@/app/components/ui/button";
+import { Checkbox } from "@/registry/new-york/ui/checkbox";
+import { Label } from "@/registry/new-york/ui/label";
+import { Button } from "@/registry/new-york/ui/button";
 import {
   Form,
   FormField,
@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/app/components/ui/form";
+} from "@/registry/new-york/ui/form";
 
 // Simple Checkbox Preview
 export function SimpleCheckboxPreview() {

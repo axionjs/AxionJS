@@ -8,8 +8,8 @@ import {
   MessageSquareIcon,
 } from "lucide-react";
 
-import { BentoCard, BentoGrid } from "@/app/components/layout/bento";
-import { Marquee } from "@/app/components/ui/marquee";
+import { BentoCard, BentoGrid } from "@/registry/new-york/ui/bento";
+import { Marquee } from "@/registry/new-york/ui/marquee";
 
 const snippets = [
   {

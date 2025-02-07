@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from "@/app/components/ui/dialog";
+} from "@/registry/new-york/ui/dialog";
 
 export default function DialogPreview() {
   return (

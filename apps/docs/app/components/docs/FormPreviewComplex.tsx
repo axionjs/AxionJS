@@ -4,7 +4,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/registry/new-york/ui/button";
 import {
   Form,
   FormField,
@@ -12,11 +12,11 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/app/components/ui/form";
-import { Input } from "@/app/components/ui/input";
-import PasswordInput from "@/app/components/ui/password-input";
-import { TagInput } from "@/app/components/ui/tag-input";
-import LimitedInput from "@/app/components/ui/limited-input";
+} from "@/registry/new-york/ui/form";
+import { Input } from "@/registry/new-york/ui/input";
+import PasswordInput from "@/registry/new-york/ui/password-input";
+import { TagInput } from "@/registry/new-york/ui/tag-input";
+import LimitedInput from "@/registry/new-york/ui/limited-input";
 
 const formSchema = z.object({
   name: z

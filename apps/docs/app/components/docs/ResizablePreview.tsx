@@ -4,7 +4,7 @@ import {
   ResizablePanelGroup,
   ResizablePanel,
   ResizableHandle,
-} from "@/app/components/ui/resizable";
+} from "@/registry/new-york/ui/resizable";
 
 export function HorizontalPanelsPreview() {
   return (

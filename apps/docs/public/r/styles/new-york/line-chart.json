@@ -1,0 +1,17 @@
+{
+  "$schema": "http://localhost:3000/schema/registry-item.json",
+  "name": "line-chart",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "recharts"
+  ],
+  "files": [
+    {
+      "path": "ui/line-chart.tsx",
+      "content": "\"use client\";\r\n\r\nimport * as React from \"react\";\r\nimport {\r\n  ResponsiveContainer,\r\n  LineChart as RechartsLineChart,\r\n  CartesianGrid,\r\n  XAxis,\r\n  YAxis,\r\n  Tooltip,\r\n  Legend,\r\n  Line,\r\n} from \"recharts\";\r\n\r\ninterface SimpleLineChartProps {\r\n  data: Record<string, any>[];\r\n\r\n  lines: {\r\n    dataKey: string;\r\n    strokeColor?: string;\r\n  }[];\r\n\r\n  xAxisKey?: string;\r\n\r\n  width?: number | string;\r\n\r\n  height?: number;\r\n\r\n  margin?: {\r\n    top?: number;\r\n    right?: number;\r\n    left?: number;\r\n    bottom?: number;\r\n  };\r\n\r\n  showGrid?: boolean;\r\n\r\n  className?: string;\r\n\r\n  ariaLabel?: string;\r\n}\r\n\r\nexport function SimpleLineChart({\r\n  data,\r\n  lines,\r\n  xAxisKey = \"name\",\r\n  width = \"100%\",\r\n  height = 300,\r\n  margin = { top: 5, right: 30, left: 20, bottom: 5 },\r\n  showGrid = true,\r\n  className,\r\n  ariaLabel = \"Line Chart\",\r\n}: SimpleLineChartProps) {\r\n  return (\r\n    <div\r\n      className={`w-full overflow-hidden rounded-md border bg-background p-4 ${className ?? \"\"}`}\r\n    >\r\n      {/* Screen reader-only label for accessibility */}\r\n      <h2 className=\"sr-only\">{ariaLabel}</h2>\r\n\r\n      <ResponsiveContainer width=\"100%\" height={height}>\r\n        <RechartsLineChart data={data} margin={margin}>\r\n          {showGrid && (\r\n            <CartesianGrid strokeDasharray=\"3 3\" stroke=\"var(--border)\" />\r\n          )}\r\n\r\n          <XAxis dataKey={xAxisKey} tick={false} stroke=\"var(--foreground)\" />\r\n          <YAxis tick={false} stroke=\"var(--foreground)\" />\r\n\r\n          {/* Customize tooltip background and text color via contentStyle */}\r\n          <Tooltip\r\n            contentStyle={{\r\n              backgroundColor: \"hsl(var(--background))\",\r\n              color: \"hsl(var(--foreground))\",\r\n              border: \"1px solid hsl(var(--border))\",\r\n            }}\r\n          />\r\n\r\n          {lines.map((line, index) => (\r\n            <Line\r\n              key={index}\r\n              type=\"monotone\"\r\n              dataKey={line.dataKey}\r\n              stroke={line.strokeColor ?? \"hsl(var(--primary))\"}\r\n              activeDot={{ r: 8 }}\r\n            />\r\n          ))}\r\n        </RechartsLineChart>\r\n      </ResponsiveContainer>\r\n    </div>\r\n  );\r\n}\r\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

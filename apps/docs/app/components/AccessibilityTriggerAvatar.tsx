@@ -6,7 +6,7 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from "@/app/components/ui/avatar";
+} from "@/registry/new-york/ui/avatar";
 import { PersonStanding } from "lucide-react";
 
 export function AccessibilityTriggerAvatar() {

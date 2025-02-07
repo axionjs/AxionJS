@@ -7,8 +7,8 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/app/components/ui/carousel";
-import { Card, CardContent } from "@/app/components/ui/card";
+} from "@/registry/new-york/ui/carousel";
+import { Card, CardContent } from "@/registry/new-york/ui/card";
 
 export function SingleCarousel() {
   return (

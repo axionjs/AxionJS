@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Label } from "@/app/components/ui/label";
+import { Label } from "@/registry/new-york/ui/label";
 
 export default function LabelPreview() {
   return (

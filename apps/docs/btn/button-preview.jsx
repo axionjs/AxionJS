@@ -3,7 +3,7 @@
 import React from "react";
 import { useButtonStore } from "./button-store";
 import { Button } from "../app/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/registry/new-york/ui/card";
 
 export function ButtonPreview() {
   const { variant, size, roundness, bgColor, textColor, emoji } =

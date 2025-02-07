@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent } from "@/app/components/ui/card";
+import { Card, CardContent } from "@/registry/new-york/ui/card";
 import {
   ContextMenu,
   ContextMenuTrigger,
@@ -12,7 +12,7 @@ import {
   ContextMenuCheckboxItem,
   ContextMenuRadioGroup,
   ContextMenuRadioItem,
-} from "@/app/components/ui/context-menu";
+} from "@/registry/new-york/ui/context-menu";
 
 export function ContextMenuPreview() {
   return (

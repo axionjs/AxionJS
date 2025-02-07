@@ -8,7 +8,7 @@ import {
   SheetFooter,
   SheetTitle,
   SheetDescription,
-} from "@/app/components/ui/sheet";
+} from "@/registry/new-york/ui/sheet";
 
 // Single Button to Open Sheet
 export function SingleButtonSheetPreview() {

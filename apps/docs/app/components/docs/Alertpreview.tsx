@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Alert, AlertTitle, AlertDescription } from "@/app/components/ui/alert";
+import { Alert, AlertTitle, AlertDescription } from "@/registry/new-york/ui/alert";
 
 export default function AlertPreview() {
   return (

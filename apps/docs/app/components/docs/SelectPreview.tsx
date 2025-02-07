@@ -8,7 +8,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/app/components/ui/select";
+} from "@/registry/new-york/ui/select";
 
 export function SelectScrollablePreview() {
   return (

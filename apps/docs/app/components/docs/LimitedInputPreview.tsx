@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import LimitedInput from "@/app/components/ui/limited-input";
+import LimitedInput from "@/registry/new-york/ui/limited-input";
 
 export function SimpleLimitedInputPreview() {
   const [value, setValue] = useState("");

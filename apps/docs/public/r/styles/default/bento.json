@@ -1,0 +1,20 @@
+{
+  "$schema": "http://localhost:3000/schema/registry-item.json",
+  "name": "bento",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "@radix-ui/react-icons"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "ui/bento.tsx",
+      "content": "import { ArrowRightIcon } from \"@radix-ui/react-icons\";\r\nimport { ComponentPropsWithoutRef, ReactNode } from \"react\";\r\n\r\nimport { Button } from \"@/registry/default/ui/button\";\r\nimport { cn } from \"@/lib/utils\";\r\n\r\ninterface BentoGridProps extends ComponentPropsWithoutRef<\"div\"> {\r\n  children: ReactNode;\r\n  className?: string;\r\n}\r\n\r\ninterface BentoCardProps extends ComponentPropsWithoutRef<\"div\"> {\r\n  name: string;\r\n  className: string;\r\n  background: ReactNode;\r\n  Icon: React.ElementType;\r\n  description: string;\r\n  href: string;\r\n  cta: string;\r\n}\r\n\r\nconst BentoGrid = ({ children, className, ...props }: BentoGridProps) => {\r\n  return (\r\n    <div\r\n      className={cn(\r\n        \"grid w-full auto-rows-[22rem] grid-cols-3 gap-4\",\r\n        className\r\n      )}\r\n      {...props}\r\n    >\r\n      {children}\r\n    </div>\r\n  );\r\n};\r\n\r\nconst BentoCard = ({\r\n  name,\r\n  className,\r\n  background,\r\n  Icon,\r\n  description,\r\n  href,\r\n  cta,\r\n  ...props\r\n}: BentoCardProps) => (\r\n  <div\r\n    key={name}\r\n    className={cn(\r\n      \"group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl\",\r\n      // light styles\r\n      \"bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]\",\r\n      // dark styles\r\n      \"transform-gpu dark:bg-black dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]\",\r\n      className\r\n    )}\r\n    {...props}\r\n  >\r\n    <div>{background}</div>\r\n    <div className=\"pointer-events-none z-10 flex transform-gpu flex-col gap-1 p-6 transition-all duration-300 group-hover:-translate-y-10\">\r\n      <Icon className=\"h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75\" />\r\n      <h3 className=\"text-xl font-semibold text-neutral-700 dark:text-neutral-300\">\r\n        {name}\r\n      </h3>\r\n      <p className=\"max-w-lg text-neutral-400\">{description}</p>\r\n    </div>\r\n\r\n    <div\r\n      className={cn(\r\n        \"pointer-events-none absolute bottom-0 flex w-full translate-y-10 transform-gpu flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100\"\r\n      )}\r\n    >\r\n      <Button variant=\"ghost\" asChild size=\"sm\" className=\"pointer-events-auto\">\r\n        <a href={href}>\r\n          {cta}\r\n          <ArrowRightIcon className=\"ml-2 h-4 w-4\" />\r\n        </a>\r\n      </Button>\r\n    </div>\r\n    <div className=\"pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10\" />\r\n  </div>\r\n);\r\n\r\nexport { BentoCard, BentoGrid };\r\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

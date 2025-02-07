@@ -10,8 +10,8 @@ import {
   DrawerHeader,
   DrawerFooter,
   DrawerClose,
-} from "@/app/components/ui/drawer";
-import { Button } from "@/app/components/ui/button";
+} from "@/registry/new-york/ui/drawer";
+import { Button } from "@/registry/new-york/ui/button";
 
 export function SimpleDrawerPreview() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Flex } from "@/app/components/layout/flex";
+import { Flex } from "@/registry/new-york/ui/flex";
 
 export function DefaultFlexPreview() {
   return (

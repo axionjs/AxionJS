@@ -14,8 +14,8 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-} from "@/app/components/ui/dropdown-menu";
-import { Button } from "@/app/components/ui/button";
+} from "@/registry/new-york/ui/dropdown-menu";
+import { Button } from "@/registry/new-york/ui/button";
 
 export function BasicDropdownPreview() {
   return (

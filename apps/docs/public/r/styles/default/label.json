@@ -1,0 +1,17 @@
+{
+  "$schema": "http://localhost:3000/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "@radix-ui/react-label"
+  ],
+  "files": [
+    {
+      "path": "ui/label.tsx",
+      "content": "\"use client\";\r\n\r\nimport * as React from \"react\";\r\nimport * as LabelPrimitive from \"@radix-ui/react-label\";\r\nimport { cva, VariantProps } from \"class-variance-authority\";\r\n\r\nimport { cn } from \"@/lib/utils\";\r\n\r\nconst labelVariants = cva(\r\n  \"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70\",\r\n  {\r\n    variants: {\r\n      variant: {\r\n        default: \"text-foreground\",\r\n        error: \"text-destructive\",\r\n      },\r\n      size: {\r\n        default: \"text-sm\",\r\n        large: \"text-base\",\r\n      },\r\n    },\r\n    defaultVariants: {\r\n      variant: \"default\",\r\n      size: \"default\",\r\n    },\r\n  }\r\n);\r\n\r\ninterface LabelProps\r\n  extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>,\r\n    VariantProps<typeof labelVariants> {\r\n  helperText?: string;\r\n  error?: string;\r\n  required?: boolean;\r\n  htmlFor?: any;\r\n  children: React.ReactNode;\r\n  className?: string;\r\n}\r\n\r\nconst Label = React.forwardRef<HTMLLabelElement, LabelProps>(\r\n  (\r\n    {\r\n      className,\r\n      children,\r\n      variant,\r\n      size,\r\n      htmlFor,\r\n      required,\r\n      error,\r\n      helperText,\r\n      ...props\r\n    },\r\n    ref\r\n  ) => {\r\n    const id = React.useId();\r\n    const errorId = `${id}-error`;\r\n    const helperId = `${id}-helper`;\r\n\r\n    return (\r\n      <div className=\"flex flex-col space-y-1\">\r\n        <LabelPrimitive.Root\r\n          ref={ref}\r\n          htmlFor={htmlFor}\r\n          className={cn(labelVariants({ variant, size, className }))}\r\n          {...props}\r\n        >\r\n          {children}\r\n          {required && (\r\n            <span className=\"ml-1 text-destructive\" aria-hidden=\"true\">\r\n              *\r\n            </span>\r\n          )}\r\n        </LabelPrimitive.Root>\r\n        {helperText && !error && (\r\n          <p id={helperId} className=\"text-sm text-muted-foreground\">\r\n            {helperText}\r\n          </p>\r\n        )}\r\n        {error && (\r\n          <p id={errorId} className=\"text-sm font-medium text-destructive\">\r\n            {error}\r\n          </p>\r\n        )}\r\n      </div>\r\n    );\r\n  }\r\n);\r\nLabel.displayName = \"Label\";\r\n\r\nexport { Label };\r\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

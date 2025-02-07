@@ -1,0 +1,20 @@
+{
+  "$schema": "http://localhost:3000/schema/registry-item.json",
+  "name": "limited-input",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "zod"
+  ],
+  "registryDependencies": [
+    "input"
+  ],
+  "files": [
+    {
+      "path": "ui/limited-input.tsx",
+      "content": "\"use client\";\r\n\r\nimport * as React from \"react\";\r\nimport { Label } from \"@/registry/default/ui/label\";\r\nimport { Input } from \"@/registry/default/ui/input\";\r\n\r\ninterface LimitedInputProps\r\n  extends Omit<\r\n    React.InputHTMLAttributes<HTMLInputElement>,\r\n    \"value\" | \"onChange\" | \"required\"\r\n  > {\r\n  label?: string;\r\n  id?: string;\r\n  value?: string;\r\n  onChange?: (value: string) => void;\r\n  characterLimit?: number;\r\n  required?: boolean;\r\n  helperText?: string;\r\n  error?: string;\r\n}\r\n\r\nconst LimitedInput = ({\r\n  label = \"Input Label\",\r\n  id = \"limited-input\",\r\n  value = \"\",\r\n  onChange,\r\n  characterLimit = 50,\r\n  required = false,\r\n  helperText,\r\n  error,\r\n  ...props\r\n}: LimitedInputProps) => {\r\n  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {\r\n    const newValue = e.target.value;\r\n    if (newValue.length <= characterLimit) {\r\n      onChange?.(newValue);\r\n    }\r\n  };\r\n\r\n  return (\r\n    <div>\r\n      {helperText && (\r\n        <p className=\"my-1 pb-1 text-sm font-medium text-foreground/80\">\r\n          {helperText}\r\n        </p>\r\n      )}\r\n\r\n      <Input\r\n        id={id}\r\n        value={value}\r\n        onChange={handleInputChange}\r\n        required={required}\r\n        {...props}\r\n      />\r\n\r\n      <p className=\"mt-1 text-sm text-foreground/80\">\r\n        {value.length}/{characterLimit}\r\n      </p>\r\n\r\n      {value.length === characterLimit && (\r\n        <p className=\"mt-1 text-sm text-destructive\">\r\n          You can not enter more than {characterLimit} characters.\r\n        </p>\r\n      )}\r\n\r\n      {error && <p className=\"mt-1 text-sm text-destructive\">{error}</p>}\r\n    </div>\r\n  );\r\n};\r\n\r\nexport default LimitedInput;\r\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

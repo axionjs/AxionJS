@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Progress } from "@/app/components/ui/progress";
+import { Progress } from "@/registry/new-york/ui/progress";
 
 export function ProgressWithLabelPreview() {
   const [progress, setProgress] = React.useState(60);

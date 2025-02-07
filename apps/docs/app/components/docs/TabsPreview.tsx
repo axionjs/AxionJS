@@ -6,14 +6,14 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/app/components/ui/tabs";
+} from "@/registry/new-york/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/app/components/ui/tooltip";
-import { Badge } from "@/app/components/ui/badge";
+} from "@/registry/new-york/ui/tooltip";
+import { Badge } from "@/registry/new-york/ui/badge";
 import { House, PanelsTopLeft, Box } from "lucide-react";
 
 export function BasicTabsPreview() {

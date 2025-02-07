@@ -1,6 +1,6 @@
 "use client";
 
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/registry/new-york/ui/scroll-area";
 
 export function DefaultScrollAreaPreview() {
   return (

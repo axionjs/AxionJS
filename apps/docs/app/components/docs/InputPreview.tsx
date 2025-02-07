@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Input } from "@/app/components/ui/input";
+import { Input } from "@/registry/new-york/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 
 export function InputSimplePreview() {
