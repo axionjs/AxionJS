@@ -8,7 +8,6 @@ import { ButtonPreview } from "@/app/components/docs/ButtonPreview";
 import { MultipleSelectionCalendar } from "@/app/components/docs/CalendarPreview";
 import { LoginCardExample } from "@/app/components/docs/CardPreview";
 import { MultiCarousel } from "@/app/components/docs/CarouselPreview";
-import { CommandDemo } from "@/app/components/docs/CommandPreview";
 import { SimpleDrawerPreview } from "@/app/components/docs/DrawerPreview";
 import { HoverCardPreview } from "@/app/components/docs/HoverCardPreview";
 import PasswordPreview from "@/app/components/docs/PasswordPreview";
@@ -17,6 +16,7 @@ import { SingleButtonSheetPreview } from "@/app/components/docs/SheetPreview";
 import SwitchPreview from "@/app/components/docs/SwitchPreview";
 import { SingleSelectToggleGroupPreview } from "@/app/components/docs/ToggleGroupPreview";
 import { MultiLineChartPreview } from "@/app/components/docs/SimpleLineChartPreview";
+import { HorizontalPanelsPreview } from "@/app/components/docs/ResizablePreview";
 
 export default function Home() {
   return (
@@ -46,67 +46,59 @@ export default function Home() {
       {/* Bento Grid Section */}
       <section className="py-20  sm:py-20">
         <div className="mx-auto px-4 sm:px-8 lg:px-12 ">
-          <BentoGrid>
-            <BentoCard
-              className="col-span-1 row-span-2"
-              background={
-                <div className="h-full w-full">
-                  <MultiLineChartPreview />
-                </div>
-              }
-            />
-            <BentoCard
-              className="col-span-1 row-span-1"
-              background={<ButtonPreview />}
-            />
-            <BentoCard
-              className="col-span-1 row-span-3"
-              background={<LoginCardExample />}
-            />
-            <BentoCard
-              className="col-span-1 row-span-2"
-              background={<MultipleSelectionCalendar />}
-            />
-            <BentoCard
-              className="col-span-1 row-span-1"
-              background={<SimpleDrawerPreview />}
-            />
-            <BentoCard
-              className="col-span-2 row-span-1"
-              background={<MultiCarousel />}
-            />
-            <BentoCard
-              className="col-span-1 row-span-2"
-              background={
-                <div className="h-full w-[60%] flex content-center items-center justify-center">
-                  <CommandDemo />
-                </div>
-              }
-            />
-            <BentoCard
-              className="col-span-1 row-span-1"
-              background={<HoverCardPreview />}
-            />
-            <BentoCard
-              className="col-span-1 row-span-4"
-              background={<PasswordPreview />}
-            />
-            <BentoCard
-              className="col-span-1 row-span-1"
-              background={<ProgressWithLabelPreview />}
-            />
-            <BentoCard
-              className="col-span-1 row-span-1"
-              background={<SingleButtonSheetPreview />}
-            />
-            <BentoCard
-              className="col-span-1 row-span-1"
-              background={<SwitchPreview />}
-            />
-            <BentoCard
-              className="col-span-1 row-span-1"
-              background={<SingleSelectToggleGroupPreview />}
-            />
+          <BentoGrid className="grid-flow-row-dense">
+            <BentoCard className="col-span-2 row-span-2 lg:col-span-1 lg:row-span-2">
+              <div className="h-full w-full">
+                <MultiLineChartPreview />
+              </div>
+            </BentoCard>
+            <BentoCard className="col-span-2 lg:col-span-1 row-span-1">
+              <ButtonPreview />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 lg:col-span-1 lg:row-span-3">
+              <LoginCardExample />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 lg:col-span-1 row-span-2">
+              <MultipleSelectionCalendar />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 md:col-span-1 row-span-1">
+              <SimpleDrawerPreview />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 row-span-1">
+              <MultiCarousel />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 md:col-span-1 lg:row-span-2 ">
+              <HorizontalPanelsPreview />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 md:col-span-1 row-span-1">
+              <HoverCardPreview />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 md:col-span-1 lg:row-span-4">
+              <PasswordPreview />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 lg:col-span-1 row-span-1">
+              <ProgressWithLabelPreview />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 md:col-span-1 row-span-1">
+              <SingleButtonSheetPreview />
+            </BentoCard>
+
+            <BentoCard className="col-span-2 md:col-span-2 lg:col-span-1 row-span-1">
+              <SwitchPreview />
+            </BentoCard>
+
+            <BentoCard className="col-span-1 row-span-1">
+              <SingleSelectToggleGroupPreview />
+            </BentoCard>
           </BentoGrid>
         </div>
       </section>

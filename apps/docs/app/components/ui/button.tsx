@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
@@ -30,6 +32,9 @@ const buttonVariants = cva(
           "text-primary-foreground relative bg-primary z-0 overflow-hidden transition-all duration-500 before:absolute before:inset-0 before:-z-10 before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5] before:rounded-[100%] before:bg-gradient-to-r from-zinc-400 before:transition-transform before:duration-1000 hover:before:translate-x-0 hover:before:translate-y-0",
         gooeyLeft:
           "text-primary-foreground relative bg-primary z-0 overflow-hidden transition-all duration-500 after:absolute after:inset-0 after:-z-10 after:translate-x-[-150%] after:translate-y-[150%] after:scale-[2.5] after:rounded-[100%] after:bg-gradient-to-l from-zinc-400 after:transition-transform after:duration-1000 hover:after:translate-x-0 hover:after:translate-y-0",
+
+        // "custom" variant: minimal styling, no color
+        custom: "",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -74,7 +79,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         role="button"
         aria-disabled={disabled}
@@ -82,9 +86,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-labelledby={ariaLabelledby}
         aria-expanded={ariaExpanded}
         disabled={disabled}
+        className={cn(buttonVariants({ variant, size, className }))}
         {...props}
       >
         <Slottable>{children}</Slottable>
+
         {variant === "expandIcon" && (
           <div
             className="w-0 opacity-0 translate-x-[100%] pl-0 transition-all duration-300 group-hover:w-5 group-hover:opacity-100 group-hover:translate-x-0 group-hover:pl-2"
