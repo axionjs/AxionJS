@@ -18,7 +18,7 @@ process.on("SIGTERM", () => process.exit(0));
 
 async function main() {
   const program = new Command()
-    .name("testaxionjs")
+    .name("axionjs")
     .description("Add components right in to your project")
     .version(
       packageJson.version || "1.0.0",

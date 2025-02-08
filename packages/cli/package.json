@@ -2,7 +2,9 @@
   "name": "axionjs-ui",
   "version": "1.0.0",
   "description": "Add components directly in to your project",
-  "bin": "src/index.js",
+  "bin": {
+    "axionjs": "src/index.js"
+  },
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
