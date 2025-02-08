@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -23,6 +24,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "tsx": "^4.19.2",
     "with-tailwind": "file:"
   }
 }

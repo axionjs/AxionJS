@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Toggle } from "@/app/components/ui/toggle";
+import { Toggle } from "@/registry/new-york/ui/toggle";
 import { Bold, Italic, Underline } from "lucide-react";
 
 export function DefaultTogglePreview() {

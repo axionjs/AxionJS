@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Draggable from "@/app/components/ui/draggable";
+import Draggable from "@/registry/new-york/ui/draggable";
 
 export function SimpleDraggableListPreview() {
   const [items, setItems] = useState([

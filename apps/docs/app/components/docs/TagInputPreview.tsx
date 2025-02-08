@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { TagInput } from "@/app/components/ui/tag-input";
+import { TagInput } from "@/registry/new-york/ui/tag-input";
 
 export function SimpleTagInputPreview() {
   return (

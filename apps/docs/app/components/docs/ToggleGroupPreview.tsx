@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ToggleGroup, ToggleGroupItem } from "@/app/components/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@/registry/new-york/ui/toggle-group";
 import { Bold, Italic, Underline } from "lucide-react";
 
 export function SingleSelectToggleGroupPreview() {

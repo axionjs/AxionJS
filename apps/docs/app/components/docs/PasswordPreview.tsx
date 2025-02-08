@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import PasswordInput from "@/app/components/ui/password-input";
+import PasswordInput from "@/registry/new-york/ui/password-input";
 
 export default function PasswordPreview() {
   const [password, setPassword] = useState<string>("");

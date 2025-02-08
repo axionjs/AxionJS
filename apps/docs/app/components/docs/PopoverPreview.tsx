@@ -5,8 +5,8 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@/app/components/ui/popover";
-import { Button } from "@/app/components/ui/button";
+} from "@/registry/new-york/ui/popover";
+import { Button } from "@/registry/new-york/ui/button";
 
 export function SimplePopoverPreview() {
   return (

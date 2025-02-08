@@ -11,7 +11,7 @@ import {
   AlertDialogFooter,
   AlertDialogAction,
   AlertDialogCancel,
-} from "@/app/components/ui/alert-dialog";
+} from "@/registry/new-york/ui/alert-dialog";
 
 export default function AlertDialogPreview() {
   return (

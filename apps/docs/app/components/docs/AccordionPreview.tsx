@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "@/app/components/ui/accordion";
+} from "@/registry/new-york/ui/accordion";
 
 export default function AccordionPreview() {
   return (

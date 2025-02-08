@@ -5,8 +5,8 @@ import {
   HoverCard,
   HoverCardTrigger,
   HoverCardContent,
-} from "@/app/components/ui/hover-card";
-import { Button } from "@/app/components/ui/button";
+} from "@/registry/new-york/ui/hover-card";
+import { Button } from "@/registry/new-york/ui/button";
 import Link from "next/link";
 
 export function HoverCardPreview() {

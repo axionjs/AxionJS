@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { SimpleLineChart } from "@/app/components/Charts/simple-line-chart";
+import { SimpleLineChart } from "@/registry/new-york/ui/line-chart";
 
 // Sample data
 const sampleData = [

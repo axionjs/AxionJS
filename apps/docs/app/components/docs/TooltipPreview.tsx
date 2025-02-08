@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
   TooltipContent,
   TooltipProvider,
-} from "@/app/components/ui/tooltip";
+} from "@/registry/new-york/ui/tooltip";
 
 export function DefaultTooltipPreview() {
   return (

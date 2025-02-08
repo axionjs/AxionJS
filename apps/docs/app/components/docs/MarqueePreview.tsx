@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Marquee } from "@/app/components/ui/marquee";
+import { Marquee } from "@/registry/new-york/ui/marquee";
 
 export function HorizontalMarqueePreview() {
   return (

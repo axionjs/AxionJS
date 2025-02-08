@@ -12,7 +12,7 @@ import {
   MenubarRadioGroup,
   MenubarRadioItem,
   MenubarLabel,
-} from "@/app/components/ui/menubar";
+} from "@/registry/new-york/ui/menubar";
 
 export function SimpleMenubarPreview() {
   return (

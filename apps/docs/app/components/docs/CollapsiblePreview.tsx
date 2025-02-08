@@ -5,7 +5,7 @@ import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
-} from "@/app/components/ui/collapsible";
+} from "@/registry/new-york/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
 
 export function SimpleCollapsiblePreview() {

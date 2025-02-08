@@ -12,7 +12,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/app/components/ui/navigation-menu";
+} from "@/registry/new-york/ui/navigation-menu";
 
 export function NavigationMenuDemo() {
   const components = [

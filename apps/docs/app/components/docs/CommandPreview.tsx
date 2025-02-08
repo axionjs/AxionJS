@@ -20,7 +20,7 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/app/components/ui/command";
+} from "@/registry/new-york/ui/command";
 
 // First Command Demo: Command Palette
 export function CommandDemo() {

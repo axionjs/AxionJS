@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Badge } from "@/app/components/ui/badge";
+import { Badge } from "@/registry/new-york/ui/badge";
 
 export function BadgePreview() {
   return (

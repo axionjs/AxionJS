@@ -1,6 +1,6 @@
 "use client";
 
-import { Slider } from "@/app/components/ui/slider";
+import { Slider } from "@/registry/new-york/ui/slider";
 
 // Simple Slider Preview
 export function SimpleSliderPreview() {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Separator } from "@/app/components/ui/separator";
+import { Separator } from "@/registry/new-york/ui/separator";
 
 export function SeparatorDemo() {
   return (

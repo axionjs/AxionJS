@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Skeleton } from "@/app/components/ui/skeleton";
+import { Skeleton } from "@/registry/new-york/ui/skeleton";
 
 // Always show skeleton
 export function AlwaysSkeletonPreview() {

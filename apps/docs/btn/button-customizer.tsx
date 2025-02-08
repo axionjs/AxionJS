@@ -10,11 +10,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Label } from "../app/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "../app/components/ui/button";
-import { Card } from "@/components/ui/card";
+} from "@/registry/new-york/ui/select";
+import { Label } from "../registry/new-york/ui/label";
+import { Input } from "@/registry/new-york/ui/input";
+import { Button } from "../registry/new-york/ui/button";
+import { Card } from "@/registry/new-york/ui/card";
 
 const commonEmojis = [
   "👍",

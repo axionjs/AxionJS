@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { AspectRatio } from "@/app/components/ui/aspect-ratio";
+import { AspectRatio } from "@/registry/new-york/ui/aspect-ratio";
 
 // Example: Image inside AspectRatio
 export function AspectRatioDemo() {

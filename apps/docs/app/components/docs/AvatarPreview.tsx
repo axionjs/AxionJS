@@ -6,7 +6,7 @@ import {
   AvatarImage,
   AvatarFallback,
   AvatarGroup,
-} from "@/app/components/ui/avatar";
+} from "@/registry/new-york/ui/avatar";
 
 export default function AvatarPreview() {
   return (

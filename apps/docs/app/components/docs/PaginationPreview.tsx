@@ -9,7 +9,7 @@ import {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
-} from "@/app/components/ui/pagination";
+} from "@/registry/new-york/ui/pagination";
 
 export function SimplePaginationPreview() {
   return (

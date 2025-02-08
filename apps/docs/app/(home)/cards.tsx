@@ -1,7 +1,7 @@
 "use client";
 // Import BentoGrid + BentoCard from the file above:
 import { BentoGrid, BentoCard } from "./bento-grid";
-import { DotPattern } from "@/app/components/ui/dot";
+import { DotPattern } from "@/registry/new-york/ui/dot";
 import { cn } from "@/lib/utils";
 // Import your preview components:
 import { ButtonPreview } from "@/app/components/docs/ButtonPreview";

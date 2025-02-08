@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { RadioGroup, RadioGroupItem } from "@/app/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@/registry/new-york/ui/radio-group";
 
 export function SimpleRadioGroupPreview() {
   return (

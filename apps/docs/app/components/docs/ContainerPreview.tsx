@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Container } from "@/app/components/layout/container";
+import { Container } from "@/registry/new-york/ui/container";
 
 export function DefaultContainerPreview() {
   return (

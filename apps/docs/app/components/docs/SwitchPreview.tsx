@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Switch } from "@/app/components/ui/switch";
+import { Switch } from "@/registry/new-york/ui/switch";
 
 export default function SwitchPreview() {
   const [isChecked, setIsChecked] = useState(false);

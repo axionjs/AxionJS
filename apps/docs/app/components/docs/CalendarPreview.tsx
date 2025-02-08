@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { addDays, subDays } from "date-fns";
-import { Calendar } from "@/app/components/ui/calendar";
+import { Calendar } from "@/registry/new-york/ui/calendar";
 import { DateRange } from "react-day-picker";
 
 // 1) Multiple Selection Calendar

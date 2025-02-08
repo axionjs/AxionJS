@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Textarea } from "@/app/components/ui/teext-area";
+import { Textarea } from "@/registry/new-york/ui/textarea";
 
 export function DefaultTextareaPreview() {
   return (
