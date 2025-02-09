@@ -3,9 +3,9 @@
 import React from "react";
 import { Input } from "@/registry/new-york/ui/input";
 import { Eye, EyeOff } from "lucide-react";
-import { ColorPicker } from "@/app/components/ui/color-picker";
-import { Label } from "@/app/components/ui/label";
-import { Slider } from "@/app/components/ui/slider";
+import ColorPicker from "@/components/ui/color-picker";
+import { Label } from "@/registry/new-york/ui/label";
+import { Slider } from "@/components/ui/slider";
 import {
   Select,
   SelectTrigger,

@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/app/components/ui/button";
-import { Label } from "@/app/components/ui/label";
+import { Button } from "@/registry/new-york/ui/button";
+import { Label } from "@/registry/new-york/ui/label";
 import {
   Select,
   SelectTrigger,
@@ -10,12 +10,12 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Input } from "@/app/components/ui/input";
-import { ColorPicker } from "@/app/components/ui/color-picker";
+import { Input } from "@/registry/new-york/ui/input";
+import  ColorPicker  from "@/components/ui/color-picker";
 import { cn } from "@/lib/utils";
-import { Switch } from "@/app/components/ui/switch";
+import { Switch } from "@/registry/new-york/ui/switch";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
-import { Slider } from "@/app/components/ui/slider";
+import { Slider } from "@/components/ui/slider";
 
 // Example variants & sizes, no "custom" variant in this snippet
 const AVAILABLE_VARIANTS = [
