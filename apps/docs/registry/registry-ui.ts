@@ -35,6 +35,50 @@ export const ui: Registry["items"] = [
     },
   },
   {
+    name: "AccessibilityTool",
+    type: "registry:ui",
+    registryDependencies: ["dialog", "switch"],
+    files: [
+      {
+        path: "ui/AccessibilityTool.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "lib/accessibility-store.ts",
+        type: "registry:lib",
+      },
+    ],
+  },
+  {
+    name: "AccessibilityProvider",
+    type: "registry:ui",
+    files: [
+      {
+        path: "ui/AccessibilityProvider.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "lib/accessibility-store.ts",
+        type: "registry:lib",
+      },
+    ],
+  },
+  {
+    name: "AccessibilityTriggerAvatar",
+    type: "registry:ui",
+    registryDependencies: ["dialog", "switch"],
+    files: [
+      {
+        path: "ui/AccessibilityTriggerAvatar.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "lib/accessibility-store.ts",
+        type: "registry:lib",
+      },
+    ],
+  },
+  {
     name: "alert",
     type: "registry:ui",
     files: [
@@ -96,17 +140,6 @@ export const ui: Registry["items"] = [
     files: [
       {
         path: "ui/bento.tsx",
-        type: "registry:ui",
-      },
-    ],
-  },
-  {
-    name: "button",
-    type: "registry:ui",
-    dependencies: ["@radix-ui/react-slot"],
-    files: [
-      {
-        path: "ui/button.tsx",
         type: "registry:ui",
       },
     ],

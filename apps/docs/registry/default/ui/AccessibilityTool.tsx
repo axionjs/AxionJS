@@ -6,9 +6,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/registry/new-york/ui/dialog";
-import { useAccessibilityStore } from "@/lib/accessibility-store";
-import { Switch } from "@/registry/new-york/ui/switch";
+} from "@/registry/default/ui/dialog";
+import { useAccessibilityStore } from "@/registry/default/lib/accessibility-store";
+import { Switch } from "@/registry/default/ui/switch";
 import {
   LucideContrast,
   LucideEye,

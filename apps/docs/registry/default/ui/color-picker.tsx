@@ -44,7 +44,7 @@ export function ColorPicker({
   triggerButtonProps,
 }: ColorPickerProps) {
   const [internalColor, setInternalColor] = React.useState<string>(
-    value ?? defaultValue
+    value ?? defaultValue,
   );
 
   const color = value ?? internalColor;

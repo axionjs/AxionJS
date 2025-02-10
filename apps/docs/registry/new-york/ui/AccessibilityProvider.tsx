@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useAccessibilityStore } from "@/lib/accessibility-store";
+import { useAccessibilityStore } from "@/registry/new-york/lib/accessibility-store";
 
 export function AccessibilityProvider({
   children,

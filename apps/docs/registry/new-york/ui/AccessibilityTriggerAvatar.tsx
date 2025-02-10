@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useAccessibilityStore } from "@/lib/accessibility-store";
+import { useAccessibilityStore } from "@/registry/new-york/lib/accessibility-store";
 import {
   Avatar,
   AvatarImage,

@@ -1,9 +1,9 @@
 import { RootProvider } from "fumadocs-ui/provider";
 import type { ReactNode } from "react";
 import "./global.css";
-import { AccessibilityProvider } from "@/app/components/AccessibilityProvider";
-import { AccessibilityTool } from "@/app/components/AccessibilityTool";
-import { AccessibilityTriggerAvatar } from "@/app/components/AccessibilityTriggerAvatar";
+import { AccessibilityProvider } from "@/registry/new-york/ui/AccessibilityProvider";
+import { AccessibilityTool } from "@/registry/new-york/ui/AccessibilityTool";
+import { AccessibilityTriggerAvatar } from "@/registry/new-york/ui/AccessibilityTriggerAvatar";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
