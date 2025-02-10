@@ -45,6 +45,9 @@
   {
     "name": "AccessibilityTool",
     "type": "registry:ui",
+    "dependencies": [
+      "zustand"
+    ],
     "registryDependencies": [
       "dialog",
       "switch"
@@ -63,6 +66,9 @@
   {
     "name": "AccessibilityProvider",
     "type": "registry:ui",
+    "dependencies": [
+      "zustand"
+    ],
     "files": [
       {
         "path": "ui/AccessibilityProvider.tsx",
@@ -77,6 +83,9 @@
   {
     "name": "AccessibilityTriggerAvatar",
     "type": "registry:ui",
+    "dependencies": [
+      "zustand"
+    ],
     "registryDependencies": [
       "dialog",
       "switch"

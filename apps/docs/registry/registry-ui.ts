@@ -37,6 +37,7 @@ export const ui: Registry["items"] = [
   {
     name: "AccessibilityTool",
     type: "registry:ui",
+    dependencies: ["zustand"],
     registryDependencies: ["dialog", "switch"],
     files: [
       {
@@ -52,6 +53,7 @@ export const ui: Registry["items"] = [
   {
     name: "AccessibilityProvider",
     type: "registry:ui",
+    dependencies: ["zustand"],
     files: [
       {
         path: "ui/AccessibilityProvider.tsx",
@@ -66,6 +68,7 @@ export const ui: Registry["items"] = [
   {
     name: "AccessibilityTriggerAvatar",
     type: "registry:ui",
+    dependencies: ["zustand"],
     registryDependencies: ["dialog", "switch"],
     files: [
       {

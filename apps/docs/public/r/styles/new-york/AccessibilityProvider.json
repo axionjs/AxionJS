@@ -3,6 +3,9 @@
   "name": "AccessibilityProvider",
   "type": "registry:ui",
   "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "zustand"
+  ],
   "files": [
     {
       "path": "ui/AccessibilityProvider.tsx",

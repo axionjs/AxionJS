@@ -3,6 +3,9 @@
   "name": "AccessibilityTriggerAvatar",
   "type": "registry:ui",
   "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "zustand"
+  ],
   "registryDependencies": [
     "dialog",
     "switch"
