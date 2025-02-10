@@ -190,7 +190,7 @@ export async function getProjectConfig(cwd, defaultProjectInfo = null) {
   }
 
   const config = {
-    $schema: "https://ui.shadcn.com/schema.json",
+    $schema: "http://localhost:3000/schema.json",
     rsc: projectInfo.isRSC,
     tsx: projectInfo.isTsx,
     style: "new-york",

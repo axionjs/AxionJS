@@ -50,7 +50,7 @@ export async function preFlightAdd(options) {
     );
     logger.error(
       `Learn more at ${highlighter.info(
-        "https://ui.shadcn.com/docs/components-json"
+        "https://www.axionjs.com/docs/components-json"
       )}.`
     );
     logger.break();

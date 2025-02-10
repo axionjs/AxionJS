@@ -229,7 +229,7 @@ async function promptForConfig(defaultConfig = null) {
   };
 
   return rawConfigSchema.parse({
-    $schema: "https://ui.shadcn.com/schema.json",
+    $schema: "http://localhost:3000/schema.json",
     style: options.style,
     tailwind: {
       config: options.tailwindConfig,
