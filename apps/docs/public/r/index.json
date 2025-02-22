@@ -43,14 +43,15 @@
     }
   },
   {
-    "name": "AccessibilityTool",
+    "name": "accessibility-tool",
     "type": "registry:ui",
     "dependencies": [
       "zustand"
     ],
     "registryDependencies": [
       "dialog",
-      "switch"
+      "switch",
+      "avatar"
     ],
     "files": [
       {
@@ -58,39 +59,9 @@
         "type": "registry:ui"
       },
       {
-        "path": "lib/accessibility-store.ts",
-        "type": "registry:lib"
-      }
-    ]
-  },
-  {
-    "name": "AccessibilityProvider",
-    "type": "registry:ui",
-    "dependencies": [
-      "zustand"
-    ],
-    "files": [
-      {
         "path": "ui/AccessibilityProvider.tsx",
         "type": "registry:ui"
       },
-      {
-        "path": "lib/accessibility-store.ts",
-        "type": "registry:lib"
-      }
-    ]
-  },
-  {
-    "name": "AccessibilityTriggerAvatar",
-    "type": "registry:ui",
-    "dependencies": [
-      "zustand"
-    ],
-    "registryDependencies": [
-      "dialog",
-      "switch"
-    ],
-    "files": [
       {
         "path": "ui/AccessibilityTriggerAvatar.tsx",
         "type": "registry:ui"

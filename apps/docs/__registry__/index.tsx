@@ -20,50 +20,20 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
-    "AccessibilityTool": {
-      name: "AccessibilityTool",
+    "accessibility-tool": {
+      name: "accessibility-tool",
       description: "",
       type: "registry:ui",
-      registryDependencies: ["dialog","switch"],
+      registryDependencies: ["dialog","switch","avatar"],
       files: [{
         path: "registry/new-york/ui/AccessibilityTool.tsx",
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/new-york/lib/accessibility-store.ts",
-        type: "registry:lib",
-        target: ""
-      }],
-      categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/ui/AccessibilityTool.tsx")),
-      source: "",
-      meta: undefined,
-    },
-    "AccessibilityProvider": {
-      name: "AccessibilityProvider",
-      description: "",
-      type: "registry:ui",
-      registryDependencies: undefined,
-      files: [{
         path: "registry/new-york/ui/AccessibilityProvider.tsx",
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/new-york/lib/accessibility-store.ts",
-        type: "registry:lib",
-        target: ""
-      }],
-      categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/ui/AccessibilityProvider.tsx")),
-      source: "",
-      meta: undefined,
-    },
-    "AccessibilityTriggerAvatar": {
-      name: "AccessibilityTriggerAvatar",
-      description: "",
-      type: "registry:ui",
-      registryDependencies: ["dialog","switch"],
-      files: [{
         path: "registry/new-york/ui/AccessibilityTriggerAvatar.tsx",
         type: "registry:ui",
         target: ""
@@ -73,7 +43,7 @@ export const Index: Record<string, any> = {
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/ui/AccessibilityTriggerAvatar.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/ui/AccessibilityTool.tsx")),
       source: "",
       meta: undefined,
     },
@@ -873,50 +843,20 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
-    "AccessibilityTool": {
-      name: "AccessibilityTool",
+    "accessibility-tool": {
+      name: "accessibility-tool",
       description: "",
       type: "registry:ui",
-      registryDependencies: ["dialog","switch"],
+      registryDependencies: ["dialog","switch","avatar"],
       files: [{
         path: "registry/default/ui/AccessibilityTool.tsx",
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/default/lib/accessibility-store.ts",
-        type: "registry:lib",
-        target: ""
-      }],
-      categories: undefined,
-      component: React.lazy(() => import("@/registry/default/ui/AccessibilityTool.tsx")),
-      source: "",
-      meta: undefined,
-    },
-    "AccessibilityProvider": {
-      name: "AccessibilityProvider",
-      description: "",
-      type: "registry:ui",
-      registryDependencies: undefined,
-      files: [{
         path: "registry/default/ui/AccessibilityProvider.tsx",
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/default/lib/accessibility-store.ts",
-        type: "registry:lib",
-        target: ""
-      }],
-      categories: undefined,
-      component: React.lazy(() => import("@/registry/default/ui/AccessibilityProvider.tsx")),
-      source: "",
-      meta: undefined,
-    },
-    "AccessibilityTriggerAvatar": {
-      name: "AccessibilityTriggerAvatar",
-      description: "",
-      type: "registry:ui",
-      registryDependencies: ["dialog","switch"],
-      files: [{
         path: "registry/default/ui/AccessibilityTriggerAvatar.tsx",
         type: "registry:ui",
         target: ""
@@ -926,7 +866,7 @@ export const Index: Record<string, any> = {
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/ui/AccessibilityTriggerAvatar.tsx")),
+      component: React.lazy(() => import("@/registry/default/ui/AccessibilityTool.tsx")),
       source: "",
       meta: undefined,
     },
