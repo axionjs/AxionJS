@@ -1,0 +1,413 @@
+---
+title: useLocalStorage
+description: A hook that persists state in localStorage with the same API as useState.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { SimpleLocalStoragePreview, LocalStorageExamplesPreview } from "@/app/components/docs/UseLocalStoragePreview";
+
+# useLocalStorage
+
+The `useLocalStorage` hook provides persistent state storage using the browser's localStorage API. It works just like React's `useState` hook, but automatically syncs state changes to localStorage, making values persist between page refreshes and browser sessions.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <SimpleLocalStoragePreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useLocalStorage } from "@/hooks/use-local-storage";
+    
+    function UserPreferences() {
+      const [name, setName] = useLocalStorage("user-name", "");
+      const [count, setCount] = useLocalStorage("counter", 0);
+      
+      return (
+        <div>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
+          />
+          
+          <div>
+            <button onClick={() => setCount(count - 1)}>-</button>
+            <span>{count}</span>
+            <button onClick={() => setCount(count + 1)}>+</button>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useLocalStorage hook using:
+    ```bash
+    npx axionjs add hook use-local-storage
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-local-storage.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useEffect } from "react";
+
+    export function useLocalStorage<T>(
+      key: string,
+      initialValue: T
+    ): [T, (value: T | ((val: T) => T)) => void] {
+      // Get stored value from localStorage, or use initialValue
+      const readValue = (): T => {
+        // Check for SSR
+        if (typeof window === "undefined") {
+          return initialValue;
+        }
+        
+        try {
+          const item = window.localStorage.getItem(key);
+          return item ? (JSON.parse(item) as T) : initialValue;
+        } catch (error) {
+          console.warn(`Error reading localStorage key "${key}":`, error);
+          return initialValue;
+        }
+      };
+      
+      // State to store our value
+      const [storedValue, setStoredValue] = useState<T>(readValue);
+      
+      // Function to update both state and localStorage
+      const setValue = (value: T | ((val: T) => T)) => {
+        try {
+          // Allow value to be a function like in useState
+          const valueToStore = value instanceof Function ? value(storedValue) : value;
+          
+          // Save state
+          setStoredValue(valueToStore);
+          
+          // Save to localStorage
+          if (typeof window !== "undefined") {
+            window.localStorage.setItem(key, JSON.stringify(valueToStore));
+            
+            // Dispatch a custom event so other instances can update
+            window.dispatchEvent(new CustomEvent("local-storage", { detail: { key, value: valueToStore } }));
+          }
+        } catch (error) {
+          console.warn(`Error setting localStorage key "${key}":`, error);
+        }
+      };
+      
+      // Listen for changes to localStorage from other components
+      useEffect(() => {
+        const handleStorageChange = (event: StorageEvent | CustomEvent) => {
+          if ((event as StorageEvent).key && (event as StorageEvent).key !== key) {
+            return;
+          }
+          
+          // If it's a CustomEvent
+          if ((event as CustomEvent).detail) {
+            const { key: eventKey, value } = (event as CustomEvent).detail;
+            if (eventKey === key) {
+              setStoredValue(value);
+            }
+            return;
+          }
+          
+          // If it's a StorageEvent from another tab/window
+          setStoredValue(readValue());
+        };
+        
+        // Listen for storage events from other windows
+        window.addEventListener("storage", handleStorageChange);
+        
+        // Listen for custom events from this window
+        window.addEventListener("local-storage", handleStorageChange as EventListener);
+        
+        return () => {
+          window.removeEventListener("storage", handleStorageChange);
+          window.removeEventListener("local-storage", handleStorageChange as EventListener);
+        };
+      }, [key, readValue]);
+      
+      return [storedValue, setValue];
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-local-storage.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    key: {
+      description: "The localStorage key to save the value under",
+      type: "string",
+      default: "Required",
+    },
+    initialValue: {
+      description: "The initial value to use if no stored value exists",
+      type: "T (generic type)",
+      default: "Required",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    storedValue: {
+      description: "The current value (from localStorage or initial value)",
+      type: "T (generic type)",
+    },
+    setValue: {
+      description: "Function to update the value (works like setState)",
+      type: "(value: T | ((val: T) => T)) => void",
+    },
+  }}
+/>
+
+## Examples
+
+### More Examples
+
+<LocalStorageExamplesPreview />
+
+### Shopping Cart
+
+Persist a shopping cart between sessions:
+
+```tsx ts2js
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+function ShoppingCart() {
+  const [cart, setCart] = useLocalStorage<CartItem[]>("shopping-cart", []);
+  
+  const addToCart = (item: CartItem) => {
+    setCart((currentCart) => {
+      // Check if item already exists
+      const existingItemIndex = currentCart.findIndex(
+        (cartItem) => cartItem.id === item.id
+      );
+      
+      if (existingItemIndex > -1) {
+        // Update quantity of existing item
+        const newCart = [...currentCart];
+        newCart[existingItemIndex] = {
+          ...newCart[existingItemIndex],
+          quantity: newCart[existingItemIndex].quantity + 1,
+        };
+        return newCart;
+      }
+      
+      // Add new item
+      return [...currentCart, item];
+    });
+  };
+  
+  const removeFromCart = (itemId: string) => {
+    setCart((currentCart) => 
+      currentCart.filter((item) => item.id !== itemId)
+    );
+  };
+  
+  const totalAmount = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity, 
+    0
+  );
+  
+  return (
+    <div>
+      <h2>Shopping Cart ({cart.length} items)</h2>
+      
+      {cart.map((item) => (
+        <div key={item.id}>
+          <span>{item.name}</span>
+          <span>${item.price.toFixed(2)} × {item.quantity}</span>
+          <button onClick={() => removeFromCart(item.id)}>Remove</button>
+        </div>
+      ))}
+      
+      <div>Total: ${totalAmount.toFixed(2)}</div>
+    </div>
+  );
+}
+```
+
+### User Settings
+
+Store user preferences:
+
+```tsx ts2js
+interface UserSettings {
+  theme: 'light' | 'dark' | 'system';
+  fontSize: number;
+  notifications: boolean;
+}
+
+function SettingsPanel() {
+  const [settings, setSettings] = useLocalStorage<UserSettings>(
+    "user-settings",
+    {
+      theme: 'system',
+      fontSize: 16,
+      notifications: true,
+    }
+  );
+  
+  const updateSetting = <K extends keyof UserSettings>(
+    key: K, 
+    value: UserSettings[K]
+  ) => {
+    setSettings((current) => ({
+      ...current,
+      [key]: value,
+    }));
+  };
+  
+  return (
+    <div>
+      <h2>Settings</h2>
+      
+      <div>
+        <label>
+          Theme:
+          <select
+            value={settings.theme}
+            onChange={(e) => updateSetting(
+              'theme', 
+              e.target.value as UserSettings['theme']
+            )}
+          >
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system">System</option>
+          </select>
+        </label>
+      </div>
+      
+      <div>
+        <label>
+          Font Size:
+          <input
+            type="range"
+            min="12"
+            max="24"
+            value={settings.fontSize}
+            onChange={(e) => updateSetting(
+              'fontSize', 
+              Number(e.target.value)
+            )}
+          />
+          {settings.fontSize}px
+        </label>
+      </div>
+      
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={settings.notifications}
+            onChange={(e) => updateSetting(
+              'notifications', 
+              e.target.checked
+            )}
+          />
+          Enable Notifications
+        </label>
+      </div>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **User Preferences**: Theme settings, language preferences, UI configurations
+- **Form State**: Save form progress to prevent data loss on refresh
+- **Authentication**: Store authentication tokens (though with caution)
+- **Shopping Carts**: Persist items between sessions
+- **Application State**: Maintain state across page reloads
+- **Recently Viewed**: Track recently viewed items
+- **Tutorial Progress**: Remember completed tutorial steps
+- **Feature Flags**: Store user-specific feature toggles
+
+## Synchronization
+
+This hook handles synchronization between:
+
+1. **Multiple components using the same key** - Updates in one component trigger updates in others
+2. **Multiple tabs/windows** - Changes in one tab are synchronized to others
+
+This is achieved using:
+- Custom events (`local-storage`) for same-window synchronization
+- Native `storage` events for cross-tab/window synchronization
+
+## Security Considerations
+
+When using localStorage, keep these security considerations in mind:
+
+- **No Sensitive Data**: Never store passwords, authentication tokens (unless required for functionality), or personal information
+- **XSS Vulnerability**: localStorage is accessible to any JavaScript running on your site
+- **Size Limits**: localStorage has a limit of ~5MB per domain
+- **Client-Side Only**: localStorage is unavailable during server-side rendering
+
+## Type Safety
+
+The hook is fully typed with TypeScript generics, allowing you to specify the exact type of data you're storing:
+
+```tsx ts2js
+// String example
+const [username, setUsername] = useLocalStorage<string>("username", "");
+
+// Number example
+const [count, setCount] = useLocalStorage<number>("count", 0);
+
+// Boolean example
+const [isEnabled, setIsEnabled] = useLocalStorage<boolean>("feature-flag", false);
+
+// Object example
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const [user, setUser] = useLocalStorage<User | null>("current-user", null);
+
+// Array example
+const [items, setItems] = useLocalStorage<string[]>("recent-items", []);
+```
+
+## Server-Side Rendering
+
+This hook includes SSR safeguards by checking if `window` is defined before accessing browser APIs. During server rendering, it returns the provided initial value.
+
+## Best Practices
+
+- Use descriptive, namespaced keys to avoid collisions
+- Keep stored values small and serializable
+- Provide meaningful initial values
+- Implement error handling for parsing issues
+- Consider encrypting sensitive data if localStorage must be used
+- Clear localStorage when no longer needed
+- Use sessionStorage instead if data should not persist between sessions

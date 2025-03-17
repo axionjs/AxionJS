@@ -1,0 +1,317 @@
+---
+title: useScrollPosition
+description: A hook that tracks scroll position of an element or the window.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { ScrollPositionPreview, HeaderEffectsPreview } from "@/app/components/docs/UseScrollPositionPreview";
+
+# useScrollPosition
+
+The `useScrollPosition` hook tracks the scroll position of an element or the window. It's perfect for creating scroll-based animations, sticky headers, infinite scrolling triggers, and other scroll-dependent UI behaviors.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ScrollPositionPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useScrollPosition } from "@/hooks/use-scroll-position";
+    
+    function ScrollTracker() {
+      const containerRef = useRef<HTMLDivElement>(null);
+      const scrollPosition = useScrollPosition(containerRef);
+      
+      return (
+        <div>
+          <div className="scroll-info">
+            <p>Scroll Position:</p>
+            <p>X: {scrollPosition.x}px</p>
+            <p>Y: {scrollPosition.y}px</p>
+          </div>
+          
+          <div 
+            ref={containerRef} 
+            className="scroll-container"
+            style={{ height: "300px", overflow: "auto" }}
+          >
+            <div style={{ height: "1000px" }}>
+              Scroll me!
+            </div>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useScrollPosition hook using:
+    ```bash
+    npx axionjs add hook use-scroll-position
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-scroll-position.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    // Follow the implementation from the previous hook files
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-scroll-position.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    elementRef: {
+      description: "Reference to the element to track scroll position (defaults to window)",
+      type: "RefObject<HTMLElement> | null",
+      default: "null",
+    },
+    options: {
+      description: "Configuration options",
+      type: "Object",
+      default: "{}",
+    },
+  }}
+/>
+
+### Options
+
+<TypeTable
+  type={{
+    throttleMs: {
+      description: "Throttle delay in milliseconds",
+      type: "number",
+      default: "0",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    position: {
+      description: "Current scroll position",
+      type: "{ x: number, y: number }",
+    },
+  }}
+/>
+
+## Examples
+
+### Scroll-Based Header Effects
+
+Create a header that changes based on scroll position:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <HeaderEffectsPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useScrollPosition } from "@/hooks/use-scroll-position";
+    
+    function ScrollHeader() {
+      const scrollPosition = useScrollPosition();
+      
+      // Calculate header properties based on scroll position
+      const headerOpacity = Math.min(1, scrollPosition.y / 100);
+      const headerBlur = Math.min(8, scrollPosition.y / 20);
+      
+      return (
+        <div>
+          <header
+            style={{
+              position: "sticky",
+              top: 0,
+              zIndex: 10,
+              backgroundColor: `rgba(255, 255, 255, ${headerOpacity})`,
+              backdropFilter: `blur(${headerBlur}px)`,
+              boxShadow: scrollPosition.y > 20 
+                ? '0 1px 3px rgba(0,0,0,0.1)' 
+                : 'none',
+              transition: 'all 0.2s'
+            }}
+          >
+            <div className="header-content">
+              <h1 style={{ 
+                fontSize: `${Math.max(1, 1.5 - scrollPosition.y / 500)}rem` 
+              }}>
+                My Website
+              </h1>
+              <nav>
+                <ul>
+                  <li>Home</li>
+                  <li>About</li>
+                  <li>Contact</li>
+                </ul>
+              </nav>
+            </div>
+          </header>
+          
+          <main>
+            {/* Page content */}
+          </main>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Parallax Effect
+
+Create a simple parallax scrolling effect:
+
+```tsx ts2js
+function ParallaxSection() {
+  const scrollPosition = useScrollPosition();
+  
+  return (
+    <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: 'url(/images/background.jpg)',
+          backgroundSize: 'cover',
+          transform: `translateY(${scrollPosition.y * 0.5}px)`,
+        }}
+      />
+      
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          padding: '2rem',
+        }}
+      >
+        <h1>Parallax Effect</h1>
+        <p>Scroll to see the background move at a different rate.</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### Scroll-Based Progress Indicator
+
+Create a progress bar that shows reading progress:
+
+```tsx ts2js
+function ReadingProgressBar() {
+  const scrollPosition = useScrollPosition();
+  const [totalHeight, setTotalHeight] = useState(0);
+  
+  useEffect(() => {
+    // Calculate the scrollable height (total height - viewport height)
+    const documentHeight = document.documentElement.scrollHeight;
+    const viewportHeight = window.innerHeight;
+    setTotalHeight(documentHeight - viewportHeight);
+    
+    const handleResize = () => {
+      const documentHeight = document.documentElement.scrollHeight;
+      const viewportHeight = window.innerHeight;
+      setTotalHeight(documentHeight - viewportHeight);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  // Calculate progress percentage
+  const progress = totalHeight > 0 
+    ? Math.min(100, (scrollPosition.y / totalHeight) * 100) 
+    : 0;
+  
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '4px',
+        backgroundColor: '#eee',
+        zIndex: 1000,
+      }}
+    >
+      <div
+        style={{
+          height: '100%',
+          width: `${progress}%`,
+          backgroundColor: '#0070f3',
+          transition: 'width 0.1s',
+        }}
+      />
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Sticky Headers**: Create headers that change appearance on scroll
+- **Scroll-to-Top Button**: Show/hide a button based on scroll position
+- **Parallax Effects**: Create scroll-based parallax animations
+- **Reading Progress**: Display reading progress indicators
+- **Lazy Loading Triggers**: Load content as user approaches it
+- **Infinite Scrolling**: Trigger loading more content when near the bottom
+- **Animation Triggers**: Start animations when elements scroll into view
+- **Table of Contents Highlighting**: Highlight current section in a TOC
+- **Scroll-Based Navigation**: Change active navigation based on scroll
+- **Reveal Effects**: Reveal content as the user scrolls
+
+## Performance Optimization
+
+When tracking scroll position, consider performance implications:
+
+1. **Throttling**: Use the `throttleMs` option to limit update frequency on rapid scrolling
+2. **Use with Specific Elements**: Track specific elements rather than the whole window when possible
+3. **Consider requestAnimationFrame**: The hook uses requestAnimationFrame internally for performance
+4. **Avoid Expensive Calculations**: Be mindful of calculations done with scroll values
+5. **Debounce Event Handlers**: Debounce any handlers that will be called with scroll position updates
+
+Example with throttling:
+
+```tsx ts2js
+// Update at most every 50ms for better performance
+const scrollPosition = useScrollPosition(null, { throttleMs: 50 });
+```
+
+## Browser Compatibility
+
+The hook uses standard scroll properties and event listeners that are well supported across all modern browsers.
+
+## SSR Compatibility
+
+The hook includes safeguards for server-side rendering by checking for the existence of `window` before attempting to access browser APIs.
+
+## Best Practices
+
+- Combine with CSS transitions for smoother visual effects
+- Consider mobile scrolling behavior which can be different from desktop
+- Use appropriate throttling for performance-critical applications
+- Test scroll-based interactions on various devices and browsers
+- Avoid using scroll-based effects that might interfere with user's reading experience
+- Ensure accessibility by providing alternatives to scroll-based interactions
+- Consider user preferences like reduced motion for animations

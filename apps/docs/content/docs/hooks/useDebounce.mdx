@@ -1,3 +1,232 @@
 ---
-title: use-debounce
+title: useDebounce
+description: A hook that delays the updating of a value until a specified time has passed since the last update.
 ---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { DebouncedSearchPreview, BasicDebouncePreview } from "@/app/components/docs/UseDebouncedSearchPreview";
+
+# useDebounce
+
+The `useDebounce` hook delays the updating of a value until a specified time has passed since the last update. This is useful for reducing the frequency of updates in scenarios like:
+
+- Search inputs to avoid making API calls on every keystroke
+- Form inputs that trigger expensive calculations
+- Window resize events that should only trigger updates after the user has finished resizing
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <BasicDebouncePreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { useDebounce } from "@/hooks/use-debounce";
+    
+    function MyComponent() {
+      const [value, setValue] = useState("");
+      // Value will only update 500ms after the user stops typing
+      const debouncedValue = useDebounce(value, 500);
+      
+      return (
+        <div>
+          <input 
+            type="text" 
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <p>Debounced value: {debouncedValue}</p>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useDebounce hook using:
+    ```bash
+    npx axionjs add hook use-debounce
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-debounce.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useEffect } from "react";
+
+    export function useDebounce<T>(value: T, delay: number = 500): T {
+      const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          setDebouncedValue(value);
+        }, delay);
+
+        return () => {
+          clearTimeout(timer);
+        };
+      }, [value, delay]);
+
+      return debouncedValue;
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-debounce.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    value: {
+      description: "The value to debounce",
+      type: "T (generic type)",
+      default: "Required",
+    },
+    delay: {
+      description: "The delay in milliseconds before the value updates",
+      type: "number",
+      default: "500",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    debouncedValue: {
+      description: "The debounced value that updates after the specified delay",
+      type: "T (same type as the input value)",
+    },
+  }}
+/>
+
+## Examples
+
+### Search with Debounce
+
+A common use case for debouncing is with search inputs, where you want to avoid making API calls on every keystroke.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <DebouncedSearchPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState, useEffect } from "react";
+    import { useDebounce } from "@/hooks/use-debounce";
+    
+    function SearchComponent() {
+      const [searchTerm, setSearchTerm] = useState("");
+      const [results, setResults] = useState([]);
+      const [isLoading, setIsLoading] = useState(false);
+      
+      // Debounce the search term to avoid excessive API calls
+      const debouncedSearchTerm = useDebounce(searchTerm, 500);
+      
+      // Effect to search when debounced value changes
+      useEffect(() => {
+        if (debouncedSearchTerm) {
+          setIsLoading(true);
+          // Make API call with debounced value
+          fetchSearchResults(debouncedSearchTerm)
+            .then(data => {
+              setResults(data);
+              setIsLoading(false);
+            });
+        } else {
+          setResults([]);
+        }
+      }, [debouncedSearchTerm]);
+      
+      return (
+        <div>
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search..."
+          />
+          {isLoading && <p>Loading...</p>}
+          <ul>
+            {results.map(item => (
+              <li key={item.id}>{item.name}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Resize Event Debouncing
+
+Window resize events can fire rapidly during resizing, so debouncing helps optimize performance.
+
+```tsx ts2js
+import { useState, useEffect } from "react";
+import { useDebounce } from "@/hooks/use-debounce";
+
+function WindowSizeTracker() {
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  
+  // Debounce window size to avoid excessive re-renders
+  const debouncedWindowSize = useDebounce(windowSize, 200);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+    
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  
+  return (
+    <div>
+      <p>Debounced Width: {debouncedWindowSize.width}px</p>
+      <p>Debounced Height: {debouncedWindowSize.height}px</p>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Search Inputs**: Reduce API calls while typing
+- **Form Validation**: Delay validation until the user stops typing
+- **Auto-Save**: Wait until the user finishes typing before saving
+- **Resize Handlers**: Optimize performance during window resizing
+- **Scroll Events**: Process scroll events less frequently for performance
+- **Filter/Sort Operations**: Delay expensive data operations until user input is stable
+
+## Accessibility
+
+This hook doesn't directly impact accessibility, but proper use can improve user experience by reducing UI jank and ensuring responsive interfaces.
+
+## Best Practices
+
+- Choose an appropriate delay based on the use case (typically 300-500ms for typing)
+- Use debouncing for expensive operations that don't need to run on every input change
+- Consider providing visual feedback when debouncing causes a noticeable delay
+- For immediate UI updates with debounced processing, maintain both the raw and debounced values

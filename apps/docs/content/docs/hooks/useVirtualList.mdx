@@ -1,0 +1,551 @@
+---
+title: useVirtualList
+description: A hook that efficiently renders large lists by only rendering items in or near the viewport.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { VirtualListPreview, GridVirtualListPreview } from "@/app/components/docs/UseVirtualListPreview";
+
+# useVirtualList
+
+The `useVirtualList` hook enables efficient rendering of large lists by only rendering items that are currently visible in the viewport (plus a few extra for smooth scrolling). This dramatically improves performance and reduces memory usage when working with lists containing hundreds or thousands of items.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <VirtualListPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useVirtualList } from "@/hooks/use-virtual-list";
+    
+    function VirtualizedList() {
+      // Generate 1000 items
+      const items = Array.from({ length: 1000 }, (_, index) => ({
+        id: index,
+        name: `Item ${index}`,
+        description: `Description for item ${index}`,
+      }));
+      
+      // Use the virtual list hook
+      const { virtualItems, totalHeight } = useVirtualList(items, {
+        itemHeight: 80, // Height of each item
+        overscan: 5,    // Number of items to render outside viewport
+      });
+      
+      return (
+        <div
+          style={{ height: "400px", overflow: "auto" }}
+        >
+          {/* Container with the total height of all items */}
+          <div style={{ height: `${totalHeight}px`, position: "relative" }}>
+            {virtualItems.map(virtualItem => (
+              <div
+                key={virtualItem.index}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  transform: `translateY(${virtualItem.start}px)`,
+                  width: "100%",
+                  height: `${virtualItem.end - virtualItem.start}px`,
+                }}
+              >
+                <div className="item-content">
+                  <h3>{virtualItem.item.name}</h3>
+                  <p>{virtualItem.item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useVirtualList hook using:
+    ```bash
+    npx axionjs add hook use-virtual-list
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-virtual-list.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    // Follow the implementation from the previous hook files
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-virtual-list.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    items: {
+      description: "Array of items to virtualize",
+      type: "T[]",
+      default: "Required",
+    },
+    options: {
+      description: "Configuration options",
+      type: "VirtualListOptions",
+      default: "{}",
+    },
+  }}
+/>
+
+### Options
+
+<TypeTable
+  type={{
+    itemHeight: {
+      description: "Height of each item in pixels (can be a function for variable heights)",
+      type: "number | ((index: number, item: T) => number)",
+      default: "Required",
+    },
+    overscan: {
+      description: "Number of items to render before and after the visible items",
+      type: "number",
+      default: "3",
+    },
+    scrollingDelay: {
+      description: "Delay in ms to wait before updating the list after scrolling stops",
+      type: "number",
+      default: "150",
+    },
+    scrollingResetTimespan: {
+      description: "Time in ms to wait before stopping overscan adjustment",
+      type: "number",
+      default: "150",
+    },
+    useIsScrolling: {
+      description: "Whether to track and return isScrolling state",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    virtualItems: {
+      description: "Array of virtual items to render",
+      type: "Array<{ index: number, start: number, end: number, item: T }>",
+    },
+    totalHeight: {
+      description: "Total height of all items in pixels",
+      type: "number",
+    },
+    isScrolling: {
+      description: "Whether the user is currently scrolling",
+      type: "boolean",
+    },
+    scrollToIndex: {
+      description: "Function to scroll to a specific item index",
+      type: "(index: number, options?: { align?: 'auto' | 'start' | 'center' | 'end' }) => void",
+    },
+  }}
+/>
+
+## Examples
+
+### Virtual Grid Layout
+
+Creating a virtual grid for efficiently rendering large sets of items in a grid layout:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <GridVirtualListPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useVirtualList } from "@/hooks/use-virtual-list";
+    import { useRef, useState, useEffect } from "react";
+    
+    function VirtualGrid() {
+      const containerRef = useRef<HTMLDivElement>(null);
+      const [scrollTop, setScrollTop] = useState(0);
+      
+      // Generate 1000 items
+      const items = Array.from({ length: 1000 }, (_, i) => ({
+        id: i,
+        color: `hsl(${(i * 25) % 360}, 70%, 80%)`,
+      }));
+      
+      // Virtual grid configuration
+      const itemHeight = 100; // Height of each row
+      const itemsPerRow = 4;  // Number of items per row
+      
+      // Convert flat list to rows for virtualization
+      const rows = [];
+      for (let i = 0; i < items.length; i += itemsPerRow) {
+        rows.push(items.slice(i, i + itemsPerRow));
+      }
+      
+      // Use the virtual list hook for rows
+      const { virtualItems, totalHeight } = useVirtualList(rows, {
+        itemHeight,
+        overscan: 2,
+      });
+      
+      useEffect(() => {
+        const handleScroll = () => {
+          if (containerRef.current) {
+            setScrollTop(containerRef.current.scrollTop);
+          }
+        };
+        
+        containerRef.current?.addEventListener('scroll', handleScroll);
+        return () => {
+          containerRef.current?.removeEventListener('scroll', handleScroll);
+        };
+      }, []);
+      
+      return (
+        <div
+          ref={containerRef}
+          style={{ height: "500px", overflow: "auto" }}
+        >
+          <div 
+            style={{ height: `${totalHeight}px`, position: "relative" }}
+          >
+            {virtualItems.map(virtualRow => (
+              <div
+                key={virtualRow.index}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: `${itemHeight}px`,
+                  transform: `translateY(${virtualRow.start}px)`,
+                  display: "grid",
+                  gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)`,
+                  gap: "8px",
+                  padding: "8px",
+                }}
+              >
+                {virtualRow.item.map(item => (
+                  <div
+                    key={item.id}
+                    style={{
+                      backgroundColor: item.color,
+                      borderRadius: "4px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Item {item.id}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Dynamic Height Items
+
+Handle items with varying heights:
+
+```tsx ts2js
+function DynamicHeightList() {
+  // Items with different content lengths
+  const items = Array.from({ length: 500 }, (_, i) => ({
+    id: i,
+    title: `Item ${i}`,
+    description: `Description that might be ${i % 3 === 0 ? 'short' : 
+      i % 3 === 1 ? 'medium length with a bit more text here' : 
+      'quite long and detailed, spanning multiple lines potentially. This is a really lengthy description to demonstrate how a larger item might look in our virtualized list.'}`,
+  }));
+  
+  // Reference to measure rendered items
+  const itemHeights = useRef<Record<number, number>>({});
+  
+  // Get or estimate item height
+  const getItemHeight = (index: number, item: typeof items[0]) => {
+    // Return known height if we've measured it
+    if (itemHeights.current[index]) {
+      return itemHeights.current[index];
+    }
+    
+    // Estimate based on content length
+    const baseHeight = 80;
+    const descriptionLength = item.description.length;
+    
+    if (descriptionLength < 50) return baseHeight;
+    if (descriptionLength < 200) return baseHeight + 40;
+    return baseHeight + 80;
+  };
+  
+  // Callback ref to measure actual heights after render
+  const measureRef = useCallback((index: number) => (element: HTMLElement | null) => {
+    if (element) {
+      const height = element.getBoundingClientRect().height;
+      if (height !== itemHeights.current[index]) {
+        itemHeights.current[index] = height;
+        // Force a re-render if height changed
+        forceUpdate();
+      }
+    }
+  }, []);
+  
+  // Use virtual list with dynamic heights
+  const { virtualItems, totalHeight } = useVirtualList(items, {
+    itemHeight: getItemHeight,
+    overscan: 5,
+  });
+  
+  return (
+    <div style={{ height: "500px", overflow: "auto" }}>
+      <div style={{ height: `${totalHeight}px`, position: "relative" }}>
+        {virtualItems.map(virtualItem => (
+          <div
+            key={virtualItem.index}
+            ref={measureRef(virtualItem.index)}
+            style={{
+              position: "absolute",
+              top: 0,
+              transform: `translateY(${virtualItem.start}px)`,
+              width: "100%",
+              padding: "8px",
+            }}
+          >
+            <div className="item-content">
+              <h3>{virtualItem.item.title}</h3>
+              <p>{virtualItem.item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+### Infinite Loading List
+
+Combine virtual list with infinite loading:
+
+```tsx ts2js
+function InfiniteVirtualList() {
+  const [items, setItems] = useState<Array<{ id: number; text: string }>>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  
+  // Load initial batch
+  useEffect(() => {
+    loadMoreItems();
+  }, []);
+  
+  // Function to load more items
+  const loadMoreItems = useCallback(async () => {
+    if (isLoading || !hasMore) return;
+    
+    setIsLoading(true);
+    
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Add new items
+    const startIndex = items.length;
+    const newItems = Array.from({ length: 50 }, (_, i) => ({
+      id: startIndex + i,
+      text: `Item ${startIndex + i}`,
+    }));
+    
+    setItems(prev => [...prev, ...newItems]);
+    setIsLoading(false);
+    
+    // Stop after 1000 items for this example
+    if (items.length + newItems.length >= 1000) {
+      setHasMore(false);
+    }
+  }, [items.length, isLoading, hasMore]);
+  
+  // Use virtual list hook
+  const { virtualItems, totalHeight } = useVirtualList(items, { 
+    itemHeight: 60,
+    overscan: 10,
+  });
+  
+  // Reference for intersection observer
+  const loaderRef = useRef(null);
+  
+  // Set up intersection observer for infinite loading
+  useEffect(() => {
+    if (!loaderRef.current) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasMore && !isLoading) {
+          loadMoreItems();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    
+    observer.observe(loaderRef.current);
+    return () => observer.disconnect();
+  }, [loadMoreItems, hasMore, isLoading]);
+  
+  return (
+    <div style={{ height: "500px", overflow: "auto" }}>
+      <div style={{ height: `${totalHeight}px`, position: "relative" }}>
+        {virtualItems.map(virtualItem => (
+          <div
+            key={virtualItem.index}
+            style={{
+              position: "absolute",
+              top: 0,
+              transform: `translateY(${virtualItem.start}px)`,
+              width: "100%",
+              height: "60px",
+              padding: "0 16px",
+              display: "flex",
+              alignItems: "center",
+              borderBottom: "1px solid #eee",
+            }}
+          >
+            <div>{virtualItem.item.text}</div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Loader element at the end */}
+      <div 
+        ref={loaderRef}
+        style={{ 
+          height: "60px", 
+          display: "flex", 
+          alignItems: "center", 
+          justifyContent: "center",
+          position: "relative",
+          top: totalHeight,
+        }}
+      >
+        {isLoading ? "Loading more items..." : hasMore ? "Scroll for more" : "End of list"}
+      </div>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Long Lists**: Tables, feeds, logs, search results with many items
+- **Data Grids**: Tables with many rows
+- **Chat Interfaces**: Message logs in chat applications
+- **Infinite Scrolling**: Continuously loading content as user scrolls
+- **Product Catalogs**: E-commerce product listings
+- **File Browsers**: Long directory listings
+- **Music/Video Libraries**: Media player track listings
+- **Documentation**: Long articles or documentation with fixed-position navigation
+- **User Directories**: Contact lists or user management interfaces
+- **Timeline Views**: Chronological data displays
+
+## Performance Benefits
+
+Virtual lists offer significant performance advantages:
+
+1. **Reduced DOM Size**: Only renders what's visible, not the entire list
+2. **Improved Initial Load Time**: No need to process all list items at once
+3. **Smooth Scrolling**: Less work per frame means better scrolling performance
+4. **Lower Memory Usage**: Fewer DOM nodes in memory at any time
+5. **Better React Reconciliation**: Fewer components to compare and update
+
+## Accessibility Considerations
+
+- Ensure proper keyboard navigation through the virtualized content
+- Maintain focus position when scrolling or updating content
+- Provide appropriate ARIA attributes for list structures
+- Consider the impact of dynamic content loading on screen readers
+- Test with assistive technologies to verify a good experience
+
+## Browser Support
+
+The hook relies on standard browser features for scrolling and positioning that work across all modern browsers.
+
+## Common Challenges and Solutions
+
+### Scroll Restoration
+
+When navigating away and back, maintain scroll position:
+
+```tsx ts2js
+// Store scroll position before navigating away
+const handleNavigate = () => {
+  sessionStorage.setItem('listScrollPos', container.current.scrollTop.toString());
+  navigate('/other-page');
+};
+
+// Restore when component mounts
+useEffect(() => {
+  const savedScrollPos = sessionStorage.getItem('listScrollPos');
+  if (savedScrollPos && container.current) {
+    container.current.scrollTop = parseInt(savedScrollPos, 10);
+  }
+}, []);
+```
+
+### Scroll to Specific Item
+
+Use the `scrollToIndex` function returned by the hook:
+
+```tsx ts2js
+// Scroll to item with index 50, centered in the viewport
+scrollToIndex(50, { align: 'center' });
+```
+
+### Working with Forms
+
+When rendering forms in virtual lists, be careful with form state:
+
+```tsx ts2js
+// Use a separate state manager for form values
+const formValues = useRef<Record<string, any>>({});
+
+// In the virtual item render function
+const handleChange = (id, value) => {
+  formValues.current[id] = value;
+};
+
+// When rendering the input
+<input 
+  value={formValues.current[virtualItem.item.id] || ''} 
+  onChange={(e) => handleChange(virtualItem.item.id, e.target.value)}
+/>
+```
+
+## Best Practices
+
+- **Optimize Item Rendering**: Keep item components simple and efficient
+- **Memoize Expensive Calculations**: Use React.memo and useMemo appropriately
+- **Use Stable Item Heights**: For best performance, use consistent item heights when possible
+- **Measure Dynamically When Needed**: For varying heights, implement a measuring system
+- **Customize Overscan**: Adjust overscan based on your use case and scrolling speed
+- **Handle Window Resizing**: Update calculations when container dimensions change
+- **Consider Keyboard Navigation**: Add support for keyboard-based scrolling
+- **Cache Item Data**: Minimize recalculations when items don't change
+- **Use Virtualization Selectively**: Don't add complexity for small lists (< 100 items)
+- **Test Performance**: Monitor render times and memory usage during development

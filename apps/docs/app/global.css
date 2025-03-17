@@ -172,48 +172,152 @@
 
 /* Accessibility Tool CSS */
 /* High contrast example (very simplistic) */
-.high-contrast {
+/* Accessibility Tool CSS */
+
+/* Contrast Levels */
+.contrast-medium {
+  filter: contrast(150%);
+}
+
+.contrast-high {
   filter: contrast(200%);
 }
 
-/* Highlight links (underline them, or add background) */
-.highlight-links a {
+/* Highlight links - different levels */
+.highlight-links-medium a {
   outline: 2px solid yellow;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.15em !important;
+  text-underline-offset: 0.2em !important;
+}
+
+.highlight-links-high a {
+  outline: 3px solid yellow;
   background-color: yellow;
   color: black !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.2em !important;
+  text-underline-offset: 0.3em !important;
+  padding: 0 0.15em;
+}
+
+/* Text Size */
+.text-size-medium {
+  font-size: 1.2em !important;
+}
+
+.text-size-high {
+  font-size: 1.5em !important;
+}
+
+/* Text Spacing */
+.text-spacing-medium * {
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.1em !important;
+}
+
+.text-spacing-high * {
+  letter-spacing: 0.1em !important;
+  word-spacing: 0.2em !important;
 }
 
 /* Hide images */
-.hide-images img {
+.hide-images img,
+.hide-images svg:not(.accessibility-icon),
+.hide-images video,
+.hide-images canvas,
+.hide-images [role="img"] {
   display: none !important;
 }
 
-/* Dyslexia friendly could use a specific font if available (e.g., "OpenDyslexic") */
+/* Dyslexia friendly */
 @font-face {
   font-family: "OpenDyslexic";
-  src: url("/fonts/OpenDyslexic-Regular.woff2") format("woff2");
+  src: url("../app/fonts/OpenDyslexic-Regular.otf") format("woff2");
 }
 
 .dyslexia-friendly * {
   font-family: "OpenDyslexic", sans-serif !important;
 }
 
-/* Increased line height */
-.increased-line-height * {
+/* Line height - different levels */
+.line-height-medium * {
+  line-height: 1.6 !important;
+}
+
+.line-height-high * {
   line-height: 2 !important;
 }
 
-/* Low saturation (grayscale) */
-.low-saturation {
-  filter: grayscale(80%);
+/* Saturation - different levels */
+.saturation-medium {
+  filter: saturate(50%);
 }
 
-/* An example of text spacing (letter spacing, word spacing) */
-.text-spacing * {
-  letter-spacing: 0.05em;
-  word-spacing: 0.2em;
+.saturation-high {
+  filter: grayscale(100%);
 }
 
+/* Screen reader highlighting */
+.screen-reader-highlight {
+  outline: 3px solid #4299e1 !important;
+  background-color: rgba(66, 153, 225, 0.15) !important;
+}
+
+/* Improved color contrast for text */
+.high-contrast-text {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+/* Focus mode - reduce distractions */
+.focus-mode *:not(:focus):not(:active) {
+  opacity: 0.7;
+}
+
+.focus-mode:focus,
+.focus-mode:active {
+  opacity: 1 !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5) !important;
+}
+
+/* Animations control */
+.reduce-animations * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Accessibility panel positioning and animation */
+.accessibility-panel-container {
+  position: fixed;
+  z-index: 9999;
+  transition: transform 0.3s ease-in-out;
+}
+
+.accessibility-panel-container.hidden {
+  transform: translateX(100%);
+}
+
+/* Print-friendly */
+@media print {
+  .print-friendly {
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  .print-friendly a {
+    text-decoration: underline !important;
+    color: #000 !important;
+  }
+}
+
+/* Improved keyboard navigation indicators */
+.keyboard-navigation:focus {
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.8) !important;
+}
 .fd-codeblock code {
   display: grid;
   font-size: 16px;

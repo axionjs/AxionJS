@@ -1,0 +1,690 @@
+---
+title: useFullscreen
+description: A hook for controlling browser fullscreen mode with cross-browser support and iOS fallbacks.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { UseFullscreenPreview, VideoFullscreenPreview, ImageGalleryFullscreenPreview } from "@/app/components/docs/UseFullscreenPreview";
+
+# useFullscreen
+
+The `useFullscreen` hook provides a way to control browser fullscreen mode with cross-browser support and iOS fallbacks. It makes it easy to toggle any element to fullscreen mode, listen for fullscreen changes, and handle browser compatibility issues.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <UseFullscreenPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useRef } from "react";
+    import { useFullscreen } from "@/hooks/use-fullscreen";
+    
+    function FullscreenDemo() {
+      const containerRef = useRef(null);
+      
+      const {
+        isFullscreen,
+        isSupported,
+        enter,
+        exit,
+        toggle,
+      } = useFullscreen({
+        element: containerRef,
+        onEnter: () => console.log("Entered fullscreen"),
+        onExit: () => console.log("Exited fullscreen"),
+      });
+      
+      return (
+        <div>
+          <div
+            ref={containerRef}
+            className={isFullscreen ? "fullscreen-mode" : ""}
+            style={{
+              border: "1px solid #ccc",
+              padding: "20px",
+            }}
+          >
+            <h2>Fullscreen Content</h2>
+            <p>This content can be viewed in fullscreen mode.</p>
+            
+            {isFullscreen && (
+              <button onClick={exit}>Exit Fullscreen</button>
+            )}
+          </div>
+          
+          {!isFullscreen && (
+            <div>
+              <button
+                onClick={enter}
+                disabled={!isSupported}
+              >
+                Enter Fullscreen
+              </button>
+              <button onClick={toggle}>Toggle Fullscreen</button>
+            </div>
+          )}
+          
+          <div>
+            <p>Fullscreen supported: {isSupported ? "Yes" : "No"}</p>
+            <p>Current state: {isFullscreen ? "Fullscreen" : "Normal"}</p>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useFullscreen hook using:
+    ```bash
+    npx axionjs add hook use-fullscreen
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-fullscreen.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useCallback, useRef, useEffect } from 'react';
+
+    interface FullscreenOptions {
+      /** Element to request fullscreen. Falls back to document.documentElement if not provided */
+      element?: React.RefObject<HTMLElement>;
+      /** Function to run when fullscreen is entered */
+      onEnter?: () => void;
+      /** Function to run when fullscreen is exited */
+      onExit?: () => void;
+      /** Whether to automatically apply fallback strategies for iOS (default: true) */
+      iosFallback?: boolean;
+    }
+
+    export function useFullscreen(options: FullscreenOptions = {}) {
+      const { element, onEnter, onExit, iosFallback = true } = options;
+
+      const [isFullscreen, setIsFullscreen] = useState(false);
+      const [isSupported, setIsSupported] = useState(false);
+      const [error, setError] = useState<Error | null>(null);
+
+      const isIOS = useRef(false);
+      const onEnterRef = useRef(onEnter);
+      const onExitRef = useRef(onExit);
+
+      // Update callback refs when they change
+      useEffect(() => {
+        onEnterRef.current = onEnter;
+        onExitRef.current = onExit;
+      }, [onEnter, onExit]);
+
+      // Check browser support for fullscreen API
+      useEffect(() => {
+        if (typeof document === 'undefined') return;
+        
+        const fullscreenEnabled = 
+          document.fullscreenEnabled ||
+          // @ts-ignore - Vendor prefixes
+          document.webkitFullscreenEnabled || 
+          // @ts-ignore - Vendor prefixes
+          document.mozFullScreenEnabled ||
+          // @ts-ignore - Vendor prefixes
+          document.msFullscreenEnabled;
+        
+        isIOS.current = 
+          typeof navigator !== 'undefined' && 
+          /iPad|iPhone|iPod/.test(navigator.userAgent) && 
+          !window.MSStream;
+        
+        setIsSupported(!!fullscreenEnabled || (iosFallback && isIOS.current));
+      }, [iosFallback]);
+
+      // Function to get the target element
+      const getTargetElement = useCallback(() => {
+        if (element && element.current) {
+          return element.current;
+        }
+        return document.documentElement;
+      }, [element]);
+
+      // Track fullscreen changes
+      useEffect(() => {
+        if (typeof document === 'undefined') return;
+        
+        const handleFullscreenChange = () => {
+          const fullscreenElement = 
+            document.fullscreenElement ||
+            // @ts-ignore - Vendor prefixes
+            document.webkitFullscreenElement ||
+            // @ts-ignore - Vendor prefixes
+            document.mozFullScreenElement ||
+            // @ts-ignore - Vendor prefixes
+            document.msFullscreenElement;
+          
+          const newIsFullscreen = !!fullscreenElement;
+          setIsFullscreen(newIsFullscreen);
+          
+          if (newIsFullscreen && onEnterRef.current) {
+            onEnterRef.current();
+          } else if (!newIsFullscreen && onExitRef.current) {
+            onExitRef.current();
+          }
+        };
+        
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+        
+        return () => {
+          document.removeEventListener('fullscreenchange', handleFullscreenChange);
+          document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+          document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+          document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+        };
+      }, []);
+
+      // Enter fullscreen
+      const enter = useCallback(async () => {
+        if (!isSupported) {
+          setError(new Error('Fullscreen not supported'));
+          return false;
+        }
+
+        const target = getTargetElement();
+        setError(null);
+
+        try {
+          if (isIOS.current && iosFallback) {
+            // iOS Safari doesn't support true fullscreen
+            // Apply a CSS class that makes the element take the full screen
+            if (target) {
+              target.style.position = 'fixed';
+              target.style.top = '0';
+              target.style.right = '0';
+              target.style.bottom = '0';
+              target.style.left = '0';
+              target.style.width = '100vw';
+              target.style.height = '100vh';
+              target.style.zIndex = '9999';
+              target.style.backgroundColor = '#000';
+              
+              // Force orientation change if possible
+              if (screen.orientation && screen.orientation.lock) {
+                try {
+                  await screen.orientation.lock('landscape');
+                } catch (e) {
+                  // Ignore orientation errors
+                }
+              }
+              
+              setIsFullscreen(true);
+              if (onEnterRef.current) {
+                onEnterRef.current();
+              }
+              return true;
+            }
+          } else {
+            // Standard fullscreen API
+            if (target.requestFullscreen) {
+              await target.requestFullscreen();
+              return true;
+            } else if (target.webkitRequestFullscreen) {
+              // @ts-ignore - Vendor prefixes
+              await target.webkitRequestFullscreen();
+              return true;
+            } else if (target.mozRequestFullScreen) {
+              // @ts-ignore - Vendor prefixes
+              await target.mozRequestFullScreen();
+              return true;
+            } else if (target.msRequestFullscreen) {
+              // @ts-ignore - Vendor prefixes
+              await target.msRequestFullscreen();
+              return true;
+            }
+          }
+        } catch (err) {
+          setError(err instanceof Error ? err : new Error('Error entering fullscreen'));
+          return false;
+        }
+
+        setError(new Error('Fullscreen request failed'));
+        return false;
+      }, [isSupported, getTargetElement, iosFallback]);
+
+      // Exit fullscreen
+      const exit = useCallback(async () => {
+        if (!isFullscreen) return true;
+        setError(null);
+
+        try {
+          if (isIOS.current && iosFallback) {
+            // iOS Safari fallback cleanup
+            const target = getTargetElement();
+            if (target) {
+              target.style.position = '';
+              target.style.top = '';
+              target.style.right = '';
+              target.style.bottom = '';
+              target.style.left = '';
+              target.style.width = '';
+              target.style.height = '';
+              target.style.zIndex = '';
+              target.style.backgroundColor = '';
+              
+              setIsFullscreen(false);
+              if (onExitRef.current) {
+                onExitRef.current();
+              }
+              return true;
+            }
+          } else {
+            // Standard fullscreen API
+            if (document.exitFullscreen) {
+              await document.exitFullscreen();
+              return true;
+            } else if (document.webkitExitFullscreen) {
+              // @ts-ignore - Vendor prefixes
+              await document.webkitExitFullscreen();
+              return true;
+            } else if (document.mozCancelFullScreen) {
+              // @ts-ignore - Vendor prefixes
+              await document.mozCancelFullScreen();
+              return true;
+            } else if (document.msExitFullscreen) {
+              // @ts-ignore - Vendor prefixes
+              await document.msExitFullscreen();
+              return true;
+            }
+          }
+        } catch (err) {
+          setError(err instanceof Error ? err : new Error('Error exiting fullscreen'));
+          return false;
+        }
+        
+        setError(new Error('Exit fullscreen failed'));
+        return false;
+      }, [isFullscreen, getTargetElement, iosFallback]);
+
+      // Toggle fullscreen
+      const toggle = useCallback(async () => {
+        if (isFullscreen) {
+          return exit();
+        } else {
+          return enter();
+        }
+      }, [isFullscreen, enter, exit]);
+
+      return {
+        isFullscreen,
+        isSupported,
+        error,
+        enter,
+        exit,
+        toggle,
+      };
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-fullscreen.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    options: {
+      description: "Configuration options for fullscreen behavior",
+      type: "FullscreenOptions",
+      default: "{}",
+      properties: {
+        element: {
+          description: "Element reference to enter fullscreen mode",
+          type: "React.RefObject<HTMLElement>",
+          default: "document.documentElement",
+        },
+        onEnter: {
+          description: "Callback triggered when entering fullscreen",
+          type: "() => void",
+          default: "undefined",
+        },
+        onExit: {
+          description: "Callback triggered when exiting fullscreen",
+          type: "() => void",
+          default: "undefined",
+        },
+        iosFallback: {
+          description: "Whether to use CSS fallback for iOS",
+          type: "boolean",
+          default: "true",
+        },
+      },
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    isFullscreen: {
+      description: "Whether the element is currently in fullscreen mode",
+      type: "boolean",
+    },
+    isSupported: {
+      description: "Whether fullscreen API is supported in the current browser",
+      type: "boolean",
+    },
+    error: {
+      description: "Error that occurred during fullscreen operations",
+      type: "Error | null",
+    },
+    enter: {
+      description: "Function to enter fullscreen mode",
+      type: "() => Promise<boolean>",
+    },
+    exit: {
+      description: "Function to exit fullscreen mode",
+      type: "() => Promise<boolean>",
+    },
+    toggle: {
+      description: "Function to toggle fullscreen mode",
+      type: "() => Promise<boolean>",
+    },
+  }}
+/>
+
+## Examples
+
+### Video Player with Fullscreen
+
+A common use case for fullscreen mode is in video players. This example shows how to implement a simple video player with fullscreen controls.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <VideoFullscreenPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useRef } from "react";
+    import { useFullscreen } from "@/hooks/use-fullscreen";
+    
+    function VideoPlayer() {
+      const videoContainerRef = useRef<HTMLDivElement>(null);
+      const videoRef = useRef<HTMLVideoElement>(null);
+      
+      const { isFullscreen, toggle } = useFullscreen({
+        element: videoContainerRef,
+        onEnter: () => {
+          // Auto-play when entering fullscreen
+          videoRef.current?.play();
+        }
+      });
+      
+      return (
+        <div 
+          ref={videoContainerRef}
+          className={`relative ${isFullscreen ? 'fixed inset-0 z-50 bg-black' : ''}`}
+        >
+          <video
+            ref={videoRef}
+            src="/example-video.mp4"
+            controls={false}
+            className="w-full h-full object-contain"
+          />
+          
+          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+            <div className="flex items-center justify-between">
+              <button 
+                onClick={() => videoRef.current?.play()}
+              >
+                Play
+              </button>
+              
+              <button onClick={toggle}>
+                {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Image Gallery with Fullscreen
+
+Use fullscreen mode to create an immersive image gallery viewing experience.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ImageGalleryFullscreenPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState, useRef } from "react";
+    import { useFullscreen } from "@/hooks/use-fullscreen";
+    
+    const images = [
+      "/image1.jpg",
+      "/image2.jpg",
+      "/image3.jpg",
+      "/image4.jpg",
+    ];
+    
+    function ImageGallery() {
+      const [selectedIndex, setSelectedIndex] = useState(0);
+      const galleryRef = useRef<HTMLDivElement>(null);
+      
+      const { isFullscreen, enter, exit } = useFullscreen({
+        element: galleryRef,
+      });
+      
+      const handleImageClick = (index) => {
+        setSelectedIndex(index);
+        enter();
+      };
+      
+      const handlePrevious = () => {
+        setSelectedIndex((prev) => 
+          prev === 0 ? images.length - 1 : prev - 1
+        );
+      };
+      
+      const handleNext = () => {
+        setSelectedIndex((prev) => 
+          prev === images.length - 1 ? 0 : prev + 1
+        );
+      };
+      
+      return (
+        <div>
+          {/* Thumbnail grid */}
+          <div className="grid grid-cols-3 gap-4">
+            {images.map((src, index) => (
+              <img
+                key={index}
+                src={src}
+                alt={`Gallery image ${index + 1}`}
+                className="cursor-pointer"
+                onClick={() => handleImageClick(index)}
+              />
+            ))}
+          </div>
+          
+          {/* Fullscreen viewer */}
+          {isFullscreen && (
+            <div 
+              ref={galleryRef}
+              className="fixed inset-0 z-50 bg-black flex flex-col"
+            >
+              <div className="p-4 flex justify-between items-center">
+                <h3 className="text-white">
+                  Image {selectedIndex + 1} of {images.length}
+                </h3>
+                <button className="text-white" onClick={exit}>
+                  Close
+                </button>
+              </div>
+              
+              <div className="flex-1 flex items-center justify-center">
+                <img
+                  src={images[selectedIndex]}
+                  alt={`Gallery image ${selectedIndex + 1}`}
+                  className="max-h-full max-w-full object-contain"
+                />
+              </div>
+              
+              <div className="p-4 flex justify-between">
+                <button className="text-white" onClick={handlePrevious}>
+                  Previous
+                </button>
+                <button className="text-white" onClick={handleNext}>
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Presentation Mode
+
+```tsx ts2js
+import { useRef, useState } from "react";
+import { useFullscreen } from "@/hooks/use-fullscreen";
+
+interface Slide {
+  title: string;
+  content: string;
+}
+
+function Presentation() {
+  const slides: Slide[] = [
+    { title: "Introduction", content: "Welcome to the presentation!" },
+    { title: "Key Points", content: "Here are the important takeaways..." },
+    { title: "Data Analysis", content: "Let's look at the data..." },
+    { title: "Conclusion", content: "Thank you for attending!" },
+  ];
+  
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const presentationRef = useRef<HTMLDivElement>(null);
+  
+  const { isFullscreen, toggle } = useFullscreen({
+    element: presentationRef,
+  });
+  
+  const nextSlide = () => {
+    setCurrentSlide((prev) => Math.min(prev + 1, slides.length - 1));
+  };
+  
+  const prevSlide = () => {
+    setCurrentSlide((prev) => Math.max(prev - 1, 0));
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight") nextSlide();
+    if (e.key === "ArrowLeft") prevSlide();
+    if (e.key === "f") toggle();
+  };
+  
+  return (
+    <div 
+      ref={presentationRef}
+      className={`
+        ${isFullscreen ? "fixed inset-0 z-50 bg-white" : "border rounded-lg"} 
+        flex flex-col
+      `}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
+      <div className="p-4 flex justify-between items-center border-b">
+        <h2>{slides[currentSlide].title}</h2>
+        <div>
+          <span>Slide {currentSlide + 1} of {slides.length}</span>
+          <button 
+            className="ml-4"
+            onClick={toggle}
+          >
+            {isFullscreen ? "Exit Presentation" : "Present"}
+          </button>
+        </div>
+      </div>
+      
+      <div className="flex-1 flex items-center justify-center p-8">
+        <div className="text-xl max-w-2xl">
+          {slides[currentSlide].content}
+        </div>
+      </div>
+      
+      <div className="p-4 flex justify-between border-t">
+        <button 
+          onClick={prevSlide}
+          disabled={currentSlide === 0}
+        >
+          Previous
+        </button>
+        <button 
+          onClick={nextSlide}
+          disabled={currentSlide === slides.length - 1}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Browser Support and Compatibility
+
+The Fullscreen API is supported in all modern browsers, but there are some important compatibility notes:
+
+- **iOS Safari**: Doesn't support the standard fullscreen API. The hook provides a CSS-based fallback
+- **Safari**: Requires `webkitRequestFullscreen()` and similar prefixed methods
+- **Firefox**: Uses `mozRequestFullScreen()` (note the capital 'S')
+- **Older IE/Edge**: Uses `msRequestFullscreen()`
+- **User Interaction**: Most browsers require fullscreen to be triggered by a user interaction (click, tap)
+
+## Use Cases
+
+- **Media Players**: Video and audio players
+- **Image Galleries**: Immersive photo viewing
+- **Games**: Full-screen gaming experiences
+- **Presentations**: Slide shows and presentations
+- **Data Visualization**: Interactive charts and graphs
+- **Reading Mode**: Distraction-free reading experiences
+- **Kiosk Applications**: Public-facing interactive displays
+
+## Accessibility
+
+For accessible fullscreen implementations:
+
+- Ensure keyboard navigation works properly in fullscreen mode
+- Provide visible controls for exiting fullscreen
+- Support the Escape key for exiting fullscreen (this is built into most browsers)
+- Announce fullscreen state changes for screen reader users
+- Maintain focus management when entering/exiting fullscreen
+
+## Best Practices
+
+- Always check `isSupported` before attempting to use fullscreen
+- Ensure fullscreen is triggered by explicit user interaction
+- Provide clear visual feedback for fullscreen state changes
+- Include visible controls for exiting fullscreen mode
+- When possible, target specific containers rather than the entire document
+- Test on multiple browsers and devices, especially iOS
+- Be aware that fullscreen requests may be rejected by browsers in certain conditions

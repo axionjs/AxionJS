@@ -1,0 +1,346 @@
+---
+title: useToggle
+description: A hook that simplifies boolean state management with a single function to toggle state.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { SimpleTogglePreview, ToggleExamplesPreview, AccordionTogglePreview } from "@/app/components/docs/UseTogglePreview";
+
+# useToggle
+
+The `useToggle` hook provides a simple way to manage boolean state in React components. It's perfect for implementing toggles, switches, accordions, and any other UI element that has an on/off state.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <SimpleTogglePreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useToggle } from "@/hooks/use-toggle";
+    
+    function ToggleButton() {
+      const [isOn, toggle] = useToggle(false);
+      
+      return (
+        <div>
+          <div className="state-indicator">
+            {isOn ? "ON" : "OFF"}
+          </div>
+          
+          <button onClick={() => toggle()}>
+            Toggle
+          </button>
+          
+          <button onClick={() => toggle(true)}>
+            Turn On
+          </button>
+          
+          <button onClick={() => toggle(false)}>
+            Turn Off
+          </button>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useToggle hook using:
+    ```bash
+    npx axionjs add hook use-toggle
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-toggle.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useCallback } from "react";
+
+    export function useToggle(initialValue: boolean = false): [boolean, (value?: boolean) => void] {
+      const [value, setValue] = useState<boolean>(initialValue);
+
+      // Toggle function that can either toggle the current value
+      // or set to a specific value if provided
+      const toggle = useCallback((nextValue?: boolean) => {
+        if (typeof nextValue === "boolean") {
+          setValue(nextValue);
+        } else {
+          setValue(currentValue => !currentValue);
+        }
+      }, []);
+
+      return [value, toggle];
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-toggle.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    initialValue: {
+      description: "Initial boolean state value",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    value: {
+      description: "Current boolean state",
+      type: "boolean",
+    },
+    toggle: {
+      description: "Function to toggle the state or set to a specific value",
+      type: "(value?: boolean) => void",
+    },
+  }}
+/>
+
+## Examples
+
+### Multiple Toggles Example
+
+Use the hook for multiple toggleable elements:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ToggleExamplesPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useToggle } from "@/hooks/use-toggle";
+    import { Switch } from "@/components/ui/switch";
+    
+    function SettingsPanel() {
+      const [notifications, toggleNotifications] = useToggle(true);
+      const [darkMode, toggleDarkMode] = useToggle(false);
+      const [autoSave, toggleAutoSave] = useToggle(true);
+      
+      return (
+        <div className="settings">
+          <h2>Settings</h2>
+          
+          <div className="setting-item">
+            <label>Notifications</label>
+            <Switch 
+              checked={notifications} 
+              onCheckedChange={toggleNotifications} 
+            />
+          </div>
+          
+          <div className="setting-item">
+            <label>Dark Mode</label>
+            <Switch 
+              checked={darkMode} 
+              onCheckedChange={toggleDarkMode} 
+            />
+          </div>
+          
+          <div className="setting-item">
+            <label>Auto Save</label>
+            <Switch 
+              checked={autoSave} 
+              onCheckedChange={toggleAutoSave} 
+            />
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Accordion Implementation
+
+Create an accordion component with the useToggle hook:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <AccordionTogglePreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useToggle } from "@/hooks/use-toggle";
+    
+    function Accordion({ items }) {
+      // Keep track of expanded section
+      const [expandedId, setExpandedId] = useState(null);
+      
+      // Toggle a section
+      const toggleSection = (id) => {
+        setExpandedId(current => current === id ? null : id);
+      };
+      
+      return (
+        <div className="accordion">
+          {items.map(item => (
+            <div key={item.id} className="accordion-item">
+              <button
+                className="accordion-header"
+                onClick={() => toggleSection(item.id)}
+                aria-expanded={expandedId === item.id}
+              >
+                {item.title}
+                <span>{expandedId === item.id ? "-" : "+"}</span>
+              </button>
+              
+              {expandedId === item.id && (
+                <div className="accordion-content">
+                  {item.content}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Form Password Visibility
+
+Toggle password visibility in a form:
+
+```tsx ts2js
+function PasswordInput() {
+  const [passwordVisible, togglePasswordVisible] = useToggle(false);
+  const [password, setPassword] = useState("");
+  
+  return (
+    <div className="password-field">
+      <label htmlFor="password">Password</label>
+      
+      <div className="input-with-button">
+        <input
+          id="password"
+          type={passwordVisible ? "text" : "password"}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        
+        <button
+          type="button"
+          onClick={() => togglePasswordVisible()}
+          aria-label={passwordVisible ? "Hide password" : "Show password"}
+        >
+          {passwordVisible ? "Hide" : "Show"}
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Toggle Buttons**: Simple on/off buttons
+- **Switches**: UI switches for settings
+- **Checkboxes**: Toggle checked/unchecked state
+- **Modal/Dialog Visibility**: Show/hide modals
+- **Accordions**: Expand/collapse sections
+- **Menu Visibility**: Toggle dropdown menus
+- **Feature Flags**: Enable/disable features
+- **Theme Switching**: Toggle between light/dark mode
+- **Password Visibility**: Show/hide password in forms
+- **Details Disclosure**: Show/hide additional details
+
+## Benefits
+
+### Compared to Plain useState
+
+Using useToggle instead of plain useState for boolean values provides several benefits:
+
+```tsx ts2js
+// With useState
+const [isOpen, setIsOpen] = useState(false);
+
+// To toggle:
+setIsOpen(!isOpen);
+
+// To set to specific value:
+setIsOpen(true);
+```
+
+```tsx ts2js
+// With useToggle
+const [isOpen, toggle] = useToggle(false);
+
+// To toggle:
+toggle();
+
+// To set to specific value:
+toggle(true);
+```
+
+Benefits include:
+1. **More Concise**: Less code to toggle a value
+2. **More Intuitive**: Clear intent with a named `toggle` function
+3. **More Flexible**: Can both toggle and set specific values with the same function
+4. **More Reusable**: Standardized pattern for all boolean toggles in your app
+
+## Toggle Groups
+
+For managing mutually exclusive toggles, you can combine useToggle with other state:
+
+```tsx ts2js
+function TabGroup() {
+  const tabs = ["Account", "Security", "Notifications"];
+  const [activeTab, setActiveTab] = useState("Account");
+  
+  return (
+    <div className="tabs">
+      {tabs.map(tab => (
+        <button
+          key={tab}
+          className={activeTab === tab ? "active" : ""}
+          onClick={() => setActiveTab(tab)}
+        >
+          {tab}
+        </button>
+      ))}
+      
+      <div className="tab-content">
+        {/* Content for each tab */}
+      </div>
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+When implementing toggles with this hook, consider these accessibility best practices:
+
+- Use semantic HTML elements (buttons, checkboxes) for toggle controls
+- Include proper ARIA attributes like `aria-expanded`, `aria-checked`, or `aria-pressed`
+- Ensure keyboard navigation works correctly
+- Provide clear visual indication of the current state
+- Include descriptive labels for screen readers
+
+## Best Practices
+
+- Use a clear naming convention for your toggle state variables (e.g., `isVisible`, `isOpen`, `hasError`)
+- Add appropriate TypeScript types for better code completion and error checking
+- Consider creating composed hooks for specific toggle use cases in your application
+- Use the option to directly set values (`toggle(true)`) when you need deterministic behavior
+- For complex toggle groups, consider a reducer pattern instead of multiple useToggle instances

@@ -1,3 +1,558 @@
 ---
-title: use-sse-listener
+title: useSseListener
+description: A hook for handling Server-Sent Events (SSE) connections with built-in reconnection and event handling.
 ---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { UseSseListenerPreview, RealTimeNotificationPreview } from "@/app/components/docs/UseSseListenerPreview";
+
+# useSseListener
+
+The `useSseListener` hook provides a reliable way to establish and manage Server-Sent Events (SSE) connections in React applications. It handles connection management, reconnection logic, and event parsing with support for multiple event types.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <UseSseListenerPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useSseListener } from "@/hooks/use-sse-listener";
+    
+    function SseExample() {
+      const {
+        status,
+        events,
+        lastEvent,
+        error,
+        connect,
+        disconnect,
+        retryCount,
+      } = useSseListener({
+        url: "https://api.example.com/events",
+        events: ["update", "notification", "alert"],
+        autoConnect: true,
+        reconnectTimeout: 3000,
+      });
+      
+      return (
+        <div>
+          <div>
+            <span>Status: {status}</span>
+            {error && <span>Error: {error.message}</span>}
+            <span>Retry Count: {retryCount}</span>
+          </div>
+          
+          <div>
+            <button 
+              onClick={connect} 
+              disabled={status === 'OPEN' || status === 'CONNECTING'}
+            >
+              Connect
+            </button>
+            <button 
+              onClick={disconnect} 
+              disabled={status === 'CLOSED' || status === 'IDLE'}
+            >
+              Disconnect
+            </button>
+          </div>
+          
+          <div>
+            <h3>Last Event:</h3>
+            {lastEvent ? (
+              <pre>{JSON.stringify(lastEvent, null, 2)}</pre>
+            ) : (
+              <p>No events received</p>
+            )}
+          </div>
+          
+          <div>
+            <h3>Event History:</h3>
+            <div style={{ height: "200px", overflow: "auto" }}>
+              {events.map((event, index) => (
+                <div key={index}>
+                  <span>{event.type}: </span>
+                  <pre>{JSON.stringify(event.data, null, 2)}</pre>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useSseListener hook using:
+    ```bash
+    npx axionjs add hook use-sse-listener
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-sse-listener.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useEffect, useState, useRef, useCallback } from 'react';
+
+    interface SseOptions {
+      /** URL for the SSE endpoint */
+      url: string;
+      /** Whether to connect immediately (default: true) */
+      autoConnect?: boolean;
+      /** Custom headers for the EventSource connection */
+      headers?: Record<string, string>;
+      /** Reconnect timeout in milliseconds (default: 5000) */
+      reconnectTimeout?: number;
+      /** Map of event types to listen for (in addition to 'message') */
+      events?: string[];
+      /** Whether to use withCredentials (default: false) */
+      withCredentials?: boolean;
+      /** Optional retry limit, after which reconnection attempts will stop */
+      maxRetries?: number;
+    }
+
+    type SseStatus = 'IDLE' | 'CONNECTING' | 'OPEN' | 'CLOSED' | 'ERROR';
+
+    interface SseEvent {
+      type: string;
+      data: any;
+      id?: string;
+      retry?: number;
+      lastEventId?: string;
+      timestamp: number;
+    }
+
+    export function useSseListener(options: SseOptions) {
+      const {
+        url,
+        autoConnect = true,
+        headers = {},
+        reconnectTimeout = 5000,
+        events = [],
+        withCredentials = false,
+        maxRetries,
+      } = options;
+
+      const [status, setStatus] = useState<SseStatus>('IDLE');
+      const [events$, setEvents] = useState<SseEvent[]>([]);
+      const [lastEvent, setLastEvent] = useState<SseEvent | null>(null);
+      const [error, setError] = useState<Error | null>(null);
+      const [retryCount, setRetryCount] = useState(0);
+
+      const eventSourceRef = useRef<EventSource | null>(null);
+      const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+      const cleanup = useCallback(() => {
+        if (eventSourceRef.current) {
+          eventSourceRef.current.close();
+          eventSourceRef.current = null;
+        }
+        
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+        }
+      }, []);
+
+      const connect = useCallback(() => {
+        cleanup();
+        
+        if (maxRetries !== undefined && retryCount >= maxRetries) {
+          setStatus('CLOSED');
+          return;
+        }
+        
+        try {
+          setStatus('CONNECTING');
+          
+          // Implementation details for connection handling...
+          
+          eventSourceRef.current = new EventSource(url, { withCredentials });
+          
+          eventSourceRef.current.onopen = () => {
+            setStatus('OPEN');
+            setError(null);
+            setRetryCount(0);
+          };
+          
+          // Event handling implementation...
+          
+        } catch (e) {
+          // Error handling...
+        }
+      }, [url, cleanup, reconnectTimeout, withCredentials, retryCount, maxRetries]);
+
+      const disconnect = useCallback(() => {
+        cleanup();
+        setStatus('CLOSED');
+      }, [cleanup]);
+
+      useEffect(() => {
+        if (autoConnect) {
+          connect();
+        }
+        
+        return () => {
+          cleanup();
+        };
+      }, [autoConnect, connect, cleanup]);
+
+      return {
+        status,
+        events: events$,
+        lastEvent,
+        error,
+        connect,
+        disconnect,
+        retryCount,
+      };
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-sse-listener.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    options: {
+      description: "Configuration options for the SSE connection",
+      type: "SseOptions",
+      default: "Required",
+      properties: {
+        url: {
+          description: "URL for the SSE endpoint",
+          type: "string",
+          default: "Required",
+        },
+        autoConnect: {
+          description: "Whether to connect immediately",
+          type: "boolean",
+          default: "true",
+        },
+        headers: {
+          description: "Custom headers for the EventSource connection",
+          type: "Record<string, string>",
+          default: "{}",
+        },
+        reconnectTimeout: {
+          description: "Reconnect timeout in milliseconds",
+          type: "number",
+          default: "5000",
+        },
+        events: {
+          description: "Array of event types to listen for (in addition to 'message')",
+          type: "string[]",
+          default: "[]",
+        },
+        withCredentials: {
+          description: "Whether to use withCredentials",
+          type: "boolean",
+          default: "false",
+        },
+        maxRetries: {
+          description: "Optional retry limit, after which reconnection attempts will stop",
+          type: "number",
+          default: "undefined",
+        },
+      },
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    status: {
+      description: "Current status of the SSE connection",
+      type: "'IDLE' | 'CONNECTING' | 'OPEN' | 'CLOSED' | 'ERROR'",
+    },
+    events: {
+      description: "Array of all received events",
+      type: "SseEvent[]",
+    },
+    lastEvent: {
+      description: "The most recently received event",
+      type: "SseEvent | null",
+    },
+    error: {
+      description: "Error object if connection fails",
+      type: "Error | null",
+    },
+    connect: {
+      description: "Function to manually connect to the SSE endpoint",
+      type: "() => void",
+    },
+    disconnect: {
+      description: "Function to manually disconnect from the SSE endpoint",
+      type: "() => void",
+    },
+    retryCount: {
+      description: "Number of connection retry attempts made",
+      type: "number",
+    },
+  }}
+/>
+
+## Examples
+
+### Real-time Notifications
+
+Use SSE to implement a real-time notification system.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <RealTimeNotificationPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState, useEffect } from "react";
+    import { useSseListener } from "@/hooks/use-sse-listener";
+    
+    interface Notification {
+      id: string;
+      type: string;
+      title: string;
+      message: string;
+      timestamp: string;
+      read: boolean;
+    }
+    
+    function NotificationSystem() {
+      const [notifications, setNotifications] = useState<Notification[]>([]);
+      const [unreadCount, setUnreadCount] = useState(0);
+      
+      const { 
+        status, 
+        lastEvent, 
+        connect, 
+        disconnect 
+      } = useSseListener({
+        url: "/api/notifications",
+        events: ["notification", "message", "friend_request", "like", "comment"],
+        autoConnect: true,
+      });
+      
+      // Process incoming notifications
+      useEffect(() => {
+        if (lastEvent && lastEvent.type.startsWith('notification')) {
+          const newNotification = {
+            id: lastEvent.id || Date.now().toString(),
+            type: lastEvent.type.replace('notification_', ''),
+            title: lastEvent.data.title,
+            message: lastEvent.data.message,
+            timestamp: new Date().toISOString(),
+            read: false,
+          };
+          
+          setNotifications(prev => [newNotification, ...prev]);
+          setUnreadCount(prev => prev + 1);
+        }
+      }, [lastEvent]);
+      
+      const markAllAsRead = () => {
+        setNotifications(prev => 
+          prev.map(notification => ({ ...notification, read: true }))
+        );
+        setUnreadCount(0);
+      };
+      
+      const markAsRead = (id: string) => {
+        setNotifications(prev =>
+          prev.map(notification =>
+            notification.id === id ? { ...notification, read: true } : notification
+          )
+        );
+        setUnreadCount(prev => Math.max(0, prev - 1));
+      };
+      
+      return (
+        <div>
+          <div>
+            <h2>
+              Notifications
+              {unreadCount > 0 && <span>({unreadCount})</span>}
+            </h2>
+            <button onClick={status === 'OPEN' ? disconnect : connect}>
+              {status === 'OPEN' ? 'Disconnect' : 'Connect'}
+            </button>
+          </div>
+          
+          <div>
+            <span>Status: {status}</span>
+            {unreadCount > 0 && (
+              <button onClick={markAllAsRead}>Mark all as read</button>
+            )}
+          </div>
+          
+          <div>
+            {notifications.length === 0 ? (
+              <p>No notifications yet</p>
+            ) : (
+              <ul>
+                {notifications.map(notification => (
+                  <li 
+                    key={notification.id}
+                    style={{ fontWeight: notification.read ? 'normal' : 'bold' }}
+                    onClick={() => markAsRead(notification.id)}
+                  >
+                    <div>{notification.title}</div>
+                    <div>{notification.message}</div>
+                    <div>{new Date(notification.timestamp).toLocaleTimeString()}</div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Real-time Dashboard Updates
+
+```tsx ts2js
+import { useSseListener } from "@/hooks/use-sse-listener";
+
+function DashboardUpdates() {
+  const { lastEvent, events, status } = useSseListener({
+    url: "/api/dashboard/updates",
+    events: ["sales", "visitors", "errors", "performance"],
+  });
+  
+  // Track metrics by type
+  const [metrics, setMetrics] = useState({
+    sales: 0,
+    visitors: 0,
+    errors: 0,
+    performance: 100,
+  });
+  
+  // Update metrics when new events arrive
+  useEffect(() => {
+    if (lastEvent) {
+      switch (lastEvent.type) {
+        case "sales":
+          setMetrics(prev => ({ ...prev, sales: lastEvent.data.value }));
+          break;
+        case "visitors":
+          setMetrics(prev => ({ ...prev, visitors: lastEvent.data.count }));
+          break;
+        case "errors":
+          setMetrics(prev => ({ ...prev, errors: lastEvent.data.count }));
+          break;
+        case "performance":
+          setMetrics(prev => ({ ...prev, performance: lastEvent.data.score }));
+          break;
+      }
+    }
+  }, [lastEvent]);
+  
+  return (
+    <div>
+      <div>Connection Status: {status}</div>
+      
+      <div>
+        <h2>Real-time Metrics</h2>
+        <div>Sales: ${metrics.sales.toFixed(2)}</div>
+        <div>Visitors: {metrics.visitors}</div>
+        <div>Errors: {metrics.errors}</div>
+        <div>Performance: {metrics.performance}%</div>
+      </div>
+      
+      <div>
+        <h3>Recent Updates</h3>
+        <ul>
+          {events.slice(-5).reverse().map((event, index) => (
+            <li key={index}>
+              {event.type}: {JSON.stringify(event.data)} 
+              ({new Date(event.timestamp).toLocaleTimeString()})
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Real-time Dashboards**: Display live updates of metrics and KPIs
+- **Chat Applications**: Receive new messages without polling
+- **Notification Systems**: Push notifications to users as events occur
+- **Live Activity Feeds**: Display social media or application activity in real-time
+- **Stock or Cryptocurrency Trackers**: Display live price updates
+- **Collaborative Editing**: Receive changes from other users
+- **System Monitoring**: Track server health and performance metrics
+
+## Browser Support and Fallbacks
+
+The Server-Sent Events API is supported in most modern browsers, but there's no support in IE. For broader compatibility:
+
+```tsx ts2js
+import { useSseListener } from "@/hooks/use-sse-listener";
+import { usePolling } from "@/hooks/use-polling"; // Fallback for unsupported browsers
+
+function LiveDataComponent() {
+  const isSSESupported = 'EventSource' in window;
+  
+  // Use SSE when supported
+  const sseResult = useSseListener({
+    url: "/api/live-data",
+    autoConnect: isSSESupported,
+  });
+  
+  // Use polling as fallback
+  const pollingResult = usePolling({
+    fetchFn: () => fetch("/api/live-data").then(res => res.json()),
+    interval: 5000,
+    autoStart: !isSSESupported,
+  });
+  
+  // Combine results based on browser support
+  const data = isSSESupported 
+    ? sseResult.lastEvent?.data
+    : pollingResult.data;
+  
+  return (
+    <div>
+      <div>Using: {isSSESupported ? 'Server-Sent Events' : 'Polling Fallback'}</div>
+      <div>Data: {JSON.stringify(data)}</div>
+    </div>
+  );
+}
+```
+
+## Performance Considerations
+
+- **Battery Impact**: SSE maintains an open connection which can impact battery life on mobile devices
+- **Connection Limits**: Browsers typically limit the number of concurrent connections to a domain
+- **Reconnection Strategy**: Implement exponential backoff for reconnection attempts
+- **Event Filtering**: Consider filtering events on the server to reduce unnecessary network traffic
+
+## Best Practices
+
+- Include clear visual indicators of the connection status
+- Implement proper error handling and reconnection logic
+- Consider memory usage when storing event history
+- Provide fallback mechanisms for unsupported browsers
+- Implement server-side event throttling for high-frequency events
+- Use appropriate content types for SSE responses (`text/event-stream`)

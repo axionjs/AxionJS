@@ -1,0 +1,304 @@
+---
+title: useTheme
+description: A hook that provides theme management with system preference detection and localStorage persistence.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { ThemeSwitcherPreview, ThemeButtonsPreview } from "@/app/components/docs/UseThemeSwitcherPreview";
+
+# useTheme
+
+The `useTheme` hook provides theme management functionality with features like system preference detection and localStorage persistence. It allows users to easily switch between light, dark, and system themes in your application.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ThemeSwitcherPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useTheme } from "@/hooks/use-theme";
+    
+    function ThemeSwitcher() {
+      const { theme, setTheme } = useTheme();
+      
+      return (
+        <div>
+          <p>Current theme: {theme}</p>
+          <button onClick={() => setTheme("light")}>Light</button>
+          <button onClick={() => setTheme("dark")}>Dark</button>
+          <button onClick={() => setTheme("system")}>System</button>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useTheme hook using:
+    ```bash
+    npx axionjs add hook use-theme
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-theme.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useEffect, createContext, useContext } from "react";
+
+    type Theme = "light" | "dark" | "system";
+
+    interface ThemeProviderProps {
+      children: React.ReactNode;
+      defaultTheme?: Theme;
+      storageKey?: string;
+    }
+
+    interface ThemeProviderState {
+      theme: Theme;
+      setTheme: (theme: Theme) => void;
+    }
+
+    const initialState: ThemeProviderState = {
+      theme: "system",
+      setTheme: () => null,
+    };
+
+    const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+
+    export function ThemeProvider({
+      children,
+      defaultTheme = "system",
+      storageKey = "theme",
+      ...props
+    }: ThemeProviderProps) {
+      const [theme, setTheme] = useState<Theme>(
+        () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+      );
+
+      useEffect(() => {
+        const root = window.document.documentElement;
+        
+        root.classList.remove("light", "dark");
+        
+        if (theme === "system") {
+          const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+            .matches
+            ? "dark"
+            : "light";
+          
+          root.classList.add(systemTheme);
+          return;
+        }
+        
+        root.classList.add(theme);
+      }, [theme]);
+
+      const value = {
+        theme,
+        setTheme: (theme: Theme) => {
+          localStorage.setItem(storageKey, theme);
+          setTheme(theme);
+        },
+      };
+
+      return (
+        <ThemeProviderContext.Provider {...props} value={value}>
+          {children}
+        </ThemeProviderContext.Provider>
+      );
+    }
+
+    export function useTheme() {
+      const context = useContext(ThemeProviderContext);
+
+      if (context === undefined)
+        throw new Error("useTheme must be used within a ThemeProvider");
+
+      return context;
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Provider Setup
+
+You need to wrap your application with the `ThemeProvider` to use the `useTheme` hook:
+
+```tsx ts2js
+// In your layout.tsx
+import { ThemeProvider } from "@/hooks/use-theme";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body>
+        <ThemeProvider defaultTheme="system" storageKey="ui-theme">
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-theme.ts" />
+  </Folder>
+  <Folder name="app" defaultOpen={false}>
+    <File name="layout.tsx" />
+  </Folder>
+</Files>
+
+## ThemeProvider Props
+
+<TypeTable
+  type={{
+    children: {
+      description: "React components that will have access to the theme context",
+      type: "React.ReactNode",
+      default: "Required",
+    },
+    defaultTheme: {
+      description: "The default theme to use when no theme is stored",
+      type: '"light" | "dark" | "system"',
+      default: '"system"',
+    },
+    storageKey: {
+      description: "The key to use for storing the theme preference in localStorage",
+      type: "string",
+      default: '"theme"',
+    },
+  }}
+/>
+
+## useTheme Return Value
+
+<TypeTable
+  type={{
+    theme: {
+      description: "The current active theme",
+      type: '"light" | "dark" | "system"',
+    },
+    setTheme: {
+      description: "Function to update the current theme",
+      type: "(theme: 'light' | 'dark' | 'system') => void",
+    },
+  }}
+/>
+
+## Examples
+
+### Theme Switcher with Buttons
+
+A simple theme switcher with separate buttons for each theme option.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ThemeButtonsPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useTheme } from "@/hooks/use-theme";
+    import { Button } from "@/components/ui/button";
+    import { Sun, Moon, Laptop } from "lucide-react";
+    
+    function ThemeSwitcher() {
+      const { theme, setTheme } = useTheme();
+      
+      return (
+        <div className="flex gap-2">
+          <Button 
+            variant={theme === "light" ? "default" : "outline"} 
+            onClick={() => setTheme("light")}
+            className="flex items-center gap-2"
+          >
+            <Sun className="h-4 w-4" />
+            Light
+          </Button>
+          <Button 
+            variant={theme === "dark" ? "default" : "outline"} 
+            onClick={() => setTheme("dark")}
+            className="flex items-center gap-2"
+          >
+            <Moon className="h-4 w-4" />
+            Dark
+          </Button>
+          <Button 
+            variant={theme === "system" ? "default" : "outline"} 
+            onClick={() => setTheme("system")}
+            className="flex items-center gap-2"
+          >
+            <Laptop className="h-4 w-4" />
+            System
+          </Button>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Theme Toggle
+
+A simple toggle switch between light and dark mode.
+
+```tsx ts2js
+import { useTheme } from "@/hooks/use-theme";
+import { Switch } from "@/components/ui/switch";
+import { Sun, Moon } from "lucide-react";
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark" || 
+    (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  
+  const handleToggle = (checked: boolean) => {
+    setTheme(checked ? "dark" : "light");
+  };
+  
+  return (
+    <div className="flex items-center gap-2">
+      <Sun className="h-4 w-4" />
+      <Switch 
+        checked={isDark}
+        onCheckedChange={handleToggle}
+      />
+      <Moon className="h-4 w-4" />
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Website Theming**: Implement light and dark modes for your website
+- **User Preferences**: Respect user's system preferences while allowing manual override
+- **Accessibility**: Support users who prefer specific contrast levels
+- **Reading Modes**: Implement reading-friendly themes for content-heavy sites
+- **Branded Experiences**: Create themed experiences for different sections of your app
+
+## Accessibility
+
+The `useTheme` hook enhances accessibility by:
+
+- Supporting system preferences for users who have set their OS to dark or light mode
+- Persisting theme choices for returning users
+- Allowing users to select their preferred theme for better reading comfort
+- Supporting reduced motion preferences when combined with appropriate CSS
+
+## Best Practices
+
+- Include the `ThemeProvider` at the root of your application
+- Use CSS variables for theme colors to ensure consistent theming
+- Add the `suppressHydrationWarning` attribute to the `html` element to avoid hydration warnings
+- Consider offering a high contrast theme option for users with visual impairments
+- Use semantic color names in your CSS variables (e.g., `--background`, `--foreground`) rather than light/

@@ -1,0 +1,666 @@
+---
+title: usePagination
+description: A hook that handles pagination logic with page navigation and item display.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { PaginationPreview, TablePaginationPreview } from "@/app/components/docs/UsePaginationPreview";
+
+# usePagination
+
+The `usePagination` hook simplifies pagination logic in React applications. It handles page navigation, boundary detection, and generates accessible pagination controls for your content, whether you're paginating a list, table, or any other content that needs to be split across multiple pages.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <PaginationPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { usePagination } from "@/hooks/use-pagination";
+    
+    function PaginatedContent() {
+      const totalItems = 87;
+      const pageSize = 10;
+      
+      const {
+        currentPage,
+        totalPages,
+        pageItems,
+        firstPage,
+        previousPage,
+        nextPage,
+        lastPage,
+        goToPage,
+        canPreviousPage,
+        canNextPage,
+      } = usePagination({
+        totalItems,
+        pageSize,
+        siblingCount: 1,
+      });
+      
+      // Calculate current page items
+      const currentItems = React.useMemo(() => {
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize, totalItems);
+        
+        return Array.from(
+          { length: endIndex - startIndex }, 
+          (_, i) => startIndex + i + 1
+        );
+      }, [currentPage, pageSize, totalItems]);
+      
+      return (
+        <div>
+          {/* Content */}
+          <div className="items-grid">
+            {currentItems.map(item => (
+              <div key={item} className="item">
+                Item {item}
+              </div>
+            ))}
+          </div>
+          
+          {/* Pagination controls */}
+          <div className="pagination">
+            <button onClick={firstPage} disabled={!canPreviousPage}>
+              {"<<"}
+            </button>
+            <button onClick={previousPage} disabled={!canPreviousPage}>
+              {"<"}
+            </button>
+            
+            {pageItems.map((page, i) => (
+              <React.Fragment key={i}>
+                {page === -1 ? (
+                  <span>...</span>
+                ) : (
+                  <button
+                    onClick={() => goToPage(page)}
+                    className={page === currentPage ? "active" : ""}
+                  >
+                    {page}
+                  </button>
+                )}
+              </React.Fragment>
+            ))}
+            
+            <button onClick={nextPage} disabled={!canNextPage}>
+              {">"}
+            </button>
+            <button onClick={lastPage} disabled={!canNextPage}>
+              {">>"}
+            </button>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the usePagination hook using:
+    ```bash
+    npx axionjs add hook use-pagination
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-pagination.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useMemo, useCallback } from "react";
+
+    export interface UsePaginationOptions {
+      totalItems: number;
+      pageSize: number;
+      siblingCount?: number;
+      currentPage?: number;
+    }
+
+    export interface UsePaginationReturn {
+      currentPage: number;
+      totalPages: number;
+      pageSize: number;
+      pageItems: (number | -1)[];
+      firstPage: () => void;
+      previousPage: () => void;
+      nextPage: () => void;
+      lastPage: () => void;
+      goToPage: (page: number) => void;
+      canPreviousPage: boolean;
+      canNextPage: boolean;
+    }
+
+    export function usePagination({
+      totalItems,
+      pageSize,
+      siblingCount = 1,
+      currentPage: initialPage = 1,
+    }: UsePaginationOptions): UsePaginationReturn {
+      const [currentPage, setCurrentPage] = useState(initialPage);
+      
+      // Calculate total pages
+      const totalPages = useMemo(() => {
+        return Math.max(1, Math.ceil(totalItems / pageSize));
+      }, [totalItems, pageSize]);
+      
+      // Ensure currentPage is within valid range
+      useMemo(() => {
+        if (currentPage < 1) {
+          setCurrentPage(1);
+        } else if (currentPage > totalPages) {
+          setCurrentPage(totalPages);
+        }
+      }, [currentPage, totalPages]);
+      
+      // Generate array of page numbers to display
+      const pageItems = useMemo(() => {
+        const range = (start: number, end: number) => {
+          const length = end - start + 1;
+          return Array.from({ length }, (_, i) => start + i);
+        };
+        
+        const totalPageNumbers = siblingCount * 2 + 3; // siblingCount on each side + first + last + current
+        
+        // Case 1: If total pages is less than needed, show all pages
+        if (totalPages <= totalPageNumbers) {
+          return range(1, totalPages);
+        }
+        
+        // Calculate sibling indexes (pages next to current)
+        const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
+        const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages);
+        
+        // Don't show dots just when one page away from each end
+        const shouldShowLeftDots = leftSiblingIndex > 2;
+        const shouldShowRightDots = rightSiblingIndex < totalPages - 1;
+        
+        const firstPageIndex = 1;
+        const lastPageIndex = totalPages;
+        
+        // Case 2: Show right dots only
+        if (!shouldShowLeftDots && shouldShowRightDots) {
+          const leftItemCount = 1 + 2 * siblingCount;
+          const leftRange = range(1, leftItemCount);
+          return [...leftRange, -1, lastPageIndex];
+        }
+        
+        // Case 3: Show left dots only
+        if (shouldShowLeftDots && !shouldShowRightDots) {
+          const rightItemCount = 1 + 2 * siblingCount;
+          const rightRange = range(totalPages - rightItemCount + 1, totalPages);
+          return [firstPageIndex, -1, ...rightRange];
+        }
+        
+        // Case 4: Show both dots
+        if (shouldShowLeftDots && shouldShowRightDots) {
+          const middleRange = range(leftSiblingIndex, rightSiblingIndex);
+          return [firstPageIndex, -1, ...middleRange, -1, lastPageIndex];
+        }
+        
+        return [];
+      }, [currentPage, totalPages, siblingCount]);
+      
+      // Navigation methods
+      const firstPage = useCallback(() => setCurrentPage(1), []);
+      const previousPage = useCallback(() => setCurrentPage((page) => Math.max(page - 1, 1)), []);
+      const nextPage = useCallback(() => setCurrentPage((page) => Math.min(page + 1, totalPages)), [totalPages]);
+      const lastPage = useCallback(() => setCurrentPage(totalPages), [totalPages]);
+      const goToPage = useCallback((page: number) => {
+        const pageNumber = Math.max(1, Math.min(page, totalPages));
+        setCurrentPage(pageNumber);
+      }, [totalPages]);
+      
+      // Can go to previous/next page?
+      const canPreviousPage = currentPage > 1;
+      const canNextPage = currentPage < totalPages;
+      
+      return {
+        currentPage,
+        totalPages,
+        pageSize,
+        pageItems,
+        firstPage,
+        previousPage,
+        nextPage,
+        lastPage,
+        goToPage,
+        canPreviousPage,
+        canNextPage,
+      };
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-pagination.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    totalItems: {
+      description: "Total number of items to paginate",
+      type: "number",
+      default: "Required",
+    },
+    pageSize: {
+      description: "Number of items to display per page",
+      type: "number",
+      default: "Required",
+    },
+    siblingCount: {
+      description: "Number of page buttons to show on each side of the current page",
+      type: "number",
+      default: "1",
+    },
+    currentPage: {
+      description: "Initial page to display",
+      type: "number",
+      default: "1",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    currentPage: {
+      description: "Current active page number",
+      type: "number",
+    },
+    totalPages: {
+      description: "Total number of pages",
+      type: "number",
+    },
+    pageSize: {
+      description: "Number of items per page",
+      type: "number",
+    },
+    pageItems: {
+      description: "Array of page numbers to display (with -1 for ellipsis)",
+      type: "(number | -1)[]",
+    },
+    firstPage: {
+      description: "Function to go to the first page",
+      type: "() => void",
+    },
+    previousPage: {
+      description: "Function to go to the previous page",
+      type: "() => void",
+    },
+    nextPage: {
+      description: "Function to go to the next page",
+      type: "() => void",
+    },
+    lastPage: {
+      description: "Function to go to the last page",
+      type: "() => void",
+    },
+    goToPage: {
+      description: "Function to go to a specific page",
+      type: "(page: number) => void",
+    },
+    canPreviousPage: {
+      description: "Whether there is a previous page",
+      type: "boolean",
+    },
+    canNextPage: {
+      description: "Whether there is a next page",
+      type: "boolean",
+    },
+  }}
+/>
+
+## Examples
+
+### Table Pagination
+
+Create a paginated table with controls for changing page size:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <TablePaginationPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { usePagination } from "@/hooks/use-pagination";
+    
+    function PaginatedTable() {
+      const [pageSize, setPageSize] = useState(10);
+      const totalItems = 87;
+      
+      const {
+        currentPage,
+        totalPages,
+        firstPage,
+        previousPage,
+        nextPage,
+        lastPage,
+        goToPage,
+        canPreviousPage,
+        canNextPage,
+      } = usePagination({
+        totalItems,
+        pageSize,
+      });
+      
+      // Generate data for the current page
+      const currentData = useMemo(() => {
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize, totalItems);
+        
+        return Array.from(
+          { length: endIndex - startIndex }, 
+          (_, i) => ({
+            id: startIndex + i + 1,
+            name: `Product ${startIndex + i + 1}`,
+            price: Math.floor(Math.random() * 100) + 10,
+          })
+        );
+      }, [currentPage, pageSize, totalItems]);
+      
+      return (
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentData.map(item => (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.name}</td>
+                  <td>${item.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          
+          <div className="pagination-controls">
+            <div>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <select
+                value={pageSize}
+                onChange={e => setPageSize(Number(e.target.value))}
+              >
+                {[5, 10, 20, 50].map(size => (
+                  <option key={size} value={size}>
+                    Show {size}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div>
+              <button onClick={firstPage} disabled={!canPreviousPage}>
+                {"<<"}
+              </button>
+              <button onClick={previousPage} disabled={!canPreviousPage}>
+                {"<"}
+              </button>
+              <button onClick={nextPage} disabled={!canNextPage}>
+                {">"}
+              </button>
+              <button onClick={lastPage} disabled={!canNextPage}>
+                {">>"}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### API Data Pagination
+
+Use the hook with async data fetching:
+
+```tsx ts2js
+function ApiPagination() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
+  const pageSize = 20;
+  
+  const {
+    currentPage,
+    totalPages,
+    previousPage,
+    nextPage,
+    goToPage,
+    canPreviousPage,
+    canNextPage,
+  } = usePagination({
+    totalItems,
+    pageSize,
+  });
+  
+  // Fetch data when page changes
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `/api/items?page=${currentPage}&pageSize=${pageSize}`
+        );
+        const result = await response.json();
+        
+        setData(result.items);
+        setTotalItems(result.total);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, [currentPage, pageSize]);
+  
+  return (
+    <div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="items-list">
+          {data.map(item => (
+            <div key={item.id} className="item-card">
+              {/* Item details */}
+            </div>
+          ))}
+        </div>
+      )}
+      
+      <div className="pagination">
+        <button
+          onClick={previousPage}
+          disabled={!canPreviousPage || loading}
+        >
+          Previous
+        </button>
+        
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        
+        <button
+          onClick={nextPage}
+          disabled={!canNextPage || loading}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+### Custom Page Size Controls
+
+Allow users to control items per page:
+
+```tsx ts2js
+function CustomPageSize() {
+  const [pageSize, setPageSize] = useState(10);
+  const totalItems = 100;
+  
+  const { currentPage, totalPages, pageItems, goToPage } = usePagination({
+    totalItems,
+    pageSize,
+  });
+  
+  const handlePageSizeChange = (e) => {
+    const newPageSize = Number(e.target.value);
+    setPageSize(newPageSize);
+    
+    // Adjust current page to maintain approximate scroll position
+    const currentIndex = (currentPage - 1) * pageSize;
+    const newPage = Math.floor(currentIndex / newPageSize) + 1;
+    goToPage(newPage);
+  };
+  
+  return (
+    <div>
+      {/* Content */}
+      
+      <div className="pagination-controls">
+        <div>
+          <label>
+            Items per page:
+            <select value={pageSize} onChange={handlePageSizeChange}>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+        </div>
+        
+        {/* Pagination controls */}
+      </div>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Data Tables**: Paginate rows of tabular data
+- **Search Results**: Display search results across multiple pages
+- **Product Listings**: Show products or items in pages
+- **Comments & Reviews**: Paginate user-generated content
+- **Blog Posts**: Navigate through blog post archives
+- **Image Galleries**: Display images across multiple pages
+- **Admin Dashboards**: Paginate lists of users, orders, or other resources
+- **API Data**: Handle pagination for data fetched from APIs
+
+## Algorithm
+
+The `usePagination` hook uses a smart algorithm for generating the page numbers to display:
+
+1. If the total number of pages is small, it shows all page numbers
+2. If there are many pages, it shows:
+   - First page
+   - Ellipsis (...) if needed
+   - A few pages around the current page (based on `siblingCount`)
+   - Ellipsis (...) if needed
+   - Last page
+
+This approach keeps the pagination controls compact while maintaining good usability.
+
+## Accessibility
+
+When implementing pagination with this hook, consider these accessibility best practices:
+
+- Add proper `aria-label` attributes to pagination buttons
+- Include a screen reader-accessible text describing the current page status
+- Ensure keyboard navigation works correctly
+- Maintain focus when changing pages
+- Consider adding `aria-current="page"` to the current page button
+
+## URL Integration
+
+You can integrate the pagination state with the URL for shareable pages:
+
+```tsx ts2js
+import { useRouter } from 'next/router';
+
+function UrlPagination() {
+  const router = useRouter();
+  const { query } = router;
+  
+  // Get page from URL or default to 1
+  const pageFromUrl = query.page ? Number(query.page) : 1;
+  
+  const { currentPage, totalPages, pageItems, goToPage } = usePagination({
+    totalItems: 100,
+    pageSize: 10,
+    currentPage: pageFromUrl,
+  });
+  
+  // Update URL when page changes
+  useEffect(() => {
+    if (pageFromUrl !== currentPage) {
+      router.push({
+        pathname: router.pathname,
+        query: { ...query, page: currentPage },
+      }, undefined, { shallow: true });
+    }
+  }, [currentPage, pageFromUrl, router, query]);
+  
+  return (
+    <div>
+      {/* Content */}
+      
+      {/* Pagination controls */}
+      <div className="pagination">
+        {pageItems.map((page, i) => (
+          <React.Fragment key={i}>
+            {page === -1 ? (
+              <span>...</span>
+            ) : (
+              <button onClick={() => goToPage(page)}>
+                {page}
+              </button>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+- Maintain a reasonable `pageSize` based on your content and UI design
+- Consider loading states during async data fetching
+- Provide visual indication of the current page
+- Include first/last page buttons for large datasets
+- Offer a way to adjust the number of items per page for user preference
+- Keep pagination controls in a consistent location
+- Use ellipsis (...) for large page ranges to maintain a clean UI
+- Consider "back to top" functionality when changing pages

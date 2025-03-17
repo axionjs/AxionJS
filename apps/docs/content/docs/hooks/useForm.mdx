@@ -1,0 +1,436 @@
+---
+title: useForm
+description: A versatile hook for managing form state, validation, and submission with a clean API.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { SimpleFormPreview, ContactFormPreview } from "@/app/components/docs/UseFormPreview";
+
+# useForm
+
+The `useForm` hook provides a comprehensive solution for handling form state, validation, error handling, and submission in React applications. It's designed to reduce boilerplate while maintaining flexibility.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <SimpleFormPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useForm } from "@/hooks/use-form";
+    
+    function LoginForm() {
+      const [formState, formActions] = useForm({
+        initialValues: {
+          email: "",
+          password: "",
+        },
+        validate: (values) => {
+          const errors = {};
+          
+          if (!values.email) {
+            errors.email = "Email is required";
+          }
+          
+          if (!values.password) {
+            errors.password = "Password is required";
+          }
+          
+          return errors;
+        },
+        onSubmit: async (values) => {
+          // Submit form data to your API
+          await api.login(values);
+        },
+      });
+      
+      return (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            formActions.submitForm();
+          }}
+        >
+          <input
+            type="email"
+            value={formState.values.email}
+            onChange={(e) => formActions.setFieldValue("email", e.target.value)}
+          />
+          {formState.errors.email && (
+            <p>{formState.errors.email}</p>
+          )}
+          
+          <input
+            type="password"
+            value={formState.values.password}
+            onChange={(e) => formActions.setFieldValue("password", e.target.value)}
+          />
+          {formState.errors.password && (
+            <p>{formState.errors.password}</p>
+          )}
+          
+          <button type="submit" disabled={formState.isSubmitting}>
+            {formState.isSubmitting ? "Submitting..." : "Submit"}
+          </button>
+        </form>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useForm hook using:
+    ```bash
+    npx axionjs add hook use-form
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-form.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useCallback } from "react";
+
+    export type FormState<T> = {
+      values: T;
+      errors: Partial<Record<keyof T, string>>;
+      touched: Partial<Record<keyof T, boolean>>;
+      isSubmitting: boolean;
+      isValid: boolean;
+    };
+
+    export type FormActions<T> = {
+      setFieldValue: (field: keyof T, value: any) => void;
+      setFieldError: (field: keyof T, error: string) => void;
+      setFieldTouched: (field: keyof T, isTouched?: boolean) => void;
+      setValues: (values: Partial<T>) => void;
+      setErrors: (errors: Partial<Record<keyof T, string>>) => void;
+      setTouched: (touched: Partial<Record<keyof T, boolean>>) => void;
+      resetForm: () => void;
+      validateForm: () => boolean;
+      submitForm: () => Promise<void>;
+    };
+
+    export type UseFormOptions<T> = {
+      initialValues: T;
+      onSubmit: (values: T) => Promise<void> | void;
+      validate?: (values: T) => Partial<Record<keyof T, string>>;
+    };
+
+    export function useForm<T extends Record<string, any>>(
+      options: UseFormOptions<T>
+    ): [FormState<T>, FormActions<T>] {
+      const { initialValues, onSubmit, validate } = options;
+
+      const [values, setValues] = useState<T>(initialValues);
+      const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
+      const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({});
+      const [isSubmitting, setIsSubmitting] = useState(false);
+
+      // Calculate if the form is valid
+      const isValid = Object.keys(errors).length === 0;
+
+      // Set a field value
+      const setFieldValue = useCallback(
+        (field: keyof T, value: any) => {
+          setValues((prev) => ({ ...prev, [field]: value }));
+          
+          // Auto-touch fields when changed
+          if (!touched[field]) {
+            setTouched((prev) => ({ ...prev, [field]: true }));
+          }
+          
+          // Re-validate if there was an error
+          if (errors[field] && validate) {
+            const newValues = { ...values, [field]: value };
+            const validationErrors = validate(newValues);
+            setErrors(validationErrors);
+          }
+        },
+        [values, errors, touched, validate]
+      );
+
+      // Rest of the implementation...
+      // [Additional code omitted for brevity]
+
+      const formState: FormState<T> = {
+        values,
+        errors,
+        touched,
+        isSubmitting,
+        isValid,
+      };
+
+      const formActions: FormActions<T> = {
+        setFieldValue,
+        setFieldError,
+        setFieldTouched,
+        setValues: updateValues,
+        setErrors: updateErrors,
+        setTouched: updateTouched,
+        resetForm,
+        validateForm,
+        submitForm,
+      };
+
+      return [formState, formActions];
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-form.ts" />
+  </Folder>
+</Files>
+
+## API
+
+### Options
+
+<TypeTable
+  type={{
+    initialValues: {
+      description: "Initial values for the form fields",
+      type: "T (generic object type with field values)",
+      default: "Required",
+    },
+    onSubmit: {
+      description: "Function called when the form is submitted successfully",
+      type: "(values: T) => Promise<void> | void",
+      default: "Required",
+    },
+    validate: {
+      description: "Function to validate form values and return error messages",
+      type: "(values: T) => Partial<Record<keyof T, string>>",
+      default: "undefined",
+    },
+  }}
+/>
+
+### Form State
+
+<TypeTable
+  type={{
+    values: {
+      description: "Current values of all form fields",
+      type: "T (generic object type)",
+    },
+    errors: {
+      description: "Error messages for form fields",
+      type: "Partial<Record<keyof T, string>>",
+    },
+    touched: {
+      description: "Tracks which fields have been interacted with",
+      type: "Partial<Record<keyof T, boolean>>",
+    },
+    isSubmitting: {
+      description: "Whether the form is currently being submitted",
+      type: "boolean",
+    },
+    isValid: {
+      description: "Whether the form has any validation errors",
+      type: "boolean",
+    },
+  }}
+/>
+
+### Form Actions
+
+<TypeTable
+  type={{
+    setFieldValue: {
+      description: "Update a specific field's value",
+      type: "(field: keyof T, value: any) => void",
+    },
+    setFieldError: {
+      description: "Set an error message for a specific field",
+      type: "(field: keyof T, error: string) => void",
+    },
+    setFieldTouched: {
+      description: "Mark a field as touched (interacted with)",
+      type: "(field: keyof T, isTouched?: boolean) => void",
+    },
+    setValues: {
+      description: "Update multiple field values at once",
+      type: "(values: Partial<T>) => void",
+    },
+    setErrors: {
+      description: "Set multiple error messages at once",
+      type: "(errors: Partial<Record<keyof T, string>>) => void",
+    },
+    setTouched: {
+      description: "Mark multiple fields as touched at once",
+      type: "(touched: Partial<Record<keyof T, boolean>>) => void",
+    },
+    resetForm: {
+      description: "Reset the form to its initial state",
+      type: "() => void",
+    },
+    validateForm: {
+      description: "Validate all form fields and return whether the form is valid",
+      type: "() => boolean",
+    },
+    submitForm: {
+      description: "Submit the form, validating fields first",
+      type: "() => Promise<void>",
+    },
+  }}
+/>
+
+## Examples
+
+### Contact Form with Validation
+
+A complete contact form with validation and submission handling.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ContactFormPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useForm } from "@/hooks/use-form";
+    
+    interface ContactFormValues {
+      name: string;
+      email: string;
+      message: string;
+    }
+    
+    function ContactForm() {
+      const [formState, formActions] = useForm<ContactFormValues>({
+        initialValues: {
+          name: "",
+          email: "",
+          message: "",
+        },
+        validate: (values) => {
+          const errors: Partial<Record<keyof ContactFormValues, string>> = {};
+          
+          if (!values.name) {
+            errors.name = "Name is required";
+          }
+          
+          if (!values.email) {
+            errors.email = "Email is required";
+          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+            errors.email = "Invalid email address";
+          }
+          
+          if (!values.message) {
+            errors.message = "Message is required";
+          } else if (values.message.length < 10) {
+            errors.message = "Message must be at least 10 characters";
+          }
+          
+          return errors;
+        },
+        onSubmit: async (values) => {
+          // Submit form data to API
+          await api.sendContactForm(values);
+          
+          // Reset form after successful submission
+          formActions.resetForm();
+        },
+      });
+    
+      return (
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          formActions.submitForm();
+        }}>
+          {/* Form fields and error handling */}
+        </form>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Form with External Validation Library (Zod)
+
+You can integrate the useForm hook with external validation libraries like Zod.
+
+```tsx ts2js
+import { z } from "zod";
+import { useForm } from "@/hooks/use-form";
+
+// Define form schema with zod
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email"),
+  age: z.number().min(18, "You must be at least 18 years old"),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
+function ZodForm() {
+  const [formState, formActions] = useForm<FormValues>({
+    initialValues: {
+      name: "",
+      email: "",
+      age: 0,
+    },
+    validate: (values) => {
+      try {
+        formSchema.parse(values);
+        return {}; // No errors
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          return error.errors.reduce(
+            (acc, curr) => {
+              const path = curr.path[0] as keyof FormValues;
+              acc[path] = curr.message;
+              return acc;
+            },
+            {} as Record<keyof FormValues, string>,
+          );
+        }
+        return {};
+      }
+    },
+    onSubmit: async (values) => {
+      // Handle submission
+    },
+  });
+
+  // Render form
+}
+```
+
+## Use Cases
+
+- **Login/Registration Forms**: Manage authentication form state with validation
+- **Multi-step Forms**: Break complex forms into manageable steps
+- **Data Collection Forms**: Contact forms, surveys, and questionnaires
+- **Search & Filter Forms**: Manage search parameters and filters
+- **CRUD Operations**: Create and edit forms for database records
+- **Form Wizards**: Guide users through complex form processes
+- **Dynamic Forms**: Forms with fields that change based on user input
+
+## Accessibility
+
+For building accessible forms, consider these practices alongside the useForm hook:
+
+- Use proper HTML form elements (`<form>`, `<label>`, `<input>`, etc.)
+- Connect labels and inputs with matching `for` and `id` attributes
+- Provide clear error messages that are announced to screen readers
+- Use `aria-invalid` to indicate invalid fields
+- Ensure keyboard navigation works correctly
+
+## Best Practices
+
+- Separate form logic from UI components for better maintainability
+- Validate fields on both change and blur for a good UX balance
+- Show validation errors only after fields have been touched
+- Disable the submit button during submission to prevent double-submits
+- Provide clear feedback during and after form submission
+- Reset the form to its initial state after successful submission
+- Use typed generics for type safety when working with TypeScript

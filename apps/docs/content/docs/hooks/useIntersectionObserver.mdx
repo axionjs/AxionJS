@@ -1,3 +1,412 @@
 ---
-title: use-intersection-observer
+title: useIntersectionObserver
+description: A hook that detects when elements enter or exit the viewport using the Intersection Observer API.
 ---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { SimpleIntersectionObserverPreview, LazyLoadImagesPreview, AnimationOnScrollPreview } from "@/app/components/docs/UseIntersectionObserverPreview";
+
+# useIntersectionObserver
+
+The `useIntersectionObserver` hook provides an easy way to detect when an element enters or exits the viewport using the browser's Intersection Observer API. This is useful for implementing lazy loading, infinite scrolling, animations on scroll, and tracking element visibility.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <SimpleIntersectionObserverPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+    
+    function MyComponent() {
+      const [ref, isIntersecting] = useIntersectionObserver<HTMLDivElement>({
+        threshold: 0.5, // Element is considered visible when 50% is in viewport
+      });
+      
+      return (
+        <div 
+          ref={ref}
+          className={isIntersecting ? "visible" : "hidden"}
+        >
+          This element is {isIntersecting ? "visible" : "not visible"} in the viewport
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useIntersectionObserver hook using:
+    ```bash
+    npx axionjs add hook use-intersection-observer
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-intersection-observer.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useEffect, useRef, RefObject } from "react";
+
+    export interface UseIntersectionObserverOptions {
+      root?: Element | null;
+      rootMargin?: string;
+      threshold?: number | number[];
+      triggerOnce?: boolean;
+      skip?: boolean;
+    }
+
+    export function useIntersectionObserver<T extends Element = Element>({
+      root = null,
+      rootMargin = "0px",
+      threshold = 0,
+      triggerOnce = false,
+      skip = false,
+    }: UseIntersectionObserverOptions = {}): [
+      RefObject<T>,
+      boolean,
+      IntersectionObserverEntry | null
+    ] {
+      const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null);
+      const [isIntersecting, setIsIntersecting] = useState<boolean>(false);
+      const elementRef = useRef<T>(null);
+      const prevIntersectingRef = useRef<boolean>(false);
+      
+      useEffect(() => {
+        if (skip || !elementRef.current) return;
+        
+        const hasIOSupport = !!window.IntersectionObserver;
+        
+        if (!hasIOSupport) {
+          // Fallback for browsers without IntersectionObserver support
+          setIsIntersecting(true);
+          return;
+        }
+        
+        const observerCallback = (entries: IntersectionObserverEntry[]) => {
+          const [entry] = entries;
+          
+          setEntry(entry);
+          
+          const isIntersectingNow = entry.isIntersecting;
+          setIsIntersecting(isIntersectingNow);
+          
+          if (triggerOnce && isIntersectingNow && !prevIntersectingRef.current) {
+            prevIntersectingRef.current = true;
+            observer.unobserve(entry.target);
+          }
+        };
+        
+        const observer = new IntersectionObserver(observerCallback, {
+          root,
+          rootMargin,
+          threshold,
+        });
+        
+        observer.observe(elementRef.current);
+        
+        return () => {
+          if (elementRef.current) {
+            observer.unobserve(elementRef.current);
+          }
+        };
+      }, [root, rootMargin, threshold, triggerOnce, skip]);
+      
+      return [elementRef, isIntersecting, entry];
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-intersection-observer.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    root: {
+      description: "The element that is used as the viewport for checking visibility",
+      type: "Element | null",
+      default: "null (browser viewport)",
+    },
+    rootMargin: {
+      description: "Margin around the root element (format similar to CSS margin)",
+      type: "string",
+      default: "0px",
+    },
+    threshold: {
+      description: "Percentage of the target's visibility the observer's callback should be executed",
+      type: "number | number[]",
+      default: "0",
+    },
+    triggerOnce: {
+      description: "Whether to stop observing the element after it's been intersected once",
+      type: "boolean",
+      default: "false",
+    },
+    skip: {
+      description: "Whether to skip observing entirely",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    ref: {
+      description: "Ref object to attach to the element you want to observe",
+      type: "RefObject<T>",
+    },
+    isIntersecting: {
+      description: "Whether the observed element is currently intersecting with the root",
+      type: "boolean",
+    },
+    entry: {
+      description: "The full IntersectionObserverEntry object for advanced usage",
+      type: "IntersectionObserverEntry | null",
+    },
+  }}
+/>
+
+## Examples
+
+### Lazy Loading Images
+
+Load images only when they scroll into view to improve page load performance:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <LazyLoadImagesPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+    
+    function LazyImage({ src, alt }) {
+      const [ref, isIntersecting] = useIntersectionObserver({
+        triggerOnce: true,
+        rootMargin: "100px", // Start loading when image is 100px from viewport
+      });
+      
+      const [isLoaded, setIsLoaded] = useState(false);
+      
+      return (
+        <div ref={ref} className="image-container">
+          {isIntersecting ? (
+            <>
+              {/* Show loading spinner until image is loaded */}
+              {!isLoaded && <div className="loading-spinner" />}
+              
+              <img
+                src={src}
+                alt={alt}
+                className={isLoaded ? "visible" : "hidden"}
+                onLoad={() => setIsLoaded(true)}
+              />
+            </>
+          ) : (
+            <div className="placeholder">Image will load when scrolled into view</div>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Animations on Scroll
+
+Trigger animations when elements scroll into view:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <AnimationOnScrollPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+    
+    function FadeInSection({ children }) {
+      const [ref, isIntersecting] = useIntersectionObserver({
+        threshold: 0.1,
+        triggerOnce: true,
+      });
+      
+      return (
+        <div
+          ref={ref}
+          className={`transition-all duration-700 ${
+            isIntersecting 
+              ? "opacity-100 translate-y-0" 
+              : "opacity-0 translate-y-10"
+          }`}
+        >
+          {children}
+        </div>
+      );
+    }
+    
+    function AnimatedPage() {
+      return (
+        <div>
+          {/* These sections will fade in when they enter the viewport */}
+          <FadeInSection>
+            <h2>Section 1</h2>
+            <p>This content fades in when scrolled into view.</p>
+          </FadeInSection>
+          
+          <FadeInSection>
+            <h2>Section 2</h2>
+            <p>This content also animates on scroll.</p>
+          </FadeInSection>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Tracking Visibility for Analytics
+
+Monitor when elements are viewed for analytics purposes:
+
+```tsx ts2js
+function TrackableSection({ id, title, onView }) {
+  const [ref, isIntersecting] = useIntersectionObserver({
+    threshold: 0.5,
+    triggerOnce: true,
+  });
+  
+  useEffect(() => {
+    if (isIntersecting) {
+      // Track that this section was viewed
+      onView({ id, title, timestamp: new Date() });
+    }
+  }, [isIntersecting, id, title, onView]);
+  
+  return (
+    <section ref={ref}>
+      <h2>{title}</h2>
+      {/* Section content */}
+    </section>
+  );
+}
+
+function AnalyticsPage() {
+  const trackView = (data) => {
+    // Send to analytics service
+    analytics.trackSectionView(data);
+  };
+  
+  return (
+    <div>
+      <TrackableSection 
+        id="intro" 
+        title="Introduction" 
+        onView={trackView} 
+      />
+      <TrackableSection 
+        id="features" 
+        title="Features" 
+        onView={trackView} 
+      />
+      <TrackableSection 
+        id="pricing" 
+        title="Pricing" 
+        onView={trackView} 
+      />
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Lazy Loading**: Load images, videos, or components only when needed
+- **Infinite Scrolling**: Load more content when the user reaches the bottom
+- **Animations on Scroll**: Trigger animations when elements enter the viewport
+- **Visibility Tracking**: Monitor which elements are visible for analytics
+- **Auto-playing Media**: Start/stop videos or audio when in/out of view
+- **Smart Navigation**: Highlight navigation items based on visible sections
+- **Delayed Loading**: Defer non-critical content loading until needed
+- **Performance Optimization**: Reduce initial page load time and resources
+
+## Intersection Observer Options
+
+### Threshold
+
+The `threshold` option controls at what percentage of the target's visibility the observer's callback should be executed:
+
+- `0` (default): Callback is invoked as soon as even 1 pixel is visible
+- `1.0`: Callback is invoked when 100% of the target is visible
+- Array of values: Callback is invoked for each threshold crossed
+
+```tsx ts2js
+// Track different visibility thresholds
+const [ref, isIntersecting, entry] = useIntersectionObserver({
+  threshold: [0, 0.25, 0.5, 0.75, 1],
+});
+
+// Get exact visibility percentage
+const visibilityPercentage = entry ? Math.round(entry.intersectionRatio * 100) : 0;
+```
+
+### Root Margin
+
+The `rootMargin` option adds margin around the root element, effectively increasing or decreasing the area considered for intersection:
+
+```tsx ts2js
+// Start observing when element is 200px from entering the viewport
+const [ref, isIntersecting] = useIntersectionObserver({
+  rootMargin: "200px 0px 0px 0px", // top, right, bottom, left
+});
+```
+
+### Trigger Once
+
+The `triggerOnce` option stops observing the element after it's been intersected once:
+
+```tsx ts2js
+// Perfect for one-time animations or lazy loading
+const [ref, isIntersecting] = useIntersectionObserver({
+  triggerOnce: true,
+});
+```
+
+## Accessibility
+
+When implementing features with the Intersection Observer, consider these accessibility best practices:
+
+- Ensure content is accessible even if JavaScript is disabled
+- Provide proper fallbacks for browsers that don't support Intersection Observer
+- Don't rely solely on scroll events for critical functionality
+- For lazy-loaded images, always provide appropriate `alt` text
+- Consider users who may have disabled animations (prefers-reduced-motion)
+- Avoid content that suddenly appears, which can be disorienting
+
+## Browser Support
+
+The Intersection Observer API is supported in all modern browsers. For older browsers, consider using a polyfill or the hook's built-in fallback behavior, which sets `isIntersecting` to `true` when the API isn't available.
+
+## Best Practices
+
+- Use the `triggerOnce` option for one-time actions like animations or lazy loading
+- Set appropriate `threshold` values based on your use case
+- Use `rootMargin` to start loading content before it's actually visible
+- Keep observed elements simple to avoid performance issues
+- Use the full entry data for advanced calculations like position or timing
+- Combine with CSS transitions/animations for smooth visual effects
+- Unobserve elements when they're no longer needed

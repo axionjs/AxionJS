@@ -1,0 +1,328 @@
+---
+title: useClickOutside
+description: A hook that detects clicks outside of an element and triggers a callback function.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { ClickOutsidePreview, DropdownPreview, MultipleAreasPreview } from "@/app/components/docs/UseClickOutsidePreview";
+
+# useClickOutside
+
+The `useClickOutside` hook detects clicks outside of a specified element and triggers a callback function when they occur. This hook is useful for implementing interactive UI components like modals, dropdowns, and tooltips that should close when users click outside of them.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ClickOutsidePreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useClickOutside } from "@/hooks/use-click-outside";
+    
+    function Modal({ isOpen, onClose }) {
+      // Ref will detect clicks outside the element
+      const modalRef = useClickOutside(() => {
+        if (isOpen) onClose();
+      });
+      
+      if (!isOpen) return null;
+      
+      return (
+        <div className="modal-backdrop">
+          <div ref={modalRef} className="modal-content">
+            <h2>Modal Title</h2>
+            <p>Click outside this modal to close it.</p>
+            <button onClick={onClose}>Close</button>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useClickOutside hook using:
+    ```bash
+    npx axionjs add hook use-click-outside
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-click-outside.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useRef, useEffect, RefObject, useCallback } from "react";
+
+    export function useClickOutside<T extends HTMLElement = HTMLElement>(
+      callback: () => void,
+      exceptRefs: RefObject<HTMLElement>[] = []
+    ): RefObject<T> {
+      const ref = useRef<T>(null);
+      
+      const handleClick = useCallback((e: MouseEvent | TouchEvent) => {
+        // Skip if the ref isn't set yet
+        if (!ref.current) return;
+        
+        const target = e.target as Node;
+        
+        // If the click is inside the element, do nothing
+        if (ref.current.contains(target)) return;
+        
+        // If the click is inside any of the except refs, do nothing
+        for (const exceptRef of exceptRefs) {
+          if (exceptRef.current && exceptRef.current.contains(target)) {
+            return;
+          }
+        }
+        
+        // Otherwise, call the callback
+        callback();
+      }, [callback, exceptRefs]);
+      
+      useEffect(() => {
+        // Add the event listeners
+        document.addEventListener("mousedown", handleClick);
+        document.addEventListener("touchstart", handleClick);
+        
+        // Clean up
+        return () => {
+          document.removeEventListener("mousedown", handleClick);
+          document.removeEventListener("touchstart", handleClick);
+        };
+      }, [handleClick]);
+      
+      return ref;
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-click-outside.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    callback: {
+      description: "Function called when a click outside is detected",
+      type: "() => void",
+      default: "Required",
+    },
+    exceptRefs: {
+      description: "Array of refs to exclude from the outside check (clicks on these elements won't trigger the callback)",
+      type: "RefObject<HTMLElement>[]",
+      default: "[]",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    ref: {
+      description: "React ref to attach to the element you want to detect clicks outside of",
+      type: "RefObject<T>",
+    },
+  }}
+/>
+
+## Examples
+
+### Dropdown Menu
+
+Create a dropdown menu that closes when clicking outside:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <DropdownPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useClickOutside } from "@/hooks/use-click-outside";
+    
+    function Dropdown() {
+      const [isOpen, setIsOpen] = useState(false);
+      
+      const dropdownRef = useClickOutside(() => {
+        if (isOpen) setIsOpen(false);
+      });
+      
+      const menuItems = [
+        { label: "Edit profile", action: () => console.log("Edit profile") },
+        { label: "Settings", action: () => console.log("Settings") },
+        { label: "Help", action: () => console.log("Help") },
+        { label: "Sign out", action: () => console.log("Sign out") },
+      ];
+      
+      return (
+        <div>
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-haspopup="true"
+          >
+            Menu {isOpen ? "▲" : "▼"}
+          </button>
+          
+          {isOpen && (
+            <div ref={dropdownRef} className="dropdown-menu">
+              {menuItems.map((item, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    item.action();
+                    setIsOpen(false);
+                  }}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Multiple Interactive Areas
+
+Manage multiple areas that can be clicked outside of independently:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <MultipleAreasPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useClickOutside } from "@/hooks/use-click-outside";
+    
+    function MultipleAreas() {
+      const [activeArea, setActiveArea] = useState(null);
+      
+      // Create refs for each area
+      const area1Ref = useClickOutside(() => {
+        if (activeArea === 1) setActiveArea(null);
+      });
+      
+      const area2Ref = useClickOutside(() => {
+        if (activeArea === 2) setActiveArea(null);
+      });
+      
+      return (
+        <div className="grid">
+          <div 
+            ref={area1Ref}
+            className={activeArea === 1 ? "active" : ""}
+            onClick={() => setActiveArea(1)}
+          >
+            <h3>Area 1</h3>
+            <p>{activeArea === 1 
+               ? "Active! Click outside to deselect." 
+               : "Click to activate"}</p>
+          </div>
+          
+          <div 
+            ref={area2Ref}
+            className={activeArea === 2 ? "active" : ""}
+            onClick={() => setActiveArea(2)}
+          >
+            <h3>Area 2</h3>
+            <p>{activeArea === 2 
+               ? "Active! Click outside to deselect." 
+               : "Click to activate"}</p>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Excluding Elements from Outside Clicks
+
+In some cases, you may want to exclude certain elements from being considered "outside" clicks:
+
+```tsx ts2js
+function PopoverWithTrigger() {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // Ref for the button that toggles the popover
+  const buttonRef = useRef(null);
+  
+  // Exclude buttonRef from outside clicks
+  const popoverRef = useClickOutside(() => {
+    if (isOpen) setIsOpen(false);
+  }, [buttonRef]);
+  
+  return (
+    <div>
+      <button 
+        ref={buttonRef}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        Toggle Popover
+      </button>
+      
+      {isOpen && (
+        <div ref={popoverRef} className="popover">
+          <p>This popover won't close when you click the toggle button</p>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Modals & Dialogs**: Close when clicking on the backdrop
+- **Dropdown Menus**: Collapse when clicking outside
+- **Popovers & Tooltips**: Hide when clicking elsewhere
+- **Flyout Navigation**: Close navigation panels on outside clicks
+- **Context Menus**: Dismiss right-click menus when clicking away
+- **Selection Panels**: Deselect active elements when clicking elsewhere
+- **Rich Text Editors**: Close formatting popups when clicking outside
+- **Date Pickers**: Hide calendar views when clicking outside
+
+## Accessibility
+
+When implementing components with the useClickOutside hook, consider these accessibility improvements:
+
+- Ensure keyboard users can also close components (e.g., with Escape key)
+- Maintain proper focus management when opening/closing elements
+- Include appropriate ARIA attributes like `aria-expanded` and `aria-haspopup`
+- Trap focus inside modal components when open
+- Test your components with screen readers and keyboard navigation
+
+## Event Handling
+
+The hook uses both `mousedown` and `touchstart` events to ensure compatibility with both mouse and touch devices. These events are chosen over `click` because they fire earlier in the interaction process, which often provides a better user experience.
+
+## Multiple Elements
+
+If you need to detect clicks outside multiple elements or have complex logic, you can:
+
+1. Use the `exceptRefs` parameter to exclude specific elements
+2. Create multiple instances of the hook with different callbacks
+3. Combine with other hooks like `useContext` to share state
+
+## Best Practices
+
+- Always provide a clean way to close components besides clicking outside (e.g., Close button, Escape key)
+- Use appropriate CSS z-index values to ensure your clickable elements are properly stacked
+- Consider touch and mobile experiences where "outside" clicks may be less intuitive
+- Combine with animations for smoother transitions when opening/closing elements
+- Avoid using this hook for critical functionality that must be accessible to all users
+- Clean up event listeners properly by including the cleanup function in useEffect

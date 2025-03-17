@@ -1,3 +1,482 @@
 ---
-title: use-undo-redo
+title: useUndoRedo
+description: A hook for managing state history with undo and redo functionality.
 ---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { UseUndoRedoPreview, ColorUndoRedoPreview, AdvancedUndoRedoPreview } from "@/app/components/docs/UseUndoRedoPreview";
+
+# useUndoRedo
+
+The `useUndoRedo` hook provides a convenient way to add undo and redo functionality to any state in your React application. It maintains a history of state changes, allowing users to easily navigate back and forth through previous states.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <UseUndoRedoPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { useUndoRedo } from "@/hooks/use-undo-redo";
+    
+    function TextEditor() {
+      const { state, set, undo, redo, canUndo, canRedo } = useUndoRedo("Hello world!");
+      
+      const handleTextChange = (e) => {
+        set(e.target.value);
+      };
+      
+      return (
+        <div>
+          <textarea 
+            value={state} 
+            onChange={handleTextChange} 
+            placeholder="Type something..."
+          />
+          <div>
+            <button onClick={undo} disabled={!canUndo}>
+              Undo
+            </button>
+            <button onClick={redo} disabled={!canRedo}>
+              Redo
+            </button>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useUndoRedo hook using:
+    ```bash
+    npx axionjs add hook use-undo-redo
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-undo-redo.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useCallback, useReducer } from 'react';
+
+    interface HistoryState<T> {
+      past: T[];
+      present: T;
+      future: T[];
+    }
+
+    type HistoryAction<T> =
+      | { type: 'UNDO' }
+      | { type: 'REDO' }
+      | { type: 'SET'; newPresent: T }
+      | { type: 'CLEAR'; initialPresent: T };
+
+    export function useUndoRedo<T>(initialPresent: T) {
+      const initialState: HistoryState<T> = {
+        past: [],
+        present: initialPresent,
+        future: [],
+      };
+
+      const [state, dispatch] = useReducer(
+        (state: HistoryState<T>, action: HistoryAction<T>): HistoryState<T> => {
+          const { past, present, future } = state;
+
+          switch (action.type) {
+            case 'UNDO': {
+              if (past.length === 0) return state;
+              
+              const previous = past[past.length - 1];
+              const newPast = past.slice(0, past.length - 1);
+              
+              return {
+                past: newPast,
+                present: previous,
+                future: [present, ...future],
+              };
+            }
+            
+            case 'REDO': {
+              if (future.length === 0) return state;
+              
+              const next = future[0];
+              const newFuture = future.slice(1);
+              
+              return {
+                past: [...past, present],
+                present: next,
+                future: newFuture,
+              };
+            }
+            
+            case 'SET': {
+              const { newPresent } = action;
+              
+              if (newPresent === present) return state;
+              
+              return {
+                past: [...past, present],
+                present: newPresent,
+                future: [],
+              };
+            }
+            
+            case 'CLEAR': {
+              return {
+                ...initialState,
+                present: action.initialPresent,
+              };
+            }
+          }
+        },
+        initialState
+      );
+
+      const canUndo = state.past.length !== 0;
+      const canRedo = state.future.length !== 0;
+      
+      const undo = useCallback(() => {
+        if (canUndo) {
+          dispatch({ type: 'UNDO' });
+        }
+      }, [canUndo]);
+      
+      const redo = useCallback(() => {
+        if (canRedo) {
+          dispatch({ type: 'REDO' });
+        }
+      }, [canRedo]);
+      
+      const set = useCallback((newPresent: T) => {
+        dispatch({ type: 'SET', newPresent });
+      }, []);
+      
+      const clear = useCallback(() => {
+        dispatch({ type: 'CLEAR', initialPresent });
+      }, [initialPresent]);
+
+      return { state: state.present, set, undo, redo, clear, canUndo, canRedo, history: state };
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-undo-redo.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    initialPresent: {
+      description: "The initial state value",
+      type: "T",
+      default: "Required",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    state: {
+      description: "The current state value (present)",
+      type: "T",
+    },
+    set: {
+      description: "Function to update the state with a new value",
+      type: "(newPresent: T) => void",
+    },
+    undo: {
+      description: "Function to revert to the previous state",
+      type: "() => void",
+    },
+    redo: {
+      description: "Function to move forward to the next state",
+      type: "() => void",
+    },
+    clear: {
+      description: "Function to clear history and reset to initial state",
+      type: "() => void",
+    },
+    canUndo: {
+      description: "Boolean indicating if undo is available",
+      type: "boolean",
+    },
+    canRedo: {
+      description: "Boolean indicating if redo is available",
+      type: "boolean",
+    },
+    history: {
+      description: "Complete history state containing past, present, and future",
+      type: "HistoryState<T>",
+    },
+  }}
+/>
+
+## Examples
+
+### Color Picker with History
+
+A simple color picker that maintains a history of color selections.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ColorUndoRedoPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useUndoRedo } from "@/hooks/use-undo-redo";
+    
+    function ColorPicker() {
+      const { state, set, undo, redo, canUndo, canRedo } = useUndoRedo("#6366f1");
+      
+      const colors = [
+        { name: "Red", value: "#ef4444" },
+        { name: "Green", value: "#22c55e" },
+        { name: "Blue", value: "#3b82f6" },
+        { name: "Purple", value: "#a855f7" },
+        { name: "Pink", value: "#ec4899" },
+        { name: "Orange", value: "#f97316" },
+        { name: "Yellow", value: "#eab308" },
+        { name: "Indigo", value: "#6366f1" },
+      ];
+      
+      return (
+        <div>
+          <div 
+            style={{ 
+              backgroundColor: state,
+              height: "100px",
+              width: "100%",
+              marginBottom: "16px"
+            }} 
+          />
+          
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px" }}>
+            {colors.map((color) => (
+              <button
+                key={color.value}
+                style={{ 
+                  backgroundColor: color.value,
+                  height: "32px",
+                  width: "100%"
+                }}
+                onClick={() => set(color.value)}
+                title={color.name}
+              />
+            ))}
+          </div>
+          
+          <div style={{ marginTop: "16px" }}>
+            <button onClick={undo} disabled={!canUndo}>Undo</button>
+            <button onClick={redo} disabled={!canRedo}>Redo</button>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Advanced Task Manager
+
+A more complex example showing how to use `useUndoRedo` with an array of objects.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <AdvancedUndoRedoPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useUndoRedo } from "@/hooks/use-undo-redo";
+    
+    type Task = {
+      id: string;
+      text: string;
+      completed: boolean;
+    };
+    
+    function TaskManager() {
+      const initialTasks: Task[] = [
+        { id: "1", text: "Learn React", completed: true },
+        { id: "2", text: "Build a project", completed: false },
+        { id: "3", text: "Deploy to production", completed: false },
+      ];
+      
+      const { state, set, undo, redo, canUndo, canRedo } = useUndoRedo<Task[]>(initialTasks);
+      
+      const addTask = () => {
+        const newTask: Task = {
+          id: Date.now().toString(),
+          text: "New task",
+          completed: false,
+        };
+        set([...state, newTask]);
+      };
+      
+      const toggleTask = (id: string) => {
+        set(
+          state.map((task) =>
+            task.id === id ? { ...task, completed: !task.completed } : task
+          )
+        );
+      };
+      
+      const removeTask = (id: string) => {
+        set(state.filter((task) => task.id !== id));
+      };
+      
+      return (
+        <div>
+          <div>
+            <button onClick={undo} disabled={!canUndo}>Undo</button>
+            <button onClick={redo} disabled={!canRedo}>Redo</button>
+          </div>
+          
+          <div>
+            {state.map((task) => (
+              <div key={task.id}>
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => toggleTask(task.id)}
+                />
+                <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+                  {task.text}
+                </span>
+                <button onClick={() => removeTask(task.id)}>Delete</button>
+              </div>
+            ))}
+          </div>
+          
+          <button onClick={addTask}>Add Task</button>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Using with Form State
+
+The `useUndoRedo` hook can be particularly useful for forms where you want to track changes and allow users to undo or redo their edits.
+
+```tsx ts2js
+import { useUndoRedo } from "@/hooks/use-undo-redo";
+
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+function ContactForm() {
+  const initialFormData: FormData = {
+    name: "",
+    email: "",
+    message: ""
+  };
+  
+  const { state, set, undo, redo, canUndo, canRedo, clear } = useUndoRedo<FormData>(initialFormData);
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    set({
+      ...state,
+      [name]: value
+    });
+  };
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Submit form data...
+    alert(`Form submitted with: ${JSON.stringify(state)}`);
+    clear(); // Reset form and history after submission
+  };
+  
+  const handleReset = () => {
+    clear(); // Reset to initial state and clear history
+  };
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="name">Name</label>
+        <input
+          id="name"
+          name="name"
+          value={state.name}
+          onChange={handleChange}
+        />
+      </div>
+      
+      <div>
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value={state.email}
+          onChange={handleChange}
+        />
+      </div>
+      
+      <div>
+        <label htmlFor="message">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          value={state.message}
+          onChange={handleChange}
+        />
+      </div>
+      
+      <div>
+        <button type="button" onClick={undo} disabled={!canUndo}>Undo</button>
+        <button type="button" onClick={redo} disabled={!canRedo}>Redo</button>
+        <button type="button" onClick={handleReset}>Reset</button>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  );
+}
+```
+
+## Use Cases
+
+- **Content Editors**: Text editors, rich text editors, code editors
+- **Form Management**: Track changes and allow users to revert to previous inputs
+- **Drawing Applications**: Maintain a history of canvas states
+- **Game Development**: Implement undo/redo in game logic
+- **Configuration Interfaces**: Track changes to settings or configurations
+- **Data Entry Systems**: Allow users to correct mistakes easily
+- **Interactive Tutorials**: Guide users through steps with ability to go back
+
+## Accessibility
+
+To ensure accessible implementation:
+
+- Clearly communicate to users when undo/redo actions are available
+- Provide keyboard shortcuts (e.g., Ctrl+Z, Ctrl+Y) for undo and redo
+- Include appropriate ARIA attributes for buttons and controls
+- Ensure focus management when performing undo/redo operations
+
+## Best Practices
+
+- **Performance Considerations**: Be mindful of memory usage when storing large objects in history
+- **Deep Cloning**: Make sure to properly clone complex objects to avoid reference issues
+- **Debouncing**: Consider debouncing rapid state changes before adding them to history
+- **Maximum History Size**: Implement a maximum history size to prevent memory issues
+- **Batch Operations**: Group related changes into a single history entry when appropriate

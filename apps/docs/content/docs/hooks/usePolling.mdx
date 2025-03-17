@@ -1,3 +1,840 @@
 ---
-title: use-polling
+title: usePolling
+description: A hook for performing interval-based API polling with control functions and error handling.
 ---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { UsePollingPreview, CryptoTrackerPreview, ServerStatusPreview } from "@/app/components/docs/UsePollingPreview";
+
+# usePolling
+
+The `usePolling` hook provides a way to fetch data from an API endpoint at regular intervals. It includes comprehensive controls for starting, pausing, and stopping polling, along with error handling, retry limits, and state management.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <CryptoTrackerPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { usePolling } from "@/hooks/use-polling";
+    
+    function CryptoTracker() {
+      const [cryptoData, setCryptoData] = useState([
+        { symbol: "BTC", name: "Bitcoin", price: 56789.34, change: 2.45 },
+        { symbol: "ETH", name: "Ethereum", price: 2834.56, change: -1.20 },
+        { symbol: "SOL", name: "Solana", price: 123.78, change: 5.67 },
+      ]);
+      
+      // Function to fetch crypto prices from an API
+      const fetchCryptoPrices = async () => {
+        try {
+          const response = await fetch('https://api.example.com/crypto/prices');
+          
+          if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          setCryptoData(data);
+          return data;
+        } catch (err) {
+          console.error("Failed to fetch crypto prices:", err);
+          throw err; // Re-throw to let the hook handle the error
+        }
+      };
+      
+      // Use the polling hook to fetch prices every 5 seconds
+      const { 
+        isPolling, 
+        lastUpdated, 
+        startPolling, 
+        pausePolling, 
+        fetchNow 
+      } = usePolling({
+        fetchFn: fetchCryptoPrices,
+        interval: 5000,  // 5 seconds
+        autoStart: true,
+      });
+      
+      return (
+        <div>
+          <div className="flex justify-between items-center">
+            <h2>Cryptocurrency Prices</h2>
+            <div>
+              <button onClick={isPolling ? pausePolling : startPolling}>
+                {isPolling ? "Pause Updates" : "Resume Updates"}
+              </button>
+              <button onClick={fetchNow}>Refresh Now</button>
+            </div>
+          </div>
+          
+          {lastUpdated && (
+            <p>Last updated: {new Date(lastUpdated).toLocaleTimeString()}</p>
+          )}
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Price (USD)</th>
+                <th>24h Change</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cryptoData.map((crypto) => (
+                <tr key={crypto.symbol}>
+                  <td>
+                    <div>
+                      <div>{crypto.name}</div>
+                      <div>{crypto.symbol}</div>
+                    </div>
+                  </td>
+                  <td>${crypto.price.toFixed(2)}</td>
+                  <td 
+                    style={{ 
+                      color: crypto.change > 0 ? 'green' : 'red' 
+                    }}
+                  >
+                    {crypto.change > 0 ? "+" : ""}{crypto.change}%
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the usePolling hook using:
+    ```bash
+    npx axionjs add hook use-polling
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-polling.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useEffect, useRef, useCallback, useState, useReducer } from 'react';
+
+    interface PollingOptions<T> {
+      /** The function to call on each polling interval */
+      fetchFn: () => Promise<T>;
+      /** Polling interval in milliseconds (default: 5000) */
+      interval?: number;
+      /** Whether to start polling immediately (default: true) */
+      autoStart?: boolean;
+      /** Maximum number of consecutive errors before stopping (default: Infinity) */
+      maxErrors?: number;
+      /** Whether to immediately run fetchFn on start (default: true) */
+      runImmediately?: boolean;
+      /** Initial data to use before first fetch completes */
+      initialData?: T;
+      /** Define custom error handling logic */
+      onError?: (error: Error) => void;
+      /** Callback when data is successfully fetched */
+      onSuccess?: (data: T) => void;
+      /** Check if response is considered an error */
+      isDataValid?: (data: T) => boolean;
+    }
+
+    type PollingStatus = 'IDLE' | 'POLLING' | 'PAUSED' | 'ERROR' | 'STOPPED';
+
+    interface PollingState<T> {
+      data: T | null;
+      error: Error | null;
+      status: PollingStatus;
+      lastUpdated: number | null;
+      errorCount: number;
+    }
+
+    type PollingAction<T> =
+      | { type: 'START_POLLING' }
+      | { type: 'PAUSE_POLLING' }
+      | { type: 'STOP_POLLING' }
+      | { type: 'FETCH_SUCCESS'; payload: T }
+      | { type: 'FETCH_ERROR'; payload: Error }
+      | { type: 'RESET_ERRORS' };
+
+    export function usePolling<T>(options: PollingOptions<T>) {
+      const {
+        fetchFn,
+        interval = 5000,
+        autoStart = true,
+        maxErrors = Infinity,
+        runImmediately = true,
+        initialData = null as unknown as T,
+        onError,
+        onSuccess,
+        isDataValid,
+      } = options;
+
+      const initialState: PollingState<T> = {
+        data: initialData,
+        error: null,
+        status: 'IDLE',
+        lastUpdated: null,
+        errorCount: 0,
+      };
+
+      // Implementation details here...
+
+      return {
+        ...state,
+        isPolling: state.status === 'POLLING',
+        isPaused: state.status === 'PAUSED',
+        isStopped: state.status === 'STOPPED',
+        isError: state.status === 'ERROR',
+        startPolling,
+        pausePolling,
+        stopPolling,
+        resetErrors,
+        fetchNow,
+      };
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-polling.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    options: {
+      description: "Configuration options for polling",
+      type: "PollingOptions<T>",
+      default: "Required",
+      properties: {
+        fetchFn: {
+          description: "The function to call on each polling interval",
+          type: "() => Promise<T>",
+          default: "Required",
+        },
+        interval: {
+          description: "Polling interval in milliseconds",
+          type: "number",
+          default: "5000",
+        },
+        autoStart: {
+          description: "Whether to start polling immediately",
+          type: "boolean",
+          default: "true",
+        },
+        maxErrors: {
+          description: "Maximum number of consecutive errors before stopping",
+          type: "number",
+          default: "Infinity",
+        },
+        runImmediately: {
+          description: "Whether to immediately run fetchFn on start",
+          type: "boolean",
+          default: "true",
+        },
+        initialData: {
+          description: "Initial data to use before first fetch completes",
+          type: "T",
+          default: "null",
+        },
+        onError: {
+          description: "Callback function when an error occurs",
+          type: "(error: Error) => void",
+          default: "undefined",
+        },
+        onSuccess: {
+          description: "Callback function when data is successfully fetched",
+          type: "(data: T) => void",
+          default: "undefined",
+        },
+        isDataValid: {
+          description: "Function to check if the fetched data is valid",
+          type: "(data: T) => boolean",
+          default: "undefined",
+        },
+      },
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    data: {
+      description: "The most recently fetched data",
+      type: "T | null",
+    },
+    error: {
+      description: "Error object if the fetch fails",
+      type: "Error | null",
+    },
+    status: {
+      description: "Current status of the polling",
+      type: "'IDLE' | 'POLLING' | 'PAUSED' | 'ERROR' | 'STOPPED'",
+    },
+    lastUpdated: {
+      description: "Timestamp of the last successful update",
+      type: "number | null",
+    },
+    errorCount: {
+      description: "Number of consecutive errors",
+      type: "number",
+    },
+    isPolling: {
+      description: "Whether polling is currently active",
+      type: "boolean",
+    },
+    isPaused: {
+      description: "Whether polling is paused",
+      type: "boolean",
+    },
+    isStopped: {
+      description: "Whether polling is stopped",
+      type: "boolean",
+    },
+    isError: {
+      description: "Whether polling has errored out",
+      type: "boolean",
+    },
+    startPolling: {
+      description: "Function to start or resume polling",
+      type: "() => void",
+    },
+    pausePolling: {
+      description: "Function to pause polling",
+      type: "() => void",
+    },
+    stopPolling: {
+      description: "Function to stop polling",
+      type: "() => void",
+    },
+    resetErrors: {
+      description: "Function to reset error counter and resume polling",
+      type: "() => void",
+    },
+    fetchNow: {
+      description: "Function to trigger an immediate fetch",
+      type: "() => void",
+    },
+  }}
+/>
+
+## Examples
+
+### Server Status Monitoring
+
+A real-time dashboard for monitoring server health metrics with automatic polling.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ServerStatusPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { usePolling } from "@/hooks/use-polling";
+    
+    interface ServerStatus {
+      id: string;
+      status: 'healthy' | 'degraded' | 'down';
+      cpu: number;
+      memory: number;
+      uptime: number;
+      lastChecked: number;
+    }
+    
+    function ServerMonitoring() {
+      const servers = [
+        { id: "web-01", name: "Web Server 01", type: "web", region: "us-east" },
+        { id: "api-01", name: "API Server 01", type: "api", region: "us-east" },
+        { id: "db-01", name: "Database Primary", type: "database", region: "us-east" },
+      ];
+      
+      const [serverStatuses, setServerStatuses] = useState<Record<string, ServerStatus>>({});
+      
+      // Function to fetch server status from your monitoring API
+      const fetchServerStatus = async () => {
+        try {
+          const response = await fetch('/api/server-status');
+          
+          if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          setServerStatuses(data);
+          return data;
+        } catch (err) {
+          console.error("Failed to fetch server status:", err);
+          throw err;
+        }
+      };
+      
+      // Use the polling hook to check server status every 30 seconds
+      const { 
+        isPolling, 
+        error, 
+        lastUpdated,
+        startPolling, 
+        pausePolling 
+      } = usePolling({
+        fetchFn: fetchServerStatus,
+        interval: 30000, // 30 seconds
+        autoStart: true,
+        maxErrors: 5, // Stop after 5 consecutive errors
+      });
+      
+      // Format uptime in human-readable form
+      const formatUptime = (seconds: number) => {
+        const days = Math.floor(seconds / 86400);
+        const hours = Math.floor((seconds % 86400) / 3600);
+        
+        if (days > 0) return `${days}d ${hours}h`;
+        
+        const minutes = Math.floor((seconds % 3600) / 60);
+        return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+      };
+      
+      return (
+        <div>
+          <div className="flex justify-between">
+            <h2>Server Status</h2>
+            <div>
+              <button onClick={isPolling ? pausePolling : startPolling}>
+                {isPolling ? "Pause Monitoring" : "Resume Monitoring"}
+              </button>
+              
+              {lastUpdated && (
+                <span>Last update: {new Date(lastUpdated).toLocaleTimeString()}</span>
+              )}
+            </div>
+          </div>
+          
+          {error && <div className="error">Error: {error.message}</div>}
+          
+          <div className="server-grid">
+            {servers.map((server) => {
+              const status = serverStatuses[server.id];
+              
+              return (
+                <div key={server.id} className="server-card">
+                  <div className="server-header">
+                    <h3>{server.name}</h3>
+                    {status && (
+                      <div className={`status-badge ${status.status}`}>
+                        {status.status}
+                      </div>
+                    )}
+                  </div>
+                  
+                  {status ? (
+                    <div className="server-metrics">
+                      <div className="metric">
+                        <label>CPU</label>
+                        <div className="progress-bar">
+                          <div 
+                            className="progress-fill" 
+                            style={{ width: `${status.cpu}%` }}
+                          />
+                        </div>
+                        <span>{status.cpu.toFixed(1)}%</span>
+                      </div>
+                      
+                      <div className="metric">
+                        <label>Memory</label>
+                        <div className="progress-bar">
+                          <div 
+                            className="progress-fill" 
+                            style={{ width: `${status.memory}%` }}
+                          />
+                        </div>
+                        <span>{status.memory.toFixed(1)}%</span>
+                      </div>
+                      
+                      <div className="server-footer">
+                        <span>Uptime: {formatUptime(status.uptime)}</span>
+                        <span>{server.region}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="loading-placeholder">
+                      Loading server status...
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Real-time Stock Market Data
+
+```tsx ts2js
+import { useEffect, useState } from "react";
+import { usePolling } from "@/hooks/use-polling";
+
+interface StockData {
+  symbol: string;
+  price: number;
+  change: number;
+  percentChange: number;
+  volume: number;
+  lastUpdated: string;
+}
+
+function StockTickerWidget() {
+  // Stock symbols to track
+  const [symbols, setSymbols] = useState(['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']);
+  const [stockData, setStockData] = useState<Record<string, StockData>>({});
+  const [marketStatus, setMarketStatus] = useState<'open' | 'closed' | 'pre-market' | 'after-hours'>('closed');
+  
+  // Check if market is currently open
+  const isMarketOpen = marketStatus === 'open' || marketStatus === 'pre-market' || marketStatus === 'after-hours';
+  
+  // Determine polling interval based on market status
+  const pollingInterval = marketStatus === 'open' ? 5000 : // 5 seconds when market is open
+                          marketStatus === 'pre-market' || marketStatus === 'after-hours' ? 15000 : // 15 seconds for extended hours
+                          60000; // 1 minute when market is closed
+  
+  // Fetch stock data from API
+  const fetchStockData = async () => {
+    try {
+      // Fetch market status first
+      const statusResponse = await fetch('/api/market/status');
+      if (!statusResponse.ok) throw new Error('Failed to fetch market status');
+      const { status } = await statusResponse.json();
+      setMarketStatus(status);
+      
+      // Fetch price data for all symbols
+      const symbolsParam = symbols.join(',');
+      const response = await fetch(`/api/stocks/quotes?symbols=${symbolsParam}`);
+      if (!response.ok) throw new Error('Failed to fetch stock data');
+      
+      const data = await response.json();
+      setStockData(data);
+      return data;
+    } catch (error) {
+      console.error('Error fetching stock data:', error);
+      throw error;
+    }
+  };
+  
+  // Use polling hook with dynamic interval
+  const { 
+    isPolling, 
+    startPolling, 
+    pausePolling, 
+    error,
+    resetErrors
+  } = usePolling({
+    fetchFn: fetchStockData,
+    interval: pollingInterval,
+    autoStart: true,
+    maxErrors: 3,
+  });
+  
+  // Update polling interval when market status changes
+  useEffect(() => {
+    if (isPolling) {
+      pausePolling();
+      startPolling();
+    }
+  }, [pollingInterval]);
+  
+  return (
+    <div className="stock-ticker">
+      <header>
+        <h2>Stock Ticker</h2>
+        <div className="market-status">
+          Market: <span className={marketStatus}>{marketStatus}</span>
+          <button onClick={isPolling ? pausePolling : startPolling}>
+            {isPolling ? "Pause" : "Resume"}
+          </button>
+        </div>
+      </header>
+      
+      {error && (
+        <div className="error-banner">
+          <p>{error.message}</p>
+          <button onClick={resetErrors}>Try Again</button>
+        </div>
+      )}
+      
+      <table className="stock-table">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Price</th>
+            <th>Change</th>
+            <th>Volume</th>
+          </tr>
+        </thead>
+        <tbody>
+          {symbols.map(symbol => {
+            const stock = stockData[symbol];
+            return (
+              <tr key={symbol}>
+                <td>{symbol}</td>
+                <td>{stock ? `${stock.price.toFixed(2)}` : '--'}</td>
+                <td className={stock?.change > 0 ? 'positive' : stock?.change < 0 ? 'negative' : ''}>
+                  {stock ? (
+                    <>
+                      {stock.change > 0 ? '+' : ''}{stock.change.toFixed(2)} 
+                      ({stock.percentChange.toFixed(2)}%)
+                    </>
+                  ) : '--'}
+                </td>
+                <td>{stock?.volume.toLocaleString() || '--'}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      
+      <footer>
+        <small>Data updates {isMarketOpen 
+          ? `every ${pollingInterval / 1000} seconds` 
+          : 'every minute'
+        }</small>
+      </footer>
+    </div>
+  );
+}
+```
+
+### Auto-Saving Form
+
+A form with automatic saving functionality that periodically sends updates to the server.
+
+```tsx ts2js
+import { useState, useEffect } from "react";
+import { usePolling } from "@/hooks/use-polling";
+
+// Types for our form data
+interface DocumentData {
+  title: string;
+  content: string;
+  lastSaved?: Date;
+  isDirty: boolean;
+}
+
+function AutoSaveEditor() {
+  // Initial document state
+  const [document, setDocument] = useState<DocumentData>({
+    title: "Untitled Document",
+    content: "",
+    isDirty: false
+  });
+  
+  // Save status indicators
+  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error'>('saved');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  
+  // Function to save the document to the server
+  const saveDocument = async () => {
+    // Skip saving if nothing has changed
+    if (!document.isDirty) {
+      return document;
+    }
+    
+    try {
+      setSaveStatus('saving');
+      
+      // Simulate a network request
+      const response = await fetch('/api/documents/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: document.title,
+          content: document.content,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to save: ${response.statusText}`);
+      }
+      
+      // Update document with saved status
+      const savedDocument = {
+        ...document,
+        lastSaved: new Date(),
+        isDirty: false,
+      };
+      
+      setDocument(savedDocument);
+      setSaveStatus('saved');
+      setErrorMessage(null);
+      
+      return savedDocument;
+    } catch (error) {
+      setSaveStatus('error');
+      setErrorMessage(error.message || 'Failed to save document');
+      throw error;
+    }
+  };
+  
+  // Use polling to auto-save the document every 30 seconds
+  const { 
+    isPolling,
+    error,
+    lastUpdated,
+    pausePolling,
+    startPolling,
+    fetchNow,
+  } = usePolling({
+    fetchFn: saveDocument,
+    interval: 30000, // 30 seconds
+    autoStart: true,
+    maxErrors: 5,
+  });
+  
+  // Handle form input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    
+    setDocument(prev => ({
+      ...prev,
+      [name]: value,
+      isDirty: true, // Mark document as changed
+    }));
+  };
+  
+  // Save manually
+  const handleManualSave = () => {
+    fetchNow();
+  };
+  
+  return (
+    <div className="auto-save-editor">
+      <div className="editor-header">
+        <input
+          type="text"
+          name="title"
+          value={document.title}
+          onChange={handleInputChange}
+          className="title-input"
+          placeholder="Document Title"
+        />
+        
+        <div className="editor-controls">
+          <div className="save-status">
+            {saveStatus === 'saving' && <span>Saving...</span>}
+            {saveStatus === 'saved' && document.lastSaved && (
+              <span>Saved at {document.lastSaved.toLocaleTimeString()}</span>
+            )}
+            {saveStatus === 'error' && (
+              <span className="error">Save failed!</span>
+            )}
+          </div>
+          
+          <div className="action-buttons">
+            <button
+              onClick={isPolling ? pausePolling : startPolling}
+              title={isPolling ? "Disable auto-save" : "Enable auto-save"}
+            >
+              {isPolling ? "Auto-save on" : "Auto-save off"}
+            </button>
+            
+            <button
+              onClick={handleManualSave}
+              disabled={!document.isDirty || saveStatus === 'saving'}
+            >
+              Save now
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {errorMessage && (
+        <div className="error-message">
+          {errorMessage}
+        </div>
+      )}
+      
+      <textarea
+        name="content"
+        value={document.content}
+        onChange={handleInputChange}
+        className="content-editor"
+        placeholder="Start typing your document..."
+        rows={20}
+      />
+      
+      <div className="editor-footer">
+        <span>
+          {isPolling 
+            ? `Auto-saving every ${30} seconds` 
+            : "Auto-save is turned off"
+          }
+        </span>
+        
+        {document.isDirty && (
+          <span className="unsaved-indicator">You have unsaved changes</span>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Data Dashboards**: Keep dashboards updated with the latest metrics and KPIs
+- **Financial Applications**: Track stock prices, currency exchange rates, or cryptocurrency values
+- **Monitoring Systems**: Poll server status, system health, or application metrics
+- **Chat Applications**: Check for new messages when WebSockets aren't available
+- **Form Auto-Save**: Automatically save form data at regular intervals
+- **Content Updates**: Refresh content feeds, news, or notifications
+- **IoT Applications**: Poll devices for status updates or sensor data
+- **Sports/Gaming**: Update live scores, match status, or game statistics
+- **Collaborative Editing**: Poll for document changes from other users
+
+## Performance Considerations
+
+- **Battery Impact**: Frequent polling can impact battery life on mobile devices
+- **Network Usage**: Be mindful of data usage, especially on metered connections
+- **Server Load**: Avoid polling too frequently to prevent overwhelming your server
+- **Variable Intervals**: Consider using longer intervals when the application is not actively used
+- **Conditional Polling**: Only poll when necessary (e.g., stop polling when a tab is not visible)
+- **Backoff Strategy**: Implement exponential backoff for error retry attempts
+
+## Accessibility
+
+When implementing polling in user interfaces:
+
+- Use ARIA live regions to announce important updates to screen readers
+- Provide visual indicators when data is being refreshed
+- Allow users to pause automatic updates if needed
+- Maintain focus position when content updates
+
+## Best Practices
+
+- **Debounce User Actions**: Avoid triggering multiple fetches when users interact with controls
+- **Error Handling**: Always handle errors gracefully with clear user feedback
+- **Loading States**: Show loading indicators during long-running fetches
+- **Last Updated Time**: Display when data was last updated for user awareness
+- **Cleanup**: Always clean up timeouts when components unmount
+- **User Control**: Give users control to pause, resume, or adjust polling frequency
+- **Batch Updates**: For multiple polled resources, consider batching them to reduce requests
