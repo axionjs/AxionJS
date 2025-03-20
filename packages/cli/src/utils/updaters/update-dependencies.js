@@ -4,6 +4,8 @@ import { logger } from "../logger.js";
 import { spinner } from "../spinner.js";
 import { execa } from "execa";
 import { select } from "@clack/prompts";
+import { ensurePrismaInitialized } from "../ensure-prisma-init.js";
+import { ensureAuthModels } from "../ensure-auth-model.js";
 
 export async function updateDependencies(dependencies, config, options) {
   dependencies = Array.from(new Set(dependencies));
@@ -65,4 +67,9 @@ function isUsingReact19(config) {
   }
 
   return /^(?:\^|~)?19(?:\.\d+)*(?:-.*)?$/.test(packageInfo.dependencies.react);
+}
+
+export async function setupPrisma(cwd) {
+  await ensurePrismaInitialized(cwd);
+  await ensureAuthModels(cwd);
 }

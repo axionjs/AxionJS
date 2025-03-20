@@ -29,6 +29,7 @@ export async function updateFiles(files, config, options) {
   if (!files?.length) {
     return;
   }
+
   options = {
     overwrite: false,
     force: false,
@@ -94,7 +95,7 @@ export async function updateFiles(files, config, options) {
     // Run our transformers.
     const content = await transform(
       {
-        filename: file.path,
+        filename: filePath,
         raw: file.content,
         config,
         baseColor,

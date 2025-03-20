@@ -229,7 +229,7 @@ async function promptForConfig(defaultConfig = null) {
   };
 
   return rawConfigSchema.parse({
-    $schema: "http://localhost:3000/schema.json",
+    $schema: "http://localhost:3001/schema.json",
     style: options.style,
     tailwind: {
       config: options.tailwindConfig,
@@ -246,6 +246,17 @@ async function promptForConfig(defaultConfig = null) {
       // TODO: fix this.
       lib: options.components.replace(/\/components$/, "lib"),
       hooks: options.components.replace(/\/components$/, "hooks"),
+      auth: options.components.replace(/\/components$/, "auth"),
+      actions: options.components.replace(/\/components$/, "actions"),
+      middleware: options.components.replace(/\/components$/, ""),
+      schemas: options.components.replace(/\/components$/, "schemas"),
+      pages: options.components.replace(/\/components$/, "pages"),
+      auth_comp: options.components.replace(
+        /\/components$\/auth$/,
+        "auth_comp"
+      ),
+      api: options.components.replace(/\/components$/, "api"),
+      email: options.components.replace(/\/components$/, "email"),
     },
   });
 }

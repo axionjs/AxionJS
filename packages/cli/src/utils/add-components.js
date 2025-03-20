@@ -3,7 +3,10 @@ import { logger } from "./logger.js";
 import { registryResolveItemsTree } from "./registry/index.js";
 import { spinner } from "./spinner.js";
 import { updateCssVars } from "./updaters/update-css-vars.js";
-import { updateDependencies } from "./updaters/update-dependencies.js";
+import {
+  setupPrisma,
+  updateDependencies,
+} from "./updaters/update-dependencies.js";
 import { updateFiles } from "./updaters/update-files.js";
 import { updateTailwindConfig } from "./updaters/update-tailwind-config.js";
 
@@ -18,7 +21,11 @@ export async function addComponents(components, config, options) {
   const registrySpinner = spinner(`Checking registry.`, {
     silent: options.silent,
   })?.start();
-  const tree = await registryResolveItemsTree(components, config);
+  const tree = await registryResolveItemsTree(
+    components,
+    config,
+    options.category
+  );
   if (!tree) {
     registrySpinner?.fail();
     return handleError(new Error("Failed to fetch components from registry."));
@@ -36,6 +43,11 @@ export async function addComponents(components, config, options) {
   await updateDependencies(tree.dependencies, config, {
     silent: options.silent,
   });
+
+  if (options.category === "auth") {
+    // Ensure Prisma is initialized and auth models are added
+    await setupPrisma(config.resolvedPaths.cwd);
+  }
   //files=>path,type(mainly)
   await updateFiles(tree.files, config, {
     overwrite: options.overwrite,

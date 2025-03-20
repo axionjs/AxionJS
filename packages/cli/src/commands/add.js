@@ -11,6 +11,7 @@ import { getRegistryIndex } from "../utils/registry/index.js";
 import { Command } from "commander";
 import { confirm, multiselect, intro } from "@clack/prompts";
 import { z } from "zod";
+import { addAuthCommand } from "./add-auth.js";
 
 export const addOptionsSchema = z.object({
   components: z.array(z.string()).optional(),
@@ -26,6 +27,7 @@ export const addOptionsSchema = z.object({
 export const add = new Command()
   .name("add")
   .description("add a component to your project")
+  .addCommand(addAuthCommand)
   .argument(
     "[components...]",
     "the components to add or a url to the component."
@@ -136,8 +138,10 @@ export const add = new Command()
           `Failed to read config at ${highlighter.info(options.cwd)}.`
         );
       }
-
-      await addComponents(options.components, config, options);
+      await addComponents(options.components, config, {
+        ...options,
+        category: "ui",
+      });
     } catch (error) {
       logger.break();
       handleError(error);

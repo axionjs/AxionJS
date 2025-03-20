@@ -45,6 +45,25 @@ function updateImportAliases(moduleSpecifier, config) {
   }
 
   if (
+    config.aliases.auth_comp &&
+    moduleSpecifier.startsWith("@/registry/auth/components/")
+  ) {
+    return moduleSpecifier.replace(
+      /^@\/registry\/auth\/components/,
+      config.aliases.auth_comp
+    );
+  }
+  if (
+    config.aliases.auth_comp &&
+    moduleSpecifier.startsWith("@/registry/auth/emails/")
+  ) {
+    return moduleSpecifier.replace(
+      /^@\/registry\/auth\/emails/,
+      config.aliases.email
+    );
+  }
+
+  if (
     config.aliases.components &&
     moduleSpecifier.match(/^@\/registry\/(.+)\/components/)
   ) {
@@ -60,6 +79,12 @@ function updateImportAliases(moduleSpecifier, config) {
       config.aliases.lib
     );
   }
+  if (
+    config.aliases.lib &&
+    moduleSpecifier.match(/^@\/registry\/(.+)\/routes/)
+  ) {
+    return moduleSpecifier.replace(/^@\/registry\/auth/, config.aliases.lib);
+  }
 
   if (
     config.aliases.hooks &&
@@ -68,6 +93,45 @@ function updateImportAliases(moduleSpecifier, config) {
     return moduleSpecifier.replace(
       /^@\/registry\/(.+)\/hooks/,
       config.aliases.hooks
+    );
+  }
+
+  if (
+    config.aliases.actions &&
+    moduleSpecifier.match(/^@\/registry\/(.+)\/actions/)
+  ) {
+    return moduleSpecifier.replace(
+      /^@\/registry\/(.+)\/actions/,
+      config.aliases.actions
+    );
+  }
+
+  if (
+    config.aliases.middleware &&
+    moduleSpecifier.match(/^@\/registry\/(.+)\/middleware/)
+  ) {
+    return moduleSpecifier.replace(
+      /^@\/registry\/(.+)\/middleware/,
+      config.aliases.middleware
+    );
+  }
+  if (
+    config.aliases.schemas &&
+    moduleSpecifier.match(/^@\/registry\/(.+)\/schemas/)
+  ) {
+    return moduleSpecifier.replace(
+      /^@\/registry\/(.+)\/schemas/,
+      config.aliases.schemas
+    );
+  }
+
+  if (
+    config.aliases.auth &&
+    moduleSpecifier.match(/^@\/registry\/(.+)\/auth/)
+  ) {
+    return moduleSpecifier.replace(
+      /^@\/registry\/(.+)\/auth/,
+      config.aliases.auth
     );
   }
 

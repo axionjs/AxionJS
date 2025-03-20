@@ -190,7 +190,7 @@ export async function getProjectConfig(cwd, defaultProjectInfo = null) {
   }
 
   const config = {
-    $schema: "http://localhost:3000/schema.json",
+    $schema: "http://localhost:3001/schema.json",
     rsc: projectInfo.isRSC,
     tsx: projectInfo.isTsx,
     style: "new-york",
@@ -208,6 +208,14 @@ export async function getProjectConfig(cwd, defaultProjectInfo = null) {
       hooks: `${projectInfo.aliasPrefix}/hooks`,
       lib: `${projectInfo.aliasPrefix}/lib`,
       utils: `${projectInfo.aliasPrefix}/lib/utils`,
+      auth: `${projectInfo.aliasPrefix}/auth`,
+      actions: `${projectInfo.aliasPrefix}/actions`,
+      middleware: `${projectInfo.aliasPrefix}/middleware`,
+      schemas: `${projectInfo.aliasPrefix}/schemas`,
+      pages: `${projectInfo.aliasPrefix}/app`,
+      auth_comp: `${projectInfo.aliasPrefix}/components/auth`,
+      api: `${projectInfo.aliasPrefix}/app/api`,
+      email: `${projectInfo.aliasPrefix}/emails`,
     },
   };
 

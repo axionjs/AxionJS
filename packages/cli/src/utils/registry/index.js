@@ -16,17 +16,19 @@ import { HttpsProxyAgent } from "https-proxy-agent";
 import fetch from "node-fetch";
 import { z } from "zod";
 
-const REGISTRY_URL = process.env.REGISTRY_URL ?? "http://localhost:3000/r";
+const REGISTRY_URL = process.env.REGISTRY_URL ?? "http://localhost:3001/r";
 
 const agent = process.env.https_proxy
   ? new HttpsProxyAgent(process.env.https_proxy)
   : undefined;
 
-export async function getRegistryIndex() {
+export async function getRegistryIndex(category) {
   try {
-    const [result] = await fetchRegistry(["index.json"]);
-
-    return registryIndexSchema.parse(result);
+    const [result] = await fetchRegistry(["index.json"], category);
+    const index = registryIndexSchema.parse(result);
+    return category
+      ? index.filter((item) => item.type === `registry:${category}`)
+      : index;
   } catch (error) {
     logger.error("\n");
     handleError(error);
@@ -55,13 +57,21 @@ export async function getRegistryIcons() {
   }
 }
 
-export async function getRegistryItem(name, style) {
+export async function getRegistryItem(name, style, category) {
   try {
-    const [result] = await fetchRegistry([
-      isUrl(name) ? name : `styles/${style}/${name}.json`,
-    ]);
+    if (category === "auth") {
+      const [result] = await fetchRegistry([
+        isUrl(name) ? name : `auth/${name}.json`,
+      ]);
+      return registryItemSchema.parse(result);
+    } else {
+      const [result] = await fetchRegistry([
+        isUrl(name) ? name : `styles/${style}/${name}.json`,
+        category,
+      ]);
 
-    return registryItemSchema.parse(result);
+      return registryItemSchema.parse(result);
+    }
   } catch (error) {
     logger.break();
     handleError(error);
@@ -155,11 +165,11 @@ export async function getItemTargetPath(config, item, override) {
   return path.join(config.resolvedPaths[parent], type);
 }
 
-export async function fetchRegistry(paths) {
+export async function fetchRegistry(paths, category) {
   try {
     const results = await Promise.all(
       paths.map(async (path) => {
-        const url = getRegistryUrl(path);
+        const url = getRegistryUrl(path, category);
         const response = await fetch(url, { agent });
 
         if (!response.ok) {
@@ -230,10 +240,45 @@ export function getRegistryItemFileTargetPath(file, config, override) {
     return config.resolvedPaths.lib;
   }
 
+  if (file.type === "registry:actions") {
+    return config.resolvedPaths.actions;
+  }
+  if (file.type === "registry:auth") {
+    return config.resolvedPaths.auth;
+  }
+  if (file.type === "registry:schemas") {
+    return config.resolvedPaths.schemas;
+  }
+  if (file.type === "registry:email") {
+    return config.resolvedPaths.email;
+  }
+  if (file.type === "registry:pages") {
+    const basePath = config.resolvedPaths.pages; // This should point to the app directory
+    const filePath = file.path; // e.g., "pages/dashboard/page.tsx"
+
+    // Extract the folder structure from the file path
+    const folderStructure = path.dirname(filePath); // e.g., "pages/dashboard"
+    // Construct the full target path
+    const targetPath = path.join(
+      basePath,
+      folderStructure.replace("pages/", "")
+    ); // Remove "pages/" prefix
+    return targetPath;
+  }
+  if (file.type === "registry:auth_comp") {
+    return config.resolvedPaths.auth_comp;
+  }
+  if (file.type === "registry:api") {
+    return `${config.resolvedPaths.api}/auth/[...nextauth]/`;
+  }
+
   if (file.type === "registry:block" || file.type === "registry:component") {
     return config.resolvedPaths.components;
   }
 
+  if (file.type === "registry:middleware") {
+    return config.resolvedPaths.middleware;
+  }
   if (file.type === "registry:hook") {
     return config.resolvedPaths.hooks;
   }
@@ -247,14 +292,12 @@ export function getRegistryItemFileTargetPath(file, config, override) {
   return config.resolvedPaths.components;
 }
 
-export async function registryResolveItemsTree(names, config) {
+export async function registryResolveItemsTree(names, config, category) {
   try {
-    const index = await getRegistryIndex();
+    const index = await getRegistryIndex(category);
     if (!index) {
       return null;
     }
-
-    // If we're resolving the index, we want it to go first.
     if (names.includes("index")) {
       names.unshift("index");
     }
@@ -263,7 +306,8 @@ export async function registryResolveItemsTree(names, config) {
     for (const name of names) {
       const itemRegistryDependencies = await resolveRegistryDependencies(
         name,
-        config
+        config,
+        category
       );
       registryDependencies.push(...itemRegistryDependencies);
     }
@@ -271,9 +315,8 @@ export async function registryResolveItemsTree(names, config) {
     const uniqueRegistryDependencies = Array.from(
       new Set(registryDependencies)
     );
-    let result = await fetchRegistry(uniqueRegistryDependencies);
+    let result = await fetchRegistry(uniqueRegistryDependencies, category);
     const payload = z.array(registryItemSchema).parse(result);
-
     if (!payload) {
       return null;
     }
@@ -326,14 +369,17 @@ export async function registryResolveItemsTree(names, config) {
   }
 }
 
-async function resolveRegistryDependencies(url, config) {
+async function resolveRegistryDependencies(url, config, category) {
   const visited = new Set();
   const payload = [];
 
   async function resolveDependencies(itemUrl) {
-    const url = getRegistryUrl(
-      isUrl(itemUrl) ? itemUrl : `styles/${config.style}/${itemUrl}.json`
-    );
+    const path =
+      category === "auth"
+        ? `${itemUrl}.json`
+        : `styles/${config.style}/${itemUrl}.json`;
+
+    const url = getRegistryUrl(isUrl(itemUrl) ? itemUrl : path, category);
 
     if (visited.has(url)) {
       return;
@@ -342,7 +388,7 @@ async function resolveRegistryDependencies(url, config) {
     visited.add(url);
 
     try {
-      const [result] = await fetchRegistry([url]);
+      const [result] = await fetchRegistry([url], category);
       const item = registryItemSchema.parse(result);
       payload.push(url);
 
@@ -415,10 +461,14 @@ export async function registryGetTheme(name, config) {
   return theme;
 }
 
-function getRegistryUrl(path) {
+function getRegistryUrl(path, category) {
   if (isUrl(path)) {
     const url = new URL(path);
     return url.toString();
+  }
+  // Handle category-specific paths
+  if (category === "auth") {
+    return `${REGISTRY_URL}/auth/${path.toLowerCase()}`;
   }
 
   return `${REGISTRY_URL}/${path.toLowerCase()}`;
