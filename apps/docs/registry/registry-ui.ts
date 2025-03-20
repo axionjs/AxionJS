@@ -101,6 +101,7 @@ export const ui: Registry["items"] = [
         type: "registry:ui",
       },
     ],
+    devDependencies: ["@radix-ui/react-avatar"],
   },
   {
     name: "badge",

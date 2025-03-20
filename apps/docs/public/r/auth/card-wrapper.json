@@ -1,0 +1,24 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "card-wrapper",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Wrapper for authentication cards.",
+  "registryDependencies": [
+    "header",
+    "social",
+    "back-button"
+  ],
+  "files": [
+    {
+      "path": "components/card-wrapper.tsx",
+      "content": "\"use client\";\n\nimport {\n  Card,\n  CardContent,\n  CardFooter,\n  CardHeader,\n} from \"@/registry/new-york/ui/card\";\nimport { Header } from \"@/registry/auth/components/header\";\nimport { Social } from \"@/registry/auth/components/social\";\nimport { BackButton } from \"@/registry/auth/components/back-button\";\n\ninterface CardWrapperProps {\n  children: React.ReactNode;\n  mainHeaderLabel: string;\n  subHeaderLabel: string;\n  backButtonLabel: string;\n  backButtonHref: string;\n  showSocial?: boolean;\n}\n\nexport const CardWrapper = ({\n  children,\n  mainHeaderLabel,\n  subHeaderLabel,\n  backButtonLabel,\n  backButtonHref,\n  showSocial,\n}: CardWrapperProps) => {\n  return (\n    <Card className=\"w-[400px] shadow-lg\">\n      <CardHeader>\n        <Header mainLabel={mainHeaderLabel} subLabel={subHeaderLabel} />\n      </CardHeader>\n      <CardContent>{children}</CardContent>\n      {showSocial && (\n        <CardFooter>\n          <Social />\n        </CardFooter>\n      )}\n      <CardFooter>\n        <BackButton label={backButtonLabel} href={backButtonHref} />\n      </CardFooter>\n    </Card>\n  );\n};\n",
+      "type": "registry:auth_comp"
+    },
+    {
+      "path": "new-york/ui/card.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst Card = React.forwardRef<\n  HTMLDivElement,\n  React.HTMLAttributes<HTMLDivElement>\n>(({ className, ...props }, ref) => (\n  <div\n    ref={ref}\n    className={cn(\n      \"rounded-xl border bg-card text-card-foreground shadow\",\n      className,\n    )}\n    {...props}\n  />\n));\nCard.displayName = \"Card\";\n\nconst CardHeader = React.forwardRef<\n  HTMLDivElement,\n  React.HTMLAttributes<HTMLDivElement>\n>(({ className, ...props }, ref) => (\n  <div\n    ref={ref}\n    className={cn(\"flex flex-col space-y-1.5 p-6\", className)}\n    {...props}\n  />\n));\nCardHeader.displayName = \"CardHeader\";\n\nconst CardTitle = React.forwardRef<\n  HTMLDivElement,\n  React.HTMLAttributes<HTMLDivElement>\n>(({ className, ...props }, ref) => (\n  <div\n    ref={ref}\n    className={cn(\"font-semibold leading-none tracking-tight\", className)}\n    {...props}\n  />\n));\nCardTitle.displayName = \"CardTitle\";\n\nconst CardDescription = React.forwardRef<\n  HTMLDivElement,\n  React.HTMLAttributes<HTMLDivElement>\n>(({ className, ...props }, ref) => (\n  <div\n    ref={ref}\n    className={cn(\"text-sm text-muted-foreground\", className)}\n    {...props}\n  />\n));\nCardDescription.displayName = \"CardDescription\";\n\nconst CardContent = React.forwardRef<\n  HTMLDivElement,\n  React.HTMLAttributes<HTMLDivElement>\n>(({ className, ...props }, ref) => (\n  <div ref={ref} className={cn(\"p-6 pt-0\", className)} {...props} />\n));\nCardContent.displayName = \"CardContent\";\n\nconst CardFooter = React.forwardRef<\n  HTMLDivElement,\n  React.HTMLAttributes<HTMLDivElement>\n>(({ className, ...props }, ref) => (\n  <div\n    ref={ref}\n    className={cn(\"flex items-center p-6 pt-0\", className)}\n    {...props}\n  />\n));\nCardFooter.displayName = \"CardFooter\";\n\nexport {\n  Card,\n  CardHeader,\n  CardFooter,\n  CardTitle,\n  CardDescription,\n  CardContent,\n};\n",
+      "type": "registry:ui"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Note: if you edit the schema here, you must also edit the schema in the
-// apps/www/public/schema/registry-item.json file.
+// apps/docs/public/schema/registry-item.json file.
 
 export const registryItemTypeSchema = z.enum([
   "registry:lib",
@@ -11,6 +11,14 @@ export const registryItemTypeSchema = z.enum([
   "registry:hook",
   "registry:page",
   "registry:file",
+  "registry:auth",
+  "registry:auth_comp",
+  "registry:middleware",
+  "registry:actions",
+  "registry:schemas",
+  "registry:pages",
+  "registry:api",
+  "registry:email",
 
   // Internal use only
   "registry:theme",

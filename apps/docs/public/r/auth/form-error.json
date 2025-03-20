@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "form-error",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Error message for forms.",
+  "files": [
+    {
+      "path": "components/form-error.tsx",
+      "content": "import { AlertTriangleIcon } from \"lucide-react\";\n\ninterface FormErrorProps {\n  message?: string;\n}\n\nexport const FormError = ({ message }: FormErrorProps) => {\n  if (!message) return null;\n  return (\n    <div className=\"flex items-center gap-x-2 bg-destructive/15 p-3 rounded-md text-sm text-destructive\">\n      <AlertTriangleIcon className=\"h-4 w-4\" />\n      <p>{message}</p>\n    </div>\n  );\n};\n",
+      "type": "registry:auth_comp"
+    }
+  ]
+}

@@ -15,7 +15,15 @@
           "registry:hook",
           "registry:theme",
           "registry:page",
-          "registry:file"
+          "registry:file",
+          "registry:auth",
+          "registry:auth_comp",
+          "registry:middleware",
+          "registry:actions",
+          "registry:schemas",
+          "registry:pages",
+          "registry:api",
+          "registry:email"
         ]
       },
       "description": {
@@ -63,10 +71,18 @@
                 "registry:block",
                 "registry:component",
                 "registry:ui",
+                "registry:auth",
+                "registry:middleware",
+                "registry:actions",
                 "registry:hook",
                 "registry:theme",
                 "registry:page",
-                "registry:file"
+                "registry:file",
+                "registry:auth_comp",
+                "registry:schemas",
+                "registry:pages",
+                "registry:api",
+                "registry:email"
               ]
             },
             "target": {

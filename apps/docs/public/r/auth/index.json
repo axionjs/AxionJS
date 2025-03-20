@@ -1,0 +1,626 @@
+[
+  {
+    "name": "login",
+    "type": "registry:auth",
+    "description": "Login page for users to sign in.",
+    "dependencies": [],
+    "registryDependencies": [
+      "login-form"
+    ],
+    "files": [
+      {
+        "path": "pages/auth/login/page.tsx",
+        "type": "registry:pages"
+      },
+      {
+        "path": "pages/auth/layout.tsx",
+        "type": "registry:pages"
+      }
+    ]
+  },
+  {
+    "name": "register",
+    "type": "registry:auth",
+    "description": "Register page for users to sign up.",
+    "dependencies": [],
+    "registryDependencies": [
+      "register-form"
+    ],
+    "files": [
+      {
+        "path": "pages/auth/register/page.tsx",
+        "type": "registry:pages"
+      }
+    ]
+  },
+  {
+    "name": "change-password",
+    "type": "registry:auth",
+    "description": "Change password page for users to update their password.",
+    "dependencies": [],
+    "registryDependencies": [
+      "change-password-form"
+    ],
+    "files": [
+      {
+        "path": "pages/(protected)/profile/change-password/page.tsx",
+        "type": "registry:pages"
+      }
+    ]
+  },
+  {
+    "name": "verify",
+    "type": "registry:auth",
+    "description": "New verification page for users to verify their email address.",
+    "dependencies": [],
+    "registryDependencies": [
+      "new-verification-form"
+    ],
+    "files": [
+      {
+        "path": "pages/auth/verify/page.tsx",
+        "type": "registry:pages"
+      }
+    ]
+  },
+  {
+    "name": "new-password",
+    "type": "registry:auth",
+    "description": "New password page for users to set a new password.",
+    "dependencies": [],
+    "registryDependencies": [
+      "new-password-form"
+    ],
+    "files": [
+      {
+        "path": "pages/auth/new-password/page.tsx",
+        "type": "registry:pages"
+      }
+    ]
+  },
+  {
+    "name": "reset",
+    "type": "registry:auth",
+    "description": "Reset page for users to reset their password.",
+    "dependencies": [],
+    "registryDependencies": [
+      "reset-form"
+    ],
+    "files": [
+      {
+        "path": "pages/auth/reset/page.tsx",
+        "type": "registry:pages"
+      }
+    ]
+  },
+  {
+    "name": "admin",
+    "type": "registry:auth",
+    "description": "Admin page for users with admin privileges.",
+    "dependencies": [],
+    "registryDependencies": [
+      "role-gate",
+      "navbar"
+    ],
+    "files": [
+      {
+        "path": "pages/(protected)/admin/page.tsx",
+        "type": "registry:pages"
+      },
+      {
+        "path": "pages/(protected)/layout.tsx",
+        "type": "registry:pages"
+      }
+    ]
+  },
+  {
+    "name": "dashboard",
+    "type": "registry:auth",
+    "description": "Dashboard page for authenticated users.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "pages/dashboard/page.tsx",
+        "type": "registry:pages"
+      },
+      {
+        "path": "lib/get-user.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "components/user-info.tsx",
+        "type": "registry:auth_comp"
+      },
+      {
+        "path": "new-york/ui/badge.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
+    "name": "profile",
+    "type": "registry:auth",
+    "description": "Profile page for users to manage their account settings.",
+    "dependencies": [],
+    "registryDependencies": [
+      "settings-form"
+    ],
+    "files": [
+      {
+        "path": "pages/(protected)/profile/page.tsx",
+        "type": "registry:pages"
+      }
+    ]
+  },
+  {
+    "name": "mail",
+    "type": "registry:auth",
+    "description": "Mail functions for sending emails.",
+    "dependencies": [
+      "nodemailer",
+      "@react-email/components",
+      "@react-email/render"
+    ],
+    "registryDependencies": [
+      "verification-email",
+      "reset-password-email",
+      "two-factor-email"
+    ],
+    "files": [
+      {
+        "path": "lib/mail.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "error",
+    "type": "registry:auth",
+    "description": "Error page for authentication errors.",
+    "dependencies": [],
+    "registryDependencies": [
+      "error-card"
+    ],
+    "files": [
+      {
+        "path": "pages/auth/error/page.tsx",
+        "type": "registry:pages"
+      }
+    ]
+  },
+  {
+    "name": "middleware",
+    "type": "registry:auth",
+    "description": "Middleware for handling authentication.",
+    "dependencies": [
+      "next-auth@beta",
+      "bcryptjs"
+    ],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "middleware.ts",
+        "type": "registry:middleware"
+      }
+    ]
+  },
+  {
+    "name": "login-form",
+    "type": "registry:auth",
+    "description": "Login form with email and password fields.",
+    "dependencies": [
+      "react-hook-form",
+      "zod",
+      "@radix-ui/react-label",
+      "@radix-ui/react-slot",
+      "@hookform/resolvers"
+    ],
+    "registryDependencies": [
+      "auth-actions",
+      "two-factor-actions",
+      "form-success",
+      "form-error",
+      "card-wrapper"
+    ],
+    "files": [
+      {
+        "path": "components/login-form.tsx",
+        "type": "registry:auth_comp"
+      },
+      {
+        "path": "new-york/ui/form.tsx",
+        "type": "registry:ui"
+      },
+      {
+        "path": "new-york/ui/input.tsx",
+        "type": "registry:ui"
+      },
+      {
+        "path": "new-york/ui/button.tsx",
+        "type": "registry:ui"
+      },
+      {
+        "path": "new-york/ui/label.tsx",
+        "type": "registry:ui"
+      },
+      {
+        "path": "schemas/index.ts",
+        "type": "registry:schemas"
+      },
+      {
+        "path": "route.ts",
+        "type": "registry:api"
+      }
+    ]
+  },
+  {
+    "name": "register-form",
+    "type": "registry:auth",
+    "description": "Register form with email, password, and username fields.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/register-form.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "social",
+    "type": "registry:auth",
+    "description": "Social login buttons.",
+    "dependencies": [
+      "react-icons",
+      "@radix-ui/react-slot"
+    ],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/social.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "header",
+    "type": "registry:auth",
+    "description": "Header component for authentication pages.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/header.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "change-password-form",
+    "type": "registry:auth",
+    "description": "Form for changing a user's password.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/change-password-form.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "new-password-form",
+    "type": "registry:auth",
+    "description": "Form for setting new password.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/new-password-form.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "new-verification-form",
+    "type": "registry:auth",
+    "description": "Form for verifying a user's email address.",
+    "dependencies": [
+      "react-spinners"
+    ],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/new-verification-form.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "reset-form",
+    "type": "registry:auth",
+    "description": "Form for resetting a user's password.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/reset-form.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "card-wrapper",
+    "type": "registry:auth",
+    "description": "Wrapper for authentication cards.",
+    "dependencies": [],
+    "registryDependencies": [
+      "header",
+      "social",
+      "back-button"
+    ],
+    "files": [
+      {
+        "path": "components/card-wrapper.tsx",
+        "type": "registry:auth_comp"
+      },
+      {
+        "path": "new-york/ui/card.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
+    "name": "back-button",
+    "type": "registry:auth",
+    "description": "Back button for authentication pages.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/back-button.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "error-card",
+    "type": "registry:auth",
+    "description": "Error card for authentication pages.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/error-card.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "form-success",
+    "type": "registry:auth",
+    "description": "Success message for forms.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/form-success.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "form-error",
+    "type": "registry:auth",
+    "description": "Error message for forms.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/form-error.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "navbar",
+    "type": "registry:auth",
+    "description": "Navbar for authenticated users.",
+    "dependencies": [],
+    "registryDependencies": [
+      "user-button"
+    ],
+    "files": [
+      {
+        "path": "components/navbar.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "user-button",
+    "type": "registry:auth",
+    "description": "Button for user actions.",
+    "dependencies": [
+      "@radix-ui/react-dropdown-menu"
+    ],
+    "registryDependencies": [
+      "logout-button"
+    ],
+    "files": [
+      {
+        "path": "components/user-button.tsx",
+        "type": "registry:auth_comp"
+      },
+      {
+        "path": "new-york/ui/dropdown-menu.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
+    "name": "logout-button",
+    "type": "registry:auth",
+    "description": "Button for logging out.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/logout-button.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "auth-actions",
+    "type": "registry:auth",
+    "description": "Actions for handling authentication.",
+    "dependencies": [
+      "bcryptjs",
+      "zod",
+      "next-auth@beta",
+      "cloudinary",
+      "uuid"
+    ],
+    "registryDependencies": [
+      "prisma"
+    ],
+    "files": [
+      {
+        "path": "actions/auth-actions.ts",
+        "type": "registry:actions"
+      },
+      {
+        "path": "lib/auth-helpers.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "lib/user.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "lib/auth.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "lib/next-auth.d.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "lib/routes.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "lib/auth.config.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "two-factor-actions",
+    "type": "registry:auth",
+    "description": "Actions for handling two-factor authentication.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "actions/two-factor.ts",
+        "type": "registry:actions"
+      }
+    ]
+  },
+  {
+    "name": "prisma",
+    "type": "registry:auth",
+    "description": "Prisma client for interacting with the database.",
+    "dependencies": [
+      "prisma",
+      "@prisma/client",
+      "@auth/prisma-adapter"
+    ],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "lib/db.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "settings-form",
+    "type": "registry:auth",
+    "description": "Form for updating user settings.",
+    "dependencies": [
+      "@radix-ui/react-avatar",
+      "@radix-ui/react-switch"
+    ],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/settings-form.tsx",
+        "type": "registry:auth_comp"
+      },
+      {
+        "path": "new-york/ui/switch.tsx",
+        "type": "registry:ui"
+      },
+      {
+        "path": "new-york/ui/avatar.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
+    "name": "role-gate",
+    "type": "registry:auth",
+    "description": "Gate for checking user roles.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "components/role-gate.tsx",
+        "type": "registry:auth_comp"
+      }
+    ]
+  },
+  {
+    "name": "reset-password-email",
+    "type": "registry:auth",
+    "description": "Email template for resetting a user's password.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "emails/reset-password-email.tsx",
+        "type": "registry:email"
+      }
+    ]
+  },
+  {
+    "name": "verification-email",
+    "type": "registry:auth",
+    "description": "Email template for verifying a user's email address.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "emails/verification-email.tsx",
+        "type": "registry:email"
+      }
+    ]
+  },
+  {
+    "name": "two-factor-email",
+    "type": "registry:auth",
+    "description": "Email template for verifying a user's email address.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "emails/two-factor-email.tsx",
+        "type": "registry:email"
+      }
+    ]
+  }
+]
