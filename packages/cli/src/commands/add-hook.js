@@ -12,10 +12,9 @@ import { Command } from "commander";
 import { confirm, multiselect, intro } from "@clack/prompts";
 import { z } from "zod";
 import { addAuthCommand } from "./add-auth.js";
-import { addHookCommand } from "./add-hook.js";
 
-export const addOptionsSchema = z.object({
-  components: z.array(z.string()).optional(),
+export const addHooksOptionsSchema = z.object({
+  hooks: z.array(z.string()).optional(),
   yes: z.boolean(),
   overwrite: z.boolean(),
   cwd: z.string(),
@@ -25,15 +24,11 @@ export const addOptionsSchema = z.object({
   srcDir: z.boolean().optional(),
 });
 
-export const add = new Command()
-  .name("add")
-  .description("add a component to your project")
+export const addHookCommand = new Command()
+  .name("hook")
+  .description("add a hook to your project")
   .addCommand(addAuthCommand)
-  .addCommand(addHookCommand)
-  .argument(
-    "[components...]",
-    "the components to add or a url to the component."
-  )
+  .argument("[hooks...]", "the hooks to add or a url to the hook.")
   .option("-y, --yes", "skip confirmation prompt.", false)
   .option("-o, --overwrite", "overwrite existing files.", false)
   .option(
@@ -41,45 +36,24 @@ export const add = new Command()
     "the working directory. defaults to the current directory.",
     process.cwd()
   )
-  .option("-a, --all", "add all available components", false)
-  .option("-p, --path <path>", "the path to add the component to.")
+  .option("-a, --all", "add all available hooks", false)
+  .option("-p, --path <path>", "the path to add the hook to.")
   .option("-s, --silent", "mute output.", false)
   .option(
     "--src-dir",
     "use the src directory when creating a new project.",
     false
   )
-  .action(async (components, opts) => {
+  .action(async (hooks, opts) => {
     try {
-      const options = addOptionsSchema.parse({
-        components,
+      const options = addHooksOptionsSchema.parse({
+        hooks,
         cwd: path.resolve(opts.cwd),
         ...opts,
       });
-      // Confirm if user is installing themes.
-      // For now, we assume a theme is prefixed with "theme-".
-      const isTheme = options.components?.some((component) =>
-        component.includes("theme-")
-      );
-      if (!options.yes && isTheme) {
-        logger.break();
-        const confirmResult = await confirm({
-          message: highlighter.warn(
-            "You are about to install a new theme. \nExisting CSS variables will be overwritten. Continue?"
-          ),
-          initialValue: false,
-        });
 
-        if (typeof confirmResult === "symbol" || !confirmResult) {
-          logger.break();
-          logger.log("Theme installation cancelled.");
-          logger.break();
-          process.exit(1);
-        }
-      }
-
-      if (!options.components?.length) {
-        options.components = await promptForRegistryComponents(options);
+      if (!options.hooks?.length) {
+        options.hooks = await promptForRegistryHooks(options);
       }
 
       let { errors, config } = await preFlightAdd(options);
@@ -115,7 +89,7 @@ export const add = new Command()
           cwd: options.cwd,
           force: options.overwrite,
           srcDir: options.srcDir,
-          components: options.components,
+          hooks: options.hooks,
         });
         if (!projectPath) {
           logger.break();
@@ -140,9 +114,9 @@ export const add = new Command()
           `Failed to read config at ${highlighter.info(options.cwd)}.`
         );
       }
-      await addComponents(options.components, config, {
+      await addComponents(options.hooks, config, {
         ...options,
-        category: "ui",
+        category: "hook",
       });
     } catch (error) {
       logger.break();
@@ -150,8 +124,8 @@ export const add = new Command()
     }
   });
 
-async function promptForRegistryComponents(options) {
-  const registryIndex = await getRegistryIndex();
+async function promptForRegistryHooks(options) {
+  const registryIndex = await getRegistryIndex("hook");
   if (!registryIndex) {
     logger.break();
     handleError(new Error("Failed to fetch registry index."));
@@ -162,29 +136,29 @@ async function promptForRegistryComponents(options) {
     return registryIndex.map((entry) => entry.name);
   }
 
-  if (options.components?.length) {
-    return options.components;
+  if (options.hooks?.length) {
+    return options.hooks;
   }
-  intro("Add components to your project.");
-  const components = await multiselect({
-    message: `Which components would you like to add?\n\nHint: Space to select. A to toggle all. Enter to submit.`,
+  intro("Add hooks to your project.");
+  const hooks = await multiselect({
+    message: `Which hooks would you like to add?\n\nHint: Space to select. A to toggle all. Enter to submit.`,
     options: registryIndex
-      .filter((entry) => entry.type === "registry:ui")
+      .filter((entry) => entry.type === "registry:hook")
       .map((entry) => ({
         label: entry.name,
         value: entry.name,
-        selected: options.all ? true : options.components?.includes(entry.name),
+        selected: options.all ? true : options.hooks?.includes(entry.name),
       })),
     maxItems: 5,
   });
 
-  if (!components?.length) {
-    logger.warn("No components selected. Exiting.");
+  if (!hooks?.length) {
+    logger.warn("No hooks selected. Exiting.");
     logger.info("");
     process.exit(1);
   }
 
-  const result = z.array(z.string()).safeParse(components);
+  const result = z.array(z.string()).safeParse(hooks);
   if (!result.success) {
     logger.error("");
     handleError(new Error("Something went wrong. Please try again."));
