@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "use-idle-timeout",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-idle-timeout.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\ninterface UseIdleTimeoutOptions {\n  timeout: number;\n  onIdle: () => void;\n  onActive?: () => void;\n  events?: string[];\n  initialState?: boolean;\n}\n\n/**\n * A hook that detects when the user is idle\n * @param options Configuration options\n * @returns Whether the user is idle\n */\nexport function useIdleTimeout({\n  timeout,\n  onIdle,\n  onActive,\n  events = [\"mousedown\", \"mousemove\", \"keypress\", \"scroll\", \"touchstart\"],\n  initialState = false,\n}: UseIdleTimeoutOptions): boolean {\n  const [isIdle, setIsIdle] = React.useState<boolean>(initialState);\n  const timeoutRef = React.useRef<number | null>(null);\n\n  const resetTimer = React.useCallback(() => {\n    if (typeof window === \"undefined\") return;\n\n    if (timeoutRef.current) {\n      window.clearTimeout(timeoutRef.current);\n    }\n\n    if (isIdle) {\n      setIsIdle(false);\n      onActive?.();\n    }\n\n    timeoutRef.current = window.setTimeout(() => {\n      setIsIdle(true);\n      onIdle();\n    }, timeout);\n  }, [isIdle, onActive, onIdle, timeout]);\n\n  React.useEffect(() => {\n    if (typeof window === \"undefined\") return;\n\n    // Setup the timer initially\n    resetTimer();\n\n    // Add event listeners\n    const eventListeners = events.map((event) => {\n      return { event, handler: resetTimer };\n    });\n\n    eventListeners.forEach(({ event, handler }) => {\n      window.addEventListener(event, handler);\n    });\n\n    // Cleanup\n    return () => {\n      if (timeoutRef.current) {\n        window.clearTimeout(timeoutRef.current);\n      }\n\n      eventListeners.forEach(({ event, handler }) => {\n        window.removeEventListener(event, handler);\n      });\n    };\n  }, [events, resetTimer, timeout]);\n\n  return isIdle;\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

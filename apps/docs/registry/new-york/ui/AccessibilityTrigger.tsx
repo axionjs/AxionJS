@@ -29,7 +29,7 @@ export function AccessibilityTrigger() {
     return () => {
       document.removeEventListener(
         "toggleAccessibilityPanel",
-        handleToggleEvent
+        handleToggleEvent,
       );
     };
   }, [toggleOpen]);

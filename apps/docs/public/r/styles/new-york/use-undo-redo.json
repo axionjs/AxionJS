@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "use-undo-redo",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-undo-redo.tsx",
+      "content": "import { useCallback, useReducer } from \"react\";\n\ninterface HistoryState<T> {\n  past: T[];\n  present: T;\n  future: T[];\n}\n\ntype HistoryAction<T> =\n  | { type: \"UNDO\" }\n  | { type: \"REDO\" }\n  | { type: \"SET\"; newPresent: T }\n  | { type: \"CLEAR\"; initialPresent: T };\n\n/**\n * A hook that provides undo and redo functionality\n *\n * @param initialPresent The initial value\n * @returns An object with the current state, undo and redo functions, and a setter\n */\nexport function useUndoRedo<T>(initialPresent: T) {\n  const initialState: HistoryState<T> = {\n    past: [],\n    present: initialPresent,\n    future: [],\n  };\n\n  const [state, dispatch] = useReducer(\n    (state: HistoryState<T>, action: HistoryAction<T>): HistoryState<T> => {\n      const { past, present, future } = state;\n\n      switch (action.type) {\n        case \"UNDO\": {\n          if (past.length === 0) return state;\n\n          const previous = past[past.length - 1];\n          const newPast = past.slice(0, past.length - 1);\n\n          return {\n            past: newPast,\n            present: previous,\n            future: [present, ...future],\n          };\n        }\n\n        case \"REDO\": {\n          if (future.length === 0) return state;\n\n          const next = future[0];\n          const newFuture = future.slice(1);\n\n          return {\n            past: [...past, present],\n            present: next,\n            future: newFuture,\n          };\n        }\n\n        case \"SET\": {\n          const { newPresent } = action;\n\n          if (newPresent === present) return state;\n\n          return {\n            past: [...past, present],\n            present: newPresent,\n            future: [],\n          };\n        }\n\n        case \"CLEAR\": {\n          return {\n            ...initialState,\n            present: action.initialPresent,\n          };\n        }\n      }\n    },\n    initialState,\n  );\n\n  const canUndo = state.past.length !== 0;\n  const canRedo = state.future.length !== 0;\n\n  const undo = useCallback(() => {\n    if (canUndo) {\n      dispatch({ type: \"UNDO\" });\n    }\n  }, [canUndo]);\n\n  const redo = useCallback(() => {\n    if (canRedo) {\n      dispatch({ type: \"REDO\" });\n    }\n  }, [canRedo]);\n\n  const set = useCallback((newPresent: T) => {\n    dispatch({ type: \"SET\", newPresent });\n  }, []);\n\n  const clear = useCallback(() => {\n    dispatch({ type: \"CLEAR\", initialPresent });\n  }, [initialPresent]);\n\n  return {\n    state: state.present,\n    set,\n    undo,\n    redo,\n    clear,\n    canUndo,\n    canRedo,\n    history: state,\n  };\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

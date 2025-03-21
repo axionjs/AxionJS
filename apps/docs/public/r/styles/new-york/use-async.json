@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "use-async",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-async.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\ninterface UseAsyncState<T> {\n  value: T | null;\n  error: Error | null;\n  status: \"idle\" | \"pending\" | \"success\" | \"error\";\n}\n\ninterface UseAsyncActions<T> {\n  execute: (...args: any[]) => Promise<void>;\n  reset: () => void;\n}\n\n/**\n * A hook for handling async operations\n * @param asyncFunction The async function to execute\n * @param immediate Whether to execute immediately\n * @returns State and actions for the async operation\n */\nexport function useAsync<T>(\n  asyncFunction: (...args: any[]) => Promise<T>,\n  immediate = false,\n): [UseAsyncState<T>, UseAsyncActions<T>] {\n  const [state, setState] = React.useState<UseAsyncState<T>>({\n    value: null,\n    error: null,\n    status: \"idle\",\n  });\n\n  // The execute function wraps asyncFunction and\n  // handles setting state for pending, value, and error.\n  const execute = React.useCallback(\n    async (...args: any[]) => {\n      setState({ value: null, error: null, status: \"pending\" });\n\n      try {\n        const response = await asyncFunction(...args);\n        setState({ value: response, error: null, status: \"success\" });\n      } catch (error) {\n        setState({ value: null, error: error as Error, status: \"error\" });\n      }\n    },\n    [asyncFunction],\n  );\n\n  // Call execute if immediate is true\n  React.useEffect(() => {\n    if (immediate) {\n      execute();\n    }\n  }, [execute, immediate]);\n\n  const reset = React.useCallback(() => {\n    setState({ value: null, error: null, status: \"idle\" });\n  }, []);\n\n  return [state, { execute, reset }];\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

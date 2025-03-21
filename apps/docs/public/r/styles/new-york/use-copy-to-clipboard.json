@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "use-copy-to-clipboard",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-copy-to-clipboard.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\ninterface UseCopyToClipboardReturn {\n  value: string;\n  copy: (text: string) => Promise<boolean>;\n  isCopied: boolean;\n}\n\n/**\n * A hook that provides copy to clipboard functionality\n * @returns An object with the copied value, copy function, and isCopied state\n */\nexport function useCopyToClipboard(): UseCopyToClipboardReturn {\n  const [value, setValue] = React.useState<string>(\"\");\n  const [isCopied, setIsCopied] = React.useState<boolean>(false);\n\n  const copy = React.useCallback(async (text: string) => {\n    if (!navigator?.clipboard) {\n      console.warn(\"Clipboard not supported\");\n      return false;\n    }\n\n    // Try to save to clipboard then save it in the state\n    try {\n      await navigator.clipboard.writeText(text);\n      setValue(text);\n      setIsCopied(true);\n\n      // Reset the isCopied state after 2 seconds\n      setTimeout(() => {\n        setIsCopied(false);\n      }, 2000);\n\n      return true;\n    } catch (error) {\n      console.warn(\"Copy failed\", error);\n      setValue(\"\");\n      setIsCopied(false);\n      return false;\n    }\n  }, []);\n\n  return { value, copy, isCopied };\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

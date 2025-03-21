@@ -1,9 +1,12 @@
 {
-  "$schema": "http://localhost:3000/schema/registry-item.json",
+  "$schema": "http://localhost:3001/schema/registry-item.json",
   "name": "avatar",
   "type": "registry:ui",
   "author": "axionjs (https://www.axionjs.com)",
   "dependencies": [
+    "@radix-ui/react-avatar"
+  ],
+  "devDependencies": [
     "@radix-ui/react-avatar"
   ],
   "files": [

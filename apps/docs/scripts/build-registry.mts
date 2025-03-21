@@ -30,14 +30,6 @@ const REGISTRY_INDEX_WHITELIST: z.infer<typeof registryItemTypeSchema>[] = [
   "registry:block",
   "registry:example",
   "registry:internal",
-  "registry:auth",
-  "registry:auth_comp",
-  "registry:middleware",
-  "registry:actions",
-  "registry:schemas",
-  "registry:pages",
-  "registry:api",
-  "registry:email"
 ];
 
 const project = new Project({
@@ -250,7 +242,7 @@ export const Index: Record<string, any> = {
   // Build registry/index.json.
   // ----------------------------------------------------------------------------
   const items = registry.items
-    .filter((item) => ["registry:ui"].includes(item.type))
+    .filter((item) => ["registry:ui", "registry:hook"].includes(item.type))
     .map((item) => {
       return {
         ...item,
@@ -786,7 +778,6 @@ export const Icons = {
   );
 }
 
-
 async function buildAuthRegistry(authRegistry: Registry) {
   const authTargetPath = path.join(REGISTRY_PATH, "auth");
   console.log("📁 Building auth registry JSON files...");
@@ -886,14 +877,14 @@ try {
     process.exit(1);
   }
 
-  await syncStyles()
-  await buildRegistry(result.data)
-  await buildStyles(result.data)
-  await buildStylesIndex()
-  await buildThemes()
+  await syncStyles();
+  await buildRegistry(result.data);
+  await buildStyles(result.data);
+  await buildStylesIndex();
+  await buildThemes();
   await buildAuthRegistry(result.data);
-  await buildRegistryIcons()
-  await buildIcons()
+  await buildRegistryIcons();
+  await buildIcons();
 
   console.log("✅ Done!");
 } catch (error) {

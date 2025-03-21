@@ -151,6 +151,6 @@ export const useAccessibilityStore = create<AccessibilityState>()(
     }),
     {
       name: "accessibility-storage", // localStorage key
-    }
-  )
+    },
+  ),
 );

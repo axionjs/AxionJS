@@ -827,6 +827,990 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
+    "use-async": {
+      name: "use-async",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-async.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-async.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-click-outside": {
+      name: "use-click-outside",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-click-outside.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-click-outside.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-copy-to-clipboard": {
+      name: "use-copy-to-clipboard",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-copy-to-clipboard.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-copy-to-clipboard.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-debounce": {
+      name: "use-debounce",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-debounce.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-debounce.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-form": {
+      name: "use-form",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-form.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-fullscreen": {
+      name: "use-fullscreen",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-fullscreen.ts",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-fullscreen.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "use-geolocation": {
+      name: "use-geolocation",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-geolocation.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-geolocation.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-idle-timeout": {
+      name: "use-idle-timeout",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-idle-timeout.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-idle-timeout.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-infinite-scroll": {
+      name: "use-infinite-scroll",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-infinite-scroll.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-infinite-scroll.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-intersection-observer": {
+      name: "use-intersection-observer",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-intersection-observer.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-intersection-observer.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-keyboard": {
+      name: "use-keyboard",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-keyboard.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-keyboard.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-local-storage": {
+      name: "use-local-storage",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-local-storage.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-local-storage.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-media-query": {
+      name: "use-media-query",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-media-query.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-media-query.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-mobile": {
+      name: "use-mobile",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-mobile.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-mobile.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-pagination": {
+      name: "use-pagination",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-pagination.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-pagination.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-polling": {
+      name: "use-polling",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-polling.ts",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-polling.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "use-scroll-position": {
+      name: "use-scroll-position",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-scroll-position.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-scroll-position.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-sse-listener": {
+      name: "use-sse-listener",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-sse-listener.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-sse-listener.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-theme": {
+      name: "use-theme",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-theme.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-theme.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-toast": {
+      name: "use-toast",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-toast.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-toast.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-toggle": {
+      name: "use-toggle",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-toggle.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-toggle.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-undo-redo": {
+      name: "use-undo-redo",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-undo-redo.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-undo-redo.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-virtual-list": {
+      name: "use-virtual-list",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-virtual-list.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-virtual-list.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-web-socket": {
+      name: "use-web-socket",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/hooks/use-web-socket.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/hooks/use-web-socket.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "login": {
+      name: "login",
+      description: "Login page for users to sign in.",
+      type: "registry:auth",
+      registryDependencies: ["login-form"],
+      files: [{
+        path: "registry/new-york/pages/auth/login/page.tsx",
+        type: "registry:pages",
+        target: ""
+      },{
+        path: "registry/new-york/pages/auth/layout.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/auth/login/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "register": {
+      name: "register",
+      description: "Register page for users to sign up.",
+      type: "registry:auth",
+      registryDependencies: ["register-form"],
+      files: [{
+        path: "registry/new-york/pages/auth/register/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/auth/register/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "change-password": {
+      name: "change-password",
+      description: "Change password page for users to update their password.",
+      type: "registry:auth",
+      registryDependencies: ["change-password-form"],
+      files: [{
+        path: "registry/new-york/pages/(protected)/profile/change-password/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/(protected)/profile/change-password/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "verify": {
+      name: "verify",
+      description: "New verification page for users to verify their email address.",
+      type: "registry:auth",
+      registryDependencies: ["new-verification-form"],
+      files: [{
+        path: "registry/new-york/pages/auth/verify/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/auth/verify/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "new-password": {
+      name: "new-password",
+      description: "New password page for users to set a new password.",
+      type: "registry:auth",
+      registryDependencies: ["new-password-form"],
+      files: [{
+        path: "registry/new-york/pages/auth/new-password/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/auth/new-password/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "reset": {
+      name: "reset",
+      description: "Reset page for users to reset their password.",
+      type: "registry:auth",
+      registryDependencies: ["reset-form"],
+      files: [{
+        path: "registry/new-york/pages/auth/reset/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/auth/reset/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "admin": {
+      name: "admin",
+      description: "Admin page for users with admin privileges.",
+      type: "registry:auth",
+      registryDependencies: ["role-gate","navbar"],
+      files: [{
+        path: "registry/new-york/pages/(protected)/admin/page.tsx",
+        type: "registry:pages",
+        target: ""
+      },{
+        path: "registry/new-york/pages/(protected)/layout.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/(protected)/admin/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "dashboard": {
+      name: "dashboard",
+      description: "Dashboard page for authenticated users.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/pages/dashboard/page.tsx",
+        type: "registry:pages",
+        target: ""
+      },{
+        path: "registry/new-york/lib/get-user.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/components/user-info.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/new-york/new-york/ui/badge.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/dashboard/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "profile": {
+      name: "profile",
+      description: "Profile page for users to manage their account settings.",
+      type: "registry:auth",
+      registryDependencies: ["settings-form"],
+      files: [{
+        path: "registry/new-york/pages/(protected)/profile/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/(protected)/profile/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "mail": {
+      name: "mail",
+      description: "Mail functions for sending emails.",
+      type: "registry:auth",
+      registryDependencies: ["verification-email","reset-password-email","two-factor-email"],
+      files: [{
+        path: "registry/new-york/lib/mail.ts",
+        type: "registry:lib",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/lib/mail.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "error": {
+      name: "error",
+      description: "Error page for authentication errors.",
+      type: "registry:auth",
+      registryDependencies: ["error-card"],
+      files: [{
+        path: "registry/new-york/pages/auth/error/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/pages/auth/error/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "middleware": {
+      name: "middleware",
+      description: "Middleware for handling authentication.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/middleware.ts",
+        type: "registry:middleware",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/middleware.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "login-form": {
+      name: "login-form",
+      description: "Login form with email and password fields.",
+      type: "registry:auth",
+      registryDependencies: ["auth-actions","two-factor-actions","form-success","form-error","card-wrapper"],
+      files: [{
+        path: "registry/new-york/components/login-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/new-york/new-york/ui/form.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/new-york/new-york/ui/input.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/new-york/new-york/ui/button.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/new-york/new-york/ui/label.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/new-york/schemas/index.ts",
+        type: "registry:schemas",
+        target: ""
+      },{
+        path: "registry/new-york/route.ts",
+        type: "registry:api",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/login-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "register-form": {
+      name: "register-form",
+      description: "Register form with email, password, and username fields.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/register-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/register-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "social": {
+      name: "social",
+      description: "Social login buttons.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/social.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/social.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "header": {
+      name: "header",
+      description: "Header component for authentication pages.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/header.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/header.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "change-password-form": {
+      name: "change-password-form",
+      description: "Form for changing a user's password.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/change-password-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/change-password-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "new-password-form": {
+      name: "new-password-form",
+      description: "Form for setting new password.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/new-password-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/new-password-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "new-verification-form": {
+      name: "new-verification-form",
+      description: "Form for verifying a user's email address.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/new-verification-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/new-verification-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "reset-form": {
+      name: "reset-form",
+      description: "Form for resetting a user's password.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/reset-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/reset-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "card-wrapper": {
+      name: "card-wrapper",
+      description: "Wrapper for authentication cards.",
+      type: "registry:auth",
+      registryDependencies: ["header","social","back-button"],
+      files: [{
+        path: "registry/new-york/components/card-wrapper.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/new-york/new-york/ui/card.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/card-wrapper.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "back-button": {
+      name: "back-button",
+      description: "Back button for authentication pages.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/back-button.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/back-button.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "error-card": {
+      name: "error-card",
+      description: "Error card for authentication pages.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/error-card.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/error-card.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "form-success": {
+      name: "form-success",
+      description: "Success message for forms.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/form-success.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/form-success.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "form-error": {
+      name: "form-error",
+      description: "Error message for forms.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/form-error.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/form-error.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "navbar": {
+      name: "navbar",
+      description: "Navbar for authenticated users.",
+      type: "registry:auth",
+      registryDependencies: ["user-button"],
+      files: [{
+        path: "registry/new-york/components/navbar.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/navbar.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "user-button": {
+      name: "user-button",
+      description: "Button for user actions.",
+      type: "registry:auth",
+      registryDependencies: ["logout-button"],
+      files: [{
+        path: "registry/new-york/components/user-button.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/new-york/new-york/ui/dropdown-menu.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/user-button.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "logout-button": {
+      name: "logout-button",
+      description: "Button for logging out.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/logout-button.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/logout-button.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "auth-actions": {
+      name: "auth-actions",
+      description: "Actions for handling authentication.",
+      type: "registry:auth",
+      registryDependencies: ["prisma"],
+      files: [{
+        path: "registry/new-york/actions/auth-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/new-york/lib/auth-helpers.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/lib/user.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/lib/auth.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/lib/next-auth.d.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/lib/routes.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/lib/auth.config.ts",
+        type: "registry:lib",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/actions/auth-actions.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "two-factor-actions": {
+      name: "two-factor-actions",
+      description: "Actions for handling two-factor authentication.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/actions/two-factor.ts",
+        type: "registry:actions",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/actions/two-factor.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "prisma": {
+      name: "prisma",
+      description: "Prisma client for interacting with the database.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/lib/db.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "settings-form": {
+      name: "settings-form",
+      description: "Form for updating user settings.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/settings-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/new-york/new-york/ui/switch.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/new-york/new-york/ui/avatar.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/settings-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "role-gate": {
+      name: "role-gate",
+      description: "Gate for checking user roles.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/components/role-gate.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/components/role-gate.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "reset-password-email": {
+      name: "reset-password-email",
+      description: "Email template for resetting a user's password.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/emails/reset-password-email.tsx",
+        type: "registry:email",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/emails/reset-password-email.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "verification-email": {
+      name: "verification-email",
+      description: "Email template for verifying a user's email address.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/emails/verification-email.tsx",
+        type: "registry:email",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/emails/verification-email.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "two-factor-email": {
+      name: "two-factor-email",
+      description: "Email template for verifying a user's email address.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/emails/two-factor-email.tsx",
+        type: "registry:email",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/emails/two-factor-email.tsx")),
+      source: "",
+      meta: undefined,
+    },
   },  "default": {
     "accordion": {
       name: "accordion",
@@ -1647,6 +2631,990 @@ export const Index: Record<string, any> = {
       }],
       categories: undefined,
       component: React.lazy(() => import("@/registry/default/lib/utils.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "use-async": {
+      name: "use-async",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-async.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-async.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-click-outside": {
+      name: "use-click-outside",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-click-outside.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-click-outside.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-copy-to-clipboard": {
+      name: "use-copy-to-clipboard",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-copy-to-clipboard.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-copy-to-clipboard.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-debounce": {
+      name: "use-debounce",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-debounce.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-debounce.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-form": {
+      name: "use-form",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-form.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-fullscreen": {
+      name: "use-fullscreen",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-fullscreen.ts",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-fullscreen.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "use-geolocation": {
+      name: "use-geolocation",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-geolocation.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-geolocation.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-idle-timeout": {
+      name: "use-idle-timeout",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-idle-timeout.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-idle-timeout.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-infinite-scroll": {
+      name: "use-infinite-scroll",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-infinite-scroll.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-infinite-scroll.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-intersection-observer": {
+      name: "use-intersection-observer",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-intersection-observer.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-intersection-observer.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-keyboard": {
+      name: "use-keyboard",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-keyboard.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-keyboard.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-local-storage": {
+      name: "use-local-storage",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-local-storage.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-local-storage.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-media-query": {
+      name: "use-media-query",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-media-query.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-media-query.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-mobile": {
+      name: "use-mobile",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-mobile.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-mobile.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-pagination": {
+      name: "use-pagination",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-pagination.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-pagination.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-polling": {
+      name: "use-polling",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-polling.ts",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-polling.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "use-scroll-position": {
+      name: "use-scroll-position",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-scroll-position.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-scroll-position.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-sse-listener": {
+      name: "use-sse-listener",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-sse-listener.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-sse-listener.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-theme": {
+      name: "use-theme",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-theme.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-theme.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-toast": {
+      name: "use-toast",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-toast.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-toast.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-toggle": {
+      name: "use-toggle",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-toggle.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-toggle.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-undo-redo": {
+      name: "use-undo-redo",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-undo-redo.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-undo-redo.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-virtual-list": {
+      name: "use-virtual-list",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-virtual-list.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-virtual-list.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "use-web-socket": {
+      name: "use-web-socket",
+      description: "",
+      type: "registry:hook",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/hooks/use-web-socket.tsx",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/hooks/use-web-socket.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "login": {
+      name: "login",
+      description: "Login page for users to sign in.",
+      type: "registry:auth",
+      registryDependencies: ["login-form"],
+      files: [{
+        path: "registry/default/pages/auth/login/page.tsx",
+        type: "registry:pages",
+        target: ""
+      },{
+        path: "registry/default/pages/auth/layout.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/auth/login/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "register": {
+      name: "register",
+      description: "Register page for users to sign up.",
+      type: "registry:auth",
+      registryDependencies: ["register-form"],
+      files: [{
+        path: "registry/default/pages/auth/register/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/auth/register/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "change-password": {
+      name: "change-password",
+      description: "Change password page for users to update their password.",
+      type: "registry:auth",
+      registryDependencies: ["change-password-form"],
+      files: [{
+        path: "registry/default/pages/(protected)/profile/change-password/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/(protected)/profile/change-password/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "verify": {
+      name: "verify",
+      description: "New verification page for users to verify their email address.",
+      type: "registry:auth",
+      registryDependencies: ["new-verification-form"],
+      files: [{
+        path: "registry/default/pages/auth/verify/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/auth/verify/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "new-password": {
+      name: "new-password",
+      description: "New password page for users to set a new password.",
+      type: "registry:auth",
+      registryDependencies: ["new-password-form"],
+      files: [{
+        path: "registry/default/pages/auth/new-password/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/auth/new-password/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "reset": {
+      name: "reset",
+      description: "Reset page for users to reset their password.",
+      type: "registry:auth",
+      registryDependencies: ["reset-form"],
+      files: [{
+        path: "registry/default/pages/auth/reset/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/auth/reset/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "admin": {
+      name: "admin",
+      description: "Admin page for users with admin privileges.",
+      type: "registry:auth",
+      registryDependencies: ["role-gate","navbar"],
+      files: [{
+        path: "registry/default/pages/(protected)/admin/page.tsx",
+        type: "registry:pages",
+        target: ""
+      },{
+        path: "registry/default/pages/(protected)/layout.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/(protected)/admin/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "dashboard": {
+      name: "dashboard",
+      description: "Dashboard page for authenticated users.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/pages/dashboard/page.tsx",
+        type: "registry:pages",
+        target: ""
+      },{
+        path: "registry/default/lib/get-user.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/components/user-info.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/default/new-york/ui/badge.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/dashboard/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "profile": {
+      name: "profile",
+      description: "Profile page for users to manage their account settings.",
+      type: "registry:auth",
+      registryDependencies: ["settings-form"],
+      files: [{
+        path: "registry/default/pages/(protected)/profile/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/(protected)/profile/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "mail": {
+      name: "mail",
+      description: "Mail functions for sending emails.",
+      type: "registry:auth",
+      registryDependencies: ["verification-email","reset-password-email","two-factor-email"],
+      files: [{
+        path: "registry/default/lib/mail.ts",
+        type: "registry:lib",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/lib/mail.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "error": {
+      name: "error",
+      description: "Error page for authentication errors.",
+      type: "registry:auth",
+      registryDependencies: ["error-card"],
+      files: [{
+        path: "registry/default/pages/auth/error/page.tsx",
+        type: "registry:pages",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/pages/auth/error/page.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "middleware": {
+      name: "middleware",
+      description: "Middleware for handling authentication.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/middleware.ts",
+        type: "registry:middleware",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/middleware.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "login-form": {
+      name: "login-form",
+      description: "Login form with email and password fields.",
+      type: "registry:auth",
+      registryDependencies: ["auth-actions","two-factor-actions","form-success","form-error","card-wrapper"],
+      files: [{
+        path: "registry/default/components/login-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/default/new-york/ui/form.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/default/new-york/ui/input.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/default/new-york/ui/button.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/default/new-york/ui/label.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/default/schemas/index.ts",
+        type: "registry:schemas",
+        target: ""
+      },{
+        path: "registry/default/route.ts",
+        type: "registry:api",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/login-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "register-form": {
+      name: "register-form",
+      description: "Register form with email, password, and username fields.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/register-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/register-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "social": {
+      name: "social",
+      description: "Social login buttons.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/social.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/social.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "header": {
+      name: "header",
+      description: "Header component for authentication pages.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/header.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/header.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "change-password-form": {
+      name: "change-password-form",
+      description: "Form for changing a user's password.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/change-password-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/change-password-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "new-password-form": {
+      name: "new-password-form",
+      description: "Form for setting new password.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/new-password-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/new-password-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "new-verification-form": {
+      name: "new-verification-form",
+      description: "Form for verifying a user's email address.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/new-verification-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/new-verification-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "reset-form": {
+      name: "reset-form",
+      description: "Form for resetting a user's password.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/reset-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/reset-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "card-wrapper": {
+      name: "card-wrapper",
+      description: "Wrapper for authentication cards.",
+      type: "registry:auth",
+      registryDependencies: ["header","social","back-button"],
+      files: [{
+        path: "registry/default/components/card-wrapper.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/default/new-york/ui/card.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/card-wrapper.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "back-button": {
+      name: "back-button",
+      description: "Back button for authentication pages.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/back-button.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/back-button.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "error-card": {
+      name: "error-card",
+      description: "Error card for authentication pages.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/error-card.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/error-card.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "form-success": {
+      name: "form-success",
+      description: "Success message for forms.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/form-success.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/form-success.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "form-error": {
+      name: "form-error",
+      description: "Error message for forms.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/form-error.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/form-error.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "navbar": {
+      name: "navbar",
+      description: "Navbar for authenticated users.",
+      type: "registry:auth",
+      registryDependencies: ["user-button"],
+      files: [{
+        path: "registry/default/components/navbar.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/navbar.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "user-button": {
+      name: "user-button",
+      description: "Button for user actions.",
+      type: "registry:auth",
+      registryDependencies: ["logout-button"],
+      files: [{
+        path: "registry/default/components/user-button.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/default/new-york/ui/dropdown-menu.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/user-button.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "logout-button": {
+      name: "logout-button",
+      description: "Button for logging out.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/logout-button.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/logout-button.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "auth-actions": {
+      name: "auth-actions",
+      description: "Actions for handling authentication.",
+      type: "registry:auth",
+      registryDependencies: ["prisma"],
+      files: [{
+        path: "registry/default/actions/auth-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/default/lib/auth-helpers.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/lib/user.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/lib/auth.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/lib/next-auth.d.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/lib/routes.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/lib/auth.config.ts",
+        type: "registry:lib",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/actions/auth-actions.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "two-factor-actions": {
+      name: "two-factor-actions",
+      description: "Actions for handling two-factor authentication.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/actions/two-factor.ts",
+        type: "registry:actions",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/actions/two-factor.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "prisma": {
+      name: "prisma",
+      description: "Prisma client for interacting with the database.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/lib/db.ts")),
+      source: "",
+      meta: undefined,
+    },
+    "settings-form": {
+      name: "settings-form",
+      description: "Form for updating user settings.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/settings-form.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      },{
+        path: "registry/default/new-york/ui/switch.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/default/new-york/ui/avatar.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/settings-form.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "role-gate": {
+      name: "role-gate",
+      description: "Gate for checking user roles.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/components/role-gate.tsx",
+        type: "registry:auth_comp",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/components/role-gate.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "reset-password-email": {
+      name: "reset-password-email",
+      description: "Email template for resetting a user's password.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/emails/reset-password-email.tsx",
+        type: "registry:email",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/emails/reset-password-email.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "verification-email": {
+      name: "verification-email",
+      description: "Email template for verifying a user's email address.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/emails/verification-email.tsx",
+        type: "registry:email",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/emails/verification-email.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "two-factor-email": {
+      name: "two-factor-email",
+      description: "Email template for verifying a user's email address.",
+      type: "registry:auth",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/emails/two-factor-email.tsx",
+        type: "registry:email",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/emails/two-factor-email.tsx")),
       source: "",
       meta: undefined,
     },

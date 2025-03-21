@@ -1,4 +1,4 @@
-import { ExtendedUser } from "@/registry/auth/lib/next-auth.d";
+import { ExtendedUser } from "@/registry/auth/lib/next-auth";
 import { Badge } from "@/registry/new-york/ui/badge";
 import { Card, CardContent, CardHeader } from "@/registry/new-york/ui/card";
 import { currentUser } from "@/registry/auth/lib/get-user";
