@@ -76,7 +76,7 @@ export function PaginationPreview() {
   }, [currentPage, pageSize, totalItems]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <Card>
         <CardHeader>
           <CardTitle>Items</CardTitle>
@@ -210,7 +210,7 @@ export function TablePaginationPreview() {
   }, [currentPage, pageSize, totalItems]);
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle className="text-xl">Product Inventory</CardTitle>
       </CardHeader>

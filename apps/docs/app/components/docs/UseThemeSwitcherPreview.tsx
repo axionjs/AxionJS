@@ -16,7 +16,7 @@ export function ThemeSwitcherPreview() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="flex h-[140px] w-full items-center justify-center rounded-lg border">
         <div className="text-center">
           <p className="mb-2">
@@ -52,7 +52,7 @@ export function ThemeButtonsPreview() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-4 not-prose">
       <Card>
         <CardContent className="p-4">
           <p className="text-center mb-2">

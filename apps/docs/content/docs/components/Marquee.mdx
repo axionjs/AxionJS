@@ -9,11 +9,14 @@ import { Files, Folder, File } from "fumadocs-ui/components/files";
 import {
   HorizontalMarqueePreview,
   VerticalMarqueePreview,
+  CustomizeMarqueePreview,
 } from "@/app/components/docs/MarqueePreview";
 
-## Previews with Code
+## Introduction
 
-### Example 1: Horizontal Marquee
+The `Marquee` component creates smooth scrolling content in either horizontal or vertical orientation, perfect for showcasing content in a dynamic, space-efficient manner. It supports customizable speeds, directions, and interactions like pausing on hover.
+
+## Horizontal Marquee
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="m-auto h-72 pb-8 content-center">
@@ -21,42 +24,45 @@ import {
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-    // Code for HorizontalMarqueePreview
+    import { Marquee } from "@/components/ui/marquee";
+
     export function HorizontalMarqueePreview() {
-  return (
-    <div className="space-y-4 flex flex-col">
-      <Marquee pauseOnHover>
-        {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
-          (item, i) => (
-            <div
-              key={i}
-              className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md"
-            >
-              {item}
-            </div>
-          )
-        )}
-      </Marquee>
-      <Marquee pauseOnHover reverse>
-        {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
-          (item, i) => (
-            <div
-              key={i}
-              className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md"
-            >
-              {item}
-            </div>
-          )
-        )}
-      </Marquee>
-    </div>
-  );
-}
+      return (
+        <div className="space-y-4 flex flex-col">
+          <Marquee pauseOnHover>
+            {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
+              (item, i) => (
+                <div
+                  key={i}
+                  className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md mx-2"
+                >
+                  {item}
+                </div>
+              )
+            )}
+          </Marquee>
+          <Marquee pauseOnHover reverse>
+            {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
+              (item, i) => (
+                <div
+                  key={i}
+                  className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md mx-2"
+                >
+                  {item}
+                </div>
+              )
+            )}
+          </Marquee>
+        </div>
+      );
+    }
     ```
   </Tab>
 </Tabs>
 
-### Example 2: Vertical Marquee
+<CustomizeMarqueePreview />
+
+## Vertical Marquee
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="m-auto h-96 pb-8 content-center">
@@ -64,33 +70,35 @@ import {
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-    // Code for VerticalMarqueePreview
+    import { Marquee } from "@/components/ui/marquee";
+
     export function VerticalMarqueePreview() {
       return (
-         <Marquee pauseOnHover vertical>
-        {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
-          (item, i) => (
-            <div
-              key={i}
-              className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md"
-            >
-              {item}
-            </div>
-          )
-        )}
-      </Marquee>
-      <Marquee pauseOnHover reverse vertical>
-        {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
-          (item, i) => (
-            <div
-              key={i}
-              className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md"
-            >
-              {item}
-            </div>
-          )
-        )}
-      </Marquee>
+        <div className="space-y-4 flex">
+          <Marquee pauseOnHover vertical className="h-72">
+            {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
+              (item, i) => (
+                <div
+                  key={i}
+                  className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md my-2"
+                >
+                  {item}
+                </div>
+              )
+            )}
+          </Marquee>
+          <Marquee pauseOnHover reverse vertical className="h-72">
+            {["🚀 Rocket", "🌟 Star", "🎨 Palette", "⚡ Lightning"].map(
+              (item, i) => (
+                <div
+                  key={i}
+                  className="flex h-16 w-32 items-center justify-center rounded-lg bg-primary text-white shadow-md my-2"
+                >
+                  {item}
+                </div>
+              )
+            )}
+          </Marquee>
         </div>
       );
     }
@@ -101,8 +109,6 @@ import {
 ---
 
 ## Installation
-
-The `Marquee` component provides a flexible, animated scrolling layout for displaying items horizontally or vertically.
 
 <Tabs items={["CLI", "Manual"]}>
   <Tab value="CLI">
@@ -115,15 +121,91 @@ The `Marquee` component provides a flexible, animated scrolling layout for displ
     ### 1. Add the Component
 
     Create a `marquee.tsx` file in your `components/ui` directory:
-    ```tsx
-    // Full Marquee component code provided in the query
+    ```tsx ts2js
+    import { cn } from "@/lib/utils";
+    import { ComponentPropsWithoutRef } from "react";
+
+    interface MarqueeProps extends ComponentPropsWithoutRef<"div"> {
+      className?: string;
+
+      reverse?: boolean;
+
+      pauseOnHover?: boolean;
+
+      children: React.ReactNode;
+
+      vertical?: boolean;
+
+      repeat?: number;
+    }
+
+    export function Marquee({
+      className,
+      reverse = false,
+      pauseOnHover = false,
+      children,
+      vertical = false,
+      repeat = 4,
+      ...props
+    }: MarqueeProps) {
+      return (
+        <div
+          {...props}
+          className={cn(
+            "group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]",
+            {
+              "flex-row": !vertical,
+              "flex-col": vertical,
+            },
+            className,
+          )}
+        >
+          {Array(repeat)
+            .fill(0)
+            .map((_, i) => (
+              <div
+                key={i}
+                className={cn("flex shrink-0 justify-around [gap:var(--gap)]", {
+                  "animate-marquee flex-row": !vertical,
+                  "animate-marquee-vertical flex-col": vertical,
+                  "group-hover:[animation-play-state:paused]": pauseOnHover,
+                  "[animation-direction:reverse]": reverse,
+                })}
+              >
+                {children}
+              </div>
+            ))}
+        </div>
+      );
+    }
     ```
 
-    ### 2. Add Preview Components
+    ### 2. Add Required CSS Animations
 
-    Create a `MarqueePreview.tsx` file for demonstration purposes:
-    ```tsx
-    // Full MarqueePreview.tsx code provided above
+    Ensure the following animations are defined in your Tailwind CSS configuration (`tailwind.config.js`):
+
+    ```js
+    module.exports = {
+      // other config...
+      theme: {
+        extend: {
+          animation: {
+            marquee: 'marquee var(--duration) linear infinite',
+            'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
+          },
+          keyframes: {
+            marquee: {
+              from: { transform: 'translateX(0)' },
+              to: { transform: 'translateX(calc(-100% - var(--gap)))' },
+            },
+            'marquee-vertical': {
+              from: { transform: 'translateY(0)' },
+              to: { transform: 'translateY(calc(-100% - var(--gap)))' },
+            },
+          },
+        },
+      },
+    };
     ```
   </Tab>
 </Tabs>
@@ -133,20 +215,17 @@ The `Marquee` component provides a flexible, animated scrolling layout for displ
 ## File Structure
 
 <Files>
-  <Folder name="app" defaultOpen>
-    <Folder name="components">
-      <Folder name="ui">
-        <File name="marquee.tsx" />
-      </Folder>
+  <Folder name="components" defaultOpen>
+    <Folder name="ui">
+      <File name="marquee.tsx" />
     </Folder>
   </Folder>
+  
 </Files>
 
 ---
 
 ## Props
-
-### Marquee Props
 
 <TypeTable
   type={{
@@ -180,30 +259,108 @@ The `Marquee` component provides a flexible, animated scrolling layout for displ
       type: "number",
       default: "4",
     },
+    style: {
+      description: "Allows setting CSS variables for animation duration and gap.",
+      type: "React.CSSProperties",
+      required: false,
+    },
   }}
 />
 
 ---
 
-## Features
+## Advanced Usage
 
-- **Horizontal and Vertical Scrolling**:
-  - Supports both horizontal and vertical animation for content.
-- **Pause on Hover**:
-  - Pause the animation dynamically by hovering over the marquee.
-- **Customizable Repetition**:
-  - Repeat content a specific number of times.
-- **Reverse Direction**:
-  - Scrolls in reverse when enabled.
+### Customizing Animation Speed
+
+You can adjust the scroll speed by changing the CSS `--duration` variable:
+
+```tsx ts2js
+<Marquee style={{ "--duration": "20s" }}>
+  {/* Faster scrolling content */}
+</Marquee>
+
+<Marquee style={{ "--duration": "80s" }}>
+  {/* Slower scrolling content */}
+</Marquee>
+```
+
+### Adjusting Item Spacing
+
+Modify the gap between items using the `--gap` CSS variable:
+
+```tsx ts2js
+<Marquee style={{ "--gap": "2rem" }}>
+  {/* Content with larger spacing */}
+</Marquee>
+
+<Marquee style={{ "--gap": "0.25rem" }}>
+  {/* Content with minimal spacing */}
+</Marquee>
+```
+
+### Carousel-like Implementation
+
+By combining with other components, you can create more complex scroll experiences:
+
+```tsx ts2js
+<div className="rounded-lg border p-4 bg-muted/50">
+  <h3 className="text-lg font-semibold mb-2">Featured Products</h3>
+  <Marquee 
+    pauseOnHover 
+    className="py-4"
+    style={{ "--duration": "30s", "--gap": "1.5rem" }}
+  >
+    {products.map(product => (
+      <Card key={product.id} className="w-64 shadow-md mx-2">
+        <CardHeader>
+          <CardTitle>{product.name}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>${product.price}</p>
+        </CardContent>
+        <CardFooter>
+          <Button>View Details</Button>
+        </CardFooter>
+      </Card>
+    ))}
+  </Marquee>
+</div>
+```
+
+### News Ticker Example
+
+Create a news ticker with the marquee component:
+
+```tsx ts2js
+<div className="bg-black text-white px-4 py-2 flex items-center">
+  <span className="font-bold mr-4">BREAKING:</span>
+  <Marquee 
+    className="p-0" 
+    style={{ "--duration": "25s" }}
+  >
+    {newsItems.map((item, i) => (
+      <span key={i} className="mx-6">
+        {item}
+        <span className="mx-2 text-primary">•</span>
+      </span>
+    ))}
+  </Marquee>
+</div>
+```
 
 ---
 
 ## Accessibility
 
-Ensure the content within the `Marquee` component is accessible by providing meaningful descriptions or context for screen readers. Additionally, the pause-on-hover feature ensures usability for motion-sensitive users.
+Keep these accessibility considerations in mind when using the Marquee component:
+
+- **Motion Sensitivity**: Automatically moving content may cause issues for users with vestibular disorders. Consider providing a way to pause or disable animations site-wide.
+- **Screen Reader Support**: Make sure the scrolling content is accessible to screen readers.
+- **Alternative View**: For critical information, provide an alternative, static view for users who prefer reduced motion.
 
 ---
 
 ## Conclusion
 
-The `Marquee` component is a versatile tool for displaying dynamic, animated content in a scrolling layout. Whether for horizontal or vertical scrolling, it adapts seamlessly to your needs.
+The `Marquee` component offers a flexible and customizable way to create scrolling content in both horizontal and vertical directions. It's perfect for showcasing related items, creating news tickers, or adding dynamic visual interest to your application with minimal effort.

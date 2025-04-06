@@ -159,7 +159,7 @@ export function UseWebSocketPreview() {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -311,7 +311,9 @@ function MessageBubble({
   const isSent = message.sent;
 
   return (
-    <div className={`flex ${isSent ? "justify-end" : "justify-start"}`}>
+    <div
+      className={`flex not-prose ${isSent ? "justify-end" : "justify-start"}`}
+    >
       <div
         className={`rounded-lg px-4 py-2 max-w-[80%] ${
           isSent ? "bg-primary text-primary-foreground" : "bg-muted"
@@ -440,7 +442,7 @@ export function ChatApplicationPreview() {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>WebSocket Chat Application</span>

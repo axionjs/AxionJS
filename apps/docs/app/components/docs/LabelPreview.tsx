@@ -5,7 +5,7 @@ import { Label } from "@/registry/new-york/ui/label";
 
 export default function LabelPreview() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 not-prose">
       {/* Example 1: Basic Label */}
       <div>
         <Label htmlFor="username">Simple Label</Label>

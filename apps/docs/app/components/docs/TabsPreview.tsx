@@ -18,7 +18,7 @@ import { House, PanelsTopLeft, Box } from "lucide-react";
 
 export function BasicTabsPreview() {
   return (
-    <Tabs defaultValue="tab-1">
+    <Tabs defaultValue="tab-1 " className="not-prose">
       <TabsList>
         <TabsTrigger value="tab-1">Tab 1</TabsTrigger>
         <TabsTrigger value="tab-2">Tab 2</TabsTrigger>
@@ -48,7 +48,7 @@ export function VerticalTabsWithIconsPreview() {
     <Tabs
       defaultValue="tab-1"
       orientation="vertical"
-      className="flex w-full gap-2"
+      className="flex w-full gap-2 not-prose"
     >
       <TabsList className="flex-col">
         <TooltipProvider delayDuration={0}>

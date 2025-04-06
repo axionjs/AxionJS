@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export function HoverCardPreview() {
   return (
-    <div className="flex justify-center items-center h-[200px] space-x-6">
+    <div className="flex justify-center items-center h-[200px] space-x-6 not-prose">
       <HoverCard>
         <HoverCardTrigger asChild>
           <Link href="#" className="text-primary underline hover:no-underline">

@@ -18,8 +18,6 @@ import {
 
 The `Input` component is a flexible and accessible input field that supports validation, helper text, icons, and error handling. It adapts to various use cases like text, password, and form validation scenarios.
 
----
-
 ## Default Use Case: Input Variants
 
 ### Simple Input
@@ -28,7 +26,7 @@ The `Input` component is a flexible and accessible input field that supports val
     <InputSimplePreview />
   </Tab>
   <Tab value="Code">
-    ```tsx
+    ```tsx ts2js
     import { Input } from "@/components/ui/input";
 
     export function InputSimplePreview() {
@@ -41,6 +39,7 @@ The `Input` component is a flexible and accessible input field that supports val
     ```
   </Tab>
 </Tabs>
+
 <CustomizeInputPreview />
 
 ### Password Input
@@ -49,7 +48,7 @@ The `Input` component is a flexible and accessible input field that supports val
     <InputPasswordPreview />
   </Tab>
   <Tab value="Code">
-    ```tsx
+    ```tsx ts2js
     import React from "react";
     import { Input } from "@/components/ui/input";
     import { Eye, EyeOff } from "lucide-react";
@@ -84,7 +83,7 @@ The `Input` component is a flexible and accessible input field that supports val
     <InputErrorPreview />
   </Tab>
   <Tab value="Code">
-    ```tsx
+    ```tsx ts2js
     import { Input } from "@/components/ui/input";
 
     export function InputErrorPreview() {
@@ -125,6 +124,8 @@ The `Input` component is a flexible and accessible input field that supports val
     ### 2. Create the Input Component
     Add the following code to `components/ui/input.tsx`:
     ```tsx ts2js
+    "use client";
+
     import * as React from "react";
     import { cva, VariantProps } from "class-variance-authority";
     import { cn } from "@/lib/utils";
@@ -264,16 +265,86 @@ The `Input` component is a flexible and accessible input field that supports val
 ## File Structure
 
 <Files>
-  <Folder name="app" defaultOpen>
-    <Folder name="components">
-      <Folder name="ui">
-        <File name="input.tsx" />
-      </Folder>
+  <Folder name="components" defaultOpen>
+    <Folder name="ui">
+      <File name="input.tsx" />
     </Folder>
   </Folder>
+  
 </Files>
 
 ---
+
+## Advanced Usage
+
+### Input with Icons
+
+You can add icons at the start or end of the input field:
+
+```tsx ts2js
+import { Input } from "@/components/ui/input";
+import { Mail, User } from "lucide-react";
+
+export function InputsWithIcons() {
+  return (
+    <div className="space-y-4">
+      <Input
+        placeholder="Enter your email"
+        startIcon={<Mail className="h-4 w-4" />}
+      />
+      <Input
+        placeholder="Enter your username"
+        endIcon={<User className="h-4 w-4" />}
+      />
+    </div>
+  );
+}
+```
+
+### Character Limit
+
+Add a character limit to restrict input length:
+
+```tsx ts2js
+<Input
+  placeholder="Write a short bio (max 150 characters)"
+  characterLimit={150}
+/>
+```
+
+### Complex Validation with Error State
+
+```tsx ts2js
+import React from "react";
+import { Input } from "@/components/ui/input";
+
+export function ValidatedInput() {
+  const [value, setValue] = React.useState("");
+  const [error, setError] = React.useState<string | undefined>();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(newValue) && newValue) {
+      setError("Please enter a valid email address");
+    } else {
+      setError(undefined);
+    }
+  };
+
+  return (
+    <Input
+      placeholder="Enter your email"
+      value={value}
+      onChange={handleChange}
+      error={error}
+      variant={error ? "error" : "default"}
+      helperText="We'll never share your email with anyone else."
+    />
+  );
+}
+```
 
 ## Prop Types
 
@@ -323,28 +394,44 @@ The `Input` component is a flexible and accessible input field that supports val
 
 ## Features
 
-- **Validation**:
-  - Supports validation with custom error messages.
-- **Icons**:
-  - Add start or end icons for additional context.
-- **Character Limit**:
-  - Limit the input characters with visual feedback.
+### Validation
 
----
+The Input component includes built-in validation capabilities:
 
-## Accessibility
+- **Character Limit**: Easily restrict input length with visual feedback
+- **Error States**: Clearly indicates validation errors with red borders and error messages
+- **Zod Integration**: Uses zod for type-safe validation rules
+- **Custom Validation**: Flexible enough to accommodate any validation logic
 
-The `Input` component is accessible:
+### Accessibility
+
+The Input component follows best accessibility practices:
 
 - **ARIA Attributes**:
-  - Automatically manages `aria-invalid` and `aria-describedby` for error handling.
+  - Uses `aria-invalid` to indicate validation errors
+  - Includes `aria-describedby` to associate helper and error text with the input
+  - Error messages have `role="alert"` for screen reader announcements
+
 - **Keyboard Navigation**:
-  - Fully keyboard-accessible.
-- **Error Announcements**:
-  - Screen readers announce errors as they occur.
+  - Fully keyboard-accessible
+  - Proper tab order and focus states
+
+- **Visual Cues**:
+  - Clear focus states for keyboard users
+  - High contrast error states
+  - Helper text and character counts for additional context
+
+### Styling and Customization
+
+The component is highly customizable:
+
+- **Class Variance Authority**: Uses CVA for variant-based styling
+- **Tailwind Integration**: Works seamlessly with your Tailwind theme
+- **Icon Support**: Add contextual icons at either end of the input
+- **Inline Styling**: Support for additional style customization
 
 ---
 
 ## Conclusion
 
-The `Input` component is a powerful and customizable input field for forms, supporting validation, helper text, and accessibility.
+The `Input` component is a robust foundation for building accessible and user-friendly forms. Its comprehensive validation features, icon support, and accessibility considerations make it suitable for a wide range of applications, from simple contact forms to complex data entry interfaces.

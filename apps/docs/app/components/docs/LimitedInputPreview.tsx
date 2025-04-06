@@ -7,7 +7,7 @@ export function SimpleLimitedInputPreview() {
   const [value, setValue] = useState("");
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <h3 className="text-lg font-medium">Simple Limited Input</h3>
       <LimitedInput
         value={value}
@@ -27,7 +27,7 @@ export function ValidatedLimitedInputPreview() {
     : undefined;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <h3 className="text-lg font-medium">Validated Limited Input</h3>
       <LimitedInput
         label="Validated Input"

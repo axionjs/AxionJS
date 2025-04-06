@@ -15,7 +15,7 @@ import { Button } from "@/registry/new-york/ui/button";
 
 export function SimpleDrawerPreview() {
   return (
-    <Drawer>
+    <Drawer className="not-prose">
       <DrawerTrigger asChild>
         <Button variant="outline">Open Drawer</Button>
       </DrawerTrigger>

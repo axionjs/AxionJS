@@ -23,7 +23,7 @@ export function SimpleLocalStoragePreview() {
   const [count, setCount] = useLocalStorage<number>("demo-count", 0);
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Local Storage Demo</CardTitle>
       </CardHeader>
@@ -81,7 +81,7 @@ export function ThemeLocalStoragePreview() {
   );
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Theme Preferences</CardTitle>
       </CardHeader>
@@ -149,7 +149,7 @@ export function FormLocalStoragePreview() {
   };
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Saved Form State</CardTitle>
       </CardHeader>
@@ -195,7 +195,7 @@ export function FormLocalStoragePreview() {
 
 export function LocalStorageExamplesPreview() {
   return (
-    <Tabs defaultValue="simple">
+    <Tabs defaultValue="simple" className="not-prose">
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="simple">Simple</TabsTrigger>
         <TabsTrigger value="theme">Theme</TabsTrigger>

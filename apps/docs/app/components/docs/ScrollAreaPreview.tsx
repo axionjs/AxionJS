@@ -4,7 +4,7 @@ import { ScrollArea, ScrollBar } from "@/registry/new-york/ui/scroll-area";
 
 export function DefaultScrollAreaPreview() {
   return (
-    <ScrollArea className="h-40 w-60 border rounded">
+    <ScrollArea className="h-40 w-60 border rounded not-prose">
       <div className="p-4">
         <p>This is a scrollable container.</p>
         <p>Use the scrollbar to view the overflowing content.</p>
@@ -18,7 +18,7 @@ export function DefaultScrollAreaPreview() {
 
 export function HorizontalScrollAreaPreview() {
   return (
-    <ScrollArea className="w-96 whitespace-nowrap rounded-md border">
+    <ScrollArea className="w-96 whitespace-nowrap rounded-md border not-prose">
       <div className="flex space-x-4 p-4">
         {[...Array(20)].map((_, i) => (
           <div
@@ -36,7 +36,7 @@ export function HorizontalScrollAreaPreview() {
 
 export function StyledScrollAreaPreview() {
   return (
-    <ScrollArea className="h-40 w-60 border rounded bg-gray-50">
+    <ScrollArea className="h-40 w-60 border rounded bg-gray-50 not-prose">
       <div className="p-4">
         <p>Styled scrollable container.</p>
         {[...Array(15)].map((_, i) => (

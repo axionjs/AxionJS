@@ -1,11 +1,15 @@
 "use client";
 
 import React from "react";
-import { Alert, AlertTitle, AlertDescription } from "@/registry/new-york/ui/alert";
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+} from "@/registry/new-york/ui/alert";
 
 export default function AlertPreview() {
   return (
-    <div className="space-y-6 max-w-md mx-auto">
+    <div className="space-y-6 max-w-md mx-auto not-prose">
       {/* Example 1: Default Alert */}
       <div>
         <h3 className="text-lg font-medium">Default Alert</h3>

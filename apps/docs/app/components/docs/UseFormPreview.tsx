@@ -56,7 +56,7 @@ export function SimpleFormPreview() {
   });
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Login Form</CardTitle>
       </CardHeader>
@@ -187,7 +187,7 @@ export function ContactFormPreview() {
   });
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Contact Us</CardTitle>
       </CardHeader>

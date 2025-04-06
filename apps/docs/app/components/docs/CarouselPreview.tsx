@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -58,6 +58,7 @@ export function MultiCarousel() {
     </Carousel>
   );
 }
+
 export function VerticalCarousel() {
   return (
     <Carousel
@@ -67,7 +68,7 @@ export function VerticalCarousel() {
       orientation="vertical"
       className="w-full max-w-xs"
     >
-      <CarouselContent className="-mt-1 h-[200px]">
+      <CarouselContent className="-mt-1 h-[200px] not-prose">
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem key={index} className="pt-1 md:basis-1/2">
             <div className="p-1">

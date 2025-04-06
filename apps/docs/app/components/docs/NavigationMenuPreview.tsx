@@ -54,7 +54,7 @@ export function NavigationMenuDemo() {
   ];
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="not-prose">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>

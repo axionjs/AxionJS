@@ -10,7 +10,7 @@ import { Button } from "@/registry/new-york/ui/button";
 
 export function SimplePopoverPreview() {
   return (
-    <div className="flex justify-center items-center h-64">
+    <div className="flex justify-center items-center h-64 not-prose">
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="outline">Open Popover</Button>

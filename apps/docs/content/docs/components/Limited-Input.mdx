@@ -11,9 +11,13 @@ import {
   ValidatedLimitedInputPreview,
 } from "@/app/components/docs/LimitedInputPreview";
 
-## Previews with Code
+## Introduction
 
-### Example 1: Simple Limited Input
+The `LimitedInput` component provides a feature-rich input field with built-in character counting, limit enforcement, and visual progress indicators. It's perfect for form fields where character count matters, such as usernames, bios, comments, and more.
+
+## Examples
+
+### Simple Limited Input
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
@@ -21,6 +25,9 @@ import {
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
+    import { useState } from "react";
+    import LimitedInput from "@/components/ui/limited-input";
+
     export function SimpleLimitedInputPreview() {
       const [value, setValue] = useState("");
 
@@ -40,7 +47,8 @@ import {
   </Tab>
 </Tabs>
 
-### Example 2: Validated Limited Input
+
+### Validated Limited Input
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
@@ -48,6 +56,9 @@ import {
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
+    import { useState } from "react";
+    import LimitedInput from "@/components/ui/limited-input";
+
     export function ValidatedLimitedInputPreview() {
       const [value, setValue] = useState("");
       const isValid = value.length >= 5;
@@ -77,8 +88,6 @@ import {
 
 ## Installation
 
-The `LimitedInput` component provides a user-friendly input field with character limit and validation capabilities.
-
 <Tabs items={["CLI", "Manual"]}>
   <Tab value="CLI">
     Quickly add the component using:
@@ -87,18 +96,153 @@ The `LimitedInput` component provides a user-friendly input field with character
     ```
   </Tab>
   <Tab value="Manual">
-    ### 1. Add the Component
-
-    Create a `limited-input.tsx` file in your `components/ui` directory:
-    ```tsx
-    // Full LimitedInput component code provided in the query
+    ### 1. Install Dependencies
+    
+    Make sure you have the base input component installed:
+    ```bash
+    npm install class-variance-authority
     ```
 
-    ### 2. Add Preview Components
+    ### 2. Add the Component
 
-    Create a `LimitedInputPreview.tsx` file for demonstration purposes:
-    ```tsx
-    // Full LimitedInputPreview.tsx code provided above
+    Create a `limited-input.tsx` file in your `components/ui` directory:
+    ```tsx ts2js
+    "use client";
+
+    import * as React from "react";
+    import { Label } from "@/components/ui/label";
+    import { Input } from "@/components/ui/input";
+    import { cn } from "@/lib/utils";
+
+    interface ProgressBarProps {
+      value: number;
+      max: number;
+      style?: React.CSSProperties;
+      className?: string;
+    }
+
+    const ProgressBar: React.FC<ProgressBarProps> = ({
+      value,
+      max,
+      style,
+      className,
+    }) => {
+      const percentage = Math.min((value / max) * 100, 100);
+      
+      return (
+        <div className={cn("w-full h-1 bg-gray-200 rounded-full overflow-hidden", className)}>
+          <div
+            className="h-full bg-primary transition-all duration-300"
+            style={{
+              width: `${percentage}%`,
+              ...style,
+            }}
+          />
+        </div>
+      );
+    };
+
+    interface LimitedInputProps
+      extends Omit<
+        React.InputHTMLAttributes<HTMLInputElement>,
+        "value" | "onChange" | "required"
+      > {
+      label?: string;
+      id?: string;
+      value: string;
+      onChange: (value: string) => void;
+      characterLimit?: number;
+      required?: boolean;
+      helperText?: string;
+      error?: string;
+      progressBarProps?: {
+        className?: string;
+        style?: React.CSSProperties;
+      };
+      countStyle?: React.CSSProperties;
+    }
+
+    const LimitedInput = ({
+      label = "Input Label",
+      id = "limited-input",
+      value = "",
+      onChange,
+      characterLimit = 50,
+      required = false,
+      helperText,
+      error,
+      progressBarProps,
+      countStyle,
+      ...props
+    }: LimitedInputProps) => {
+      const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value;
+        if (newValue.length <= characterLimit) {
+          onChange?.(newValue);
+        }
+      };
+
+      // Calculate if character limit is approaching
+      const characterPercentage = (value.length / characterLimit) * 100;
+      const isApproachingLimit = characterPercentage >= 80;
+      const isAtLimit = value.length === characterLimit;
+
+      return (
+        <div className="space-y-2">
+          {label && (
+            <Label htmlFor={id} className="flex items-center">
+              {label}
+              {required && <span className="text-destructive ml-1">*</span>}
+            </Label>
+          )}
+
+          {helperText && (
+            <p className="text-sm text-muted-foreground">{helperText}</p>
+          )}
+
+          <Input
+            id={id}
+            value={value}
+            onChange={handleInputChange}
+            aria-required={required}
+            {...props}
+          />
+
+          {/* Character count and progress bar */}
+          <div className="mt-1 space-y-1">
+            {progressBarProps && (
+              <ProgressBar 
+                value={value.length} 
+                max={characterLimit} 
+                className={progressBarProps.className}
+                style={progressBarProps.style}
+              />
+            )}
+            
+            <p
+              className={cn(
+                "text-sm text-muted-foreground flex justify-end",
+                isApproachingLimit && !isAtLimit && "text-amber-500",
+                isAtLimit && "text-destructive"
+              )}
+              style={countStyle}
+            >
+              {value.length}/{characterLimit}
+            </p>
+          </div>
+
+          {value.length === characterLimit && (
+            <p className="mt-1 text-sm text-destructive">
+              You've reached the maximum character limit.
+            </p>
+          )}
+
+          {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
+        </div>
+      );
+    };
+
+    export default LimitedInput;
     ```
   </Tab>
 </Tabs>
@@ -108,20 +252,19 @@ The `LimitedInput` component provides a user-friendly input field with character
 ## File Structure
 
 <Files>
-  <Folder name="app" defaultOpen>
-    <Folder name="components">
-      <Folder name="ui">
-        <File name="limited-input.tsx" />
-      </Folder>
+  <Folder name="components" defaultOpen>
+    <Folder name="ui">
+      <File name="limited-input.tsx" />
+      <File name="input.tsx" />
+      <File name="label.tsx" />
     </Folder>
   </Folder>
+  
 </Files>
 
 ---
 
 ## Props
-
-### LimitedInput Props
 
 <TypeTable
   type={{
@@ -170,30 +313,134 @@ The `LimitedInput` component provides a user-friendly input field with character
       type: "string",
       required: false,
     },
+    progressBarProps: {
+      description: "Props for customizing the progress bar.",
+      type: "{ className?: string; style?: React.CSSProperties }",
+      required: false,
+    },
+    countStyle: {
+      description: "Styles for customizing the character counter.",
+      type: "React.CSSProperties",
+      required: false,
+    },
   }}
 />
 
 ---
 
-## Features
+## Advanced Usage
 
-- **Character Limit**:
-  - Restricts input to a specific number of characters.
-- **Validation**:
-  - Supports custom error messages and helper text.
-- **Customizable**:
-  - Allows flexible styling and behavior through props.
-- **Responsive**:
-  - Dynamically updates remaining character count.
+### Custom Progress Bar Styling
+
+You can customize the progress bar appearance:
+
+```tsx ts2js
+<LimitedInput
+  value={bio}
+  onChange={setBio}
+  characterLimit={150}
+  progressBarProps={{
+    style: {
+      backgroundColor: '#22c55e', // Green progress bar
+      height: '6px',
+      borderRadius: '9999px',
+    },
+  }}
+  countStyle={{ color: '#22c55e' }} // Green counter text
+/>
+```
+
+### Conditional Validation
+
+Implement custom validation logic:
+
+```tsx ts2js
+import { useState } from "react";
+import LimitedInput from "@/components/ui/limited-input";
+
+export function UsernameInput() {
+  const [username, setUsername] = useState("");
+  
+  // Validate username: must be 3-15 chars, alphanumeric + underscores only
+  const isValidUsername = /^[a-zA-Z0-9_]{3,15}$/.test(username);
+  const error = username && !isValidUsername 
+    ? "Username must be 3-15 characters and contain only letters, numbers, and underscores."
+    : undefined;
+  
+  return (
+    <LimitedInput
+      label="Username"
+      value={username}
+      onChange={setUsername}
+      characterLimit={15}
+      helperText="Choose a username between 3-15 characters."
+      error={error}
+      required
+    />
+  );
+}
+```
+
+### Form Integration
+
+```tsx ts2js
+import { useState, FormEvent } from "react";
+import LimitedInput from "@/components/ui/limited-input";
+import { Button } from "@/components/ui/button";
+
+export function ProfileForm() {
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    // Form submission logic
+    console.log({ name, bio });
+  };
+  
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <LimitedInput
+        label="Name"
+        value={name}
+        onChange={setName}
+        characterLimit={50}
+        required
+      />
+      
+      <LimitedInput
+        label="Bio"
+        value={bio}
+        onChange={setBio}
+        characterLimit={150}
+        helperText="Tell us a bit about yourself."
+        progressBarProps={{
+          style: {
+            height: '4px',
+            borderRadius: '9999px',
+          },
+        }}
+      />
+      
+      <Button type="submit">Save Profile</Button>
+    </form>
+  );
+}
+```
 
 ---
 
 ## Accessibility
 
-The `LimitedInput` component includes accessible labels, ARIA attributes, and dynamic feedback for users. Ensure that error messages and helper text are descriptive for screen readers.
+The `LimitedInput` component includes several accessibility features:
+
+- Properly associates labels with inputs using `htmlFor`
+- Indicates required fields both visually and with `aria-required`
+- Provides visual feedback on character limits
+- Ensures error messages are accessible to screen readers
 
 ---
 
 ## Conclusion
 
-The `LimitedInput` component is an essential tool for creating input fields with character limits and validation, improving user experience and ensuring consistent data entry.
+The `LimitedInput` component provides a user-friendly way to implement character-limited input fields in your application. With built-in validation support, visual progress indicators, and customization options, it's a versatile solution for a wide range of form scenarios.

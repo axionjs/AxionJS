@@ -5,7 +5,22 @@ description: A versatile and customizable avatar component with support for imag
 
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 import { TypeTable } from "fumadocs-ui/components/type-table";
-import AvatarPreview from "@/app/components/docs/AvatarPreview.tsx";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+import { 
+  AvatarPreview, 
+  BasicAvatar, 
+  AvatarWithFallback, 
+  AvatarGroupPreview, 
+  AvatarGroupHoverScale,
+  AvatarSizes,
+  AvatarShapes,
+  StyledAvatars,
+  UserProfileAvatar,
+  TeamMembersAvatars,
+  CustomizeAvatarPreview
+} from "@/app/components/docs/AvatarPreview";
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
@@ -13,85 +28,52 @@ import AvatarPreview from "@/app/components/docs/AvatarPreview.tsx";
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-  "use client";
+    import {
+      Avatar,
+      AvatarImage,
+      AvatarFallback,
+      AvatarGroup,
+    } from "@/components/ui/avatar";
 
-import React from "react";
-import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-  AvatarGroup,
-} from "@/app/components/ui/avatar";
-
-export default function AvatarPreview() {
-  return (
-    <div className="space-y-6 max-w-md mx-auto">
-      {/* Example 1: Basic Avatar */}
-      <div>
-        <h3 className="text-lg font-medium">Basic Avatar</h3>
-        <Avatar>
-          <AvatarImage src="https://via.placeholder.com/40" alt="User Avatar" />
-          <AvatarFallback>AB</AvatarFallback>
-        </Avatar>
-      </div>
-
-      {/* Example 2: Avatar with Fallback */}
-      <div>
-        <h3 className="text-lg font-medium">Avatar with Fallback</h3>
-        <Avatar>
-          <AvatarImage src="" alt="User Avatar" />
-          <AvatarFallback>CD</AvatarFallback>
-        </Avatar>
-      </div>
-
-      {/* Example 3: Avatar Group */}
-      <div>
-        <h3 className="text-lg font-medium">Avatar Group</h3>
-        <AvatarGroup>
+    export default function App() {
+      return (
+        <div className="space-y-6">
+          {/* Basic Avatar */}
           <Avatar>
-            <AvatarImage src="https://via.placeholder.com/40" alt="User 1" />
-            <AvatarFallback>U1</AvatarFallback>
+            <AvatarImage src="https://via.placeholder.com/40" alt="User Avatar" />
+            <AvatarFallback>AB</AvatarFallback>
           </Avatar>
+          
+          {/* Fallback Example */}
           <Avatar>
-            <AvatarImage src="https://via.placeholder.com/40" alt="User 2" />
-            <AvatarFallback>U2</AvatarFallback>
+            <AvatarImage src="" alt="User Avatar" />
+            <AvatarFallback>CD</AvatarFallback>
           </Avatar>
-          <Avatar>
-            <AvatarImage src="https://via.placeholder.com/40" alt="User 3" />
-            <AvatarFallback>U3</AvatarFallback>
-          </Avatar>
-        </AvatarGroup>
-      </div>
-
-      {/* Example 4: Avatar Group with Hover Scale */}
-      <div>
-        <h3 className="text-lg font-medium">Avatar Group with Hover Scale</h3>
-        <AvatarGroup hoverScale>
-          <Avatar>
-            <AvatarImage src="https://via.placeholder.com/40" alt="User A" />
-            <AvatarFallback>UA</AvatarFallback>
-          </Avatar>
-          <Avatar>
-            <AvatarImage src="https://via.placeholder.com/40" alt="User B" />
-            <AvatarFallback>UB</AvatarFallback>
-          </Avatar>
-          <Avatar>
-            <AvatarImage src="https://via.placeholder.com/40" alt="User C" />
-            <AvatarFallback>UC</AvatarFallback>
-          </Avatar>
-        </AvatarGroup>
-      </div>
-    </div>
-  );
-}
-
+          
+          {/* Avatar Group */}
+          <AvatarGroup>
+            <Avatar>
+              <AvatarImage src="https://via.placeholder.com/40" alt="User 1" />
+              <AvatarFallback>U1</AvatarFallback>
+            </Avatar>
+            <Avatar>
+              <AvatarImage src="https://via.placeholder.com/40" alt="User 2" />
+              <AvatarFallback>U2</AvatarFallback>
+            </Avatar>
+            <Avatar>
+              <AvatarImage src="https://via.placeholder.com/40" alt="User 3" />
+              <AvatarFallback>U3</AvatarFallback>
+            </Avatar>
+          </AvatarGroup>
+        </div>
+      );
+    }
     ```
   </Tab>
 </Tabs>
 
-## Installation
 
-The `Avatar` component is an excellent tool for visually representing users with images, initials, or grouped avatars. It’s lightweight, accessible, and customizable.
+## Installation
 
 <Tabs items={["CLI", "Manual"]}>
   <Tab value="CLI">
@@ -101,25 +83,422 @@ The `Avatar` component is an excellent tool for visually representing users with
     ```
   </Tab>
   <Tab value="Manual">
-    ### 1. Install Dependencies
+    <Steps>
+      ### Install Dependencies
 
-    Ensure the following dependencies are installed:
-    ```bash
-    npm install @radix-ui/react-avatar class-variance-authority tailwindcss
-    ```
+      Ensure the following dependencies are installed:
+      ```bash
+      npm install @radix-ui/react-avatar tailwindcss
+      ```
 
-    ### 2. Add the Component
+      ### Add the Component
 
-    Create a `avatar.tsx` file in your `components/ui` directory:
+      Create a `avatar.tsx` file in your `components/ui` directory:
+      ```tsx ts2js
+      "use client";
+
+      import * as React from "react";
+      import * as AvatarPrimitive from "@radix-ui/react-avatar";
+
+      import { cn } from "@/lib/utils";
+
+      /* -------------------------------------------------------------------------------------
+       *  1. Avatar
+       * ----------------------------------------------------------------------------------- */
+      const Avatar = React.forwardRef<
+        React.ElementRef<typeof AvatarPrimitive.Root>,
+        React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
+      >(({ className, ...props }, ref) => (
+        <AvatarPrimitive.Root
+          ref={ref}
+          className={cn(
+            "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+            className,
+          )}
+          {...props}
+        />
+      ));
+      Avatar.displayName = "Avatar";
+
+      /* -------------------------------------------------------------------------------------
+       *  2. AvatarImage
+       * ----------------------------------------------------------------------------------- */
+      const AvatarImage = React.forwardRef<
+        React.ElementRef<typeof AvatarPrimitive.Image>,
+        React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+      >(({ className, ...props }, ref) => (
+        <AvatarPrimitive.Image
+          ref={ref}
+          className={cn("aspect-square h-full w-full object-cover", className)}
+          {...props}
+        />
+      ));
+      AvatarImage.displayName = "AvatarImage";
+
+      /* -------------------------------------------------------------------------------------
+       *  3. AvatarFallback
+       * ----------------------------------------------------------------------------------- */
+      const AvatarFallback = React.forwardRef<
+        React.ElementRef<typeof AvatarPrimitive.Fallback>,
+        React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
+      >(({ className, ...props }, ref) => (
+        <AvatarPrimitive.Fallback
+          ref={ref}
+          className={cn(
+            "flex h-full w-full items-center justify-center rounded-full bg-muted",
+            className,
+          )}
+          {...props}
+        />
+      ));
+      AvatarFallback.displayName = "AvatarFallback";
+
+      interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+        overlap?: string;
+        hoverScale?: boolean;
+        limit?: number;
+        totalCount?: number;
+      }
+
+      const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
+        (
+          { 
+            className, 
+            overlap = "-ml-2", 
+            hoverScale = false, 
+            limit, 
+            totalCount,
+            children, 
+            ...props 
+          },
+          ref,
+        ) => {
+          // Convert children to array for processing
+          const childrenArray = React.Children.toArray(children).filter(
+            child => React.isValidElement(child)
+          );
+          
+          // Limit the number of displayed avatars if limit is set
+          const visibleChildren = limit ? childrenArray.slice(0, limit) : childrenArray;
+          
+          // Calculate how many additional avatars are not shown
+          const hiddenCount = limit && childrenArray.length > limit 
+            ? childrenArray.length - limit 
+            : totalCount && childrenArray.length > 0 
+              ? totalCount - childrenArray.length 
+              : 0;
+
+          return (
+            <div ref={ref} className={cn("flex items-center", className)} {...props}>
+              {visibleChildren.map((child, index) => {
+                if (!React.isValidElement(child)) {
+                  return child;
+                }
+
+                const overlapClass = index === 0 ? "" : overlap;
+
+                const borderClass =
+                  "ring-2 ring-background ring-offset-1 ring-primary/10";
+
+                const scaleClass = hoverScale
+                  ? "transition-transform duration-200 ease-in-out hover:z-10 hover:scale-110 hover:-translate-y-1"
+                  : "";
+
+                return React.cloneElement(child, {
+                  className: cn(
+                    overlapClass,
+                    borderClass,
+                    scaleClass,
+                    child.props.className,
+                  ),
+                });
+              })}
+              
+              {/* Show the count of additional avatars if any are hidden */}
+              {hiddenCount > 0 && (
+                <Avatar className={cn(
+                  overlap, 
+                  "ring-2 ring-background ring-offset-1 ring-primary/10",
+                  hoverScale && "transition-transform duration-200 ease-in-out hover:z-10 hover:scale-110 hover:-translate-y-1",
+                  "bg-muted"
+                )}>
+                  <AvatarFallback className="bg-primary/10 text-xs">
+                    +{hiddenCount}
+                  </AvatarFallback>
+                </Avatar>
+              )}
+            </div>
+          );
+        },
+      );
+      AvatarGroup.displayName = "AvatarGroup";
+
+      export { Avatar, AvatarImage, AvatarFallback, AvatarGroup };
+      ```
+
+
+      
+    </Steps>
+  </Tab>
+</Tabs>
+
+## File Structure
+
+Here's the file structure for the Avatar component:
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <Folder name="ui" defaultOpen>
+      <File name="avatar.tsx" />
+    </Folder>
+    
+  </Folder>
+</Files>
+
+## Basic Examples
+
+### Basic Avatar
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <BasicAvatar />
+  </Tab>
+  <Tab value="Code">
     ```tsx
-    // Full component code provided in your query
+    <Avatar>
+      <AvatarImage src="https://via.placeholder.com/40" alt="User Avatar" />
+      <AvatarFallback>AB</AvatarFallback>
+    </Avatar>
     ```
+  </Tab>
+</Tabs>
 
-    ### 3. Add Preview Component (Optional)
+### Avatar with Fallback
 
-    Create a `AvatarPreview.tsx` file for demonstration purposes:
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <AvatarWithFallback />
+  </Tab>
+  <Tab value="Code">
     ```tsx
-    // Full AvatarPreview.tsx code above
+    <Avatar>
+      <AvatarImage src="" alt="User Avatar" />
+      <AvatarFallback>CD</AvatarFallback>
+    </Avatar>
+    ```
+  </Tab>
+</Tabs>
+
+### Avatar Group
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <AvatarGroupPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <AvatarGroup>
+      <Avatar>
+        <AvatarImage src="https://via.placeholder.com/40" alt="User 1" />
+        <AvatarFallback>U1</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarImage src="https://via.placeholder.com/40" alt="User 2" />
+        <AvatarFallback>U2</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarImage src="https://via.placeholder.com/40" alt="User 3" />
+        <AvatarFallback>U3</AvatarFallback>
+      </Avatar>
+    </AvatarGroup>
+    ```
+  </Tab>
+</Tabs>
+
+### Avatar Group with Hover Scale
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <AvatarGroupHoverScale />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <AvatarGroup hoverScale>
+      <Avatar>
+        <AvatarImage src="https://via.placeholder.com/40" alt="User A" />
+        <AvatarFallback>UA</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarImage src="https://via.placeholder.com/40" alt="User B" />
+        <AvatarFallback>UB</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarImage src="https://via.placeholder.com/40" alt="User C" />
+        <AvatarFallback>UC</AvatarFallback>
+      </Avatar>
+    </AvatarGroup>
+    ```
+  </Tab>
+</Tabs>
+
+## Customization Options
+
+### Different Sizes
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <AvatarSizes />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Avatar className="h-6 w-6">
+      <AvatarImage src="https://via.placeholder.com/40" alt="Small Avatar" />
+      <AvatarFallback className="text-xs">XS</AvatarFallback>
+    </Avatar>
+    
+    <Avatar className="h-8 w-8">
+      <AvatarImage src="https://via.placeholder.com/40" alt="Small Avatar" />
+      <AvatarFallback className="text-xs">SM</AvatarFallback>
+    </Avatar>
+    
+    <Avatar>
+      <AvatarImage src="https://via.placeholder.com/40" alt="Default Avatar" />
+      <AvatarFallback>MD</AvatarFallback>
+    </Avatar>
+    
+    <Avatar className="h-12 w-12">
+      <AvatarImage src="https://via.placeholder.com/40" alt="Large Avatar" />
+      <AvatarFallback>LG</AvatarFallback>
+    </Avatar>
+    
+    <Avatar className="h-16 w-16">
+      <AvatarImage src="https://via.placeholder.com/40" alt="X-Large Avatar" />
+      <AvatarFallback>XL</AvatarFallback>
+    </Avatar>
+    ```
+  </Tab>
+</Tabs>
+
+### Different Shapes
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <AvatarShapes />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Avatar>
+      <AvatarImage src="https://via.placeholder.com/40" alt="Circle Avatar" />
+      <AvatarFallback>CI</AvatarFallback>
+    </Avatar>
+    
+    <Avatar className="rounded-md overflow-hidden">
+      <AvatarImage src="https://via.placeholder.com/40" alt="Rounded Avatar" />
+      <AvatarFallback className="rounded-md">RO</AvatarFallback>
+    </Avatar>
+    
+    <Avatar className="rounded-none overflow-hidden">
+      <AvatarImage src="https://via.placeholder.com/40" alt="Square Avatar" />
+      <AvatarFallback className="rounded-none">SQ</AvatarFallback>
+    </Avatar>
+    ```
+  </Tab>
+</Tabs>
+
+### Styled Avatars
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <StyledAvatars />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Avatar className="border-2 border-primary">
+      <AvatarImage src="https://via.placeholder.com/40" alt="Bordered Avatar" />
+      <AvatarFallback>BD</AvatarFallback>
+    </Avatar>
+    
+    <Avatar className="ring-2 ring-primary ring-offset-2">
+      <AvatarImage src="https://via.placeholder.com/40" alt="Ring Avatar" />
+      <AvatarFallback>RG</AvatarFallback>
+    </Avatar>
+    
+    <Avatar className="shadow-lg">
+      <AvatarImage src="https://via.placeholder.com/40" alt="Shadow Avatar" />
+      <AvatarFallback>SH</AvatarFallback>
+    </Avatar>
+    
+    <Avatar className="bg-gradient-to-r from-pink-500 to-purple-500">
+      <AvatarImage src="" alt="Gradient Avatar" />
+      <AvatarFallback className="text-white">GR</AvatarFallback>
+    </Avatar>
+    ```
+  </Tab>
+</Tabs>
+
+## Real-world Use Cases
+
+### User Profile
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <UserProfileAvatar />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <div className="flex items-center gap-4 p-4 rounded-lg border">
+      <Avatar className="h-14 w-14 ring-2 ring-primary/10 ring-offset-2">
+        <AvatarImage src="https://via.placeholder.com/40" alt="John Doe" />
+        <AvatarFallback>JD</AvatarFallback>
+      </Avatar>
+      <div>
+        <p className="font-medium">John Doe</p>
+        <p className="text-sm text-muted-foreground">Senior Developer</p>
+        <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
+          <div className="h-2 w-2 rounded-full bg-green-500"></div>
+          <span>Online</span>
+        </div>
+      </div>
+    </div>
+    ```
+  </Tab>
+</Tabs>
+
+### Team Members
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <TeamMembersAvatars />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <div className="p-4 rounded-lg border">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-sm font-medium">Project Team</h3>
+        <span className="text-xs text-muted-foreground">5 members</span>
+      </div>
+      <AvatarGroup>
+        <Avatar>
+          <AvatarImage src="https://via.placeholder.com/40" alt="Member 1" />
+          <AvatarFallback>M1</AvatarFallback>
+        </Avatar>
+        <Avatar>
+          <AvatarImage src="https://via.placeholder.com/40" alt="Member 2" />
+          <AvatarFallback>M2</AvatarFallback>
+        </Avatar>
+        <Avatar>
+          <AvatarImage src="https://via.placeholder.com/40" alt="Member 3" />
+          <AvatarFallback>M3</AvatarFallback>
+        </Avatar>
+        <Avatar>
+          <AvatarImage src="https://via.placeholder.com/40" alt="Member 4" />
+          <AvatarFallback>M4</AvatarFallback>
+        </Avatar>
+        <Avatar className="bg-primary/10">
+          <AvatarFallback className="text-xs bg-transparent">+2</AvatarFallback>
+        </Avatar>
+      </AvatarGroup>
+    </div>
     ```
   </Tab>
 </Tabs>
@@ -171,6 +550,11 @@ The `Avatar` component and its subcomponents (`AvatarImage`, `AvatarFallback`, a
       description: "The fallback content, typically initials.",
       type: "React.ReactNode",
     },
+    delayMs: {
+      description: "Delay before showing the fallback to prevent flashing.",
+      type: "number",
+      default: "600",
+    },
   }}
 />
 
@@ -188,6 +572,14 @@ The `Avatar` component and its subcomponents (`AvatarImage`, `AvatarFallback`, a
       type: "boolean",
       default: "false",
     },
+    limit: {
+      description: "Maximum number of avatars to display before showing a count.",
+      type: "number",
+    },
+    totalCount: {
+      description: "Total number of avatars represented by the group.",
+      type: "number",
+    },
     className: {
       description: "Additional classes for styling the group.",
       type: "string",
@@ -197,41 +589,74 @@ The `Avatar` component and its subcomponents (`AvatarImage`, `AvatarFallback`, a
 
 ## Features
 
-The `Avatar` component provides the following features:
+The enhanced `Avatar` component provides the following features:
 
 - **Customizable Display**:
-  - Supports images, initials, or any fallback content.
+  - Supports images, initials, or any fallback content
+  - Configurable sizes from extra small to extra large
+  - Multiple shape options including circle, rounded, and square
+  - Styling options with borders, rings, shadows, and gradients
+  
 - **Grouped Avatars**:
-  - Easily group avatars with overlap and hover effects.
+  - Overlapping display with configurable spacing
+  - Optional hover scale effects for interactive experience
+  - Automatic "more" indicator for groups exceeding size limits
+  - Group count display for large teams
+  
 - **Responsive Design**:
-  - Automatically adjusts to container sizes for a seamless UI.
+  - Automatically adjusts to container sizes
+  - Maintains image aspect ratios
+  - Ensures crisp display at all sizes
+  
 - **Accessible Design**:
-  - Includes alt text for images and screen reader support for fallbacks.
+  - Required alt text for images
+  - Meaningful fallback content
+  - Screen reader support
+  - Proper ARIA attributes
 
-## Use Cases
+## Best Practices
 
-The `Avatar` component is ideal for:
+When using the Avatar component:
 
-- **User Profiles**:
-  - Display user images or initials in profile sections.
-- **Team Displays**:
-  - Group avatars to represent teams or participants.
-- **Social Media**:
-  - Use as profile pictures or in feed designs.
+<Callout type="info">
+  1. **Image Quality**: Use appropriately sized images to prevent blurry avatars. Ideally, image resolution should be at least 2x the displayed size.
+  
+  2. **Fallback Text**: Keep fallback text to 2-3 characters maximum for best appearance. Typically, use initials for a person.
+  
+  3. **Group Limits**: For AvatarGroup, limit visible avatars to 5-7 and use the limit prop to show a count for larger groups.
+  
+  4. **Accessibility**: Always provide meaningful alt text for AvatarImage that identifies the person or entity represented.
+</Callout>
+
+## Common Patterns
+
+The Avatar component can be used in various UI patterns:
+
+- **Comments & Discussions**: Show author avatars next to their contributions
+- **Team Directories**: Display member images in a searchable directory
+- **User Cards**: Include avatars as part of user profile cards or hover cards
+- **Message Systems**: Show sender/receiver avatars in chat applications
+- **Collaborative Platforms**: Indicate who is currently viewing or editing content
+- **Activity Feeds**: Include user avatars with activity notifications
 
 ## Accessibility
 
 The `Avatar` component is designed with accessibility in mind:
 
-- **Alt Text Support**:
-  - Ensures screen readers describe the content of the avatar image.
-- **Fallback Content**:
-  - Provides meaningful content (e.g., initials) when the image fails to load.
-- **Keyboard Focus**:
-  - Fully keyboard-navigable when used within interactive contexts.
+- **Alt Text**: Required alt attribute ensures screen readers can identify the avatar image
+- **Fallback Content**: Provides meaningful alternatives when images fail to load
+- **Contrast**: Default styles maintain proper contrast ratios for text legibility
+- **Keyboard Navigation**: Fully navigable when used within interactive contexts
+- **ARIA Support**: Leverages Radix UI's built-in ARIA attributes for proper screen reader support
 
-
+<Callout type="warning">
+  When using custom colors, ensure text within fallbacks maintains a minimum contrast ratio of 4.5:1 for small text or 3:1 for large text to keep the component accessible.
+</Callout>
 
 ## Conclusion
 
-The `Avatar` component is a versatile, accessible, and visually appealing way to represent users or groups in modern web applications. With its robust feature set and customizable options, it’s a must-have for user-centric interfaces.
+The enhanced `Avatar` component provides a comprehensive solution for displaying user or entity images in your Next.js applications. With support for various sizes, shapes, grouping options, and robust fallbacks, it offers both flexibility and reliability.
+
+Its integration with Radix UI primitives ensures accessibility, while the customizable styling options allow seamless integration with your application's design system. The additional features like group limits, hover effects, and enhanced fallbacks make it suitable for advanced use cases beyond basic profile pictures.
+
+Whether you're building a social platform, team collaboration tool, or any user-centric interface, the Avatar component provides a solid foundation that balances visual appeal with technical functionality.

@@ -80,7 +80,7 @@ export function VirtualListPreview() {
   const totalHeight = filteredItems.length * itemHeight;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="space-y-2">
         <Label htmlFor="filter">Search Items</Label>
         <Input
@@ -187,7 +187,7 @@ export function GridVirtualListPreview() {
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="border rounded-md">
         <div className="bg-muted/50 p-2 text-sm">
           <span className="font-medium">Virtual Grid</span>

@@ -16,7 +16,7 @@ import {
 
 export function SimpleMenubarPreview() {
   return (
-    <Menubar>
+    <Menubar className="not-prose">
       <MenubarMenu>
         <MenubarTrigger>File</MenubarTrigger>
         <MenubarContent>
@@ -44,7 +44,7 @@ export function SimpleMenubarPreview() {
 
 export function CheckboxMenubarPreview() {
   return (
-    <Menubar>
+    <Menubar className="not-prose">
       <MenubarMenu>
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
@@ -58,7 +58,7 @@ export function CheckboxMenubarPreview() {
 
 export function RadioMenubarPreview() {
   return (
-    <Menubar>
+    <Menubar className="not-prose">
       <MenubarMenu>
         <MenubarTrigger>Sort By</MenubarTrigger>
         <MenubarContent>

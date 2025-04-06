@@ -7,7 +7,7 @@ export default function PasswordPreview() {
   const [password, setPassword] = useState<string>("");
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 not-prose">
       <div>
         <PasswordInput
           value={password}

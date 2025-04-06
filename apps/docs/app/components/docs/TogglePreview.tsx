@@ -8,7 +8,7 @@ export function DefaultTogglePreview() {
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <div className="space-y-4 max-w-md mx-auto">
+    <div className="space-y-4 max-w-md mx-auto not-prose">
       <h3 className="text-lg font-medium">Default Toggle</h3>
       <Toggle
         aria-label="Toggle Bold"
@@ -23,7 +23,7 @@ export function DefaultTogglePreview() {
 
 export function IconTogglePreview() {
   return (
-    <div className="space-y-4 max-w-md mx-auto">
+    <div className="space-y-4 max-w-md mx-auto not-prose">
       <h3 className="text-lg font-medium">Toggle with Icons</h3>
       <div className="flex gap-2">
         <Toggle aria-label="Bold">

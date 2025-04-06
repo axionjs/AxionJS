@@ -65,7 +65,7 @@ export function IdleTimeoutPreview() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <Card>
         <CardContent className="p-6">
           <div className="flex flex-col items-center justify-center space-y-4">

@@ -12,7 +12,7 @@ export function SimpleDraggableListPreview() {
   ]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4  not-prose">
       <h3 className="text-lg font-medium">Simple Draggable List</h3>
       <Draggable
         items={items}
@@ -32,7 +32,7 @@ export function CustomDraggableListPreview() {
   ]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <h3 className="text-lg font-medium">Custom Draggable List</h3>
       <Draggable
         items={items}

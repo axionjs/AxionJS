@@ -36,7 +36,7 @@ export function CopyToClipboardPreview() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="space-y-2">
         <Label htmlFor="copy-text">Text to copy</Label>
         <div className="flex gap-2">
@@ -74,7 +74,7 @@ console.log(greeting('World'));`;
 
   return (
     <Card>
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 not-prose">
         <CardTitle className="text-sm flex items-center justify-between">
           <span>Example Code</span>
           <Button
@@ -122,7 +122,7 @@ export function ShareLinkPreview() {
   };
 
   return (
-    <div className="w-full max-w-sm">
+    <div className="w-full max-w-sm not-prose">
       <Button
         onClick={handleCopy}
         className="w-full flex items-center justify-center gap-2"

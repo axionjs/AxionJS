@@ -19,7 +19,7 @@ import { Button } from "@/registry/new-york/ui/button";
 
 export function BasicDropdownPreview() {
   return (
-    <DropdownMenu>
+    <DropdownMenu className="not-prose">
       <DropdownMenuTrigger asChild>
         <Button variant="default">Open Dropdown</Button>
       </DropdownMenuTrigger>

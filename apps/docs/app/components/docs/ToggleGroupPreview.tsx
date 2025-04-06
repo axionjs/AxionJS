@@ -1,12 +1,15 @@
 "use client";
 
 import React from "react";
-import { ToggleGroup, ToggleGroupItem } from "@/registry/new-york/ui/toggle-group";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/registry/new-york/ui/toggle-group";
 import { Bold, Italic, Underline } from "lucide-react";
 
 export function SingleSelectToggleGroupPreview() {
   return (
-    <div className="space-y-4 max-w-md mx-auto">
+    <div className="space-y-4 max-w-md mx-auto not-prose">
       <h3 className="text-lg font-medium">Single Select Toggle Group</h3>
       <ToggleGroup
         type="single"
@@ -29,7 +32,7 @@ export function SingleSelectToggleGroupPreview() {
 
 export function MultiSelectToggleGroupPreview() {
   return (
-    <div className="space-y-4 max-w-md mx-auto">
+    <div className="space-y-4 max-w-md mx-auto not-prose">
       <h3 className="text-lg font-medium">Multi Select Toggle Group</h3>
       <ToggleGroup
         type="multiple"

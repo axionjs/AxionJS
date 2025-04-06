@@ -8,7 +8,7 @@ interface RadiusSliderProps {
 
 export const RadiusSlider = ({ value, onChange }: RadiusSliderProps) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 not-prose">
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium">Border Radius</span>
         <span className="text-sm text-muted-foreground w-12 text-right">

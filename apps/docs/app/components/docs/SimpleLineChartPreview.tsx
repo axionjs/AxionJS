@@ -17,7 +17,7 @@ const sampleData = [
 // Default chart
 export function DefaultLineChartPreview() {
   return (
-    <section className="space-y-4 max-w-2xl mx-auto">
+    <section className="space-y-4 max-w-2xl mx-auto not-prose">
       <SimpleLineChart
         data={sampleData}
         lines={[{ dataKey: "pv" }]}
@@ -30,7 +30,7 @@ export function DefaultLineChartPreview() {
 // Chart with multiple lines
 export function MultiLineChartPreview() {
   return (
-    <section className="space-y-4 max-w-2xl mx-auto">
+    <section className="space-y-4 max-w-2xl mx-auto not-prose">
       <SimpleLineChart
         data={sampleData}
         lines={[
@@ -46,7 +46,7 @@ export function MultiLineChartPreview() {
 // Chart with grid hidden
 export function NoGridLineChartPreview() {
   return (
-    <section className="space-y-4 max-w-2xl mx-auto">
+    <section className="space-y-4 max-w-2xl mx-auto not-prose">
       <SimpleLineChart
         data={sampleData}
         lines={[{ dataKey: "pv", strokeColor: "hsl(var(--primary))" }]}

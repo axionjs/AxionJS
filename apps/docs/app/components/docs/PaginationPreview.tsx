@@ -13,7 +13,7 @@ import {
 
 export function SimplePaginationPreview() {
   return (
-    <Pagination>
+    <Pagination className="not-prose" aria-label="Pagination">
       <PaginationContent>
         <PaginationPrevious />
         <PaginationItem>

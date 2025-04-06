@@ -33,7 +33,7 @@ export function ScrollPositionPreview() {
   const items = Array.from({ length: 20 }, (_, i) => i + 1);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="sticky top-0 z-10 bg-background border rounded-md p-2 flex justify-between text-sm">
         <div>
           <span className="font-medium">Scroll Position:</span>
@@ -92,7 +92,7 @@ export function HeaderEffectsPreview() {
   const headerBlur = Math.min(8, scrollPosition / 20);
 
   return (
-    <div className="border rounded-md overflow-hidden">
+    <div className="not-prose border rounded-md overflow-hidden">
       <div
         className="sticky top-0 z-10 transition-all duration-200"
         style={{

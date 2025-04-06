@@ -14,7 +14,7 @@ import {
 
 export default function DialogPreview() {
   return (
-    <div className="space-y-6 max-w-md mx-auto">
+    <div className="space-y-6 max-w-md mx-auto not-prose">
       {/* Example 1: Basic Dialog */}
       <div>
         <h3 className="text-lg font-medium">Basic Dialog</h3>

@@ -10,7 +10,7 @@ import {
 
 export function DefaultTooltipPreview() {
   return (
-    <TooltipProvider>
+    <TooltipProvider className="not-prose">
       <div className="flex items-center justify-center space-x-4">
         <Tooltip>
           <TooltipTrigger className="px-4 py-2 bg-gray-100 border rounded-lg">
@@ -29,7 +29,7 @@ export function PlacementTooltipPreview() {
   const placements = ["top", "bottom", "left", "right"];
 
   return (
-    <TooltipProvider>
+    <TooltipProvider className="not-prose">
       <div className="grid grid-cols-2 gap-8">
         {placements.map((placement) => (
           <Tooltip key={placement}>
@@ -48,7 +48,7 @@ export function PlacementTooltipPreview() {
 
 export function StyledTooltipPreview() {
   return (
-    <TooltipProvider>
+    <TooltipProvider className="not-prose">
       <div className="flex items-center justify-center space-x-4">
         <Tooltip>
           <TooltipTrigger className="px-4 py-2 bg-gray-100 border rounded-lg">
@@ -65,7 +65,7 @@ export function StyledTooltipPreview() {
 
 export function InteractiveTooltipPreview() {
   return (
-    <TooltipProvider>
+    <TooltipProvider className="not-prose">
       <div className="flex items-center justify-center space-x-4">
         <Tooltip>
           <TooltipTrigger className="px-4 py-2 bg-gray-100 border rounded-lg">

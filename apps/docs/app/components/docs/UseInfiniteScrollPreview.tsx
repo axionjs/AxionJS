@@ -52,7 +52,7 @@ export function InfiniteScrollPreview() {
   const sentinelRef = useInfiniteScroll(loadMore);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="space-y-4 max-h-[400px] overflow-y-auto border rounded-md p-4">
         {items.map((item) => (
           <Card key={item.id} className="w-full">
@@ -123,7 +123,7 @@ export function SimpleInfiniteScrollPreview() {
   const sentinelRef = useInfiniteScroll(loadMore);
 
   return (
-    <div className="border rounded-md p-4">
+    <div className="border rounded-md p-4 not-prose">
       <div className="max-h-[300px] overflow-y-auto space-y-2 pr-2">
         {items.map((item) => (
           <div key={item} className="p-4 border rounded-md bg-card">

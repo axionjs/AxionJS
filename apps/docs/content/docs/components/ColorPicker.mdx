@@ -1,0 +1,494 @@
+---
+title: Color Picker
+description: A flexible color picker component with hex input support for selecting and customizing colors in your application.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { ColorPickerBasic, ColorPickerWithInput, ColorPickerWithLabel, ThemeColorPicker, ColorPickerCodeGenerator, ColorPickerCustomizationDemo } from "@/app/components/docs/ColorPickerPreview";
+import { ColorPicker } from "@/registry/new-york/ui/color-picker";
+import { Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-8 content-center">
+    <ColorPickerBasic />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { ColorPicker } from "@/components/ui/color-picker";
+
+    export default function App() {
+      const [color, setColor] = useState("#3B82F6");
+      
+      return (
+        <div className="flex items-center gap-4">
+          <ColorPicker value={color} onChange={setColor} />
+          <div className="text-sm">Selected color: {color}</div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<ColorPickerCustomizationDemo />
+
+## Introduction
+
+The ColorPicker component provides an intuitive way to select colors within your application. It combines a visual color picker with a hex input field, making it perfect for design tools, theme customization, and any interface that requires color selection.
+
+<Callout type="info">
+  ColorPicker uses react-colorful under the hood, providing a lightweight yet powerful color selection experience.
+</Callout>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the ColorPicker component using:
+    ```bash
+    npx axionjs add color-picker
+    ```
+  </Tab>
+  <Tab value="Manual">
+    <Steps>
+      ### Install Dependencies
+      
+      Ensure the following dependencies are installed:
+      ```bash
+      npm install react-colorful
+      ```
+
+      ### Add the ColorPicker Component
+      
+      Create the `color-picker.tsx` file in your `components/ui` directory with the code below:
+      ```tsx ts2js
+      "use client";
+
+      import type React from "react";
+      import { forwardRef, useMemo, useState, useEffect, useRef } from "react";
+      import { HexColorPicker } from "react-colorful";
+      import { cn } from "@/lib/utils";
+      import type { ButtonProps } from "@/components/ui/button";
+      import { Button } from "@/components/ui/button";
+      import {
+        Popover,
+        PopoverContent,
+        PopoverTrigger,
+      } from "@/components/ui/popover";
+      import { Input } from "@/components/ui/input";
+
+      export function useForwardedRef<T>(ref: React.ForwardedRef<T>) {
+        const innerRef = useRef<T>(null);
+
+        useEffect(() => {
+          if (!ref) return;
+
+          if (typeof ref === "function") {
+            ref(innerRef.current);
+          } else {
+            (ref as React.MutableRefObject<T | null>).current = innerRef.current;
+          }
+        });
+
+        return innerRef;
+      }
+
+      interface ColorPickerProps {
+        value: string;
+        onChange: (value: string) => void;
+        onBlur?: () => void;
+      }
+
+      const ColorPicker = forwardRef<
+        HTMLInputElement,
+        Omit<ButtonProps, "value" | "onChange" | "onBlur"> & ColorPickerProps
+      >(
+        (
+          { disabled, value, onChange, onBlur, name, className, ...props },
+          forwardedRef
+        ) => {
+          const ref = useForwardedRef(forwardedRef);
+          const [open, setOpen] = useState(false);
+
+          const parsedValue = useMemo(() => {
+            return value || "#FFFFFF";
+          }, [value]);
+
+          return (
+            <Popover onOpenChange={setOpen} open={open}>
+              <PopoverTrigger asChild disabled={disabled} onBlur={onBlur}>
+                <Button
+                  {...props}
+                  ref={ref}
+                  className={cn(
+                    "h-8 w-8 p-0",
+                    "flex items-center justify-center",
+                    "border"
+                  )}
+                  name={name}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  size="icon" // Use icon size for a small square button
+                  type="button" // Explicitly set type to button
+                  variant="outline"
+                >
+                  {/* Inner div to display the color */}
+                  <div
+                    className="h-4 w-4 rounded border"
+                    style={{ backgroundColor: parsedValue }}
+                  />
+                  <span className="sr-only">Pick a color</span> {/* Accessibility */}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-2">
+                <HexColorPicker
+                  color={parsedValue}
+                  onChange={onChange}
+                  style={{ width: "100%", height: "150px", marginBottom: "8px" }} // Add some styling
+                />
+                <Input
+                  ref={ref} // Attach the ref here for the input element
+                  id={name ? `color-input-${name}` : "color-input"} // Add id for label association
+                  className="mt-2 h-8" // Add margin top and control height
+                  maxLength={7}
+                  onChange={(e) => {
+                    onChange(e.currentTarget.value);
+                  }}
+                  onBlur={onBlur} // Pass onBlur to Input as well
+                  value={parsedValue}
+                  aria-label="Hex color input" // Accessibility
+                />
+              </PopoverContent>
+            </Popover>
+          );
+        }
+      );
+      ColorPicker.displayName = "ColorPicker";
+
+      export { ColorPicker };
+      ```
+    </Steps>
+  </Tab>
+</Tabs>
+
+## File Structure
+
+Here's the file structure for the ColorPicker component:
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <Folder name="ui" defaultOpen>
+      <File name="color-picker.tsx" />
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Basic Usage
+
+### Simple Color Picker
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <ColorPickerBasic />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { ColorPicker } from "@/components/ui/color-picker";
+
+    export function ColorPickerBasic() {
+      const [color, setColor] = useState("#3B82F6");
+
+      return (
+        <div className="flex items-center gap-4">
+          <ColorPicker value={color} onChange={setColor} />
+          <div className="text-sm">Selected color: {color}</div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### With Input Field
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <ColorPickerWithInput />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { ColorPicker } from "@/components/ui/color-picker";
+    import { Input } from "@/components/ui/input";
+
+    export function ColorPickerWithInput() {
+      const [color, setColor] = useState("#10B981");
+
+      return (
+        <div className="flex items-center gap-4">
+          <ColorPicker value={color} onChange={setColor} />
+          <Input
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            className="w-28"
+          />
+          <div 
+            className="h-8 w-8 rounded-md border" 
+            style={{ backgroundColor: color }}
+          />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Examples
+
+### With Labels
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <ColorPickerWithLabel />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { ColorPicker } from "@/components/ui/color-picker";
+    import { Input } from "@/components/ui/input";
+    import { Label } from "@/components/ui/label";
+
+    export function ColorPickerWithLabel() {
+      const [backgroundColor, setBackgroundColor] = useState("#8B5CF6");
+      const [textColor, setTextColor] = useState("#FFFFFF");
+
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            <Label className="w-32">Background:</Label>
+            <ColorPicker value={backgroundColor} onChange={setBackgroundColor} />
+            <Input
+              value={backgroundColor}
+              onChange={(e) => setBackgroundColor(e.target.value)}
+              className="w-28"
+            />
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <Label className="w-32">Text Color:</Label>
+            <ColorPicker value={textColor} onChange={setTextColor} />
+            <Input
+              value={textColor}
+              onChange={(e) => setTextColor(e.target.value)}
+              className="w-28"
+            />
+          </div>
+          
+          <div 
+            className="mt-4 rounded-md border p-4 text-center"
+            style={{ backgroundColor, color: textColor }}
+          >
+            <span className="text-lg font-medium">Preview Text</span>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Theme Color Selection
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <ThemeColorPicker />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { ColorPicker } from "@/components/ui/color-picker";
+    import { Input } from "@/components/ui/input";
+    import { Label } from "@/components/ui/label";
+    import { Button } from "@/components/ui/button";
+
+    export function ThemeColorPicker() {
+      const [primaryColor, setPrimaryColor] = useState("#2563EB");
+      const [secondaryColor, setSecondaryColor] = useState("#6B7280");
+      const [accentColor, setAccentColor] = useState("#F59E0B");
+      
+      return (
+        <div className="space-y-4">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label>Primary Color</Label>
+              <div className="flex items-center gap-2">
+                <ColorPicker value={primaryColor} onChange={setPrimaryColor} />
+                <Input
+                  value={primaryColor}
+                  onChange={(e) => setPrimaryColor(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Secondary Color</Label>
+              <div className="flex items-center gap-2">
+                <ColorPicker value={secondaryColor} onChange={setSecondaryColor} />
+                <Input
+                  value={secondaryColor}
+                  onChange={(e) => setSecondaryColor(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Accent Color</Label>
+              <div className="flex items-center gap-2">
+                <ColorPicker value={accentColor} onChange={setAccentColor} />
+                <Input
+                  value={accentColor}
+                  onChange={(e) => setAccentColor(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-6 flex items-center gap-4">
+            <Button style={{ backgroundColor: primaryColor, color: "#FFFFFF" }}>
+              Primary Button
+            </Button>
+            <Button style={{ backgroundColor: secondaryColor, color: "#FFFFFF" }}>
+              Secondary Button
+            </Button>
+            <Button style={{ backgroundColor: accentColor, color: "#FFFFFF" }}>
+              Accent Button
+            </Button>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Props
+
+The `ColorPicker` component comes with the following customizable props:
+
+<TypeTable
+  type={{
+    value: {
+      description: "Current hex color value.",
+      type: "string",
+      required: true,
+    },
+    onChange: {
+      description: "Callback function when color changes.",
+      type: "(value: string) => void",
+      required: true,
+    },
+    onBlur: {
+      description: "Callback function when the component loses focus.",
+      type: "() => void",
+    },
+    disabled: {
+      description: "Whether the color picker is disabled.",
+      type: "boolean",
+      default: "false",
+    },
+    name: {
+      description: "Input name attribute for form submission.",
+      type: "string",
+    },
+    className: {
+      description: "Additional classes for the button trigger.",
+      type: "string",
+    },
+  }}
+/>
+
+## Customization
+
+The ColorPicker component can be customized further by:
+
+<Tabs items={["Button Trigger", "Popover Content"]}>
+  <Tab value="Button Trigger">
+    ```tsx
+    <ColorPicker
+      value={color}
+      onChange={setColor}
+      className="h-10 w-10 rounded-full" // Customize the trigger button
+    />
+    ```
+  </Tab>
+  <Tab value="Popover Content">
+    ```tsx
+    // In your color-picker.tsx file
+    // Customize the popover content styling
+    <PopoverContent className="w-64 p-3 border-2 border-primary rounded-xl">
+      <HexColorPicker
+        color={parsedValue}
+        onChange={onChange}
+        style={{ 
+          width: "100%", 
+          height: "180px", 
+          marginBottom: "12px",
+          borderRadius: "8px" 
+        }}
+      />
+      <Input
+        // Rest of your code
+      />
+    </PopoverContent>
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+The **ColorPicker** component is perfect for:
+
+- **Theme Customization**: Allow users to customize their application theme.
+- **Design Tools**: Include in graphic design or UI design applications.
+- **Product Configurators**: Let users select colors for customizable products.
+- **Data Visualization**: Choose colors for charts, graphs, and visualizations.
+- **Form Inputs**: When color information needs to be collected from users.
+
+## Accessibility
+
+The ColorPicker component follows these accessibility best practices:
+
+- **Keyboard Navigation**: Fully navigable using keyboard controls.
+- **Screen Reader Support**: Includes proper aria labels and descriptions.
+- **Focus Management**: Maintains proper focus order and visible focus states.
+- **Color Input**: Allows direct entry of hex values for precise control.
+
+<Callout type="warning">
+  When using color input for critical information, ensure alternative methods are available for users with color vision deficiencies.
+</Callout>
+
+## Features
+
+The `ColorPicker` component provides the following features:
+
+- **Visual Color Selection**: Intuitive visual color picker interface.
+- **Hex Input**: Direct input of hex color values for precision.
+- **Popover Interface**: Space-efficient design that appears on demand.
+- **Keyboard Accessibility**: Full keyboard navigation support.
+- **Form Integration**: Works seamlessly in form contexts.
+- **Customization**: Flexible styling options to match your design.
+
+## Conclusion
+
+The **ColorPicker** component is a flexible, accessible, and powerful solution for color selection in your Next.js application. Its combination of visual selection and direct input makes it suitable for both casual users and professionals requiring precise color control.

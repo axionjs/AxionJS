@@ -5,7 +5,7 @@ import { Slider } from "@/registry/new-york/ui/slider";
 // Simple Slider Preview
 export function SimpleSliderPreview() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div>
         <label className="block text-sm font-medium text-foreground">
           Simple Slider
@@ -19,7 +19,7 @@ export function SimpleSliderPreview() {
 // Slider with Different Colors
 export function ColoredSliderPreview() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 not-prose">
       <div>
         <label className="block text-sm font-medium text-blue-500">
           Blue Slider

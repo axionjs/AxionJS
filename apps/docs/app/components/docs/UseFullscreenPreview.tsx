@@ -12,12 +12,6 @@ import {
 import { Button } from "@/registry/new-york/ui/button";
 import { Badge } from "@/registry/new-york/ui/badge";
 import { Alert, AlertDescription } from "@/registry/new-york/ui/alert";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/registry/new-york/ui/tabs";
 
 export function UseFullscreenPreview() {
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -31,7 +25,7 @@ export function UseFullscreenPreview() {
 
   return (
     <div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 not-prose">
         <div
           ref={containerRef}
           className={`border rounded-md overflow-hidden transition-all ${
@@ -166,7 +160,7 @@ export function VideoFullscreenPreview() {
   });
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Video Player with Fullscreen</CardTitle>
       </CardHeader>
@@ -261,7 +255,7 @@ export function ImageGalleryFullscreenPreview() {
   ];
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Fullscreen Image Gallery</CardTitle>
       </CardHeader>

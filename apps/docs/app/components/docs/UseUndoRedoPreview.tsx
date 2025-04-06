@@ -28,7 +28,7 @@ export function UseUndoRedoPreview() {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Text Editor</span>
@@ -87,7 +87,7 @@ export function ColorUndoRedoPreview() {
   ];
 
   return (
-    <Card>
+    <Card className=" not-prose">
       <CardHeader>
         <CardTitle>Color Picker with History</CardTitle>
       </CardHeader>
@@ -181,7 +181,7 @@ export function AdvancedUndoRedoPreview() {
   };
 
   return (
-    <Card>
+    <Card className=" not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Task Manager</span>

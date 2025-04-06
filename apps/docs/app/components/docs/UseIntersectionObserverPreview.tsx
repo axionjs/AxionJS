@@ -17,7 +17,7 @@ export function SimpleIntersectionObserverPreview() {
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="h-[300px] overflow-y-auto border rounded-md p-4 space-y-4">
         {items.map((item, index) => (
           <Card
@@ -85,7 +85,7 @@ export function LazyLoadImagesPreview() {
   ];
 
   return (
-    <div className="space-y-6 h-[400px] overflow-y-auto p-4 border rounded-md">
+    <div className="not-prose space-y-6 h-[400px] overflow-y-auto p-4 border rounded-md">
       <div className="text-center pb-2 text-muted-foreground text-sm">
         Scroll down to load images
       </div>
@@ -106,7 +106,7 @@ function LazyImage({ src, alt }: { src: string; alt: string }) {
   return (
     <div
       ref={ref}
-      className="min-h-[200px] rounded-md overflow-hidden relative"
+      className="not-prose min-h-[200px] rounded-md overflow-hidden relative"
     >
       {isIntersecting ? (
         <>
@@ -141,7 +141,7 @@ export function AnimationOnScrollPreview() {
   const fadeInElements = Array.from({ length: 5 }, (_, i) => i + 1);
 
   return (
-    <div className="h-[400px] overflow-y-auto p-4 border rounded-md space-y-16">
+    <div className="not-prose h-[400px] overflow-y-auto p-4 border rounded-md space-y-16">
       <div className="text-center pb-2 text-muted-foreground text-sm">
         Scroll down to see elements animate in
       </div>

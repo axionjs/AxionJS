@@ -46,7 +46,7 @@ export function LoginCardExample() {
     alert("Form submitted successfully!");
   };
   return (
-    <Card className="w-96">
+    <Card className="w-96 not-prose">
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>Access your account</CardDescription>

@@ -38,7 +38,7 @@ export function ResponsiveLayoutPreview() {
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="flex min-h-[200px] w-full flex-col border rounded-md overflow-hidden">
         {/* Header */}
         <header className="flex h-14 items-center border-b px-4 lg:px-6">
@@ -136,7 +136,7 @@ export function DeviceDetectionPreview() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Device Detection</CardTitle>
       </CardHeader>

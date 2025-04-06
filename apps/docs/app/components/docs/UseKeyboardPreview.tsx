@@ -64,7 +64,7 @@ export function KeyboardPreview() {
   );
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-base font-medium">Keyboard Demo</CardTitle>
         <div className="flex items-center space-x-2">
@@ -148,7 +148,7 @@ export function GameControlsPreview() {
   });
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle className="text-base font-medium">
           Game Controls Demo

@@ -16,7 +16,7 @@ export function MultipleSelectionCalendar() {
   ]);
 
   return (
-    <div>
+    <div className="not-prose">
       <Calendar
         mode="multiple"
         selected={date}
@@ -32,7 +32,7 @@ export function CalendarSimple() {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
-    <div>
+    <div className="not-prose">
       <Calendar
         mode="single"
         selected={date}
@@ -57,7 +57,12 @@ export function CalendarPreview({ className }: CalendarPreviewProps) {
 
   return (
     <div className={className}>
-      <Calendar mode="range" selected={date} onSelect={setDate} />
+      <Calendar
+        className="not-prose"
+        mode="range"
+        selected={date}
+        onSelect={setDate}
+      />
     </div>
   );
 }

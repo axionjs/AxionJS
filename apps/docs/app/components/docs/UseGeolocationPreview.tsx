@@ -131,7 +131,7 @@ export function UseGeolocationPreview() {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Geolocation</span>
@@ -521,7 +521,7 @@ export function LocationTrackerPreview() {
   };
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Location Tracker</span>

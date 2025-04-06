@@ -13,7 +13,7 @@ import {
 // Single Button to Open Sheet
 export function SingleButtonSheetPreview() {
   return (
-    <Sheet>
+    <Sheet className="not-prose">
       <SheetTrigger className="btn btn-primary">Open Sheet</SheetTrigger>
       <SheetContent>
         <SheetHeader>
@@ -36,7 +36,7 @@ export function SingleButtonSheetPreview() {
 // Four Buttons to Open Sheet from Top, Left, Bottom, and Right
 export function MultiButtonSheetPreview() {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-4 not-prose">
       <Sheet>
         <SheetTrigger className="btn btn-primary">Open Top</SheetTrigger>
         <SheetContent side="top">

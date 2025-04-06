@@ -46,7 +46,7 @@ export function AsyncPreview() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="flex items-center gap-4">
         <div className="flex-1">
           <label className="text-sm font-medium">
@@ -178,9 +178,9 @@ export function DataFetchingPreview() {
   }, [postsActions]);
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between ">
           <CardTitle>Posts</CardTitle>
           <Button
             variant="ghost"

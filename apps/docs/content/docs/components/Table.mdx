@@ -6,8 +6,15 @@ description: A fully customizable, accessible, and responsive table component fo
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 import { Files, Folder, File } from "fumadocs-ui/components/files";
 import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Callout } from "fumadocs-ui/components/callout";
+import { Steps } from "fumadocs-ui/components/steps";
 
-import TablePreview from "@/app/components/docs/TablePreview";
+import TablePreview, { 
+  BasicTable, 
+  VerticalTable, 
+  TableWithFooter, 
+  BrowserCompatibilityTable 
+} from "@/app/components/docs/TablePreview";
 
 ## Introduction
 
@@ -18,8 +25,8 @@ The `Table` component provides a responsive, accessible, and customizable way to
 ## Example: Basic Table with Images
 
 <Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="px-4 content-center ">
-    <TablePreview />
+  <Tab value="Preview" className="px-4 content-center h-96">
+    <BasicTable />
   </Tab>
   <Tab value="Code">
     ```tsx ts2js
@@ -32,7 +39,7 @@ The `Table` component provides a responsive, accessible, and customizable way to
       TableRow,
     } from "@/components/ui/table";
 
-    const items = [
+    const users = [
       {
         id: "1",
         name: "Alex Thompson",
@@ -43,41 +50,12 @@ The `Table` component provides a responsive, accessible, and customizable way to
         status: "Active",
         balance: "$1,250.00",
       },
-      {
-        id: "2",
-        name: "Sarah Chen",
-        username: "@sarahchen",
-        image: "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358073/avatar-40-01_ij9v7j.jpg",
-        email: "sarah.c@company.com",
-        location: "Singapore",
-        status: "Active",
-        balance: "$600.00",
-      },
-      {
-        id: "4",
-        name: "Maria Garcia",
-        username: "@mariagarcia",
-        image: "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358072/avatar-40-03_dkeufx.jpg",
-        email: "m.garcia@company.com",
-        location: "Madrid, Spain",
-        status: "Active",
-        balance: "$0.00",
-      },
-      {
-        id: "5",
-        name: "David Kim",
-        username: "@davidkim",
-        image: "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358070/avatar-40-05_cmz0mg.jpg",
-        email: "d.kim@company.com",
-        location: "Seoul, KR",
-        status: "Active",
-        balance: "-$1,000.00",
-      },
+      // More users...
     ];
 
-    export default function Component() {
+    export function BasicTable() {
       return (
-        <div>
+        <div className="not-prose">
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
@@ -89,7 +67,7 @@ The `Table` component provides a responsive, accessible, and customizable way to
               </TableRow>
             </TableHeader>
             <TableBody>
-              {items.map((item) => (
+              {users.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>
                     <div className="flex items-center gap-3">
@@ -102,7 +80,9 @@ The `Table` component provides a responsive, accessible, and customizable way to
                       />
                       <div>
                         <div className="font-medium">{item.name}</div>
-                        <span className="mt-0.5 text-xs text-muted-foreground">{item.username}</span>
+                        <span className="mt-0.5 text-xs text-muted-foreground">
+                          {item.username}
+                        </span>
                       </div>
                     </div>
                   </TableCell>
@@ -114,7 +94,6 @@ The `Table` component provides a responsive, accessible, and customizable way to
               ))}
             </TableBody>
           </Table>
-          <p className="mt-4 text-center text-sm text-muted-foreground">Table with images</p>
         </div>
       );
     }
@@ -122,63 +101,327 @@ The `Table` component provides a responsive, accessible, and customizable way to
   </Tab>
 </Tabs>
 
+## Example: Vertical Table (Key-Value pairs)
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 content-center h-96">
+    <VerticalTable />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import {
+      Table,
+      TableBody,
+      TableCell,
+      TableRow,
+    } from "@/components/ui/table";
+
+    const userInfo = {
+      name: "David Kim",
+      email: "d.kim@company.com",
+      location: "Seoul, KR",
+      status: "Active",
+      balance: "-$1,000.00",
+    };
+
+    export function VerticalTable() {
+      return (
+        <div className="mx-auto max-w-lg not-prose">
+          <div className="overflow-hidden rounded-md border bg-background">
+            <Table>
+              <TableBody>
+                <TableRow className="*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r">
+                  <TableCell className="bg-muted/50 py-2 font-medium">
+                    Name
+                  </TableCell>
+                  <TableCell className="py-2">{userInfo.name}</TableCell>
+                </TableRow>
+                <TableRow className="*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r">
+                  <TableCell className="bg-muted/50 py-2 font-medium">
+                    Email
+                  </TableCell>
+                  <TableCell className="py-2">{userInfo.email}</TableCell>
+                </TableRow>
+                <TableRow className="*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r">
+                  <TableCell className="bg-muted/50 py-2 font-medium">
+                    Location
+                  </TableCell>
+                  <TableCell className="py-2">{userInfo.location}</TableCell>
+                </TableRow>
+                <TableRow className="*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r">
+                  <TableCell className="bg-muted/50 py-2 font-medium">
+                    Status
+                  </TableCell>
+                  <TableCell className="py-2">{userInfo.status}</TableCell>
+                </TableRow>
+                <TableRow className="*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r">
+                  <TableCell className="bg-muted/50 py-2 font-medium">
+                    Balance
+                  </TableCell>
+                  <TableCell className="py-2">{userInfo.balance}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Example: Table with Caption and Footer
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 content-center h-96">
+    <TableWithFooter />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import {
+      Table,
+      TableBody,
+      TableCaption,
+      TableCell,
+      TableFooter,
+      TableHead,
+      TableHeader,
+      TableRow,
+    } from "@/components/ui/table";
+
+    const invoices = [
+      {
+        invoice: "INV001",
+        paymentStatus: "Paid",
+        totalAmount: "$250.00",
+        paymentMethod: "Credit Card",
+      },
+      // More invoices...
+    ];
+
+    // Helper function for status styling
+    function getStatusClass(status) {
+      switch (status) {
+        case "Paid":
+          return "inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800";
+        case "Pending":
+          return "inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800";
+        case "Unpaid":
+          return "inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800";
+        default:
+          return "";
+      }
+    }
+
+    export function TableWithFooter() {
+      return (
+        <Table>
+          <TableCaption>A list of your recent invoices.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Invoice</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Method</TableHead>
+              <TableHead className="text-right">Amount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {invoices.map((invoice) => (
+              <TableRow key={invoice.invoice}>
+                <TableCell className="font-medium">{invoice.invoice}</TableCell>
+                <TableCell>
+                  <span className={getStatusClass(invoice.paymentStatus)}>
+                    {invoice.paymentStatus}
+                  </span>
+                </TableCell>
+                <TableCell>{invoice.paymentMethod}</TableCell>
+                <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={3}>Total</TableCell>
+              <TableCell className="text-right">$1,950.00</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Example: Complex Browser Compatibility Table
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 content-center h-96">
+    <BrowserCompatibilityTable />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { CheckIcon, MonitorIcon, SmartphoneIcon, XIcon } from "lucide-react";
+    import {
+      Table,
+      TableBody,
+      TableCell,
+      TableHead,
+      TableHeader,
+      TableRow,
+    } from "@/components/ui/table";
+
+    const browserFeatures = [
+      {
+        feature: "container-queries",
+        desktop: [
+          { name: "Chrome", supported: true, version: "105" },
+          { name: "Edge", supported: true, version: "105" },
+          // More browsers...
+        ],
+        mobile: [
+          { name: "Chrome Android", supported: true, version: "105" },
+          { name: "Firefox Android", supported: true, version: "110" },
+          // More browsers...
+        ],
+      },
+      // More features...
+    ];
+
+    export function BrowserCompatibilityTable() {
+      return (
+        <Table>
+          <TableHeader>
+            <TableRow className="*:border-border border-y-0 hover:bg-transparent [&>:not(:last-child)]:border-r">
+              <TableCell></TableCell>
+              <TableHead className="border-b text-center" colSpan={5}>
+                <MonitorIcon className="inline-flex" size={16} aria-hidden="true" />
+                <span className="sr-only">Desktop browsers</span>
+              </TableHead>
+              <TableHead className="border-b text-center" colSpan={5}>
+                <SmartphoneIcon className="inline-flex" size={16} aria-hidden="true" />
+                <span className="sr-only">Mobile browsers</span>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableHeader>
+            <TableRow className="*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r">
+              <TableCell></TableCell>
+              {/* Render browser column headers with vertical text */}
+              {browserFeatures[0].desktop.map((browser) => (
+                <TableHead
+                  key={browser.name}
+                  className="h-auto py-3 align-bottom text-foreground"
+                >
+                  <span className="relative left-[calc(50%-.5rem)] block rotate-180 whitespace-nowrap leading-4 [text-orientation:sideways] [writing-mode:vertical-rl]">
+                    {browser.name}
+                  </span>
+                </TableHead>
+              ))}
+              {/* More column headers... */}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {browserFeatures.map((item) => (
+              <TableRow
+                key={item.feature}
+                className="*:border-border [&>:not(:last-child)]:border-r"
+              >
+                <TableHead className="font-medium text-foreground">
+                  {item.feature}
+                </TableHead>
+                {/* Render support cells */}
+                {[...item.desktop, ...item.mobile].map((browser, index) => (
+                  <TableCell
+                    key={`${browser.name}-${index}`}
+                    className="space-y-1 text-center"
+                  >
+                    {browser.supported ? (
+                      <CheckIcon
+                        className="inline-flex stroke-emerald-600"
+                        size={16}
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <XIcon
+                        className="inline-flex stroke-red-600"
+                        size={16}
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span className="sr-only">
+                      {browser.supported ? "Supported" : "Not supported"}
+                    </span>
+                    <div className="text-xs font-medium text-muted-foreground">
+                      {browser.version}
+                    </div>
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
 ---
+
 ## File Structure
 
 <Files>
-  <Folder name="app" defaultOpen>
-    <Folder name="components">
-      <Folder name="ui">
-        <File name="table.tsx" />
-      </Folder>
-      
+  <Folder name="components" defaultOpen>
+    <Folder name="ui" defaultOpen>
+      <File name="table.tsx" />
     </Folder>
+    
   </Folder>
 </Files>
 
 ---
 
-## Prop Types
+## Component API
 
 <TypeTable
   type={{
     Table: {
-      description: "The main table wrapper.",
+      description: "The main table wrapper with overflow handling.",
       type: "React.ForwardRefExoticComponent",
       required: true,
     },
     TableHeader: {
-      description: "The header section of the table.",
+      description: "The header section that contains column titles.",
       type: "React.ForwardRefExoticComponent",
-      required: true,
+      required: false,
     },
     TableBody: {
-      description: "The body section of the table.",
+      description: "The main content section of the table.",
       type: "React.ForwardRefExoticComponent",
       required: true,
     },
     TableFooter: {
-      description: "The footer section of the table.",
+      description: "Optional footer section for summaries or totals.",
       type: "React.ForwardRefExoticComponent",
       required: false,
     },
     TableRow: {
-      description: "Defines a single row in the table.",
+      description: "Defines a single row in the table with hover and selection states.",
       type: "React.ForwardRefExoticComponent",
       required: true,
     },
     TableCell: {
-      description: "Defines a single cell in a table row.",
+      description: "Standard data cell with padding and alignment options.",
       type: "React.ForwardRefExoticComponent",
       required: true,
     },
     TableHead: {
-      description: "Defines the header for a column in the table.",
+      description: "Column header cell with styling for headings.",
       type: "React.ForwardRefExoticComponent",
-      required: true,
+      required: false,
     },
     TableCaption: {
-      description: "Adds a caption for the table.",
+      description: "Optional caption that provides context for the table.",
       type: "React.ForwardRefExoticComponent",
       required: false,
     },
@@ -193,51 +436,279 @@ The `Table` component provides a responsive, accessible, and customizable way to
   <Tab value="CLI">
     Install the `Table` component:
     ```bash
-    npm install your-design-system
+    npx axionjs add table
     ```
   </Tab>
   <Tab value="Manual">
-    ### 1. Install Dependencies
-    Install required dependencies:
-    ```bash
-    npm install @radix-ui/react-tooltip
-    ```
-
-    ### 2. Add the Component
-    Create `components/ui/table.tsx`:
-    ```tsx
-    // Full code from the provided Table component
-    ```
+    <Steps>
+      ### Create Component File
+      
+      Create `components/ui/table.tsx`:
+      ```tsx ts2js
+      import * as React from "react";
+      
+      import { cn } from "@/lib/utils";
+      
+      const Table = React.forwardRef<
+        HTMLTableElement,
+        React.HTMLAttributes<HTMLTableElement>
+      >(({ className, ...props }, ref) => (
+        <div className="relative w-full overflow-auto">
+          <table
+            ref={ref}
+            className={cn("w-full caption-bottom text-sm", className)}
+            {...props}
+          />
+        </div>
+      ));
+      Table.displayName = "Table";
+      
+      const TableHeader = React.forwardRef<
+        HTMLTableSectionElement,
+        React.HTMLAttributes<HTMLTableSectionElement>
+      >(({ className, ...props }, ref) => (
+        <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
+      ));
+      TableHeader.displayName = "TableHeader";
+      
+      const TableBody = React.forwardRef<
+        HTMLTableSectionElement,
+        React.HTMLAttributes<HTMLTableSectionElement>
+      >(({ className, ...props }, ref) => (
+        <tbody
+          ref={ref}
+          className={cn("[&_tr:last-child]:border-0", className)}
+          {...props}
+        />
+      ));
+      TableBody.displayName = "TableBody";
+      
+      const TableFooter = React.forwardRef<
+        HTMLTableSectionElement,
+        React.HTMLAttributes<HTMLTableSectionElement>
+      >(({ className, ...props }, ref) => (
+        <tfoot
+          ref={ref}
+          className={cn(
+            "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
+            className,
+          )}
+          {...props}
+        />
+      ));
+      TableFooter.displayName = "TableFooter";
+      
+      const TableRow = React.forwardRef<
+        HTMLTableRowElement,
+        React.HTMLAttributes<HTMLTableRowElement>
+      >(({ className, ...props }, ref) => (
+        <tr
+          ref={ref}
+          className={cn(
+            "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+            className,
+          )}
+          {...props}
+        />
+      ));
+      TableRow.displayName = "TableRow";
+      
+      const TableHead = React.forwardRef<
+        HTMLTableCellElement,
+        React.ThHTMLAttributes<HTMLTableCellElement>
+      >(({ className, ...props }, ref) => (
+        <th
+          ref={ref}
+          className={cn(
+            "h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+            className,
+          )}
+          {...props}
+        />
+      ));
+      TableHead.displayName = "TableHead";
+      
+      const TableCell = React.forwardRef<
+        HTMLTableCellElement,
+        React.TdHTMLAttributes<HTMLTableCellElement>
+      >(({ className, ...props }, ref) => (
+        <td
+          ref={ref}
+          className={cn(
+            "p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+            className,
+          )}
+          {...props}
+        />
+      ));
+      TableCell.displayName = "TableCell";
+      
+      const TableCaption = React.forwardRef<
+        HTMLTableCaptionElement,
+        React.HTMLAttributes<HTMLTableCaptionElement>
+      >(({ className, ...props }, ref) => (
+        <caption
+          ref={ref}
+          className={cn("mt-4 text-sm text-muted-foreground", className)}
+          {...props}
+        />
+      ));
+      TableCaption.displayName = "TableCaption";
+      
+      export {
+        Table,
+        TableHeader,
+        TableBody,
+        TableFooter,
+        TableHead,
+        TableRow,
+        TableCell,
+        TableCaption,
+      };
+      ```
+    </Steps>
   </Tab>
 </Tabs>
 
 ---
 
-## Features
+## Styling Guidelines
 
-- **Responsive Design**:
-  - Automatically adjusts to fit its container.
-- **Customizable**:
-  - Supports custom classes, headers, footers, and cell alignment.
-- **Supports Images**:
-  - Integrates seamlessly with images, making it ideal for profile or item lists.
-- **Hover States**:
-  - Rows can include hover effects for better UX.
+<Callout>
+  The Table component uses semantic HTML elements with sensible defaults, but is designed to be highly customizable via Tailwind classes.
+</Callout>
+
+### Basic Style Customizations
+
+- **Table Width**: The table defaults to 100% width but can be constrained with custom classes.
+- **Cell Padding**: Default padding (`p-2`) can be adjusted for density needs.
+- **Row Highlighting**: Rows have hover effects by default which can be disabled with `hover:bg-transparent`.
+- **Borders**: Row borders are included by default but can be customized.
+
+### Advanced Styling Techniques
+
+1. **Custom Row Borders**:
+   ```tsx
+   <TableRow className="*:border-border [&>:not(:last-child)]:border-r">
+   ```
+
+2. **Vertical Text for Headers**:
+   ```tsx
+   <TableHead className="h-auto py-3">
+     <span className="block rotate-180 [writing-mode:vertical-rl]">
+       Column Name
+     </span>
+   </TableHead>
+   ```
+
+3. **Status Indicators**:
+   ```tsx
+   <TableCell>
+     <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+       Active
+     </span>
+   </TableCell>
+   ```
+
+4. **Fixed Column Width**:
+   ```tsx
+   <TableHead className="w-[200px]">Fixed Width Column</TableHead>
+   ```
+
+---
+
+## Usage Patterns
+
+### Standard Tables
+
+For most cases, use a standard table structure with headers:
+
+```tsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Column 1</TableHead>
+      <TableHead>Column 2</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Data 1</TableCell>
+      <TableCell>Data 2</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+### Tables with Footers
+
+Add a footer for summary rows or totals:
+
+```tsx
+<Table>
+  {/* Header and body */}
+  <TableFooter>
+    <TableRow>
+      <TableCell>Total</TableCell>
+      <TableCell>$1,000.00</TableCell>
+    </TableRow>
+  </TableFooter>
+</Table>
+```
+
+### Responsive Tables
+
+For tables that might overflow on mobile, use the container's automatic overflow handling:
+
+```tsx
+<div className="w-full overflow-x-auto">
+  <Table>
+    {/* Table content */}
+  </Table>
+</div>
+```
 
 ---
 
 ## Accessibility
 
-- **Keyboard Navigation**:
-  - Fully keyboard-navigable for headers, rows, and cells.
-- **ARIA Support**:
-  - Includes proper semantic tags like `<table>`, `<thead>`, `<tbody>`, `<th>`, and `<td>` for assistive technologies.
-- **Caption Support**:
-  - Add captions for better accessibility and context.
+The Table component follows best practices for accessibility:
+
+- **Semantic Structure**: Uses proper HTML table elements (`<table>`, `<thead>`, `<tbody>`, etc.).
+- **Keyboard Navigation**: The table is navigable via keyboard, with cells accessible in a logical order.
+- **Captions**: The `<TableCaption>` component allows adding descriptive text for screen readers.
+- **Row Selection**: When implementing selectable rows, use proper ARIA attributes.
+- **Responsive Design**: The container's overflow handling ensures content remains accessible on small screens.
+
+<Callout type="warning">
+  When using complex tables (like the browser compatibility example), ensure proper ARIA roles and labels are provided, especially for rotated text or icon-only content.
+</Callout>
 
 ---
 
+## Best Practices
+
+### Performance
+
+- For large datasets, consider pagination or virtualization to improve performance.
+- Avoid deeply nested content within table cells to maintain rendering efficiency.
+
+### Responsive Design
+
+- Consider alternative layouts for mobile displays when tables have many columns.
+- Use `className="hidden md:table-cell"` to hide less important columns on mobile.
+- Consider collapsible rows or card-based layouts for very complex tables on mobile.
+
+### User Experience
+
+- Use consistent column alignment (e.g., right-align numerical data).
+- Add hover effects for interactive rows, but disable them for header rows.
+- Use appropriate spacing and typography to maintain readability.
+
+---
 
 ## Conclusion
 
-The `Table` component is a powerful and customizable way to display structured data in your application. With responsive design, accessibility features, and full customization, it's suitable for a wide range of use cases.
+The `Table` component provides a flexible foundation for displaying tabular data in your application. With its modular design, comprehensive styling options, and accessibility features, it's suitable for a wide range of use cases — from simple data tables to complex interactive displays.
+
+Use the examples provided as a starting point, and customize the component to meet your specific design and functional requirements.

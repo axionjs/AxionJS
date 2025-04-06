@@ -17,7 +17,7 @@ export function SimpleTogglePreview() {
   const [isOn, toggle] = useToggle(false);
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Simple Toggle</CardTitle>
       </CardHeader>
@@ -46,7 +46,7 @@ export function MultiTogglePreview() {
   const [isFavorite, toggleFavorite] = useToggle(false);
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>Multiple Toggles</CardTitle>
       </CardHeader>
@@ -104,7 +104,7 @@ export function MultiTogglePreview() {
 
 export function ToggleExamplesPreview() {
   return (
-    <div className="grid gap-6 md:grid-cols-2">
+    <div className="not-prose grid gap-6 md:grid-cols-2">
       <SimpleTogglePreview />
       <MultiTogglePreview />
     </div>
@@ -142,7 +142,7 @@ export function AccordionTogglePreview() {
   };
 
   return (
-    <Card>
+    <Card className="not-prose">
       <CardHeader>
         <CardTitle>FAQ</CardTitle>
       </CardHeader>

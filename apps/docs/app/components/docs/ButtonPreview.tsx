@@ -11,7 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Input } from "@/registry/new-york/ui/input";
-import  ColorPicker  from "@/components/ui/color-picker";
+import { ColorPicker } from "@/registry/new-york/ui/color-picker";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/registry/new-york/ui/switch";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
@@ -221,11 +221,15 @@ export function CustomizeButtonPreview() {
         {/* BG Color */}
         <div className="space-y-2">
           <Label className="block font-medium">BG Color</Label>
-          <ColorPicker
-            value={bgColor}
-            onChange={setBgColor}
-            showColorValueInInput={false}
-          />
+          <div className="flex items-center gap-2">
+            <ColorPicker value={bgColor} onChange={setBgColor} />
+            <Input
+              value={bgColor}
+              onChange={(e) => setBgColor(e.target.value)}
+              placeholder="#RRGGBB"
+              className="w-28"
+            />
+          </div>
           <p className="text-xs text-muted-foreground">
             Leave blank to use variant color
           </p>
@@ -234,39 +238,51 @@ export function CustomizeButtonPreview() {
         {/* Text Color */}
         <div className="space-y-2">
           <Label className="block font-medium">Text Color</Label>
-          <ColorPicker
-            value={textColor}
-            onChange={setTextColor}
-            showColorValueInInput={false}
-          />
+          <div className="flex items-center gap-2">
+            <ColorPicker value={textColor} onChange={setTextColor} />
+            <Input
+              value={textColor}
+              onChange={(e) => setTextColor(e.target.value)}
+              placeholder="#RRGGBB"
+              className="w-28"
+            />
+          </div>
           <p className="text-xs text-muted-foreground">
-            Leave blank for variant’s text
+            Leave blank for variant's text
           </p>
         </div>
 
         {/* Hover BG */}
         <div className="space-y-2">
           <Label className="block font-medium">Hover BG Color</Label>
-          <ColorPicker
-            value={hoverBgColor}
-            onChange={setHoverBgColor}
-            showColorValueInInput={false}
-          />
+          <div className="flex items-center gap-2">
+            <ColorPicker value={hoverBgColor} onChange={setHoverBgColor} />
+            <Input
+              value={hoverBgColor}
+              onChange={(e) => setHoverBgColor(e.target.value)}
+              placeholder="#RRGGBB"
+              className="w-28"
+            />
+          </div>
           <p className="text-xs text-muted-foreground">
-            Leave blank for variant’s hover
+            Leave blank for variant's hover
           </p>
         </div>
 
         {/* Hover Text */}
         <div className="space-y-2">
           <Label className="block font-medium">Hover Text Color</Label>
-          <ColorPicker
-            value={hoverTextColor}
-            onChange={setHoverTextColor}
-            showColorValueInInput={false}
-          />
+          <div className="flex items-center gap-2">
+            <ColorPicker value={hoverTextColor} onChange={setHoverTextColor} />
+            <Input
+              value={hoverTextColor}
+              onChange={(e) => setHoverTextColor(e.target.value)}
+              placeholder="#RRGGBB"
+              className="w-28"
+            />
+          </div>
           <p className="text-xs text-muted-foreground">
-            Leave blank for variant’s hover text
+            Leave blank for variant's hover text
           </p>
         </div>
 
@@ -303,11 +319,15 @@ export function CustomizeButtonPreview() {
         {/* Border Color */}
         <div className="space-y-2">
           <Label className="block font-medium">Border Color</Label>
-          <ColorPicker
-            value={borderColor}
-            onChange={setBorderColor}
-            showColorValueInInput={false}
-          />
+          <div className="flex items-center gap-2">
+            <ColorPicker value={borderColor} onChange={setBorderColor} />
+            <Input
+              value={borderColor}
+              onChange={(e) => setBorderColor(e.target.value)}
+              placeholder="#RRGGBB"
+              className="w-28"
+            />
+          </div>
           <p className="text-xs text-muted-foreground">
             Only applies if size &gt; 0
           </p>

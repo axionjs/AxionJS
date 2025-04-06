@@ -7,7 +7,7 @@ export default function SwitchPreview() {
   const [isChecked, setIsChecked] = useState(false);
 
   return (
-    <div className="space-y-6 max-w-md mx-auto">
+    <div className="space-y-6 max-w-md mx-auto not-prose">
       {/* Example 3: Custom Styling */}
       <div>
         <h3 className="text-lg font-medium">Normal Switch</h3>

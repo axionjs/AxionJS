@@ -102,7 +102,7 @@ export function UsePollingPreview() {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Data Polling</span>
@@ -348,7 +348,7 @@ export function CryptoTrackerPreview() {
   };
 
   return (
-    <Card>
+    <Card className=" not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Cryptocurrency Tracker</span>
@@ -600,7 +600,7 @@ export function ServerStatusPreview() {
   });
 
   return (
-    <Card>
+    <Card className=" not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Server Monitoring Dashboard</span>

@@ -4,7 +4,7 @@ import { Separator } from "@/registry/new-york/ui/separator";
 
 export function SeparatorDemo() {
   return (
-    <div>
+    <div className="not-prose">
       <div className="space-y-1">
         <h4 className="text-sm font-medium leading-none">Radix Primitives</h4>
         <p className="text-sm text-muted-foreground">
@@ -26,7 +26,7 @@ export function SeparatorDemo() {
 // Default horizontal separator
 export function HorizontalSeparatorPreview() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <Separator />
       <Separator dashed />
       <Separator label="Section Divider" />

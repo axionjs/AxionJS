@@ -12,7 +12,7 @@ export function SimpleCollapsiblePreview() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <div className="max-w-md min-w-md p-4">
+    <div className="max-w-md min-w-md p-4 not-prose">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <div className="flex items-center justify-between">
           <h4 className="text-lg font-semibold">Collapsible Section</h4>

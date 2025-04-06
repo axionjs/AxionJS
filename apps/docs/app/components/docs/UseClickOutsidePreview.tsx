@@ -26,7 +26,7 @@ export function ClickOutsidePreview() {
   const ref = useClickOutside<HTMLDivElement>(handleClickOutside);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="flex justify-center">
         <Button onClick={() => setIsOpen(true)} disabled={isOpen}>
           Open Popup
@@ -88,7 +88,7 @@ export function DropdownPreview() {
   ];
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center not-prose">
       <Button
         variant="outline"
         onClick={() => setIsOpen(!isOpen)}
@@ -136,7 +136,7 @@ export function MultipleAreasPreview() {
   });
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-4 not-prose">
       <Card
         ref={area1Ref}
         className={`cursor-pointer transition ${

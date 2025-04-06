@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/registry/new-york/ui/radio-group";
 
 export function SimpleRadioGroupPreview() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <h3 className="text-sm font-medium">Simple Radio Group</h3>
       <RadioGroup defaultValue="option-1">
         <div className="flex items-center space-x-2">
@@ -33,7 +33,7 @@ export function SimpleRadioGroupPreview() {
 
 export function ColoredRadioGroupPreview() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <h3 className="text-sm font-medium">Colored Radio Group</h3>
       <RadioGroup defaultValue="blue">
         <div className="flex items-center space-x-2">
@@ -76,7 +76,7 @@ export function ColoredRadioGroupPreview() {
 
 export function DisabledRadioGroupPreview() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <h3 className="text-sm font-medium">Disabled Radio Group</h3>
       <RadioGroup defaultValue="disabled" disabled>
         <div className="flex items-center space-x-2">

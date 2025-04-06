@@ -88,7 +88,7 @@ export function UseSseListenerPreview() {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -268,7 +268,7 @@ export function RealTimeNotificationPreview() {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full not-prose">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -364,7 +364,7 @@ export function RealTimeNotificationPreview() {
 
 function EventCard({ event }: { event: any }) {
   return (
-    <div className="rounded-md border p-3 text-sm">
+    <div className="rounded-md not-prose border p-3 text-sm">
       <div className="flex justify-between items-center mb-2">
         <Badge variant="outline">{event.type}</Badge>
         <span className="text-xs text-muted-foreground">

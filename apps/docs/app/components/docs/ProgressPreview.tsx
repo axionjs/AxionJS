@@ -14,7 +14,7 @@ export function ProgressWithLabelPreview() {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <h3 className="text-sm font-medium">Progress with Label</h3>
       <div className="flex items-center space-x-2">
         <Progress value={progress} />
@@ -26,7 +26,7 @@ export function ProgressWithLabelPreview() {
 
 export function MultiProgressPreview() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <h3 className="text-sm font-medium">Multi-Progress</h3>
       <Progress value={30} />
       <Progress value={50} />

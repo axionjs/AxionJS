@@ -10,22 +10,25 @@ import { TypeTable } from "fumadocs-ui/components/type-table";
 import {
   AlwaysSkeletonPreview,
   TimedSkeletonPreview,
+  CustomizeSkeletonPreview,
 } from "@/app/components/docs/SkeletonPreview";
 
 ## Introduction
 
-The `Skeleton` component is a versatile loading placeholder that provides a better user experience during data fetching or content loading. It supports custom shapes, sizes, and animations.
+The `Skeleton` component is a versatile loading placeholder that provides a better user experience during data fetching or content loading. It supports custom shapes, sizes, animations, and can be combined in different ways to match your actual content's layout.
 
 ---
 
-## Example: Always Show Skeleton
+## Basic Examples
+
+### Always Show Skeleton
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="mx-auto h-72 pb-8 content-center items-center">
     <AlwaysSkeletonPreview />
   </Tab>
   <Tab value="Code">
-    ```tsx
+    ```tsx ts2js
     import { Skeleton } from "@/components/ui/skeleton";
 
     export function AlwaysSkeletonPreview() {
@@ -52,16 +55,16 @@ The `Skeleton` component is a versatile loading placeholder that provides a bett
   </Tab>
 </Tabs>
 
----
+<CustomizeSkeletonPreview />
 
-## Example: Timed Skeleton with Content
+### Timed Skeleton with Content
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="mx-auto h-72 pb-8 content-center items-center">
     <TimedSkeletonPreview />
   </Tab>
   <Tab value="Code">
-    ```tsx
+    ```tsx ts2js
     import React, { useState, useEffect } from "react";
     import { Skeleton } from "@/components/ui/skeleton";
 
@@ -77,7 +80,9 @@ The `Skeleton` component is a versatile loading placeholder that provides a bett
         <div className="flex items-center space-x-4">
           {loaded ? (
             <>
-              <div className="h-12 w-12 rounded-full bg-gray-200"></div>
+              <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
+                🧑
+              </div>
               <div>
                 <p className="text-lg font-semibold">John Doe</p>
                 <p className="text-sm text-muted-foreground">
@@ -103,16 +108,54 @@ The `Skeleton` component is a versatile loading placeholder that provides a bett
 
 ---
 
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the Skeleton component using:
+    ```bash
+    npx axionjs add skeleton
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Create the Component
+
+    Create a `skeleton.tsx` file in your `components/ui` directory:
+    ```tsx ts2js
+    import { cn } from "@/lib/utils";
+
+    function Skeleton({
+      className,
+      ...props
+    }: React.HTMLAttributes<HTMLDivElement>) {
+      return (
+        <div
+          className={cn("animate-pulse rounded-md bg-primary/10", className)}
+          {...props}
+        />
+      );
+    }
+
+    export { Skeleton };
+    ```
+
+    ### 2. That's it!
+    
+    The Skeleton component is intentionally minimal, allowing for maximum flexibility through className props.
+  </Tab>
+</Tabs>
+
+---
+
 ## File Structure
 
 <Files>
-  <Folder name="app" defaultOpen>
-    <Folder name="components">
-      <Folder name="ui">
-        <File name="skeleton.tsx" />
-      </Folder>
+  <Folder name="components" defaultOpen>
+    <Folder name="ui">
+      <File name="skeleton.tsx" />
     </Folder>
   </Folder>
+  
 </Files>
 
 ---
@@ -136,26 +179,209 @@ The `Skeleton` component is a versatile loading placeholder that provides a bett
 
 ---
 
-## Features
+## Common Use Cases
 
-- **Customizable Shapes**:
-  - Create skeletons of any size, shape, or style using utility classes.
-- **Seamless Loading**:
-  - Skeletons provide a seamless loading experience, reducing user frustration.
-- **Accessibility**:
-  - Skeletons are purely decorative and don't interfere with assistive technologies.
+### Card Layout
+
+Create skeleton placeholders for a card component:
+
+```tsx ts2js
+function CardSkeleton() {
+  return (
+    <div className="rounded-lg border p-4 space-y-4">
+      {/* Image placeholder */}
+      <Skeleton className="h-48 w-full rounded-md" />
+      
+      {/* Title placeholder */}
+      <Skeleton className="h-6 w-3/4" />
+      
+      {/* Content placeholders */}
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+      
+      {/* Button placeholder */}
+      <Skeleton className="h-10 w-28" />
+    </div>
+  );
+}
+```
+
+### Table Row Loading
+
+Create skeleton placeholders for table rows:
+
+```tsx ts2js
+function TableRowsSkeleton({ rows = 5 }) {
+  return (
+    <>
+      {Array(rows).fill(0).map((_, index) => (
+        <tr key={index} className="border-b">
+          <td className="p-3"><Skeleton className="h-4 w-8" /></td>
+          <td className="p-3"><Skeleton className="h-4 w-32" /></td>
+          <td className="p-3"><Skeleton className="h-4 w-24" /></td>
+          <td className="p-3"><Skeleton className="h-4 w-16" /></td>
+          <td className="p-3"><Skeleton className="h-4 w-20" /></td>
+        </tr>
+      ))}
+    </>
+  );
+}
+```
+
+### Profile Information
+
+Create a skeleton for user profile information:
+
+```tsx ts2js
+function ProfileSkeleton() {
+  return (
+    <div className="flex items-center space-x-4">
+      {/* Avatar */}
+      <Skeleton className="h-16 w-16 rounded-full" />
+      
+      {/* User details */}
+      <div className="space-y-2">
+        <Skeleton className="h-5 w-32" />
+        <Skeleton className="h-4 w-24" />
+      </div>
+    </div>
+  );
+}
+```
+
+### Custom Colored Skeletons
+
+Customize the skeleton color to match your design:
+
+```tsx ts2js
+<Skeleton 
+  className="h-12 w-full bg-blue-100" 
+/>
+
+<Skeleton 
+  className="h-12 w-full bg-opacity-20 bg-green-500" 
+/>
+
+<Skeleton 
+  className="h-12 w-full"
+  style={{ backgroundColor: 'rgba(234, 88, 12, 0.1)' }}
+/>
+```
+
+---
+
+## Customization
+
+The Skeleton component is designed to be easily customizable:
+
+### Styling with Tailwind
+
+```tsx ts2js
+// Square
+<Skeleton className="h-20 w-20" />
+
+// Circle/Avatar
+<Skeleton className="h-12 w-12 rounded-full" />
+
+// Rounded Rectangle
+<Skeleton className="h-8 w-32 rounded-md" />
+
+// Variable Width
+<Skeleton className="h-4 w-2/3" />
+
+// With Shadow
+<Skeleton className="h-16 w-full rounded-md shadow-md" />
+```
+
+### Custom Animation
+
+You can override the default pulse animation:
+
+```tsx ts2js
+// No animation
+<Skeleton className="h-10 w-full animate-none" />
+
+// Custom animation using CSS or Tailwind
+<Skeleton className="h-10 w-full animate-[shimmer_1s_ease-in-out_infinite]" />
+```
+
+### Conditional Rendering with Loading State
+
+Combining with a loading state in components:
+
+```tsx ts2js
+function ProductCard({ product, isLoading }) {
+  return isLoading ? (
+    <div className="rounded-md border p-4 space-y-3">
+      <Skeleton className="h-40 w-full rounded" />
+      <Skeleton className="h-6 w-3/4" />
+      <Skeleton className="h-4 w-1/2" />
+    </div>
+  ) : (
+    <div className="rounded-md border p-4 space-y-3">
+      <img src={product.image} alt={product.name} className="h-40 w-full object-cover rounded" />
+      <h3 className="text-lg font-semibold">{product.name}</h3>
+      <p className="text-muted-foreground">${product.price}</p>
+    </div>
+  );
+}
+```
 
 ---
 
 ## Accessibility
 
-- **Screen Reader Behavior**:
-  - Skeletons are not meant to convey semantic meaning and are purely decorative.
-- **ARIA Attributes**:
-  - Properly exclude skeletons from screen reader focus.
+When using skeletons, keep these accessibility considerations in mind:
+
+- **Purpose**: Skeletons should provide visual cues about content structure during loading
+- **ARIA**: For screen reader users, consider adding an aria-live region with loading status
+- **Timing**: If the loading time is predictable, consider showing a timer or progress bar
+
+### Example with ARIA Support
+
+```tsx ts2js
+function AccessibleSkeleton({ isLoading, children }) {
+  return (
+    <div aria-busy={isLoading}>
+      {isLoading ? (
+        <div aria-hidden="true">
+          <Skeleton className="h-40 w-full rounded-md" />
+          <div className="space-y-2 mt-4">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-3/4" />
+          </div>
+        </div>
+      ) : (
+        children
+      )}
+      {isLoading && (
+        <div className="sr-only" aria-live="polite">
+          Content is loading, please wait.
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+---
+
+## Best Practices
+
+For the most effective skeleton loading experience:
+
+1. **Match Content Structure**: Design skeletons to match the actual content's layout and proportions
+2. **Optimize Performance**: Skeletons should be lightweight and not add rendering overhead
+3. **Consistent Design**: Maintain consistent styling between skeletons and actual content
+4. **Sensible Timing**: Only show skeletons for loads that take longer than ~300ms
+5. **Avoid Layout Shifts**: Ensure skeleton dimensions closely match the expected content dimensions
 
 ---
 
 ## Conclusion
 
-The `Skeleton` component is an excellent way to provide a visual cue for loading content, improving user experience and engagement during data fetching.
+The `Skeleton` component is a lightweight yet powerful tool for creating loading state placeholders in your UI. With its simple implementation and high customizability, you can create effective loading experiences that reduce perceived wait times and improve user satisfaction.

@@ -12,7 +12,7 @@ import {
 
 export function SelectScrollablePreview() {
   return (
-    <Select>
+    <Select className="not-prose">
       <SelectTrigger className="w-[280px]">
         <SelectValue placeholder="Select a timezone" />
       </SelectTrigger>

@@ -16,9 +16,9 @@ import {
 
 export function ContextMenuPreview() {
   return (
-    <ContextMenu>
+    <ContextMenu className="not-prose">
       <ContextMenuTrigger>
-        <Card className="w-96 text-center">
+        <Card className="w-96 text-center ">
           <CardContent>
             <p className="text-muted-foreground">
               Right-click anywhere on this card

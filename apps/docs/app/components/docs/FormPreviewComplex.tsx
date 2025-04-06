@@ -63,7 +63,7 @@ const FormPreviewComplex = () => {
     <Form {...formMethods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 p-4 max-w-lg min-w-lg"
+        className="space-y-6 p-4 max-w-lg min-w-lg not-prose"
         aria-labelledby="Complex-form"
       >
         {/* Name Field */}

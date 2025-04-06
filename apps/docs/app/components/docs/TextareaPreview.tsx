@@ -14,7 +14,7 @@ export function DefaultTextareaPreview() {
 
 export function TextareaWithLabelPreview() {
   return (
-    <div className="max-w-md mx-auto space-y-4">
+    <div className="max-w-md mx-auto space-y-4 not-prose">
       <h3 className="text-lg font-medium">
         Textarea with Label and Description
       </h3>

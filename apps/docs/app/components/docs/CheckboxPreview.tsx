@@ -19,7 +19,7 @@ import {
 // Simple Checkbox Preview
 export function SimpleCheckboxPreview() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="flex items-center space-x-3">
         <Checkbox id="checkbox-1" />
         <Label htmlFor="checkbox-1">Default Checkbox</Label>
@@ -61,7 +61,7 @@ export function FormCheckboxPreview() {
     <Form
       {...formMethods}
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6 max-w-md"
+      className="space-y-6 max-w-md not-prose"
       aria-labelledby="form-with-checkbox"
     >
       {/* Preferences */}

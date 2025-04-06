@@ -51,7 +51,7 @@ export function DebouncedSearchPreview() {
   }, [debouncedValue, searchItems]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="relative">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
@@ -106,7 +106,7 @@ export function BasicDebouncePreview() {
   const debouncedValue = useDebounce(value, 500);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 not-prose">
       <div className="space-y-2">
         <Input
           placeholder="Type something..."
