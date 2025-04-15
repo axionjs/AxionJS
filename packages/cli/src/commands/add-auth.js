@@ -10,6 +10,7 @@ import { z } from "zod";
 import { confirm } from "@clack/prompts";
 import { runInit } from "./init.js";
 import { createProject } from "../utils/create-project.js";
+import { getProjectInfo } from "../utils/get-project-info.js";
 
 export const addOptionsSchema = z.object({
   components: z.array(z.string()).optional(),
@@ -53,6 +54,17 @@ export const addAuthCommand = new Command()
   .option("-s, --silent", "mute output.", false)
   .action(async (components, opts) => {
     try {
+      const cwd = path.resolve(opts.cwd);
+      const projectInfo = await getProjectInfo(cwd);
+
+      // Check if the framework is Next.js App Router
+      if (projectInfo.framework.name !== "next-app") {
+        logger.error(
+          "❌ The `add auth` command is only available for Next.js App Router projects."
+        );
+        process.exit(1);
+      }
+
       const options = addAuthOptionsSchema.parse({
         components:
           components.length > 0 ? components : DEFAULT_AUTH_COMPONENTS, // Use default components if none are provided
