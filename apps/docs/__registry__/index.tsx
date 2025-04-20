@@ -24,7 +24,7 @@ export const Index: Record<string, any> = {
       name: "accessibility-tool",
       description: "",
       type: "registry:ui",
-      registryDependencies: ["dialog","switch","avatar"],
+      registryDependencies: ["dialog","switch","avatar","tabs","slider"],
       files: [{
         path: "registry/new-york/ui/AccessibilityTool.tsx",
         type: "registry:ui",
@@ -34,11 +34,19 @@ export const Index: Record<string, any> = {
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/new-york/ui/AccessibilityTriggerAvatar.tsx",
+        path: "registry/new-york/ui/AccessibilityTrigger.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/new-york/ui/AccessibilitySlider.tsx",
         type: "registry:ui",
         target: ""
       },{
         path: "registry/new-york/lib/accessibility-store.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/lib/screen-reader-service.ts",
         type: "registry:lib",
         target: ""
       }],
@@ -1811,6 +1819,68 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
+    "login-01": {
+      name: "login-01",
+      description: "A simple login page.",
+      type: "registry:block",
+      registryDependencies: ["button","card","input","form"],
+      files: [{
+        path: "registry/new-york/blocks/login-01/page.tsx",
+        type: "registry:page",
+        target: "app/login/page.tsx"
+      },{
+        path: "registry/new-york/blocks/login-01/components/login-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/blocks/login-01/components/card-wrapper.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/blocks/login-01/components/social.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: ["authentication","login"],
+      component: React.lazy(() => import("@/registry/new-york/blocks/login-01/page.tsx")),
+      source: "__registry__/new-york/blocks/login-01/page.tsx",
+      meta: undefined,
+    },
+    "login-02": {
+      name: "login-02",
+      description: "A two column login page with a cover image.",
+      type: "registry:block",
+      registryDependencies: ["button","card","input","form"],
+      files: [{
+        path: "registry/new-york/blocks/login-02/page.tsx",
+        type: "registry:page",
+        target: "app/login/page.tsx"
+      },{
+        path: "registry/new-york/blocks/login-02/components/login-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/blocks/login-02/components/card-wrapper.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/blocks/login-02/components/social.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/blocks/login-02/images/placeholder.svg",
+        type: "registry:file",
+        target: "public/placeholder.svg"
+      },{
+        path: "registry/new-york/blocks/login-02/images/login-logo.svg",
+        type: "registry:file",
+        target: "public/login-logo.svg"
+      }],
+      categories: ["authentication","login"],
+      component: React.lazy(() => import("@/registry/new-york/blocks/login-02/page.tsx")),
+      source: "__registry__/new-york/blocks/login-02/page.tsx",
+      meta: undefined,
+    },
   },  "default": {
     "accordion": {
       name: "accordion",
@@ -1831,7 +1901,7 @@ export const Index: Record<string, any> = {
       name: "accessibility-tool",
       description: "",
       type: "registry:ui",
-      registryDependencies: ["dialog","switch","avatar"],
+      registryDependencies: ["dialog","switch","avatar","tabs","slider"],
       files: [{
         path: "registry/default/ui/AccessibilityTool.tsx",
         type: "registry:ui",
@@ -1841,11 +1911,19 @@ export const Index: Record<string, any> = {
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/default/ui/AccessibilityTriggerAvatar.tsx",
+        path: "registry/default/ui/AccessibilityTrigger.tsx",
+        type: "registry:ui",
+        target: ""
+      },{
+        path: "registry/default/ui/AccessibilitySlider.tsx",
         type: "registry:ui",
         target: ""
       },{
         path: "registry/default/lib/accessibility-store.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/lib/screen-reader-service.ts",
         type: "registry:lib",
         target: ""
       }],
@@ -3616,6 +3694,68 @@ export const Index: Record<string, any> = {
       categories: undefined,
       component: React.lazy(() => import("@/registry/default/emails/two-factor-email.tsx")),
       source: "",
+      meta: undefined,
+    },
+    "login-01": {
+      name: "login-01",
+      description: "A simple login page.",
+      type: "registry:block",
+      registryDependencies: ["button","card","input","form"],
+      files: [{
+        path: "registry/default/blocks/login-01/page.tsx",
+        type: "registry:page",
+        target: "app/login/page.tsx"
+      },{
+        path: "registry/default/blocks/login-01/components/login-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/blocks/login-01/components/card-wrapper.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/blocks/login-01/components/social.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: ["authentication","login"],
+      component: React.lazy(() => import("@/registry/default/blocks/login-01/page.tsx")),
+      source: "__registry__/default/blocks/login-01/page.tsx",
+      meta: undefined,
+    },
+    "login-02": {
+      name: "login-02",
+      description: "A two column login page with a cover image.",
+      type: "registry:block",
+      registryDependencies: ["button","card","input","form"],
+      files: [{
+        path: "registry/default/blocks/login-02/page.tsx",
+        type: "registry:page",
+        target: "app/login/page.tsx"
+      },{
+        path: "registry/default/blocks/login-02/components/login-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/blocks/login-02/components/card-wrapper.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/blocks/login-02/components/social.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/blocks/login-02/images/placeholder.svg",
+        type: "registry:file",
+        target: "public/placeholder.svg"
+      },{
+        path: "registry/default/blocks/login-02/images/login-logo.svg",
+        type: "registry:file",
+        target: "public/login-logo.svg"
+      }],
+      categories: ["authentication","login"],
+      component: React.lazy(() => import("@/registry/default/blocks/login-02/page.tsx")),
+      source: "__registry__/default/blocks/login-02/page.tsx",
       meta: undefined,
     },
   },

@@ -3,10 +3,11 @@ import { lib } from "@/registry/registry-lib";
 import { themes } from "@/registry/registry-themes";
 import { ui } from "@/registry/registry-ui";
 import { authRegistry } from "@/registry/registry-auth";
-import { hooks } from "./registry-hooks";
+import { hooks } from "@/registry/registry-hooks";
+import { blocks } from "@/registry/registry-blocks";
 
 export const registry = {
   name: "axionjs",
   homepage: "https://www.axionjs.com",
-  items: [...ui, ...lib, ...themes, ...hooks, ...authRegistry],
+  items: [...ui, ...lib, ...themes, ...hooks, ...authRegistry, ...blocks],
 } satisfies Registry;
