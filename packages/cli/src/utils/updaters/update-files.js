@@ -54,14 +54,21 @@ export async function updateFiles(files, config, options) {
       continue;
     }
 
-    let targetDir = getRegistryItemFileTargetPath(file, config);
-    const fileName = basename(file.path);
-    let filePath = path.join(targetDir, fileName);
+    let filePath = resolveFilePath(file, config, {
+      isSrcDir: projectInfo?.isSrcDir,
+      framework: projectInfo?.framework.name,
+      commonRoot: findCommonRoot(
+        files.map((f) => f.path),
+        file.path
+      ),
+    });
 
-    if (file.target) {
-      filePath = resolveTargetDir(projectInfo, config, file.target);
-      targetDir = path.dirname(filePath);
+    if (!filePath) {
+      continue;
     }
+
+    const fileName = basename(file.path);
+    const targetDir = path.dirname(filePath);
 
     if (!config.tsx) {
       filePath = filePath.replace(/\.tsx?$/, (match) =>
@@ -171,4 +178,108 @@ export async function updateFiles(files, config, options) {
   if (!options.silent) {
     logger.break();
   }
+}
+export function resolvePageTarget(target, framework) {
+  if (!framework) {
+    return "";
+  }
+
+  if (framework === "next-app") {
+    return target;
+  }
+
+  if (framework === "next-pages") {
+    let result = target.replace(/^app\//, "pages/");
+    result = result.replace(/\/page(\.[jt]sx?)$/, "$1");
+
+    return result;
+  }
+
+  return "";
+}
+
+export function resolveNestedFilePath(filePath, targetDir) {
+  // Normalize paths by removing leading/trailing slashes
+  const normalizedFilePath = filePath.replace(/^\/|\/$/g, "");
+  const normalizedTargetDir = targetDir.replace(/^\/|\/$/g, "");
+
+  // Split paths into segments
+  const fileSegments = normalizedFilePath.split("/");
+  const targetSegments = normalizedTargetDir.split("/");
+
+  // Find the last matching segment from targetDir in filePath
+  const lastTargetSegment = targetSegments[targetSegments.length - 1];
+  const commonDirIndex = fileSegments.findIndex(
+    (segment) => segment === lastTargetSegment
+  );
+
+  if (commonDirIndex === -1) {
+    // Return just the filename if no common directory is found
+    return fileSegments[fileSegments.length - 1];
+  }
+
+  // Return everything after the common directory
+  return fileSegments.slice(commonDirIndex + 1).join("/");
+}
+
+export function findCommonRoot(paths, needle) {
+  // Remove leading slashes for consistent handling
+  const normalizedPaths = paths.map((p) => p.replace(/^\//, ""));
+  const normalizedNeedle = needle.replace(/^\//, "");
+
+  // Get the directory path of the needle by removing the file name
+  const needleDir = normalizedNeedle.split("/").slice(0, -1).join("/");
+
+  // If needle is at root level, return empty string
+  if (!needleDir) {
+    return "";
+  }
+
+  // Split the needle directory into segments
+  const needleSegments = needleDir.split("/");
+
+  // Start from the full path and work backwards
+  for (let i = needleSegments.length; i > 0; i--) {
+    const testPath = needleSegments.slice(0, i).join("/");
+    // Check if this is a common root by verifying if any other paths start with it
+    const hasRelatedPaths = normalizedPaths.some(
+      (path) => path !== normalizedNeedle && path.startsWith(testPath + "/")
+    );
+    if (hasRelatedPaths) {
+      return "/" + testPath; // Add leading slash back for the result
+    }
+  }
+
+  // If no common root found with other files, return the parent directory of the needle
+  return "/" + needleDir; // Add leading slash back for the result
+}
+export function resolveFilePath(file, config, options) {
+  if (file.target) {
+    if (file.target.startsWith("~/")) {
+      return path.join(config.resolvedPaths.cwd, file.target.replace("~/", ""));
+    }
+
+    let target = file.target;
+
+    // Special handling for public directory - should always be in root
+    if (target.startsWith("public/")) {
+      return path.join(config.resolvedPaths.cwd, target);
+    }
+
+    if (file.type === "registry:page") {
+      target = resolvePageTarget(target, options.framework);
+      if (!target) {
+        return "";
+      }
+    }
+
+    return options.isSrcDir
+      ? path.join(config.resolvedPaths.cwd, "src", target.replace("src/", ""))
+      : path.join(config.resolvedPaths.cwd, target.replace("src/", ""));
+  }
+
+  const targetDir = getRegistryItemFileTargetPath(file, config);
+
+  const relativePath = resolveNestedFilePath(file.path, targetDir);
+  return path.join(targetDir, relativePath);
 }
