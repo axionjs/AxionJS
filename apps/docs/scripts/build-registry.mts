@@ -780,7 +780,6 @@ export const Icons = {
 
 async function buildAuthRegistry(authRegistry: Registry) {
   const authTargetPath = path.join(REGISTRY_PATH, "auth");
-  console.log("📁 Building auth registry JSON files...");
 
   // Clean and create registry directory
   await rimraf(authTargetPath);
@@ -837,7 +836,6 @@ async function buildAuthRegistry(authRegistry: Registry) {
           JSON.stringify(payload.data, null, 2),
           "utf8"
         );
-        console.log(`✅ Created registry entry: ${componentPath}`);
       } else {
         console.error(
           `❌ Validation failed for ${component.name}:`,
@@ -865,7 +863,6 @@ async function buildAuthRegistry(authRegistry: Registry) {
     JSON.stringify(indexData, null, 2),
     "utf8"
   );
-  console.log("✅ Created auth registry index");
 }
 
 try {

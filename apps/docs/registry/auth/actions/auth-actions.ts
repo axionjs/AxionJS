@@ -436,13 +436,6 @@ export const settings = async (
     });
   }
 
-  // await db.user.update({
-  //   where: { id: dbUser.id },
-  //   data: { ...values },
-  // });
-
-  // return { success: "Profile updated!" };
-
   // Handle two-factor authentication toggle
   if (
     typeof values.isTwoFactorEnabled !== "undefined" &&

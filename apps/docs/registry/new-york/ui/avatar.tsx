@@ -16,7 +16,7 @@ const Avatar = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
-      className
+      className,
     )}
     {...props}
   />
@@ -49,7 +49,7 @@ const AvatarFallback = React.forwardRef<
     ref={ref}
     className={cn(
       "flex h-full w-full items-center justify-center rounded-full bg-muted",
-      className
+      className,
     )}
     {...props}
   />
@@ -74,11 +74,11 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     // Convert children to array for processing
     const childrenArray = React.Children.toArray(children).filter((child) =>
-      React.isValidElement(child)
+      React.isValidElement(child),
     );
 
     // Limit the number of displayed avatars if limit is set
@@ -115,7 +115,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               overlapClass,
               borderClass,
               scaleClass,
-              child.props.className
+              child.props.className,
             ),
           });
         })}
@@ -128,7 +128,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               "ring-2 ring-background ring-offset-1 ring-primary/10",
               hoverScale &&
                 "transition-transform duration-200 ease-in-out hover:z-10 hover:scale-110 hover:-translate-y-1",
-              "bg-muted"
+              "bg-muted",
             )}
           >
             <AvatarFallback className="bg-primary/10 text-xs">
@@ -138,7 +138,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
         )}
       </div>
     );
-  }
+  },
 );
 AvatarGroup.displayName = "AvatarGroup";
 

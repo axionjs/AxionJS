@@ -166,14 +166,6 @@ export const SettingsForm = () => {
                     <User className="text-white" />
                   </AvatarFallback>
                 </Avatar>
-                // <div className="relative h-24 w-24 rounded-full overflow-hidden">
-                //   <Image
-                //     src={previewUrl}
-                //     alt="Profile preview"
-                //     fill
-                //     className="object-cover"
-                //   />
-                // </div>
               )}
 
               <div className="flex flex-col w-full space-y-2">
