@@ -47,11 +47,11 @@ export default function Home() {
       <section className="py-20  sm:py-20">
         <div className="mx-auto px-4 sm:px-8 lg:px-12 ">
           <BentoGrid className="grid-flow-row-dense">
-            <BentoCard className="col-span-2 row-span-2 lg:col-span-1 lg:row-span-2">
+            {/* <BentoCard className="col-span-2 row-span-2 lg:col-span-1 lg:row-span-2">
               <div className="h-full w-full">
                 <MultiLineChartPreview />
               </div>
-            </BentoCard>
+            </BentoCard> */}
             <BentoCard className="col-span-2 lg:col-span-1 row-span-1">
               <ButtonPreview />
             </BentoCard>
