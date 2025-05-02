@@ -9,14 +9,40 @@ import {
 } from "./updaters/update-dependencies.js";
 import { updateFiles } from "./updaters/update-files.js";
 import { updateTailwindConfig } from "./updaters/update-tailwind-config.js";
+import { getProjectInfo } from "./get-project-info.js";
+import path from "path";
 
 export async function addComponents(components, config, options) {
   options = {
     overwrite: false,
     silent: false,
     isNewProject: false,
+    cwd: process.cwd(),
     ...options,
   };
+
+  // List of dynamic components
+  const dynamicComponentNames = [
+    "contact-form",
+    "subscribe-newsletter",
+    "simple-crud-table",
+    "simple-auth",
+  ];
+  const cwd = path.resolve(options.cwd);
+  const projectInfo = await getProjectInfo(cwd);
+
+  // if user is asking a dynamic component, we need to show a message that dynamic components are only supported in app router
+  if (
+    components.some((component) => dynamicComponentNames.includes(component))
+  ) {
+    // Check if the framework is Next.js App Router
+    if (projectInfo.framework.name !== "next-app") {
+      logger.error(
+        `❌ Dynamic components such as ${dynamicComponentNames} are only supported in Next.js App Router projects.`
+      );
+      process.exit(1);
+    }
+  }
 
   const registrySpinner = spinner(`Checking registry.`, {
     silent: options.silent,
@@ -46,7 +72,15 @@ export async function addComponents(components, config, options) {
 
   if (options.category === "auth") {
     // Ensure Prisma is initialized and auth models are added
-    await setupPrisma(config.resolvedPaths.cwd);
+    await setupPrisma(config.resolvedPaths.cwd, "auth");
+  }
+
+  // Dynamically ensure Prisma models for each component
+  for (const component of components) {
+    if (dynamicComponentNames.includes(component)) {
+      // Ensure Prisma models for dynamic components
+      await setupPrisma(config.resolvedPaths.cwd, component);
+    }
   }
   //files=>path,type(mainly)
   await updateFiles(tree.files, config, {

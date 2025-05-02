@@ -21,6 +21,7 @@ export const registryItemTypeSchema = z.enum([
   "registry:api",
   "registry:email",
   "registry:file",
+  "registry:dynamic-component",
 ]);
 
 export const registryItemFileSchema = z.object({

@@ -72,6 +72,15 @@ function updateImportAliases(moduleSpecifier, config) {
       config.aliases.components
     );
   }
+  if (
+    config.aliases.components &&
+    moduleSpecifier.match(/^@\/registry\/(.+)\/emails/)
+  ) {
+    return moduleSpecifier.replace(
+      /^@\/registry\/(.+)\/emails/,
+      config.aliases.email
+    );
+  }
 
   if (config.aliases.lib && moduleSpecifier.match(/^@\/registry\/(.+)\/lib/)) {
     return moduleSpecifier.replace(
