@@ -1,0 +1,22 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "stacked-area-percent",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "registryDependencies": [
+    "card",
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "charts/stacked-area-percent.tsx",
+      "content": "\"use client\";\n\nimport { TrendingUp } from \"lucide-react\";\nimport { Area, AreaChart, CartesianGrid, XAxis, YAxis } from \"recharts\";\n\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n} from \"@/registry/new-york/ui/card\";\nimport {\n  type ChartConfig,\n  ChartContainer,\n  ChartLegend,\n  ChartLegendContent,\n  ChartTooltip,\n  ChartTooltipContent,\n} from \"@/registry/new-york/ui/chart\";\n\nconst chartData = [\n  { year: \"2018\", mobile: 30, desktop: 60, tablet: 10 },\n  { year: \"2019\", mobile: 35, desktop: 55, tablet: 10 },\n  { year: \"2020\", mobile: 45, desktop: 45, tablet: 10 },\n  { year: \"2021\", mobile: 50, desktop: 40, tablet: 10 },\n  { year: \"2022\", mobile: 55, desktop: 35, tablet: 10 },\n  { year: \"2023\", mobile: 60, desktop: 30, tablet: 10 },\n  { year: \"2024\", mobile: 65, desktop: 25, tablet: 10 },\n];\n\nconst chartConfig = {\n  mobile: {\n    label: \"Mobile\",\n    color: \"hsl(var(--chart-1))\",\n  },\n  desktop: {\n    label: \"Desktop\",\n    color: \"hsl(var(--chart-2))\",\n  },\n  tablet: {\n    label: \"Tablet\",\n    color: \"hsl(var(--chart-3))\",\n  },\n} satisfies ChartConfig;\n\nexport function StackedAreaPercentChart() {\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle>Stacked Area Percent Chart</CardTitle>\n        <CardDescription>Device usage trends over time</CardDescription>\n      </CardHeader>\n      <CardContent>\n        <ChartContainer config={chartConfig}>\n          <AreaChart\n            accessibilityLayer\n            data={chartData}\n            margin={{ top: 20, right: 20, bottom: 20, left: 20 }}\n            stackOffset=\"expand\"\n          >\n            <CartesianGrid strokeDasharray=\"3 3\" />\n            <XAxis dataKey=\"year\" tickLine={false} axisLine={false} />\n            <YAxis\n              tickFormatter={(value) => (value * 100).toFixed(0) + \"%\"}\n              tickLine={false}\n              axisLine={false}\n            />\n            <ChartTooltip\n              content={\n                <ChartTooltipContent formatter={(value) => value + \"%\"} />\n              }\n            />\n            <Area\n              type=\"monotone\"\n              dataKey=\"mobile\"\n              stackId=\"1\"\n              stroke=\"var(--color-mobile)\"\n              fill=\"var(--color-mobile)\"\n              fillOpacity={0.6}\n            />\n            <Area\n              type=\"monotone\"\n              dataKey=\"desktop\"\n              stackId=\"1\"\n              stroke=\"var(--color-desktop)\"\n              fill=\"var(--color-desktop)\"\n              fillOpacity={0.6}\n            />\n            <Area\n              type=\"monotone\"\n              dataKey=\"tablet\"\n              stackId=\"1\"\n              stroke=\"var(--color-tablet)\"\n              fill=\"var(--color-tablet)\"\n              fillOpacity={0.6}\n            />\n            <ChartLegend content={<ChartLegendContent />} />\n          </AreaChart>\n        </ChartContainer>\n      </CardContent>\n      <CardFooter className=\"flex-col items-start gap-2 text-sm\">\n        <div className=\"flex gap-2 font-medium leading-none\">\n          Mobile usage increased by 35% since 2018{\" \"}\n          <TrendingUp className=\"h-4 w-4\" />\n        </div>\n        <div className=\"leading-none text-muted-foreground\">\n          Percentage distribution of device usage\n        </div>\n      </CardFooter>\n    </Card>\n  );\n}\n",
+      "type": "registry:block",
+      "target": ""
+    }
+  ],
+  "categories": [
+    "charts",
+    "charts-area"
+  ]
+}

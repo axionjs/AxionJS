@@ -179,6 +179,17 @@ export const ui: Registry["items"] = [
     dependencies: ["embla-carousel-react"],
   },
   {
+    name: "chart",
+    type: "registry:ui",
+    dependencies: ["recharts"],
+    files: [
+      {
+        path: "ui/chart.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
     name: "checkbox",
     type: "registry:ui",
     dependencies: ["@radix-ui/react-checkbox"],
@@ -358,17 +369,6 @@ export const ui: Registry["items"] = [
     files: [
       {
         path: "ui/limited-input.tsx",
-        type: "registry:ui",
-      },
-    ],
-  },
-  {
-    name: "line-chart",
-    type: "registry:ui",
-    dependencies: ["recharts"],
-    files: [
-      {
-        path: "ui/line-chart.tsx",
         type: "registry:ui",
       },
     ],
@@ -600,6 +600,29 @@ export const ui: Registry["items"] = [
         type: "registry:ui",
       },
     ],
+  },
+  {
+    name: "toast",
+    type: "registry:ui",
+    dependencies: ["@radix-ui/react-toast"],
+    files: [
+      {
+        path: "ui/toast.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
+    name: "toaster",
+    type: "registry:ui",
+    dependencies: ["@radix-ui/react-toast"],
+    files: [
+      {
+        path: "ui/toaster.tsx",
+        type: "registry:ui",
+      },
+    ],
+    registryDependencies: ["toast", "use-toast"],
   },
   {
     name: "toggle",

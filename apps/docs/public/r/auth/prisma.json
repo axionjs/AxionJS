@@ -12,7 +12,7 @@
   "files": [
     {
       "path": "lib/db.ts",
-      "content": "import { PrismaClient } from \"@prisma/client\";\n\ndeclare global {\n  var prisma: PrismaClient | undefined;\n}\nexport const db = globalThis.prisma || new PrismaClient();\n\nif (process.env.NODE_ENV !== \"production\") {\n  globalThis.prisma = db;\n}\n",
+      "content": "import { PrismaClient } from \"@/lib/generated/prisma/client\";\n\ndeclare global {\n  var prisma: PrismaClient | undefined;\n}\nexport const db = globalThis.prisma || new PrismaClient();\n\nif (process.env.NODE_ENV !== \"production\") {\n  globalThis.prisma = db;\n}\n",
       "type": "registry:lib"
     }
   ]

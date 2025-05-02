@@ -284,19 +284,6 @@
     ]
   },
   {
-    "name": "header",
-    "type": "registry:auth",
-    "description": "Header component for authentication pages.",
-    "dependencies": [],
-    "registryDependencies": [],
-    "files": [
-      {
-        "path": "components/header.tsx",
-        "type": "registry:auth_comp"
-      }
-    ]
-  },
-  {
     "name": "change-password-form",
     "type": "registry:auth",
     "description": "Form for changing a user's password.",
@@ -356,7 +343,6 @@
     "description": "Wrapper for authentication cards.",
     "dependencies": [],
     "registryDependencies": [
-      "header",
       "social",
       "back-button"
     ],

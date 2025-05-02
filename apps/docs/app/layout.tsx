@@ -4,7 +4,7 @@ import "./global.css";
 import { AccessibilityProvider } from "@/registry/new-york/ui/AccessibilityProvider";
 import { AccessibilityTool } from "@/registry/new-york/ui/AccessibilityTool";
 import { AccessibilityTrigger } from "@/registry/new-york/ui/AccessibilityTrigger";
-import { ToastProvider, ToastViewport } from "@/registry/new-york/ui/toaster";
+import { ToastProvider, ToastViewport } from "@/registry/new-york/ui/toast";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

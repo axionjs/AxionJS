@@ -19,9 +19,8 @@ import {
 import { FormSuccess } from "@/registry/auth/components/form-success";
 import { FormError } from "@/registry/auth/components/form-error";
 import { Input } from "@/registry/new-york/ui/input";
-
-import { NewPasswordSchema } from "@/registry/auth/schemas";
 import { newPassword } from "@/registry/auth/actions/auth-actions";
+import { NewPasswordSchema } from "@/registry/auth/schemas";
 
 export function NewPasswordForm() {
   const searchParams = useSearchParams();

@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "@/registry/auth/lib/auth.config";
 import { db } from "@/registry/auth/lib/db";
-import { getAccountByUserId, getUserById } from "./user";
+import { getAccountByUserId, getUserById } from "@/registry/auth/lib/user";
 import { getTwoFactorConfirmationByUserId } from "@/registry/auth/actions/two-factor";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({

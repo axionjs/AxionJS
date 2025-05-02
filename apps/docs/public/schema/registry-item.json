@@ -1,165 +1,166 @@
 {
-    "$schema": "https://json-schema.org/draft-07/schema#",
-    "type": "object",
-    "properties": {
-      "name": {
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "registry:lib",
+        "registry:block",
+        "registry:component",
+        "registry:ui",
+        "registry:hook",
+        "registry:theme",
+        "registry:page",
+        "registry:file",
+        "registry:auth",
+        "registry:auth_comp",
+        "registry:middleware",
+        "registry:actions",
+        "registry:schemas",
+        "registry:pages",
+        "registry:api",
+        "registry:email"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
         "type": "string"
-      },
-      "type": {
-        "type": "string",
-        "enum": [
-          "registry:lib",
-          "registry:block",
-          "registry:component",
-          "registry:ui",
-          "registry:hook",
-          "registry:theme",
-          "registry:page",
-          "registry:file",
-          "registry:auth",
-          "registry:auth_comp",
-          "registry:middleware",
-          "registry:actions",
-          "registry:schemas",
-          "registry:pages",
-          "registry:api",
-          "registry:email"
-        ]
-      },
-      "description": {
+      }
+    },
+    "devDependencies": {
+      "type": "array",
+      "items": {
         "type": "string"
-      },
-      "title": {
+      }
+    },
+    "registryDependencies": {
+      "type": "array",
+      "items": {
         "type": "string"
-      },
-      "author": {
-        "type": "string"
-      },
-      "dependencies": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "devDependencies": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "registryDependencies": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "files": {
-        "type": "array",
-        "items": {
-          "type": "object",
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "registry:lib",
+              "registry:block",
+              "registry:component",
+              "registry:ui",
+              "registry:auth",
+              "registry:middleware",
+              "registry:actions",
+              "registry:hook",
+              "registry:theme",
+              "registry:page",
+              "registry:file",
+              "registry:auth_comp",
+              "registry:schemas",
+              "registry:pages",
+              "registry:api",
+              "registry:email",
+              "registry:dynamic-component"
+            ]
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "if": {
           "properties": {
-            "path": {
-              "type": "string"
-            },
-            "content": {
-              "type": "string"
-            },
             "type": {
-              "type": "string",
-              "enum": [
-                "registry:lib",
-                "registry:block",
-                "registry:component",
-                "registry:ui",
-                "registry:auth",
-                "registry:middleware",
-                "registry:actions",
-                "registry:hook",
-                "registry:theme",
-                "registry:page",
-                "registry:file",
-                "registry:auth_comp",
-                "registry:schemas",
-                "registry:pages",
-                "registry:api",
-                "registry:email"
-              ]
-            },
-            "target": {
-              "type": "string"
-            }
-          },
-          "if": {
-            "properties": {
-              "type": {
-                "enum": ["registry:file", "registry:page"]
-              }
-            }
-          },
-          "then": {
-            "required": ["path", "type", "target"]
-          },
-          "else": {
-            "required": ["path", "type"]
-          }
-        }
-      },
-      "tailwind": {
-        "type": "object",
-        "properties": {
-          "config": {
-            "type": "object",
-            "properties": {
-              "content": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "theme": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "plugins": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
+              "enum": ["registry:file", "registry:page"]
             }
           }
-        }
-      },
-      "cssVars": {
-        "type": "object",
-        "properties": {
-          "light": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "dark": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "meta": {
-        "type": "object",
-        "additionalProperties": true
-      },
-      "docs": {
-        "type": "string"
-      },
-      "categories": {
-        "type": "array",
-        "items": {
-          "type": "string"
+        },
+        "then": {
+          "required": ["path", "type", "target"]
+        },
+        "else": {
+          "required": ["path", "type"]
         }
       }
     },
-    "required": ["name", "type"]
-  }
+    "tailwind": {
+      "type": "object",
+      "properties": {
+        "config": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "theme": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "plugins": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "cssVars": {
+      "type": "object",
+      "properties": {
+        "light": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "dark": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "docs": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["name", "type"]
+}

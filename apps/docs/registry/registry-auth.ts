@@ -258,17 +258,6 @@ export const authRegistry: Registry["items"] = [
     description: "Social login buttons.",
   },
   {
-    name: "header",
-    type: "registry:auth",
-    files: [
-      {
-        path: "components/header.tsx",
-        type: "registry:auth_comp",
-      },
-    ],
-    description: "Header component for authentication pages.",
-  },
-  {
     name: "change-password-form",
     type: "registry:auth",
     files: [
@@ -326,7 +315,7 @@ export const authRegistry: Registry["items"] = [
         type: "registry:ui",
       },
     ],
-    registryDependencies: ["header", "social", "back-button"],
+    registryDependencies: ["social", "back-button"],
     description: "Wrapper for authentication cards.",
   },
   {

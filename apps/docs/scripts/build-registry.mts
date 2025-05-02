@@ -30,6 +30,7 @@ const REGISTRY_INDEX_WHITELIST: z.infer<typeof registryItemTypeSchema>[] = [
   "registry:block",
   "registry:example",
   "registry:internal",
+  "registry:dynamic-component",
 ];
 
 const project = new Project({
@@ -48,7 +49,14 @@ async function syncStyles() {
   const sourceStyle = "new-york";
   const targetStyle = "default";
 
-  const syncDirectories = ["blocks", "hooks", "internal", "lib", "charts"];
+  const syncDirectories = [
+    "blocks",
+    "hooks",
+    "internal",
+    "lib",
+    "charts",
+    "dynamic-components",
+  ];
 
   // Clean up sync directories.
   for (const dir of syncDirectories) {
@@ -126,7 +134,10 @@ export const Index: Record<string, any> = {
       const type = item.type.split(":")[1];
       let sourceFilename = "";
 
-      if (item.type === "registry:block") {
+      if (
+        item.type === "registry:block" ||
+        item.type === "registry:dynamic-component"
+      ) {
         const file = resolveFiles[0];
         const filename = path.basename(file);
         let raw: string;

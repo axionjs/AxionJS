@@ -19,6 +19,7 @@ export const registryItemTypeSchema = z.enum([
   "registry:pages",
   "registry:api",
   "registry:email",
+  "registry:dynamic-component",
 
   // Internal use only
   "registry:theme",

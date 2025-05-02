@@ -13,7 +13,7 @@ export default async function UserDashboard() {
   const session = await auth();
 
   if (!session) {
-    redirect("/auth/signin");
+    redirect("/auth/login");
   }
 
   return (

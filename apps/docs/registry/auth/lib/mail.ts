@@ -5,11 +5,11 @@ import ResetPasswordEmail from "@/registry/auth/emails/reset-password-email";
 import TwoFactorAuthEmail from "@/registry/auth/emails/two-factor-email";
 
 export const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
+  host: process.env.EMAIL_SERVER_HOST,
+  port: Number(process.env.EMAIL_SERVER_PORT),
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
+    user: process.env.EMAIL_SERVER_USER,
+    pass: process.env.EMAIL_SERVER_PASSWORD,
   },
 });
 
@@ -24,7 +24,7 @@ export const sendVerificationEmail = async (
   const emailHtml = await render(VerificationEmail({ confirmLink }));
 
   await transporter.sendMail({
-    from: `AxionJS - Test <${process.env.SMTP_FROM}>`,
+    from: `AxionJS - Test <${process.env.EMAIL_FROM}>`,
     to: email,
     subject: isEmailChange
       ? "Confirm your new email address"
@@ -39,7 +39,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
   const emailHtml = await render(ResetPasswordEmail({ resetLink }));
 
   await transporter.sendMail({
-    from: `AxionJS - Test <${process.env.SMTP_FROM}>`,
+    from: `AxionJS - Test <${process.env.EMAIL_FROM}>`,
     to: email,
     subject: "Reset your password",
     html: emailHtml,
@@ -52,7 +52,7 @@ export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
   );
 
   await transporter.sendMail({
-    from: `AxionJS - Test <${process.env.SMTP_FROM}>`,
+    from: `AxionJS - Test <${process.env.EMAIL_FROM}>`,
     to: email,
     subject: "2FA Verification Code",
     html: emailHtml,
