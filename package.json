@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "@types/node": "^22.13.10",
+    "prism-react-renderer": "^2.4.1",
     "tsx": "^4.19.2",
     "with-tailwind": "file:"
   }

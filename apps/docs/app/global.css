@@ -35,7 +35,7 @@
 
 @font-face {
   font-family: "Geist";
-  src: url("/fonts/Geist-Bold.woff2") format("woff2");
+  src: url("/fonts/Geist-ExtraBold") format("woff2");
   font-weight: 700;
   font-style: normal;
 }
