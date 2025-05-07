@@ -16,7 +16,6 @@ export const registryItemTypeSchema = z.enum([
   "registry:middleware",
   "registry:actions",
   "registry:schemas",
-  "registry:pages",
   "registry:utils",
   "registry:api",
   "registry:email",

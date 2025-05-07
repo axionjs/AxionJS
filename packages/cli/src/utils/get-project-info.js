@@ -212,7 +212,6 @@ export async function getProjectConfig(cwd, defaultProjectInfo = null) {
       actions: `${projectInfo.aliasPrefix}/actions`,
       middleware: `${projectInfo.aliasPrefix}/middleware`,
       schemas: `${projectInfo.aliasPrefix}/schemas`,
-      pages: `${projectInfo.aliasPrefix}/app`,
       auth_comp: `${projectInfo.aliasPrefix}/components/auth`,
       api: `${projectInfo.aliasPrefix}/app/api`,
       email: `${projectInfo.aliasPrefix}/emails`,

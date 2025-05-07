@@ -42,7 +42,6 @@ export const rawConfigSchema = z
       actions: z.string().optional(),
       middleware: z.string().optional(),
       schemas: z.string().optional(),
-      pages: z.string().optional(),
       auth_comp: z.string().optional(),
       api: z.string().optional(),
       email: z.string().optional(),
@@ -65,7 +64,6 @@ export const configSchema = rawConfigSchema.extend({
     actions: z.string(),
     middleware: z.string(),
     schemas: z.string().optional(),
-    pages: z.string().optional(),
     auth_comp: z.string().optional(),
     api: z.string().optional(),
     email: z.string().optional(),
@@ -153,9 +151,6 @@ export async function resolveConfigPaths(cwd, config) {
       schemas: config.aliases["schemas"]
         ? await resolveImport(config.aliases["schemas"], tsConfig)
         : path.resolve(cwd, "schemas"),
-      pages: config.aliases["pages"]
-        ? await resolveImport(config.aliases["pages"], tsConfig)
-        : path.resolve(cwd, "app"),
       auth_comp: config.aliases["auth_comp"]
         ? await resolveImport(config.aliases["auth_comp"], tsConfig)
         : path.resolve(cwd, "components", "auth"),

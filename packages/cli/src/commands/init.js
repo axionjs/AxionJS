@@ -250,11 +250,7 @@ async function promptForConfig(defaultConfig = null) {
       actions: options.components.replace(/\/components$/, "actions"),
       middleware: options.components.replace(/\/components$/, ""),
       schemas: options.components.replace(/\/components$/, "schemas"),
-      pages: options.components.replace(/\/components$/, "pages"),
-      auth_comp: options.components.replace(
-        /\/components$\/auth$/,
-        "auth_comp"
-      ),
+      auth_comp: options.components.replace(/\/components$/, "components/auth"),
       api: options.components.replace(/\/components$/, "api"),
       email: options.components.replace(/\/components$/, "email"),
     },

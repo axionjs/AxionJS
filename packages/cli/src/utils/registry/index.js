@@ -24,7 +24,7 @@ const agent = process.env.https_proxy
 
 export async function getRegistryIndex(category) {
   try {
-    const [result] = await fetchRegistry(["index.json"], category);
+    const [result] = await fetchRegistry(["index.json"]);
     const index = registryIndexSchema.parse(result);
     return category
       ? index.filter((item) => item.type === `registry:${category}`)
@@ -57,21 +57,13 @@ export async function getRegistryIcons() {
   }
 }
 
-export async function getRegistryItem(name, style, category) {
+export async function getRegistryItem(name, style) {
   try {
-    if (category === "auth") {
-      const [result] = await fetchRegistry([
-        isUrl(name) ? name : `auth/${name}.json`,
-      ]);
-      return registryItemSchema.parse(result);
-    } else {
-      const [result] = await fetchRegistry([
-        isUrl(name) ? name : `styles/${style}/${name}.json`,
-        category,
-      ]);
+    const [result] = await fetchRegistry([
+      isUrl(name) ? name : `styles/${style}/${name}.json`,
+    ]);
 
-      return registryItemSchema.parse(result);
-    }
+    return registryItemSchema.parse(result);
   } catch (error) {
     logger.break();
     handleError(error);
@@ -165,11 +157,11 @@ export async function getItemTargetPath(config, item, override) {
   return path.join(config.resolvedPaths[parent], type);
 }
 
-export async function fetchRegistry(paths, category) {
+export async function fetchRegistry(paths) {
   try {
     const results = await Promise.all(
       paths.map(async (path) => {
-        const url = getRegistryUrl(path, category);
+        const url = getRegistryUrl(path);
         const response = await fetch(url, { agent });
 
         if (!response.ok) {
@@ -252,19 +244,6 @@ export function getRegistryItemFileTargetPath(file, config, override) {
   if (file.type === "registry:email") {
     return config.resolvedPaths.email;
   }
-  if (file.type === "registry:pages") {
-    const basePath = config.resolvedPaths.pages; // This should point to the app directory
-    const filePath = file.path; // e.g., "pages/dashboard/page.tsx"
-
-    // Extract the folder structure from the file path
-    const folderStructure = path.dirname(filePath); // e.g., "pages/dashboard"
-    // Construct the full target path
-    const targetPath = path.join(
-      basePath,
-      folderStructure.replace("pages/", "")
-    ); // Remove "pages/" prefix
-    return targetPath;
-  }
   if (file.type === "registry:auth_comp") {
     return config.resolvedPaths.auth_comp;
   }
@@ -300,8 +279,7 @@ export async function registryResolveItemsTree(names, config, category) {
     for (const name of names) {
       const itemRegistryDependencies = await resolveRegistryDependencies(
         name,
-        config,
-        category
+        config
       );
       registryDependencies.push(...itemRegistryDependencies);
     }
@@ -309,7 +287,7 @@ export async function registryResolveItemsTree(names, config, category) {
     const uniqueRegistryDependencies = Array.from(
       new Set(registryDependencies)
     );
-    let result = await fetchRegistry(uniqueRegistryDependencies, category);
+    let result = await fetchRegistry(uniqueRegistryDependencies);
     const payload = z.array(registryItemSchema).parse(result);
     if (!payload) {
       return null;
@@ -363,17 +341,14 @@ export async function registryResolveItemsTree(names, config, category) {
   }
 }
 
-async function resolveRegistryDependencies(url, config, category) {
+async function resolveRegistryDependencies(url, config) {
   const visited = new Set();
   const payload = [];
 
   async function resolveDependencies(itemUrl) {
-    const path =
-      category === "auth"
-        ? `${itemUrl}.json`
-        : `styles/${config.style}/${itemUrl}.json`;
+    const path = `styles/${config.style}/${itemUrl}.json`;
 
-    const url = getRegistryUrl(isUrl(itemUrl) ? itemUrl : path, category);
+    const url = getRegistryUrl(isUrl(itemUrl) ? itemUrl : path);
 
     if (visited.has(url)) {
       return;
@@ -382,7 +357,7 @@ async function resolveRegistryDependencies(url, config, category) {
     visited.add(url);
 
     try {
-      const [result] = await fetchRegistry([url], category);
+      const [result] = await fetchRegistry([url]);
       const item = registryItemSchema.parse(result);
       payload.push(url);
 
@@ -455,14 +430,10 @@ export async function registryGetTheme(name, config) {
   return theme;
 }
 
-function getRegistryUrl(path, category) {
+function getRegistryUrl(path) {
   if (isUrl(path)) {
     const url = new URL(path);
     return url.toString();
-  }
-  // Handle category-specific paths
-  if (category === "auth") {
-    return `${REGISTRY_URL}/auth/${path.toLowerCase()}`;
   }
 
   return `${REGISTRY_URL}/${path.toLowerCase()}`;

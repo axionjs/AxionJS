@@ -213,11 +213,10 @@ export function resolveNestedFilePath(filePath, targetDir) {
     (segment) => segment === lastTargetSegment
   );
 
-  if (commonDirIndex === -1) {
+  if (commonDirIndex === -1 || lastTargetSegment === "auth") {
     // Return just the filename if no common directory is found
     return fileSegments[fileSegments.length - 1];
   }
-
   // Return everything after the common directory
   return fileSegments.slice(commonDirIndex + 1).join("/");
 }

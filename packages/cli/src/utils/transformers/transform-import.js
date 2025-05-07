@@ -46,20 +46,11 @@ function updateImportAliases(moduleSpecifier, config) {
 
   if (
     config.aliases.auth_comp &&
-    moduleSpecifier.startsWith("@/registry/auth/components/")
+    moduleSpecifier.match(/^@\/registry\/(.+)\/auth\/components/)
   ) {
     return moduleSpecifier.replace(
-      /^@\/registry\/auth\/components/,
+      /^@\/registry\/(.+)\/auth\/components/,
       config.aliases.auth_comp
-    );
-  }
-  if (
-    config.aliases.auth_comp &&
-    moduleSpecifier.startsWith("@/registry/auth/emails/")
-  ) {
-    return moduleSpecifier.replace(
-      /^@\/registry\/auth\/emails/,
-      config.aliases.email
     );
   }
 
@@ -92,7 +83,10 @@ function updateImportAliases(moduleSpecifier, config) {
     config.aliases.lib &&
     moduleSpecifier.match(/^@\/registry\/(.+)\/routes/)
   ) {
-    return moduleSpecifier.replace(/^@\/registry\/auth/, config.aliases.lib);
+    return moduleSpecifier.replace(
+      /^@\/registry\/(.+)\/routes/,
+      config.aliases.lib
+    );
   }
 
   if (
