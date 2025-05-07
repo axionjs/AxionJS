@@ -1,0 +1,42 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "login-form",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Login form with email and password fields.",
+  "dependencies": [
+    "zod",
+    "@hookform/resolvers"
+  ],
+  "registryDependencies": [
+    "form",
+    "input",
+    "button",
+    "label",
+    "auth-actions",
+    "two-factor-actions",
+    "form-success",
+    "form-error",
+    "card-wrapper"
+  ],
+  "files": [
+    {
+      "path": "auth/components/login-form.tsx",
+      "content": "\"use client\";\n\nimport { useForm } from \"react-hook-form\";\nimport { zodResolver } from \"@hookform/resolvers/zod\";\nimport * as z from \"zod\";\nimport { useState, useTransition } from \"react\";\nimport { useSearchParams, useRouter } from \"next/navigation\";\nimport {\n  Form,\n  FormField,\n  FormControl,\n  FormLabel,\n  FormItem,\n  FormMessage,\n} from \"@/registry/new-york/ui/form\";\nimport { LoginSchema } from \"@/registry/new-york/auth/schemas\";\nimport { CardWrapper } from \"@/registry/new-york/auth/components/card-wrapper\";\nimport { Input } from \"@/registry/new-york/ui/input\";\nimport { Button } from \"@/registry/new-york/ui/button\";\nimport { FormError } from \"@/registry/new-york/auth/components/form-error\";\nimport { FormSuccess } from \"@/registry/new-york/auth/components/form-success\";\nimport { login } from \"@/registry/new-york/auth/actions/auth-actions\";\nimport Link from \"next/link\";\n\nexport const LoginForm = () => {\n  const searchParams = useSearchParams();\n  const callbackUrl = searchParams.get(\"callbackUrl\");\n  const urlError =\n    searchParams.get(\"error\") === \"OAuthAccountNotLinked\"\n      ? \"Email already in use with different provider!\"\n      : \"\";\n\n  const [showTwoFactor, setShowTwoFactor] = useState(false);\n  const [error, setError] = useState<string | undefined>(\"\");\n  const [success, setSuccess] = useState<string | undefined>(\"\");\n  const [isPending, startTransition] = useTransition();\n\n  const router = useRouter();\n\n  const form = useForm<z.infer<typeof LoginSchema>>({\n    resolver: zodResolver(LoginSchema),\n    defaultValues: {\n      email: \"\",\n      password: \"\",\n      code: \"\",\n    },\n  });\n\n  const onSubmit = (values: z.infer<typeof LoginSchema>) => {\n    setError(\"\");\n    setSuccess(\"\");\n\n    startTransition(() => {\n      login(values, callbackUrl)\n        .then((data) => {\n          if (data?.error) {\n            form.reset();\n            setError(data.error);\n          }\n\n          if (data?.success) {\n            form.reset();\n            setSuccess(data.success);\n            router.push(callbackUrl || \"/dashboard\");\n          }\n\n          if (data?.twoFactor) {\n            setShowTwoFactor(true);\n          }\n        })\n        .catch(() => {\n          setError(\"\");\n        });\n    });\n  };\n\n  return (\n    <CardWrapper\n      mainHeaderLabel=\"Login\"\n      subHeaderLabel=\"Welcome Back\"\n      backButtonLabel=\"Don't have an account?\"\n      backButtonHref=\"/auth/register\"\n      showSocial\n    >\n      <Form {...form}>\n        <form onSubmit={form.handleSubmit(onSubmit)} className=\"space-y-6\">\n          <div className=\"space-y-4\">\n            {showTwoFactor && (\n              <>\n                <FormField\n                  control={form.control}\n                  name=\"code\"\n                  render={({ field }) => (\n                    <FormItem>\n                      <FormLabel>Two Factor Code</FormLabel>\n                      <FormControl>\n                        <Input\n                          disabled={isPending}\n                          {...field}\n                          placeholder=\"123456\"\n                          type=\"text\"\n                        />\n                      </FormControl>\n                      <FormMessage />\n                    </FormItem>\n                  )}\n                />\n                <span className=\"text-sm text-gray-500\">\n                  Check your inbox for the 2FA Code\n                </span>\n              </>\n            )}\n            {!showTwoFactor && (\n              <>\n                <FormField\n                  control={form.control}\n                  name=\"email\"\n                  render={({ field }) => (\n                    <FormItem>\n                      <FormLabel>Email</FormLabel>\n                      <FormControl>\n                        <Input\n                          disabled={isPending}\n                          {...field}\n                          placeholder=\"jhon.doe@example.com\"\n                          type=\"email\"\n                        />\n                      </FormControl>\n                      <FormMessage />\n                    </FormItem>\n                  )}\n                />\n                <FormField\n                  control={form.control}\n                  name=\"password\"\n                  render={({ field }) => (\n                    <FormItem>\n                      <FormLabel>Password</FormLabel>\n                      <FormControl>\n                        <Input\n                          disabled={isPending}\n                          {...field}\n                          placeholder=\"******\"\n                          type=\"password\"\n                        />\n                      </FormControl>\n                      <Button\n                        size=\"sm\"\n                        variant=\"link\"\n                        asChild\n                        className=\"px-0 font-normal\"\n                      >\n                        <Link href=\"/auth/reset\">Forgot password?</Link>\n                      </Button>\n                      <FormMessage />\n                    </FormItem>\n                  )}\n                />\n              </>\n            )}\n          </div>\n          <FormError message={error || urlError} />\n          <FormSuccess message={success} />\n          <Button disabled={isPending} type=\"submit\" className=\"w-full\">\n            {showTwoFactor ? \"Confirm\" : \"Login\"}\n          </Button>\n        </form>\n      </Form>\n    </CardWrapper>\n  );\n};\n",
+      "type": "registry:auth_comp",
+      "target": ""
+    },
+    {
+      "path": "auth/schemas/index.ts",
+      "content": "import * as z from \"zod\";\n\nexport const LoginSchema = z.object({\n  email: z.string().email({\n    message: \"Invalid email address\",\n  }),\n  password: z.string().min(1, {\n    message: \"Password is required\",\n  }),\n  code: z.optional(z.string()),\n});\n\nexport const RegisterSchema = z.object({\n  email: z.string().email({\n    message: \"Invalid email address\",\n  }),\n  password: z.string().min(6, {\n    message: \"Password must be at least 6 characters\",\n  }),\n  name: z.string().min(1, {\n    message: \"Name is required\",\n  }),\n});\n\nexport const ResetSchema = z.object({\n  email: z.string().email({\n    message: \"Email is required\",\n  }),\n});\n\nexport const NewPasswordSchema = z.object({\n  password: z.string().min(6, { message: \"Minimum 6 characters required\" }),\n});\n\nexport const SettingsSchema = z.object({\n  name: z.optional(z.string()),\n  isTwoFactorEnabled: z.optional(z.boolean()),\n  email: z.optional(z.string().email({ message: \"Invalid email\" })),\n});\n\nexport const ChangePasswordSchema = z\n  .object({\n    currentPassword: z.string().min(1, \"Current password is required\"),\n    newPassword: z\n      .string()\n      .min(6, \"New password must be at least 6 characters\"),\n    confirmPassword: z\n      .string()\n      .min(6, \"Confirm password must be at least 6 characters\"),\n  })\n  .refine((data) => data.newPassword === data.confirmPassword, {\n    message: \"Passwords do not match\",\n    path: [\"confirmPassword\"],\n  });\n",
+      "type": "registry:schemas",
+      "target": ""
+    },
+    {
+      "path": "auth/route.ts",
+      "content": "import { handlers } from \"@/registry/new-york/auth/lib/auth\";\nexport const { GET, POST } = handlers;\n",
+      "type": "registry:api",
+      "target": ""
+    }
+  ]
+}

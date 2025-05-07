@@ -1,0 +1,15 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "error-card",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Error card for authentication pages.",
+  "files": [
+    {
+      "path": "auth/components/error-card.tsx",
+      "content": "import { CardWrapper } from \"@/registry/new-york/auth/components/card-wrapper\";\nimport { AlertTriangleIcon } from \"lucide-react\";\n\nexport function ErrorCard() {\n  return (\n    <CardWrapper\n      mainHeaderLabel=\"Error\"\n      subHeaderLabel=\"Oops! Something went wrong\"\n      backButtonHref=\"/auth/login\"\n      backButtonLabel=\"Back to login\"\n    >\n      <div className=\"flex w-full items-center justify-center\">\n        <AlertTriangleIcon className=\"text-destructive\" />\n      </div>\n    </CardWrapper>\n  );\n}\n",
+      "type": "registry:auth_comp",
+      "target": ""
+    }
+  ]
+}

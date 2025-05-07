@@ -1,0 +1,18 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "reset",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Reset page for users to reset their password.",
+  "registryDependencies": [
+    "reset-form"
+  ],
+  "files": [
+    {
+      "path": "auth/pages/auth/reset/page.tsx",
+      "content": "import { ResetForm } from \"@/registry/default/auth/components/reset-form\";\n\nexport default function ResetPage() {\n  return (\n    <div className=\"flex h-screen items-center justify-center\">\n      <ResetForm />\n    </div>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/auth/reset/page.tsx"
+    }
+  ]
+}

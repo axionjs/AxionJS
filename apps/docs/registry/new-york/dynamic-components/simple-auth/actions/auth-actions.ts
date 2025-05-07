@@ -1,11 +1,11 @@
 "use server";
 
 import * as z from "zod";
-import { db } from "@/registry/auth/lib/db";
+import { db } from "@/registry/new-york/auth/lib/db";
 import { LoginSchema } from "@/registry/new-york/dynamic-components/simple-auth/components/login-form";
 import { ResetSchema } from "@/registry/new-york/dynamic-components/simple-auth/components/reset-form";
 import { RegisterSchema } from "@/registry/new-york/dynamic-components/simple-auth/components/register-form";
-import { getUserByEmail } from "@/registry/auth/lib/user";
+import { getUserByEmail } from "@/registry/new-york/auth/lib/user";
 import {
   signIn,
   signOut,
@@ -19,7 +19,7 @@ import {
   getVerificationTokenByToken,
   hashPassword,
   verifyPassword,
-} from "@/registry/auth/lib/auth-helpers";
+} from "@/registry/new-york/auth/lib/auth-helpers";
 import {
   sendPasswordResetEmail,
   sendVerificationEmail,

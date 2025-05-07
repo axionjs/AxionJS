@@ -21,7 +21,6 @@
         "registry:middleware",
         "registry:actions",
         "registry:schemas",
-        "registry:pages",
         "registry:api",
         "registry:email"
       ]
@@ -80,7 +79,6 @@
               "registry:file",
               "registry:auth_comp",
               "registry:schemas",
-              "registry:pages",
               "registry:api",
               "registry:email",
               "registry:dynamic-component"

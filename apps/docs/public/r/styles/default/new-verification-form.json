@@ -1,0 +1,18 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "new-verification-form",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Form for verifying a user's email address.",
+  "dependencies": [
+    "react-spinners"
+  ],
+  "files": [
+    {
+      "path": "auth/components/new-verification-form.tsx",
+      "content": "\"use client\";\n\nimport { useCallback, useEffect, useState } from \"react\";\nimport { BeatLoader } from \"react-spinners\";\nimport { useSearchParams, useRouter } from \"next/navigation\";\nimport { CardWrapper } from \"./card-wrapper\";\nimport { FormSuccess } from \"@/registry/default/auth/components/form-success\";\nimport { FormError } from \"@/registry/default/auth/components/form-error\";\nimport {\n  newVerification,\n  verifyEmailChange,\n} from \"@/registry/default/auth/actions/auth-actions\";\n\nexport function NewVerificationForm() {\n  const router = useRouter();\n  const [error, setError] = useState<string | undefined>();\n  const [success, setSuccess] = useState<string | undefined>();\n\n  const searchParams = useSearchParams();\n  const token = searchParams.get(\"token\");\n  const isEmailChange = searchParams.get(\"emailChange\") === \"true\";\n\n  const onsubmit = useCallback(() => {\n    if (success || error) return;\n\n    if (!token) {\n      setError(\"Missing token!\");\n      return;\n    }\n\n    if (isEmailChange) {\n      verifyEmailChange(token)\n        .then((data) => {\n          setSuccess(data.success);\n          setError(data.error);\n          if (data.success) {\n            // Refresh the page after a short delay to reflect changes\n            setTimeout(() => {\n              router.refresh();\n            }, 2000);\n          }\n        })\n        .catch(() => {\n          setError(\"Something went wrong!\");\n        });\n    } else {\n      newVerification(token)\n        .then((data) => {\n          setSuccess(data.success);\n          setError(data.error);\n          if (data.success) {\n            // Refresh the page after a short delay to reflect changes\n            setTimeout(() => {\n              router.refresh();\n            }, 2000);\n          }\n        })\n        .catch(() => {\n          setError(\"Something went wrong!\");\n        });\n    }\n  }, [token, success, error, isEmailChange, router]);\n\n  useEffect(() => {\n    onsubmit();\n  }, [onsubmit]);\n\n  return (\n    <CardWrapper\n      mainHeaderLabel=\"Email Verification\"\n      subHeaderLabel={\n        isEmailChange\n          ? \"Confirming your email change\"\n          : \"Confirming your verification\"\n      }\n      backButtonHref={isEmailChange ? \"/profile\" : \"/login\"}\n      backButtonLabel={isEmailChange ? \"Back to Profile\" : \"Back to Login\"}\n    >\n      <div className=\"flex w-full items-center justify-center\">\n        {!success && !error && <BeatLoader />}\n        <FormSuccess message={success} />\n        {!success && <FormError message={error} />}\n      </div>\n    </CardWrapper>\n  );\n}\n",
+      "type": "registry:auth_comp",
+      "target": ""
+    }
+  ]
+}

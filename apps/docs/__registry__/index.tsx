@@ -1231,16 +1231,16 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["login-form"],
       files: [{
-        path: "registry/new-york/pages/auth/login/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/auth/login/page.tsx",
+        type: "registry:page",
+        target: "app/auth/login/page.tsx"
       },{
-        path: "registry/new-york/pages/auth/layout.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/auth/layout.tsx",
+        type: "registry:file",
+        target: "app/auth/layout.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/auth/login/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/auth/login/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1250,12 +1250,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["register-form"],
       files: [{
-        path: "registry/new-york/pages/auth/register/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/auth/register/page.tsx",
+        type: "registry:page",
+        target: "app/auth/register/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/auth/register/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/auth/register/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1265,12 +1265,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["change-password-form"],
       files: [{
-        path: "registry/new-york/pages/(protected)/profile/change-password/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/(protected)/profile/change-password/page.tsx",
+        type: "registry:page",
+        target: "app/(protected)/profile/change-password/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/(protected)/profile/change-password/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/(protected)/profile/change-password/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1280,12 +1280,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["new-verification-form"],
       files: [{
-        path: "registry/new-york/pages/auth/verify/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/auth/verify/page.tsx",
+        type: "registry:page",
+        target: "app/auth/verify/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/auth/verify/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/auth/verify/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1295,12 +1295,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["new-password-form"],
       files: [{
-        path: "registry/new-york/pages/auth/new-password/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/auth/new-password/page.tsx",
+        type: "registry:page",
+        target: "app/auth/new-password/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/auth/new-password/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/auth/new-password/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1310,12 +1310,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["reset-form"],
       files: [{
-        path: "registry/new-york/pages/auth/reset/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/auth/reset/page.tsx",
+        type: "registry:page",
+        target: "app/auth/reset/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/auth/reset/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/auth/reset/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1325,16 +1325,16 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["role-gate","navbar"],
       files: [{
-        path: "registry/new-york/pages/(protected)/admin/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/(protected)/admin/page.tsx",
+        type: "registry:page",
+        target: "app/(protected)/admin/page.tsx"
       },{
-        path: "registry/new-york/pages/(protected)/layout.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/(protected)/layout.tsx",
+        type: "registry:file",
+        target: "app/(protected)/layout.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/(protected)/admin/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/(protected)/admin/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1342,26 +1342,22 @@ export const Index: Record<string, any> = {
       name: "dashboard",
       description: "Dashboard page for authenticated users.",
       type: "registry:auth",
-      registryDependencies: undefined,
+      registryDependencies: ["badge"],
       files: [{
-        path: "registry/new-york/pages/dashboard/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/dashboard/page.tsx",
+        type: "registry:page",
+        target: "app/dashboard/page.tsx"
       },{
-        path: "registry/new-york/lib/get-user.ts",
+        path: "registry/new-york/auth/lib/get-user.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/new-york/components/user-info.tsx",
+        path: "registry/new-york/auth/components/user-info.tsx",
         type: "registry:auth_comp",
-        target: ""
-      },{
-        path: "registry/new-york/new-york/ui/badge.tsx",
-        type: "registry:ui",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/dashboard/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/dashboard/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1371,12 +1367,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["settings-form"],
       files: [{
-        path: "registry/new-york/pages/(protected)/profile/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/(protected)/profile/page.tsx",
+        type: "registry:page",
+        target: "app/(protected)/profile/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/(protected)/profile/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/(protected)/profile/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1386,12 +1382,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["verification-email","reset-password-email","two-factor-email"],
       files: [{
-        path: "registry/new-york/lib/mail.ts",
+        path: "registry/new-york/auth/lib/mail.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/lib/mail.ts")),
+      component: React.lazy(() => import("@/registry/new-york/auth/lib/mail.ts")),
       source: "",
       meta: undefined,
     },
@@ -1401,12 +1397,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["error-card"],
       files: [{
-        path: "registry/new-york/pages/auth/error/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/new-york/auth/pages/auth/error/page.tsx",
+        type: "registry:page",
+        target: "app/auth/error/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/pages/auth/error/page.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/pages/auth/error/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1416,12 +1412,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/middleware.ts",
+        path: "registry/new-york/auth/middleware.ts",
         type: "registry:middleware",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/middleware.ts")),
+      component: React.lazy(() => import("@/registry/new-york/auth/middleware.ts")),
       source: "",
       meta: undefined,
     },
@@ -1429,38 +1425,22 @@ export const Index: Record<string, any> = {
       name: "login-form",
       description: "Login form with email and password fields.",
       type: "registry:auth",
-      registryDependencies: ["auth-actions","two-factor-actions","form-success","form-error","card-wrapper"],
+      registryDependencies: ["form","input","button","label","auth-actions","two-factor-actions","form-success","form-error","card-wrapper"],
       files: [{
-        path: "registry/new-york/components/login-form.tsx",
+        path: "registry/new-york/auth/components/login-form.tsx",
         type: "registry:auth_comp",
         target: ""
       },{
-        path: "registry/new-york/new-york/ui/form.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/new-york/ui/input.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/new-york/ui/button.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/new-york/ui/label.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/schemas/index.ts",
+        path: "registry/new-york/auth/schemas/index.ts",
         type: "registry:schemas",
         target: ""
       },{
-        path: "registry/new-york/route.ts",
+        path: "registry/new-york/auth/route.ts",
         type: "registry:api",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/login-form.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/login-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1470,12 +1450,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/register-form.tsx",
+        path: "registry/new-york/auth/components/register-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/register-form.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/register-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1485,12 +1465,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/social.tsx",
+        path: "registry/new-york/auth/components/social.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/social.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/social.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1500,12 +1480,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/change-password-form.tsx",
+        path: "registry/new-york/auth/components/change-password-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/change-password-form.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/change-password-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1515,12 +1495,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/new-password-form.tsx",
+        path: "registry/new-york/auth/components/new-password-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/new-password-form.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/new-password-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1530,12 +1510,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/new-verification-form.tsx",
+        path: "registry/new-york/auth/components/new-verification-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/new-verification-form.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/new-verification-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1545,12 +1525,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/reset-form.tsx",
+        path: "registry/new-york/auth/components/reset-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/reset-form.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/reset-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1558,18 +1538,14 @@ export const Index: Record<string, any> = {
       name: "card-wrapper",
       description: "Wrapper for authentication cards.",
       type: "registry:auth",
-      registryDependencies: ["social","back-button"],
+      registryDependencies: ["social","back-button","card"],
       files: [{
-        path: "registry/new-york/components/card-wrapper.tsx",
+        path: "registry/new-york/auth/components/card-wrapper.tsx",
         type: "registry:auth_comp",
-        target: ""
-      },{
-        path: "registry/new-york/new-york/ui/card.tsx",
-        type: "registry:ui",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/card-wrapper.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/card-wrapper.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1579,12 +1555,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/back-button.tsx",
+        path: "registry/new-york/auth/components/back-button.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/back-button.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/back-button.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1594,12 +1570,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/error-card.tsx",
+        path: "registry/new-york/auth/components/error-card.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/error-card.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/error-card.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1609,12 +1585,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/form-success.tsx",
+        path: "registry/new-york/auth/components/form-success.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/form-success.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/form-success.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1624,12 +1600,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/form-error.tsx",
+        path: "registry/new-york/auth/components/form-error.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/form-error.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/form-error.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1639,12 +1615,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["user-button"],
       files: [{
-        path: "registry/new-york/components/navbar.tsx",
+        path: "registry/new-york/auth/components/navbar.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/navbar.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/navbar.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1652,18 +1628,14 @@ export const Index: Record<string, any> = {
       name: "user-button",
       description: "Button for user actions.",
       type: "registry:auth",
-      registryDependencies: ["logout-button"],
+      registryDependencies: ["logout-button","dropdown-menu"],
       files: [{
-        path: "registry/new-york/components/user-button.tsx",
+        path: "registry/new-york/auth/components/user-button.tsx",
         type: "registry:auth_comp",
-        target: ""
-      },{
-        path: "registry/new-york/new-york/ui/dropdown-menu.tsx",
-        type: "registry:ui",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/user-button.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/user-button.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1673,12 +1645,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/logout-button.tsx",
+        path: "registry/new-york/auth/components/logout-button.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/logout-button.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/logout-button.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1688,36 +1660,36 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["prisma"],
       files: [{
-        path: "registry/new-york/actions/auth-actions.ts",
+        path: "registry/new-york/auth/actions/auth-actions.ts",
         type: "registry:actions",
         target: ""
       },{
-        path: "registry/new-york/lib/auth-helpers.ts",
+        path: "registry/new-york/auth/lib/auth-helpers.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/new-york/lib/user.ts",
+        path: "registry/new-york/auth/lib/user.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/new-york/lib/auth.ts",
+        path: "registry/new-york/auth/lib/auth.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/new-york/lib/next-auth.d.ts",
+        path: "registry/new-york/auth/lib/next-auth.d.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/new-york/lib/routes.ts",
+        path: "registry/new-york/auth/lib/routes.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/new-york/lib/auth.config.ts",
+        path: "registry/new-york/auth/lib/auth.config.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/actions/auth-actions.ts")),
+      component: React.lazy(() => import("@/registry/new-york/auth/actions/auth-actions.ts")),
       source: "",
       meta: undefined,
     },
@@ -1727,12 +1699,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/actions/two-factor.ts",
+        path: "registry/new-york/auth/actions/two-factor.ts",
         type: "registry:actions",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/actions/two-factor.ts")),
+      component: React.lazy(() => import("@/registry/new-york/auth/actions/two-factor.ts")),
       source: "",
       meta: undefined,
     },
@@ -1742,12 +1714,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/lib/db.ts",
+        path: "registry/new-york/auth/lib/db.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/lib/db.ts")),
+      component: React.lazy(() => import("@/registry/new-york/auth/lib/db.ts")),
       source: "",
       meta: undefined,
     },
@@ -1755,22 +1727,14 @@ export const Index: Record<string, any> = {
       name: "settings-form",
       description: "Form for updating user settings.",
       type: "registry:auth",
-      registryDependencies: undefined,
+      registryDependencies: ["avatar","switch"],
       files: [{
-        path: "registry/new-york/components/settings-form.tsx",
+        path: "registry/new-york/auth/components/settings-form.tsx",
         type: "registry:auth_comp",
-        target: ""
-      },{
-        path: "registry/new-york/new-york/ui/switch.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/new-york/ui/avatar.tsx",
-        type: "registry:ui",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/settings-form.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/settings-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1780,12 +1744,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/components/role-gate.tsx",
+        path: "registry/new-york/auth/components/role-gate.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/components/role-gate.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/components/role-gate.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1795,12 +1759,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/emails/reset-password-email.tsx",
+        path: "registry/new-york/auth/emails/reset-password-email.tsx",
         type: "registry:email",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/emails/reset-password-email.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/emails/reset-password-email.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1810,12 +1774,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/emails/verification-email.tsx",
+        path: "registry/new-york/auth/emails/verification-email.tsx",
         type: "registry:email",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/emails/verification-email.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/emails/verification-email.tsx")),
       source: "",
       meta: undefined,
     },
@@ -1825,12 +1789,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/new-york/emails/two-factor-email.tsx",
+        path: "registry/new-york/auth/emails/two-factor-email.tsx",
         type: "registry:email",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/emails/two-factor-email.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/auth/emails/two-factor-email.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3826,16 +3790,16 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["login-form"],
       files: [{
-        path: "registry/default/pages/auth/login/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/auth/login/page.tsx",
+        type: "registry:page",
+        target: "app/auth/login/page.tsx"
       },{
-        path: "registry/default/pages/auth/layout.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/auth/layout.tsx",
+        type: "registry:file",
+        target: "app/auth/layout.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/auth/login/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/auth/login/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3845,12 +3809,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["register-form"],
       files: [{
-        path: "registry/default/pages/auth/register/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/auth/register/page.tsx",
+        type: "registry:page",
+        target: "app/auth/register/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/auth/register/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/auth/register/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3860,12 +3824,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["change-password-form"],
       files: [{
-        path: "registry/default/pages/(protected)/profile/change-password/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/(protected)/profile/change-password/page.tsx",
+        type: "registry:page",
+        target: "app/(protected)/profile/change-password/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/(protected)/profile/change-password/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/(protected)/profile/change-password/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3875,12 +3839,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["new-verification-form"],
       files: [{
-        path: "registry/default/pages/auth/verify/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/auth/verify/page.tsx",
+        type: "registry:page",
+        target: "app/auth/verify/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/auth/verify/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/auth/verify/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3890,12 +3854,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["new-password-form"],
       files: [{
-        path: "registry/default/pages/auth/new-password/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/auth/new-password/page.tsx",
+        type: "registry:page",
+        target: "app/auth/new-password/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/auth/new-password/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/auth/new-password/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3905,12 +3869,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["reset-form"],
       files: [{
-        path: "registry/default/pages/auth/reset/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/auth/reset/page.tsx",
+        type: "registry:page",
+        target: "app/auth/reset/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/auth/reset/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/auth/reset/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3920,16 +3884,16 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["role-gate","navbar"],
       files: [{
-        path: "registry/default/pages/(protected)/admin/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/(protected)/admin/page.tsx",
+        type: "registry:page",
+        target: "app/(protected)/admin/page.tsx"
       },{
-        path: "registry/default/pages/(protected)/layout.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/(protected)/layout.tsx",
+        type: "registry:file",
+        target: "app/(protected)/layout.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/(protected)/admin/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/(protected)/admin/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3937,26 +3901,22 @@ export const Index: Record<string, any> = {
       name: "dashboard",
       description: "Dashboard page for authenticated users.",
       type: "registry:auth",
-      registryDependencies: undefined,
+      registryDependencies: ["badge"],
       files: [{
-        path: "registry/default/pages/dashboard/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/dashboard/page.tsx",
+        type: "registry:page",
+        target: "app/dashboard/page.tsx"
       },{
-        path: "registry/default/lib/get-user.ts",
+        path: "registry/default/auth/lib/get-user.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/default/components/user-info.tsx",
+        path: "registry/default/auth/components/user-info.tsx",
         type: "registry:auth_comp",
-        target: ""
-      },{
-        path: "registry/default/new-york/ui/badge.tsx",
-        type: "registry:ui",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/dashboard/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/dashboard/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3966,12 +3926,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["settings-form"],
       files: [{
-        path: "registry/default/pages/(protected)/profile/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/(protected)/profile/page.tsx",
+        type: "registry:page",
+        target: "app/(protected)/profile/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/(protected)/profile/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/(protected)/profile/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3981,12 +3941,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["verification-email","reset-password-email","two-factor-email"],
       files: [{
-        path: "registry/default/lib/mail.ts",
+        path: "registry/default/auth/lib/mail.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/lib/mail.ts")),
+      component: React.lazy(() => import("@/registry/default/auth/lib/mail.ts")),
       source: "",
       meta: undefined,
     },
@@ -3996,12 +3956,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["error-card"],
       files: [{
-        path: "registry/default/pages/auth/error/page.tsx",
-        type: "registry:pages",
-        target: ""
+        path: "registry/default/auth/pages/auth/error/page.tsx",
+        type: "registry:page",
+        target: "app/auth/error/page.tsx"
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/pages/auth/error/page.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/pages/auth/error/page.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4011,12 +3971,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/middleware.ts",
+        path: "registry/default/auth/middleware.ts",
         type: "registry:middleware",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/middleware.ts")),
+      component: React.lazy(() => import("@/registry/default/auth/middleware.ts")),
       source: "",
       meta: undefined,
     },
@@ -4024,38 +3984,22 @@ export const Index: Record<string, any> = {
       name: "login-form",
       description: "Login form with email and password fields.",
       type: "registry:auth",
-      registryDependencies: ["auth-actions","two-factor-actions","form-success","form-error","card-wrapper"],
+      registryDependencies: ["form","input","button","label","auth-actions","two-factor-actions","form-success","form-error","card-wrapper"],
       files: [{
-        path: "registry/default/components/login-form.tsx",
+        path: "registry/default/auth/components/login-form.tsx",
         type: "registry:auth_comp",
         target: ""
       },{
-        path: "registry/default/new-york/ui/form.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/new-york/ui/input.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/new-york/ui/button.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/new-york/ui/label.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/schemas/index.ts",
+        path: "registry/default/auth/schemas/index.ts",
         type: "registry:schemas",
         target: ""
       },{
-        path: "registry/default/route.ts",
+        path: "registry/default/auth/route.ts",
         type: "registry:api",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/login-form.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/login-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4065,12 +4009,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/register-form.tsx",
+        path: "registry/default/auth/components/register-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/register-form.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/register-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4080,12 +4024,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/social.tsx",
+        path: "registry/default/auth/components/social.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/social.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/social.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4095,12 +4039,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/change-password-form.tsx",
+        path: "registry/default/auth/components/change-password-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/change-password-form.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/change-password-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4110,12 +4054,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/new-password-form.tsx",
+        path: "registry/default/auth/components/new-password-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/new-password-form.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/new-password-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4125,12 +4069,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/new-verification-form.tsx",
+        path: "registry/default/auth/components/new-verification-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/new-verification-form.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/new-verification-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4140,12 +4084,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/reset-form.tsx",
+        path: "registry/default/auth/components/reset-form.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/reset-form.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/reset-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4153,18 +4097,14 @@ export const Index: Record<string, any> = {
       name: "card-wrapper",
       description: "Wrapper for authentication cards.",
       type: "registry:auth",
-      registryDependencies: ["social","back-button"],
+      registryDependencies: ["social","back-button","card"],
       files: [{
-        path: "registry/default/components/card-wrapper.tsx",
+        path: "registry/default/auth/components/card-wrapper.tsx",
         type: "registry:auth_comp",
-        target: ""
-      },{
-        path: "registry/default/new-york/ui/card.tsx",
-        type: "registry:ui",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/card-wrapper.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/card-wrapper.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4174,12 +4114,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/back-button.tsx",
+        path: "registry/default/auth/components/back-button.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/back-button.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/back-button.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4189,12 +4129,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/error-card.tsx",
+        path: "registry/default/auth/components/error-card.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/error-card.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/error-card.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4204,12 +4144,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/form-success.tsx",
+        path: "registry/default/auth/components/form-success.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/form-success.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/form-success.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4219,12 +4159,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/form-error.tsx",
+        path: "registry/default/auth/components/form-error.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/form-error.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/form-error.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4234,12 +4174,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["user-button"],
       files: [{
-        path: "registry/default/components/navbar.tsx",
+        path: "registry/default/auth/components/navbar.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/navbar.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/navbar.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4247,18 +4187,14 @@ export const Index: Record<string, any> = {
       name: "user-button",
       description: "Button for user actions.",
       type: "registry:auth",
-      registryDependencies: ["logout-button"],
+      registryDependencies: ["logout-button","dropdown-menu"],
       files: [{
-        path: "registry/default/components/user-button.tsx",
+        path: "registry/default/auth/components/user-button.tsx",
         type: "registry:auth_comp",
-        target: ""
-      },{
-        path: "registry/default/new-york/ui/dropdown-menu.tsx",
-        type: "registry:ui",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/user-button.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/user-button.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4268,12 +4204,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/logout-button.tsx",
+        path: "registry/default/auth/components/logout-button.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/logout-button.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/logout-button.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4283,36 +4219,36 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: ["prisma"],
       files: [{
-        path: "registry/default/actions/auth-actions.ts",
+        path: "registry/default/auth/actions/auth-actions.ts",
         type: "registry:actions",
         target: ""
       },{
-        path: "registry/default/lib/auth-helpers.ts",
+        path: "registry/default/auth/lib/auth-helpers.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/default/lib/user.ts",
+        path: "registry/default/auth/lib/user.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/default/lib/auth.ts",
+        path: "registry/default/auth/lib/auth.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/default/lib/next-auth.d.ts",
+        path: "registry/default/auth/lib/next-auth.d.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/default/lib/routes.ts",
+        path: "registry/default/auth/lib/routes.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/default/lib/auth.config.ts",
+        path: "registry/default/auth/lib/auth.config.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/actions/auth-actions.ts")),
+      component: React.lazy(() => import("@/registry/default/auth/actions/auth-actions.ts")),
       source: "",
       meta: undefined,
     },
@@ -4322,12 +4258,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/actions/two-factor.ts",
+        path: "registry/default/auth/actions/two-factor.ts",
         type: "registry:actions",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/actions/two-factor.ts")),
+      component: React.lazy(() => import("@/registry/default/auth/actions/two-factor.ts")),
       source: "",
       meta: undefined,
     },
@@ -4337,12 +4273,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/lib/db.ts",
+        path: "registry/default/auth/lib/db.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/lib/db.ts")),
+      component: React.lazy(() => import("@/registry/default/auth/lib/db.ts")),
       source: "",
       meta: undefined,
     },
@@ -4350,22 +4286,14 @@ export const Index: Record<string, any> = {
       name: "settings-form",
       description: "Form for updating user settings.",
       type: "registry:auth",
-      registryDependencies: undefined,
+      registryDependencies: ["avatar","switch"],
       files: [{
-        path: "registry/default/components/settings-form.tsx",
+        path: "registry/default/auth/components/settings-form.tsx",
         type: "registry:auth_comp",
-        target: ""
-      },{
-        path: "registry/default/new-york/ui/switch.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/new-york/ui/avatar.tsx",
-        type: "registry:ui",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/settings-form.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/settings-form.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4375,12 +4303,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/components/role-gate.tsx",
+        path: "registry/default/auth/components/role-gate.tsx",
         type: "registry:auth_comp",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/components/role-gate.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/components/role-gate.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4390,12 +4318,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/emails/reset-password-email.tsx",
+        path: "registry/default/auth/emails/reset-password-email.tsx",
         type: "registry:email",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/emails/reset-password-email.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/emails/reset-password-email.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4405,12 +4333,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/emails/verification-email.tsx",
+        path: "registry/default/auth/emails/verification-email.tsx",
         type: "registry:email",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/emails/verification-email.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/emails/verification-email.tsx")),
       source: "",
       meta: undefined,
     },
@@ -4420,12 +4348,12 @@ export const Index: Record<string, any> = {
       type: "registry:auth",
       registryDependencies: undefined,
       files: [{
-        path: "registry/default/emails/two-factor-email.tsx",
+        path: "registry/default/auth/emails/two-factor-email.tsx",
         type: "registry:email",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/emails/two-factor-email.tsx")),
+      component: React.lazy(() => import("@/registry/default/auth/emails/two-factor-email.tsx")),
       source: "",
       meta: undefined,
     },

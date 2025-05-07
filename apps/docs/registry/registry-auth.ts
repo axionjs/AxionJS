@@ -5,12 +5,14 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/auth/login/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/auth/login/page.tsx",
+        type: "registry:page",
+        target: "app/auth/login/page.tsx",
       },
       {
-        path: "pages/auth/layout.tsx",
-        type: "registry:pages",
+        path: "auth/pages/auth/layout.tsx",
+        type: "registry:file",
+        target: "app/auth/layout.tsx",
       },
     ],
     registryDependencies: ["login-form"],
@@ -22,8 +24,9 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/auth/register/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/auth/register/page.tsx",
+        type: "registry:page",
+        target: "app/auth/register/page.tsx",
       },
     ],
     registryDependencies: ["register-form"],
@@ -35,8 +38,9 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/(protected)/profile/change-password/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/(protected)/profile/change-password/page.tsx",
+        type: "registry:page",
+        target: "app/(protected)/profile/change-password/page.tsx",
       },
     ],
     registryDependencies: ["change-password-form"],
@@ -48,8 +52,9 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/auth/verify/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/auth/verify/page.tsx",
+        type: "registry:page",
+        target: "app/auth/verify/page.tsx",
       },
     ],
     registryDependencies: ["new-verification-form"],
@@ -62,8 +67,9 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/auth/new-password/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/auth/new-password/page.tsx",
+        type: "registry:page",
+        target: "app/auth/new-password/page.tsx",
       },
     ],
     registryDependencies: ["new-password-form"],
@@ -75,8 +81,9 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/auth/reset/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/auth/reset/page.tsx",
+        type: "registry:page",
+        target: "app/auth/reset/page.tsx",
       },
     ],
     registryDependencies: ["reset-form"],
@@ -88,12 +95,14 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/(protected)/admin/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/(protected)/admin/page.tsx",
+        type: "registry:page",
+        target: "app/(protected)/admin/page.tsx",
       },
       {
-        path: "pages/(protected)/layout.tsx",
-        type: "registry:pages",
+        path: "auth/pages/(protected)/layout.tsx",
+        type: "registry:file",
+        target: "app/(protected)/layout.tsx",
       },
     ],
     registryDependencies: ["role-gate", "navbar"],
@@ -105,23 +114,21 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/dashboard/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/dashboard/page.tsx",
+        type: "registry:page",
+        target: "app/dashboard/page.tsx",
       },
       {
-        path: "lib/get-user.ts",
+        path: "auth/lib/get-user.ts",
         type: "registry:lib",
       },
       {
-        path: "components/user-info.tsx",
+        path: "auth/components/user-info.tsx",
         type: "registry:auth_comp",
-      },
-      {
-        path: "new-york/ui/badge.tsx",
-        type: "registry:ui",
       },
     ],
     description: "Dashboard page for authenticated users.",
+    registryDependencies: ["badge"],
   },
 
   {
@@ -129,8 +136,9 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/(protected)/profile/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/(protected)/profile/page.tsx",
+        type: "registry:page",
+        target: "app/(protected)/profile/page.tsx",
       },
     ],
     registryDependencies: ["settings-form"],
@@ -142,7 +150,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "lib/mail.ts",
+        path: "auth/lib/mail.ts",
         type: "registry:lib",
       },
     ],
@@ -164,8 +172,9 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "pages/auth/error/page.tsx",
-        type: "registry:pages",
+        path: "auth/pages/auth/error/page.tsx",
+        type: "registry:page",
+        target: "app/auth/error/page.tsx",
       },
     ],
     registryDependencies: ["error-card"],
@@ -177,7 +186,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "middleware.ts",
+        path: "auth/middleware.ts",
         type: "registry:middleware",
       },
     ],
@@ -190,42 +199,24 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/login-form.tsx",
+        path: "auth/components/login-form.tsx",
         type: "registry:auth_comp",
       },
       {
-        path: "new-york/ui/form.tsx",
-        type: "registry:ui",
-      },
-      {
-        path: "new-york/ui/input.tsx",
-        type: "registry:ui",
-      },
-      {
-        path: "new-york/ui/button.tsx",
-        type: "registry:ui",
-      },
-      {
-        path: "new-york/ui/label.tsx",
-        type: "registry:ui",
-      },
-      {
-        path: "schemas/index.ts",
+        path: "auth/schemas/index.ts",
         type: "registry:schemas",
       },
       {
-        path: "route.ts",
+        path: "auth/route.ts",
         type: "registry:api",
       },
     ],
-    dependencies: [
-      "react-hook-form",
-      "zod",
-      "@radix-ui/react-label",
-      "@radix-ui/react-slot",
-      "@hookform/resolvers",
-    ],
+    dependencies: ["zod", "@hookform/resolvers"],
     registryDependencies: [
+      "form",
+      "input",
+      "button",
+      "label",
       "auth-actions",
       "two-factor-actions",
       "form-success",
@@ -239,7 +230,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/register-form.tsx",
+        path: "auth/components/register-form.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -250,11 +241,10 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/social.tsx",
+        path: "auth/components/social.tsx",
         type: "registry:auth_comp",
       },
     ],
-    dependencies: ["react-icons", "@radix-ui/react-slot"],
     description: "Social login buttons.",
   },
   {
@@ -262,7 +252,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/change-password-form.tsx",
+        path: "auth/components/change-password-form.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -273,7 +263,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/new-password-form.tsx",
+        path: "auth/components/new-password-form.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -284,7 +274,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/new-verification-form.tsx",
+        path: "auth/components/new-verification-form.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -296,7 +286,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/reset-form.tsx",
+        path: "auth/components/reset-form.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -307,15 +297,11 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/card-wrapper.tsx",
+        path: "auth/components/card-wrapper.tsx",
         type: "registry:auth_comp",
       },
-      {
-        path: "new-york/ui/card.tsx",
-        type: "registry:ui",
-      },
     ],
-    registryDependencies: ["social", "back-button"],
+    registryDependencies: ["social", "back-button", "card"],
     description: "Wrapper for authentication cards.",
   },
   {
@@ -323,7 +309,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/back-button.tsx",
+        path: "auth/components/back-button.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -334,7 +320,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/error-card.tsx",
+        path: "auth/components/error-card.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -345,7 +331,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/form-success.tsx",
+        path: "auth/components/form-success.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -356,7 +342,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/form-error.tsx",
+        path: "auth/components/form-error.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -367,7 +353,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/navbar.tsx",
+        path: "auth/components/navbar.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -379,24 +365,19 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/user-button.tsx",
+        path: "auth/components/user-button.tsx",
         type: "registry:auth_comp",
-      },
-      {
-        path: "new-york/ui/dropdown-menu.tsx",
-        type: "registry:ui",
       },
     ],
     description: "Button for user actions.",
-    registryDependencies: ["logout-button"],
-    dependencies: ["@radix-ui/react-dropdown-menu"],
+    registryDependencies: ["logout-button", "dropdown-menu"],
   },
   {
     name: "logout-button",
     type: "registry:auth",
     files: [
       {
-        path: "components/logout-button.tsx",
+        path: "auth/components/logout-button.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -407,31 +388,31 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "actions/auth-actions.ts",
+        path: "auth/actions/auth-actions.ts",
         type: "registry:actions",
       },
       {
-        path: "lib/auth-helpers.ts",
+        path: "auth/lib/auth-helpers.ts",
         type: "registry:lib",
       },
       {
-        path: "lib/user.ts",
+        path: "auth/lib/user.ts",
         type: "registry:lib",
       },
       {
-        path: "lib/auth.ts",
+        path: "auth/lib/auth.ts",
         type: "registry:lib",
       },
       {
-        path: "lib/next-auth.d.ts",
+        path: "auth/lib/next-auth.d.ts",
         type: "registry:lib",
       },
       {
-        path: "lib/routes.ts",
+        path: "auth/lib/routes.ts",
         type: "registry:lib",
       },
       {
-        path: "lib/auth.config.ts",
+        path: "auth/lib/auth.config.ts",
         type: "registry:lib",
       },
     ],
@@ -444,7 +425,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "actions/two-factor.ts",
+        path: "auth/actions/two-factor.ts",
         type: "registry:actions",
       },
     ],
@@ -455,7 +436,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "lib/db.ts",
+        path: "auth/lib/db.ts",
         type: "registry:lib",
       },
     ],
@@ -468,20 +449,12 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/settings-form.tsx",
+        path: "auth/components/settings-form.tsx",
         type: "registry:auth_comp",
-      },
-      {
-        path: "new-york/ui/switch.tsx",
-        type: "registry:ui",
-      },
-      {
-        path: "new-york/ui/avatar.tsx",
-        type: "registry:ui",
       },
     ],
     description: "Form for updating user settings.",
-    dependencies: ["@radix-ui/react-avatar", "@radix-ui/react-switch"],
+    registryDependencies: ["avatar", "switch"],
   },
 
   {
@@ -489,7 +462,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "components/role-gate.tsx",
+        path: "auth/components/role-gate.tsx",
         type: "registry:auth_comp",
       },
     ],
@@ -501,7 +474,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "emails/reset-password-email.tsx",
+        path: "auth/emails/reset-password-email.tsx",
         type: "registry:email",
       },
     ],
@@ -512,7 +485,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "emails/verification-email.tsx",
+        path: "auth/emails/verification-email.tsx",
         type: "registry:email",
       },
     ],
@@ -523,7 +496,7 @@ export const authRegistry: Registry["items"] = [
     type: "registry:auth",
     files: [
       {
-        path: "emails/two-factor-email.tsx",
+        path: "auth/emails/two-factor-email.tsx",
         type: "registry:email",
       },
     ],
