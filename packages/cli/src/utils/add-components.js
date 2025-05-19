@@ -27,6 +27,8 @@ export async function addComponents(components, config, options) {
     "subscribe-newsletter",
     "simple-crud-table",
     "simple-auth",
+    "media-uploader",
+    "inventory-manager",
   ];
   const cwd = path.resolve(options.cwd);
   const projectInfo = await getProjectInfo(cwd);

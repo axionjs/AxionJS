@@ -10,7 +10,7 @@ const PRISMA_SCHEMA_PATH = path.resolve(PRISMA_DIR, "schema.prisma");
 
 // Mapping of component types to their Prisma models
 const COMPONENT_MODELS = {
-  "auth": `
+  auth: `
 enum UserRole {
   USER
   ADMIN
@@ -181,7 +181,41 @@ model NewsletterCampaignRecipient {
 
   @@unique([campaignId, subscriberId])
 }
-`
+`,
+  "media-uploader": `
+model Media {
+    id           String    @id @default(cuid())
+    name         String
+    size         Int
+    url          String
+    publicId     String?
+    thumbnailUrl String?
+    mediaType    MediaType
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+}
+
+enum MediaType {
+    IMAGE
+    VIDEO
+}
+`,
+  "inventory-manager": `
+model InventoryItem {
+    id        String   @id @default(cuid())
+    name      String
+    category  String
+    price     Float
+    stock     Int
+    sku       String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([name])
+    @@index([category])
+    @@index([sku])
+}
+`,
 };
 
 export async function ensureComponentModels(cwd, componentType) {
