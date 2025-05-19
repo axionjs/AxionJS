@@ -1993,6 +1993,84 @@ export const Index: Record<string, any> = {
       source: "__registry__/new-york/dynamic-components/subscribe-newsletter/actions/subscribe-newsletter-actions.ts",
       meta: undefined,
     },
+    "media-uploader": {
+      name: "media-uploader",
+      description: "A media uploader with image and video support.",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","alert-dialog","card","progress"],
+      files: [{
+        path: "registry/new-york/dynamic-components/media-uploader/actions/media-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/new-york/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/media-uploader/components/media-uploader.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/media-uploader/components/media-gallery.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/media-uploader/media/page.tsx",
+        type: "registry:page",
+        target: "app/(media-uploader)/media/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/dynamic-components/media-uploader/actions/media-actions.ts")),
+      source: "__registry__/new-york/dynamic-components/media-uploader/actions/media-actions.ts",
+      meta: undefined,
+    },
+    "inventory-manager": {
+      name: "inventory-manager",
+      description: "An inventory manager with CRUD functionality.",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","alert","alert-dialog","dialog","toaster","skeleton","badge","dropdown-menu","table","input","select","use-toast","form"],
+      files: [{
+        path: "registry/new-york/dynamic-components/inventory-manager/actions/inventory.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/new-york/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/inventory-manager/components/inventory-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/inventory-manager/components/inventory-data-table.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/inventory-manager/components/data-table.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/inventory-manager/components/columns.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/inventory-manager/inventory/page.tsx",
+        type: "registry:page",
+        target: "app/(inventory-manager)/inventory/page.tsx"
+      },{
+        path: "registry/new-york/dynamic-components/inventory-manager/lib/context.tsx",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/inventory-manager/hooks/use-inventory-data-table.ts",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/dynamic-components/inventory-manager/actions/inventory.ts")),
+      source: "__registry__/new-york/dynamic-components/inventory-manager/actions/inventory.ts",
+      meta: undefined,
+    },
     "area-chart-legend": {
       name: "area-chart-legend",
       description: "",
@@ -4550,6 +4628,84 @@ export const Index: Record<string, any> = {
       categories: undefined,
       component: React.lazy(() => import("@/registry/default/dynamic-components/subscribe-newsletter/actions/subscribe-newsletter-actions.ts")),
       source: "__registry__/default/dynamic-components/subscribe-newsletter/actions/subscribe-newsletter-actions.ts",
+      meta: undefined,
+    },
+    "media-uploader": {
+      name: "media-uploader",
+      description: "A media uploader with image and video support.",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","alert-dialog","card","progress"],
+      files: [{
+        path: "registry/default/dynamic-components/media-uploader/actions/media-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/default/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/media-uploader/components/media-uploader.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/media-uploader/components/media-gallery.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/media-uploader/media/page.tsx",
+        type: "registry:page",
+        target: "app/(media-uploader)/media/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/dynamic-components/media-uploader/actions/media-actions.ts")),
+      source: "__registry__/default/dynamic-components/media-uploader/actions/media-actions.ts",
+      meta: undefined,
+    },
+    "inventory-manager": {
+      name: "inventory-manager",
+      description: "An inventory manager with CRUD functionality.",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","alert","alert-dialog","dialog","toaster","skeleton","badge","dropdown-menu","table","input","select","use-toast","form"],
+      files: [{
+        path: "registry/default/dynamic-components/inventory-manager/actions/inventory.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/default/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/inventory-manager/components/inventory-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/inventory-manager/components/inventory-data-table.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/inventory-manager/components/data-table.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/inventory-manager/components/columns.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/inventory-manager/inventory/page.tsx",
+        type: "registry:page",
+        target: "app/(inventory-manager)/inventory/page.tsx"
+      },{
+        path: "registry/default/dynamic-components/inventory-manager/lib/context.tsx",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/inventory-manager/hooks/use-inventory-data-table.ts",
+        type: "registry:hook",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/dynamic-components/inventory-manager/actions/inventory.ts")),
+      source: "__registry__/default/dynamic-components/inventory-manager/actions/inventory.ts",
       meta: undefined,
     },
     "area-chart-legend": {

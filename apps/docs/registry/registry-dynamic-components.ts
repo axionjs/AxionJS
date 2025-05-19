@@ -314,4 +314,96 @@ export const dynamicComponents: Registry["items"] = [
     ],
     description: "A newsletter subscription form with email functionality.",
   },
+
+  {
+    name: "media-uploader",
+    type: "registry:dynamic-component",
+    registryDependencies: ["button", "alert-dialog", "card", "progress"],
+    dependencies: ["prisma", "@prisma/client", "cloudinary"],
+    files: [
+      {
+        path: "dynamic-components/media-uploader/actions/media-actions.ts",
+        type: "registry:actions",
+      },
+      {
+        path: "lib/db.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/media-uploader/components/media-uploader.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/media-uploader/components/media-gallery.tsx",
+        type: "registry:component",
+      },
+
+      {
+        path: "dynamic-components/media-uploader/media/page.tsx",
+        target: "app/(media-uploader)/media/page.tsx",
+        type: "registry:page",
+      },
+    ],
+    description: "A media uploader with image and video support.",
+  },
+  {
+    name: "inventory-manager",
+    type: "registry:dynamic-component",
+    registryDependencies: [
+      "button",
+      "alert",
+      "alert-dialog",
+      "dialog",
+      "toaster",
+      "skeleton",
+      "badge",
+      "dropdown-menu",
+      "table",
+      "input",
+      "select",
+      "use-toast",
+      "form",
+    ],
+    dependencies: ["prisma", "@prisma/client", "@tanstack/react-table"],
+    files: [
+      {
+        path: "dynamic-components/inventory-manager/actions/inventory.ts",
+        type: "registry:actions",
+      },
+      {
+        path: "lib/db.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/inventory-manager/components/inventory-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/inventory-manager/components/inventory-data-table.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/inventory-manager/components/data-table.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/inventory-manager/components/columns.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/inventory-manager/inventory/page.tsx",
+        target: "app/(inventory-manager)/inventory/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/inventory-manager/lib/context.tsx",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/inventory-manager/hooks/use-inventory-data-table.ts",
+        type: "registry:hook",
+      },
+    ],
+    description: "An inventory manager with CRUD functionality.",
+  },
 ];
