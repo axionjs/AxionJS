@@ -17,9 +17,6 @@ import { colorMapping, colors } from "../registry/registry-colors";
 import { iconLibraries, icons } from "../registry/registry-icons";
 import { styles } from "../registry/registry-styles";
 
-const AUTH_PATH = path.join(process.cwd(), "registry/auth");
-const NEW_YORK_UI_PATH = path.join(process.cwd(), "registry/new-york/ui");
-
 const REGISTRY_PATH = path.join(process.cwd(), "public/r");
 
 const REGISTRY_INDEX_WHITELIST: z.infer<typeof registryItemTypeSchema>[] = [
@@ -31,6 +28,7 @@ const REGISTRY_INDEX_WHITELIST: z.infer<typeof registryItemTypeSchema>[] = [
   "registry:example",
   "registry:internal",
   "registry:dynamic-component",
+  "registry:auth",
 ];
 
 const project = new Project({
@@ -56,6 +54,7 @@ async function syncStyles() {
     "lib",
     "charts",
     "dynamic-components",
+    "auth",
   ];
 
   // Clean up sync directories.
@@ -789,93 +788,6 @@ export const Icons = {
   );
 }
 
-async function buildAuthRegistry(authRegistry: Registry) {
-  const authTargetPath = path.join(REGISTRY_PATH, "auth");
-
-  // Clean and create registry directory
-  await rimraf(authTargetPath);
-  await fs.mkdir(authTargetPath, { recursive: true });
-
-  // Filter only auth components
-  const authComponents = authRegistry.items.filter(
-    (item) => item.type === "registry:auth"
-  );
-
-  // Generate JSON for each auth component
-  for (const component of authComponents) {
-    const componentPath = path.join(authTargetPath, `${component.name}.json`);
-    const filesWithContent: { path: string; type: string; content: string }[] =
-      [];
-
-    if (component.files) {
-      for (const file of component.files) {
-        const filePath = typeof file === "string" ? file : file.path;
-        let sourcePath;
-
-        if (filePath.startsWith("new-york/ui")) {
-          sourcePath = path.join(
-            NEW_YORK_UI_PATH,
-            filePath.replace("new-york/ui/", "")
-          );
-        } else {
-          sourcePath = path.join(AUTH_PATH, filePath);
-        }
-
-        try {
-          const content = await fs.readFile(sourcePath, "utf-8");
-          filesWithContent.push({
-            path: filePath,
-            type: file.type, // Ensure the type is set correctly
-            content: content,
-          });
-        } catch (error) {
-          console.warn(`⚠️ Failed to read ${filePath}: ${error}`);
-        }
-      }
-
-      // Create JSON payload using registryItemSchema
-      const payload = registryItemSchema.safeParse({
-        $schema: "http://localhost:3001/schema/registry-item.json",
-        author: "axionjs (https://www.axionjs.com)",
-        ...component,
-        files: filesWithContent,
-      });
-
-      if (payload.success) {
-        await fs.writeFile(
-          componentPath,
-          JSON.stringify(payload.data, null, 2),
-          "utf8"
-        );
-      } else {
-        console.error(
-          `❌ Validation failed for ${component.name}:`,
-          payload.error
-        );
-      }
-    }
-  }
-
-  // Create index.json
-  const indexData = authComponents.map((component) => ({
-    name: component.name,
-    type: component.type,
-    description: component.description,
-    dependencies: component.dependencies || [],
-    registryDependencies: component.registryDependencies || [],
-    files: component.files?.map((file) => ({
-      path: typeof file === "string" ? file : file.path,
-      type: file.type,
-    })),
-  }));
-
-  await fs.writeFile(
-    path.join(authTargetPath, "index.json"),
-    JSON.stringify(indexData, null, 2),
-    "utf8"
-  );
-}
-
 try {
   console.log("💽 Building registry...");
   const result = registrySchema.safeParse(registry);
@@ -890,7 +802,6 @@ try {
   await buildStyles(result.data);
   await buildStylesIndex();
   await buildThemes();
-  await buildAuthRegistry(result.data);
   await buildRegistryIcons();
   await buildIcons();
 

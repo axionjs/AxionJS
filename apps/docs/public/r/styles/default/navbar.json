@@ -1,0 +1,18 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "navbar",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Navbar for authenticated users.",
+  "registryDependencies": [
+    "user-button"
+  ],
+  "files": [
+    {
+      "path": "auth/components/navbar.tsx",
+      "content": "import { UserButton } from \"@/registry/default/auth/components/user-button\";\n\nexport const Navbar = async () => {\n  return (\n    <nav className=\"flex w-full mt-9 justify-end rounded-xl p-4 shadow-lg\">\n      <UserButton />\n    </nav>\n  );\n};\n",
+      "type": "registry:auth_comp",
+      "target": ""
+    }
+  ]
+}

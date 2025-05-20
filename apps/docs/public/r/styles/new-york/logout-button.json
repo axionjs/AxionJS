@@ -1,0 +1,15 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "logout-button",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Button for logging out.",
+  "files": [
+    {
+      "path": "auth/components/logout-button.tsx",
+      "content": "\"use client\";\n\nimport { logout } from \"@/registry/new-york/auth/actions/auth-actions\";\n\n// alternatively, use client-side signOut() from next-auth/react\n// import { signOut } from \"next-auth/react\";\n\ninterface LogoutButtonProps {\n  children: React.ReactNode;\n}\n\nexport function LogoutButton({ children }: LogoutButtonProps) {\n  const onClick = () => {\n    logout();\n  };\n\n  return (\n    <span onClick={onClick} className=\"cursor-pointer\">\n      {children}\n    </span>\n  );\n}\n",
+      "type": "registry:auth_comp",
+      "target": ""
+    }
+  ]
+}

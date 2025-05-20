@@ -1,0 +1,19 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "user-button",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Button for user actions.",
+  "registryDependencies": [
+    "logout-button",
+    "dropdown-menu"
+  ],
+  "files": [
+    {
+      "path": "auth/components/user-button.tsx",
+      "content": "import { User } from \"lucide-react\";\nimport { LogOutIcon } from \"lucide-react\";\nimport { LogoutButton } from \"@/registry/default/auth/components/logout-button\";\n\nimport {\n  Avatar,\n  AvatarImage,\n  AvatarFallback,\n} from \"@/registry/default/ui/avatar\";\nimport {\n  DropdownMenu,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuTrigger,\n} from \"@/registry/default/ui/dropdown-menu\";\nimport { currentUser } from \"@/registry/default/auth/lib/get-user\";\n\nexport const UserButton = async () => {\n  const user = await currentUser();\n\n  return (\n    <DropdownMenu>\n      <DropdownMenuTrigger>\n        <Avatar>\n          <AvatarImage src={user?.image || \"\"} />\n          <AvatarFallback className=\"bg-sky-500\">\n            <User className=\"text-white\" />\n          </AvatarFallback>\n        </Avatar>\n      </DropdownMenuTrigger>\n      <DropdownMenuContent className=\"w-40\" align=\"end\">\n        {/* tutorial code: cursor-pointer on LogoutButton won't work because DropdownMenuItem will override it */}\n        <LogoutButton>\n          <DropdownMenuItem>\n            <LogOutIcon className=\"mr-2 h-4 w-4\" />\n            Logout\n          </DropdownMenuItem>\n        </LogoutButton>\n      </DropdownMenuContent>\n    </DropdownMenu>\n  );\n};\n",
+      "type": "registry:auth_comp",
+      "target": ""
+    }
+  ]
+}

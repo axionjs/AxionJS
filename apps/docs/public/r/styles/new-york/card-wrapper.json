@@ -1,0 +1,20 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "card-wrapper",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Wrapper for authentication cards.",
+  "registryDependencies": [
+    "social",
+    "back-button",
+    "card"
+  ],
+  "files": [
+    {
+      "path": "auth/components/card-wrapper.tsx",
+      "content": "\"use client\";\n\nimport {\n  Card,\n  CardContent,\n  CardFooter,\n  CardHeader,\n} from \"@/registry/new-york/ui/card\";\nimport { Social } from \"@/registry/new-york/auth/components/social\";\nimport { BackButton } from \"@/registry/new-york/auth/components/back-button\";\n\ninterface HeaderProps {\n  mainLabel: string;\n  subLabel: string;\n}\n\nexport const Header = ({ mainLabel, subLabel }: HeaderProps) => {\n  return (\n    <div className=\"w-full flex flex-col gap-y-4 items-center justify-center\">\n      <h1 className=\"text-3xl font-bold\">{mainLabel}</h1>\n      <p className=\"text-muted-foreground text-sm\">{subLabel}</p>\n    </div>\n  );\n};\n\ninterface CardWrapperProps {\n  children: React.ReactNode;\n  mainHeaderLabel: string;\n  subHeaderLabel: string;\n  backButtonLabel: string;\n  backButtonHref: string;\n  showSocial?: boolean;\n}\n\nexport const CardWrapper = ({\n  children,\n  mainHeaderLabel,\n  subHeaderLabel,\n  backButtonLabel,\n  backButtonHref,\n  showSocial,\n}: CardWrapperProps) => {\n  return (\n    <Card className=\"w-[400px] shadow-lg\">\n      <CardHeader>\n        <Header mainLabel={mainHeaderLabel} subLabel={subHeaderLabel} />\n      </CardHeader>\n      <CardContent>{children}</CardContent>\n      {showSocial && (\n        <CardFooter>\n          <Social />\n        </CardFooter>\n      )}\n      <CardFooter>\n        <BackButton label={backButtonLabel} href={backButtonHref} />\n      </CardFooter>\n    </Card>\n  );\n};\n",
+      "type": "registry:auth_comp",
+      "target": ""
+    }
+  ]
+}

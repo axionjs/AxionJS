@@ -1,0 +1,15 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "two-factor-actions",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Actions for handling two-factor authentication.",
+  "files": [
+    {
+      "path": "auth/actions/two-factor.ts",
+      "content": "import { db } from \"@/registry/new-york/auth/lib/db\";\nimport crypto from \"crypto\";\n\nexport const getTwoFactorTokenByToken = async (token: string) => {\n  try {\n    const twoFactorToken = await db.twoFactorToken.findUnique({\n      where: { token },\n    });\n\n    return twoFactorToken;\n  } catch {\n    return null;\n  }\n};\n\nexport const getTwoFactorTokenByEmail = async (email: string) => {\n  try {\n    const twoFactorToken = await db.twoFactorToken.findFirst({\n      where: { email },\n    });\n\n    return twoFactorToken;\n  } catch {\n    return null;\n  }\n};\n\nexport const getTwoFactorConfirmationByUserId = async (userId: string) => {\n  try {\n    const twoFactorConfirmation = await db.twoFactorConfirmation.findUnique({\n      where: { userId },\n    });\n\n    return twoFactorConfirmation;\n  } catch {\n    return null;\n  }\n};\n\nexport const generateTwoFactorToken = async (email: string) => {\n  const token = crypto.randomInt(100_000, 1_000_000).toString();\n\n  const expires = new Date(new Date().getTime() + 5 * 60 * 1000); // 5 minute expiry\n\n  const existingToken = await getTwoFactorTokenByEmail(email);\n\n  if (existingToken) {\n    await db.twoFactorToken.delete({\n      where: { id: existingToken.id },\n    });\n  }\n\n  const twoFactorToken = await db.twoFactorToken.create({\n    data: {\n      email,\n      token,\n      expires,\n    },\n  });\n\n  return twoFactorToken;\n};\n",
+      "type": "registry:actions",
+      "target": ""
+    }
+  ]
+}

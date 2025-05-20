@@ -1,0 +1,24 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "login",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Login page for users to sign in.",
+  "registryDependencies": [
+    "login-form"
+  ],
+  "files": [
+    {
+      "path": "auth/pages/auth/login/page.tsx",
+      "content": "import { LoginForm } from \"@/registry/new-york/auth/components/login-form\";\n\nconst LoginPage = () => {\n  return <LoginForm />;\n};\n\nexport default LoginPage;\n",
+      "type": "registry:page",
+      "target": "app/auth/login/page.tsx"
+    },
+    {
+      "path": "auth/pages/auth/layout.tsx",
+      "content": "import React from \"react\";\n\nconst AuthLayout = ({ children }: { children: React.ReactNode }) => {\n  return (\n    <div className=\"h-full flex items-center justify-center pt-10\">\n      {children}\n    </div>\n  );\n};\nexport default AuthLayout;\n",
+      "type": "registry:file",
+      "target": "app/auth/layout.tsx"
+    }
+  ]
+}

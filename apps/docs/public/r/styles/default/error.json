@@ -1,0 +1,18 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "error",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Error page for authentication errors.",
+  "registryDependencies": [
+    "error-card"
+  ],
+  "files": [
+    {
+      "path": "auth/pages/auth/error/page.tsx",
+      "content": "import { ErrorCard } from \"@/registry/default/auth/components/error-card\";\n\nconst AuthErrorPage = () => {\n  return <ErrorCard />;\n};\n\nexport default AuthErrorPage;\n",
+      "type": "registry:page",
+      "target": "app/auth/error/page.tsx"
+    }
+  ]
+}

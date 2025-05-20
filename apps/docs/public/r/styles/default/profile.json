@@ -1,0 +1,18 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "profile",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Profile page for users to manage their account settings.",
+  "registryDependencies": [
+    "settings-form"
+  ],
+  "files": [
+    {
+      "path": "auth/pages/(protected)/profile/page.tsx",
+      "content": "import { CardWrapper } from \"@/registry/default/auth/components/card-wrapper\";\nimport { SettingsForm } from \"@/registry/default/auth/components/settings-form\";\n\nexport default function SettingsPage() {\n  return (\n    <div className=\"w-full mx-auto py-8 px-4\">\n      <CardWrapper\n        mainHeaderLabel=\"Profile\"\n        subHeaderLabel=\"Update your account settings\"\n        backButtonLabel=\"Back to Dashboard\"\n        backButtonHref=\"/dashboard\"\n      >\n        <SettingsForm />\n      </CardWrapper>\n    </div>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/(protected)/profile/page.tsx"
+    }
+  ]
+}

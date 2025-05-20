@@ -1,0 +1,15 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "role-gate",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Gate for checking user roles.",
+  "files": [
+    {
+      "path": "auth/components/role-gate.tsx",
+      "content": "import { currentRole } from \"@/registry/new-york/auth/lib/get-user\";\nimport { UserRole } from \"@prisma/client\";\nimport { FormError } from \"@/registry/new-york/auth/components/form-error\";\n\ninterface RoleGateProps {\n  children: React.ReactNode;\n  allowedRole: UserRole;\n}\n\nexport async function RoleGate({ children, allowedRole }: RoleGateProps) {\n  const role = await currentRole();\n\n  if (role !== allowedRole) {\n    return (\n      <FormError message=\"You do not have permission to view this content!\" />\n    );\n  }\n  return <>{children}</>;\n}\n",
+      "type": "registry:auth_comp",
+      "target": ""
+    }
+  ]
+}

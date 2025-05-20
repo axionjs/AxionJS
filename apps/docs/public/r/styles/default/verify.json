@@ -1,0 +1,18 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "verify",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "New verification page for users to verify their email address.",
+  "registryDependencies": [
+    "new-verification-form"
+  ],
+  "files": [
+    {
+      "path": "auth/pages/auth/verify/page.tsx",
+      "content": "\"use client\";\n\nimport { NewVerificationForm } from \"@/registry/default/auth/components/new-verification-form\";\n\nexport default function VerifyPage() {\n  return <NewVerificationForm />;\n}\n",
+      "type": "registry:page",
+      "target": "app/auth/verify/page.tsx"
+    }
+  ]
+}

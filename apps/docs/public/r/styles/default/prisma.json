@@ -1,0 +1,20 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "prisma",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Prisma client for interacting with the database.",
+  "dependencies": [
+    "prisma",
+    "@prisma/client",
+    "@auth/prisma-adapter"
+  ],
+  "files": [
+    {
+      "path": "auth/lib/db.ts",
+      "content": "import { PrismaClient } from \"@/lib/generated/prisma/client\";\n\ndeclare global {\n  var prisma: PrismaClient | undefined;\n}\nexport const db = globalThis.prisma || new PrismaClient();\n\nif (process.env.NODE_ENV !== \"production\") {\n  globalThis.prisma = db;\n}\n",
+      "type": "registry:lib",
+      "target": ""
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "dashboard",
+  "type": "registry:auth",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "Dashboard page for authenticated users.",
+  "registryDependencies": [
+    "badge"
+  ],
+  "files": [
+    {
+      "path": "auth/pages/dashboard/page.tsx",
+      "content": "import { redirect } from \"next/navigation\";\nimport { auth } from \"@/registry/default/auth/lib/auth\";\nimport {\n  Card,\n  CardContent,\n  CardHeader,\n  CardTitle,\n} from \"@/registry/default/ui/card\";\nimport { Button } from \"@/registry/default/ui/button\";\nimport { UserInfo } from \"@/registry/default/auth/components/user-info\";\n\nexport default async function UserDashboard() {\n  const session = await auth();\n\n  if (!session) {\n    redirect(\"/auth/login\");\n  }\n\n  return (\n    <div className=\"max-w-6xl mx-auto py-8 px-4\">\n      <h1 className=\"text-3xl font-bold mb-8\">User Dashboard</h1>\n      <div className=\"grid gap-6 md:grid-cols-2\">\n        <UserInfo user={session?.user} label=\"\" />\n\n        <Card className=\"shadow-md\">\n          <CardHeader>\n            <CardTitle>Account Settings</CardTitle>\n          </CardHeader>\n          <CardContent>\n            <p className=\"text-sm text-muted-foreground mb-4\">\n              Manage your account settings and preferences.\n            </p>\n            <div className=\"space-y-2\">\n              <Button className=\"w-full\" variant=\"outline\">\n                <a href=\"/profile\">Edit Profile</a>\n              </Button>\n              {!session?.user?.isOAuth && (\n                <Button className=\"w-full\" variant=\"outline\">\n                  <a href=\"/profile/change-password\">Change Password</a>\n                </Button>\n              )}\n            </div>\n          </CardContent>\n        </Card>\n      </div>\n      {session.user.role === \"ADMIN\" && (\n        <div className=\"mt-6\">\n          <Card className=\"shadow-md\">\n            <CardHeader>\n              <CardTitle>Admin Access</CardTitle>\n            </CardHeader>\n            <CardContent>\n              <p className=\"text-sm text-muted-foreground mb-4\">\n                You have admin privileges. You can access the admin dashboard to\n                manage users and system settings.\n              </p>\n              <Button>\n                <a href=\"/admin\">Go to Admin Dashboard</a>\n              </Button>\n            </CardContent>\n          </Card>\n        </div>\n      )}\n    </div>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/dashboard/page.tsx"
+    },
+    {
+      "path": "auth/lib/get-user.ts",
+      "content": "import { auth } from \"@/registry/default/dynamic-components/simple-auth/lib/auth\";\n\nexport const currentUser = async () => {\n  const session = await auth();\n  return session?.user;\n};\n\nexport const currentRole = async () => {\n  const session = await auth();\n  return session?.user?.role;\n};\nexport const isCurrentAccountOAuth = async () => {\n  const session = await auth();\n  return session?.user?.isOAuth;\n};\n",
+      "type": "registry:lib",
+      "target": ""
+    },
+    {
+      "path": "auth/components/user-info.tsx",
+      "content": "import { ExtendedUser } from \"@/registry/default/auth/lib/next-auth\";\nimport { Badge } from \"@/registry/default/ui/badge\";\nimport { Card, CardContent, CardHeader } from \"@/registry/default/ui/card\";\nimport { currentUser } from \"@/registry/default/auth/lib/get-user\";\nimport {\n  Avatar,\n  AvatarFallback,\n  AvatarImage,\n} from \"@/registry/default/ui/avatar\";\nimport { User } from \"lucide-react\";\n\ninterface UserInfoProps {\n  user?: ExtendedUser;\n  label: string;\n}\n\nexport async function UserInfo({ user, label }: UserInfoProps) {\n  const userData = await currentUser();\n  return (\n    <Card className=\"shadow-md\">\n      <CardHeader>\n        <p className=\"text-center text-2xl font-semibold\">{label}</p>\n      </CardHeader>\n      <CardContent className=\"space-y-4\">\n        <div className=\"flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm\">\n          <p className=\"text-sm font-medium\">ID</p>\n          <p className=\"text-sm text-muted-foreground\">{user?.id}</p>\n        </div>\n        <div className=\"flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm\">\n          <p className=\"text-sm font-medium\">Name</p>\n          <p className=\"mtext-sm text-muted-foreground\">{user?.name}</p>\n        </div>\n\n        <Avatar>\n          <AvatarImage src={user?.image || \"\"} />\n          <AvatarFallback className=\"bg-sky-500\">\n            <User className=\"text-white\" />\n          </AvatarFallback>\n        </Avatar>\n\n        <div className=\"flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm\">\n          <p className=\"text-sm font-medium\">Email</p>\n          <p className=\"text-sm text-muted-foreground\">{user?.email}</p>\n        </div>\n        <div className=\"flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm\">\n          <p className=\"text-sm font-medium\">Role</p>\n          <p className=\"text-sm text-muted-foreground\">{user?.role}</p>\n        </div>\n        {!userData?.isOAuth && (\n          <div className=\"flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm\">\n            <p className=\"text-sm font-medium\">Two Factor Authentication</p>\n            <Badge\n              variant={user?.isTwoFactorEnabled ? \"default\" : \"destructive\"}\n            >\n              {user?.isTwoFactorEnabled ? \"ON\" : \"OFF\"}\n            </Badge>\n          </div>\n        )}\n      </CardContent>\n    </Card>\n  );\n}\n",
+      "type": "registry:auth_comp",
+      "target": ""
+    }
+  ]
+}
