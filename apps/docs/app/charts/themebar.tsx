@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useChartTheme, chartThemes } from "./chart-theme-utils";
-import { Copy, Check, X } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 import { Button } from "@/registry/new-york/ui/button";
 import {
   Tooltip,
@@ -18,9 +18,8 @@ import {
   DialogTitle,
 } from "@/registry/new-york/ui/dialog";
 
-export function ThemeSidebar() {
+export function ThemeBar() {
   const { chartTheme, setChartTheme, getChartThemeCSS } = useChartTheme();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [codeDialogOpen, setCodeDialogOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -30,64 +29,54 @@ export function ThemeSidebar() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleCopyCode = () => {
+    setCodeDialogOpen(true);
+  };
+
   return (
     <>
-      {/* Sidebar Toggle Button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed right-0 top-1/2 z-50 -translate-y-1/2 bg-primary text-primary-foreground p-2 rounded-l-md shadow-md"
-        aria-label="Toggle theme sidebar"
-      >
-        {sidebarOpen ? (
-          <X size={16} />
-        ) : (
-          <span>{chartThemes[chartTheme].icon}</span>
-        )}
-      </button>
-
-      {/* Sidebar */}
-      <div
-        className={`fixed right-0 top-1/2 z-40 -translate-y-1/2 bg-card border rounded-l-md shadow-lg transition-transform duration-300 ${
-          sidebarOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-        style={{ width: "80px" }}
-      >
-        <div className="p-2">
-          <div className="flex flex-col items-center gap-2">
+      <div className="w-full mb-8">
+        <div className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg border bg-card overflow-x-auto">
+          {/* Theme colors with names on the left */}
+          <div className="flex items-center gap-4 flex-shrink-0">
             {Object.entries(chartThemes).map(([key, theme]) => (
               <TooltipProvider key={key}>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
                       onClick={() => setChartTheme(key)}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${
+                      className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all ${
                         chartTheme === key
-                          ? "ring-2 ring-primary"
-                          : "hover:bg-accent"
+                          ? "bg-primary/10 text-primary"
+                          : "hover:bg-accent text-muted-foreground"
                       }`}
                       aria-label={`Switch to ${theme.name} theme`}
                     >
-                      {theme.icon}
+                      <span className="text-lg flex-shrink-0">
+                        {theme.icon}
+                      </span>
+                      <span className="text-sm font-medium hidden sm:inline-block">
+                        {theme.name}
+                      </span>
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent side="left">
+                  <TooltipContent side="top">
                     <p>{theme.name}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             ))}
-
-            <div className="pt-2 mt-2 border-t w-full">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setCodeDialogOpen(true)}
-                className="w-full text-xs"
-              >
-                CSS
-              </Button>
-            </div>
           </div>
+
+          {/* Copy code button on the right */}
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleCopyCode}
+            className="bg-black text-white hover:bg-black/90 dark:bg-black dark:text-white flex-shrink-0"
+          >
+            Copy code
+          </Button>
         </div>
       </div>
 

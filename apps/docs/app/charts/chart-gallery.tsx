@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "./theme-provider";
 import { ThemeSync, forceThemeSync, useStoredTheme } from "./theme-sync-utils";
 import { ChartCard } from "./chart-card";
-import { ThemeSidebar } from "./theme-sidebar";
+import { ThemeBar } from "./themebar";
 import { ChartThemeProvider } from "./chart-theme-utils";
 
 // Import chart components data from the separate file
@@ -96,9 +96,6 @@ function ChartsPageContent() {
       {/* Component to sync themes */}
       <ThemeSync />
 
-      {/* Theme Sidebar */}
-      <ThemeSidebar />
-
       <div className="container mx-auto py-10 mt-24 mb-12">
         <div className="mb-10 flex items-center justify-between">
           <div>
@@ -111,6 +108,9 @@ function ChartsPageContent() {
             </p>
           </div>
         </div>
+
+        {/* Theme Bar */}
+        <ThemeBar />
 
         <div className="mb-8">
           <div className="relative">

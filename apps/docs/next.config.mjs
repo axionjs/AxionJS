@@ -24,6 +24,10 @@ const config = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "unsplash.com",
+      },
     ],
   },
   serverExternalPackages: ["ts-morph", "typescript", "oxc-transform"],

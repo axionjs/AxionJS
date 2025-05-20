@@ -11,17 +11,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/registry/new-york/ui/dialog";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/registry/new-york/ui/tabs";
-import {
-  SyntaxHighlighter,
-  InstallCommand,
-  convertTsToJs,
-} from "./syntax-highlighting";
+import { RegistryViewerSingle } from "@/app/components/docs/RegistryViewerSinlge";
+import { CommandViewer } from "@/app/components/docs/CommandViewer";
 
 export function ChartCard({ chartInfo }) {
   const ChartComponent = chartInfo.component;
@@ -40,30 +31,21 @@ export function ChartCard({ chartInfo }) {
               <Code className="h-4 w-4" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-4xl">
+          <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
             <DialogHeader>
               <DialogTitle>{chartInfo.displayName}</DialogTitle>
               <DialogDescription>{chartInfo.description}</DialogDescription>
             </DialogHeader>
-            <Tabs defaultValue="typescript">
-              <TabsList className="mb-4">
-                <TabsTrigger value="typescript">TypeScript</TabsTrigger>
-                <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-              </TabsList>
-              <TabsContent value="typescript">
-                <SyntaxHighlighter
-                  code={chartInfo.tsCode}
-                  language="typescript"
-                />
-              </TabsContent>
-              <TabsContent value="javascript">
-                <SyntaxHighlighter
-                  code={convertTsToJs(chartInfo.tsCode)}
-                  language="javascript"
-                />
-              </TabsContent>
-            </Tabs>
-            <InstallCommand command={chartInfo.installCommand} />
+            <div className="flex-1 overflow-hidden">
+              <RegistryViewerSingle
+                componentName={chartInfo.name}
+                style="new-york"
+                className="h-full"
+              />
+            </div>
+            <div className="mt-4">
+              <CommandViewer command={chartInfo.installCommand} />
+            </div>
           </DialogContent>
         </Dialog>
       </div>

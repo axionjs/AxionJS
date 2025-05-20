@@ -176,6 +176,22 @@
   }
 }
 
+.rounded-lg {
+  border-radius: var(--radius);
+}
+
+.rounded-md {
+  border-radius: calc(var(--radius) * 0.75);
+}
+
+.rounded-sm {
+  border-radius: calc(var(--radius) * 0.5);
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
 /* Accessibility Tool CSS */
 /* High contrast example (very simplistic) */
 /* Accessibility Tool CSS */
