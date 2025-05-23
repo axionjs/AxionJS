@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 interface LogoProps {
-  className?: string
+  className?: string;
 }
 
 export function Logo({ className }: LogoProps) {
@@ -20,5 +20,5 @@ export function Logo({ className }: LogoProps) {
       <path d="M2 17l10 5 10-5" />
       <path d="M2 12l10 5 10-5" />
     </svg>
-  )
+  );
 }

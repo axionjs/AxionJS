@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useState } from "react";
 import { BlockCard } from "./block-card";
 // import { ThemeBar } from "./themebar";

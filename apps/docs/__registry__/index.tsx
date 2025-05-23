@@ -1860,6 +1860,861 @@ export const Index: Record<string, any> = {
       source: "__registry__/new-york/blocks/login-02/page.tsx",
       meta: undefined,
     },
+    "animated-group": {
+      name: "animated-group",
+      description: "A simple animated group block.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/blocks/animated-group.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/animated-group.tsx")),
+      source: "__registry__/new-york/blocks/animated-group.tsx",
+      meta: undefined,
+    },
+    "cta-card": {
+      name: "cta-card",
+      description: "A simple call to action card block.",
+      type: "registry:block",
+      registryDependencies: ["button","card"],
+      files: [{
+        path: "registry/new-york/blocks/cta-card.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/cta-card.tsx")),
+      source: "__registry__/new-york/blocks/cta-card.tsx",
+      meta: undefined,
+    },
+    "cta-centered": {
+      name: "cta-centered",
+      description: "A centered call to action block.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/new-york/blocks/cta-centered.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/cta-centered.tsx")),
+      source: "__registry__/new-york/blocks/cta-centered.tsx",
+      meta: undefined,
+    },
+    "event-registration-form-1": {
+      name: "event-registration-form-1",
+      description: "A form for event registration.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","radio-group","checkbox","select","use-toast","badge","tooltip"],
+      files: [{
+        path: "registry/new-york/blocks/event-registration-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/event-registration-form-1.tsx")),
+      source: "__registry__/new-york/blocks/event-registration-form-1.tsx",
+      meta: undefined,
+    },
+    "event-registration-form-2": {
+      name: "event-registration-form-2",
+      description: "A form for event registration.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","textarea","checkbox","select","use-toast","separator"],
+      files: [{
+        path: "registry/new-york/blocks/event-registration-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/event-registration-form-2.tsx")),
+      source: "__registry__/new-york/blocks/event-registration-form-2.tsx",
+      meta: undefined,
+    },
+    "event-registration-form-3": {
+      name: "event-registration-form-3",
+      description: "A form for event registration.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","use-toast","radio-group"],
+      files: [{
+        path: "registry/new-york/blocks/event-registration-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/event-registration-form-3.tsx")),
+      source: "__registry__/new-york/blocks/event-registration-form-3.tsx",
+      meta: undefined,
+    },
+    "faq-accordion": {
+      name: "faq-accordion",
+      description: "A FAQ accordion component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/blocks/faq-accordion.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/faq-accordion.tsx")),
+      source: "__registry__/new-york/blocks/faq-accordion.tsx",
+      meta: undefined,
+    },
+    "faq-grid": {
+      name: "faq-grid",
+      description: "A FAQ grid component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/new-york/blocks/faq-grid.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/faq-grid.tsx")),
+      source: "__registry__/new-york/blocks/faq-grid.tsx",
+      meta: undefined,
+    },
+    "faq-tabs": {
+      name: "faq-tabs",
+      description: "A FAQ tabs component.",
+      type: "registry:block",
+      registryDependencies: ["tabs","input"],
+      files: [{
+        path: "registry/new-york/blocks/faq-tabs.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/faq-tabs.tsx")),
+      source: "__registry__/new-york/blocks/faq-tabs.tsx",
+      meta: undefined,
+    },
+    "footer-dark": {
+      name: "footer-dark",
+      description: "A dark footer component.",
+      type: "registry:block",
+      registryDependencies: ["logo","input","button"],
+      files: [{
+        path: "registry/new-york/blocks/footer-dark.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/footer-dark.tsx")),
+      source: "__registry__/new-york/blocks/footer-dark.tsx",
+      meta: undefined,
+    },
+    "footer-multi-column": {
+      name: "footer-multi-column",
+      description: "A multi-column footer component.",
+      type: "registry:block",
+      registryDependencies: ["logo","input","button"],
+      files: [{
+        path: "registry/new-york/blocks/footer-multi-column.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/footer-multi-column.tsx")),
+      source: "__registry__/new-york/blocks/footer-multi-column.tsx",
+      meta: undefined,
+    },
+    "footer-simple": {
+      name: "footer-simple",
+      description: "A simple footer component.",
+      type: "registry:block",
+      registryDependencies: ["logo"],
+      files: [{
+        path: "registry/new-york/blocks/footer-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/footer-simple.tsx")),
+      source: "__registry__/new-york/blocks/footer-simple.tsx",
+      meta: undefined,
+    },
+    "hero-app": {
+      name: "hero-app",
+      description: "A hero app component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge"],
+      files: [{
+        path: "registry/new-york/blocks/hero-app.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/hero-app.tsx")),
+      source: "__registry__/new-york/blocks/hero-app.tsx",
+      meta: undefined,
+    },
+    "hero-centered": {
+      name: "hero-centered",
+      description: "A centered hero component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge"],
+      files: [{
+        path: "registry/new-york/blocks/hero-centered.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/hero-centered.tsx")),
+      source: "__registry__/new-york/blocks/hero-centered.tsx",
+      meta: undefined,
+    },
+    "hero-gradient": {
+      name: "hero-gradient",
+      description: "A gradient hero component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/new-york/blocks/hero-gradient.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/hero-gradient.tsx")),
+      source: "__registry__/new-york/blocks/hero-gradient.tsx",
+      meta: undefined,
+    },
+    "hero-simple": {
+      name: "hero-simple",
+      description: "A simple hero component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/new-york/blocks/hero-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/hero-simple.tsx")),
+      source: "__registry__/new-york/blocks/hero-simple.tsx",
+      meta: undefined,
+    },
+    "hero-split": {
+      name: "hero-split",
+      description: "A split hero component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/new-york/blocks/hero-split.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/hero-split.tsx")),
+      source: "__registry__/new-york/blocks/hero-split.tsx",
+      meta: undefined,
+    },
+    "hero-video": {
+      name: "hero-video",
+      description: "A video hero component.",
+      type: "registry:block",
+      registryDependencies: ["button","dialog"],
+      files: [{
+        path: "registry/new-york/blocks/hero-video.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/hero-video.tsx")),
+      source: "__registry__/new-york/blocks/hero-video.tsx",
+      meta: undefined,
+    },
+    "infinite-slider": {
+      name: "infinite-slider",
+      description: "An infinite slider component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/blocks/infinite-slider.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/infinite-slider.tsx")),
+      source: "__registry__/new-york/blocks/infinite-slider.tsx",
+      meta: undefined,
+    },
+    "login-form-1": {
+      name: "login-form-1",
+      description: "A login form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","checkbox","use-toast","password-input"],
+      files: [{
+        path: "registry/new-york/blocks/login-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/login-form-1.tsx")),
+      source: "__registry__/new-york/blocks/login-form-1.tsx",
+      meta: undefined,
+    },
+    "login-form-2": {
+      name: "login-form-2",
+      description: "A login form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","use-toast"],
+      files: [{
+        path: "registry/new-york/blocks/login-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/login-form-2.tsx")),
+      source: "__registry__/new-york/blocks/login-form-2.tsx",
+      meta: undefined,
+    },
+    "login-form-3": {
+      name: "login-form-3",
+      description: "A login form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","use-toast"],
+      files: [{
+        path: "registry/new-york/blocks/login-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/login-form-3.tsx")),
+      source: "__registry__/new-york/blocks/login-form-3.tsx",
+      meta: undefined,
+    },
+    "logo-cloud-featured": {
+      name: "logo-cloud-featured",
+      description: "A logo cloud featured component.",
+      type: "registry:block",
+      registryDependencies: ["badge"],
+      files: [{
+        path: "registry/new-york/blocks/logo-cloud-featured.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/logo-cloud-featured.tsx")),
+      source: "__registry__/new-york/blocks/logo-cloud-featured.tsx",
+      meta: undefined,
+    },
+    "logo-cloud-grid": {
+      name: "logo-cloud-grid",
+      description: "A logo cloud grid component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/new-york/blocks/logo-cloud-grid.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/logo-cloud-grid.tsx")),
+      source: "__registry__/new-york/blocks/logo-cloud-grid.tsx",
+      meta: undefined,
+    },
+    "logo-cloud-infinite": {
+      name: "logo-cloud-infinite",
+      description: "A logo cloud infinite component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/blocks/logo-cloud-infinite.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/logo-cloud-infinite.tsx")),
+      source: "__registry__/new-york/blocks/logo-cloud-infinite.tsx",
+      meta: undefined,
+    },
+    "logo-cloud-simple": {
+      name: "logo-cloud-simple",
+      description: "A logo cloud simple component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/blocks/logo-cloud-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/logo-cloud-simple.tsx")),
+      source: "__registry__/new-york/blocks/logo-cloud-simple.tsx",
+      meta: undefined,
+    },
+    "navbar-animated": {
+      name: "navbar-animated",
+      description: "A navbar animated component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","avatar","sheet","logo"],
+      files: [{
+        path: "registry/new-york/blocks/navbar-animated.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/navbar-animated.tsx")),
+      source: "__registry__/new-york/blocks/navbar-animated.tsx",
+      meta: undefined,
+    },
+    "navbar-bottom-icons": {
+      name: "navbar-bottom-icons",
+      description: "A navbar bottom icons component.",
+      type: "registry:block",
+      registryDependencies: ["button","separator","tooltip"],
+      files: [{
+        path: "registry/new-york/blocks/navbar-bottom-icons.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/navbar-bottom-icons.tsx")),
+      source: "__registry__/new-york/blocks/navbar-bottom-icons.tsx",
+      meta: undefined,
+    },
+    "navbar-desktop": {
+      name: "navbar-desktop",
+      description: "A navbar desktop component.",
+      type: "registry:block",
+      registryDependencies: ["button","logo","navigation-menu","mode-toggle"],
+      files: [{
+        path: "registry/new-york/blocks/navbar-desktop.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/navbar-desktop.tsx")),
+      source: "__registry__/new-york/blocks/navbar-desktop.tsx",
+      meta: undefined,
+    },
+    "navbar-dropdown": {
+      name: "navbar-dropdown",
+      description: "A navbar dropdown component.",
+      type: "registry:block",
+      registryDependencies: ["button","dropdown-menu"],
+      files: [{
+        path: "registry/new-york/blocks/navbar-dropdown.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/navbar-dropdown.tsx")),
+      source: "__registry__/new-york/blocks/navbar-dropdown.tsx",
+      meta: undefined,
+    },
+    "navbar-mobile": {
+      name: "navbar-mobile",
+      description: "A navbar mobile component.",
+      type: "registry:block",
+      registryDependencies: ["button","logo","sheet","mode-toggle"],
+      files: [{
+        path: "registry/new-york/blocks/navbar-mobile.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/navbar-mobile.tsx")),
+      source: "__registry__/new-york/blocks/navbar-mobile.tsx",
+      meta: undefined,
+    },
+    "navbar-responsive": {
+      name: "navbar-responsive",
+      description: "A navbar responsive component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","sheet"],
+      files: [{
+        path: "registry/new-york/blocks/navbar-responsive.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/navbar-responsive.tsx")),
+      source: "__registry__/new-york/blocks/navbar-responsive.tsx",
+      meta: undefined,
+    },
+    "navbar-simple": {
+      name: "navbar-simple",
+      description: "A simple navbar component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/new-york/blocks/navbar-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/navbar-simple.tsx")),
+      source: "__registry__/new-york/blocks/navbar-simple.tsx",
+      meta: undefined,
+    },
+    "newsletter-form-1": {
+      name: "newsletter-form-1",
+      description: "A newsletter form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","use-toast"],
+      files: [{
+        path: "registry/new-york/blocks/newsletter-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/newsletter-form-1.tsx")),
+      source: "__registry__/new-york/blocks/newsletter-form-1.tsx",
+      meta: undefined,
+    },
+    "newsletter-form-2": {
+      name: "newsletter-form-2",
+      description: "A newsletter form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","use-toast","checkbox","switch","tooltip"],
+      files: [{
+        path: "registry/new-york/blocks/newsletter-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/newsletter-form-2.tsx")),
+      source: "__registry__/new-york/blocks/newsletter-form-2.tsx",
+      meta: undefined,
+    },
+    "newsletter-form-3": {
+      name: "newsletter-form-3",
+      description: "A newsletter form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","use-toast","select"],
+      files: [{
+        path: "registry/new-york/blocks/newsletter-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/newsletter-form-3.tsx")),
+      source: "__registry__/new-york/blocks/newsletter-form-3.tsx",
+      meta: undefined,
+    },
+    "pricing-comparison": {
+      name: "pricing-comparison",
+      description: "A pricing comparison component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge","table","use-media-query"],
+      files: [{
+        path: "registry/new-york/blocks/pricing-comparison.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/pricing-comparison.tsx")),
+      source: "__registry__/new-york/blocks/pricing-comparison.tsx",
+      meta: undefined,
+    },
+    "pricing-simple": {
+      name: "pricing-simple",
+      description: "A simple pricing component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge","separator"],
+      files: [{
+        path: "registry/new-york/blocks/pricing-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/pricing-simple.tsx")),
+      source: "__registry__/new-york/blocks/pricing-simple.tsx",
+      meta: undefined,
+    },
+    "pricing-toggle": {
+      name: "pricing-toggle",
+      description: "A toggle pricing component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge","separator","tabs","tooltip"],
+      files: [{
+        path: "registry/new-york/blocks/pricing-toggle.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/pricing-toggle.tsx")),
+      source: "__registry__/new-york/blocks/pricing-toggle.tsx",
+      meta: undefined,
+    },
+    "progressive-blur": {
+      name: "progressive-blur",
+      description: "A progressive blur component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/blocks/progressive-blur.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/progressive-blur.tsx")),
+      source: "__registry__/new-york/blocks/progressive-blur.tsx",
+      meta: undefined,
+    },
+    "questionnaire-form-1": {
+      name: "questionnaire-form-1",
+      description: "A questionnaire form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","radio-group","checkbox","textarea","use-toast"],
+      files: [{
+        path: "registry/new-york/blocks/questionnaire-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/questionnaire-form-1.tsx")),
+      source: "__registry__/new-york/blocks/questionnaire-form-1.tsx",
+      meta: undefined,
+    },
+    "questionnaire-form-2": {
+      name: "questionnaire-form-2",
+      description: "A questionnaire form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","separator","progress","radio-group","checkbox","textarea","use-toast"],
+      files: [{
+        path: "registry/new-york/blocks/questionnaire-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/questionnaire-form-2.tsx")),
+      source: "__registry__/new-york/blocks/questionnaire-form-2.tsx",
+      meta: undefined,
+    },
+    "questionnaire-form-3": {
+      name: "questionnaire-form-3",
+      description: "A questionnaire form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","textarea","use-toast"],
+      files: [{
+        path: "registry/new-york/blocks/questionnaire-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/questionnaire-form-3.tsx")),
+      source: "__registry__/new-york/blocks/questionnaire-form-3.tsx",
+      meta: undefined,
+    },
+    "reset-password-form-1": {
+      name: "reset-password-form-1",
+      description: "A reset password form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","alert"],
+      files: [{
+        path: "registry/new-york/blocks/reset-password-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/reset-password-form-1.tsx")),
+      source: "__registry__/new-york/blocks/reset-password-form-1.tsx",
+      meta: undefined,
+    },
+    "reset-password-form-2": {
+      name: "reset-password-form-2",
+      description: "A reset password form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","password-input","use-toast"],
+      files: [{
+        path: "registry/new-york/blocks/reset-password-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/reset-password-form-2.tsx")),
+      source: "__registry__/new-york/blocks/reset-password-form-2.tsx",
+      meta: undefined,
+    },
+    "reset-password-form-3": {
+      name: "reset-password-form-3",
+      description: "A reset password form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form"],
+      files: [{
+        path: "registry/new-york/blocks/reset-password-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/reset-password-form-3.tsx")),
+      source: "__registry__/new-york/blocks/reset-password-form-3.tsx",
+      meta: undefined,
+    },
+    "signup-form-2": {
+      name: "signup-form-2",
+      description: "A signup form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","use-toast","password-input","separator","badge"],
+      files: [{
+        path: "registry/new-york/blocks/signup-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/signup-form-2.tsx")),
+      source: "__registry__/new-york/blocks/signup-form-2.tsx",
+      meta: undefined,
+    },
+    "signup-form-3": {
+      name: "signup-form-3",
+      description: "A signup form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","use-toast","password-input"],
+      files: [{
+        path: "registry/new-york/blocks/signup-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/signup-form-3.tsx")),
+      source: "__registry__/new-york/blocks/signup-form-3.tsx",
+      meta: undefined,
+    },
+    "stats-cards": {
+      name: "stats-cards",
+      description: "A stats cards component.",
+      type: "registry:block",
+      registryDependencies: ["card"],
+      files: [{
+        path: "registry/new-york/blocks/stats-cards.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/stats-cards.tsx")),
+      source: "__registry__/new-york/blocks/stats-cards.tsx",
+      meta: undefined,
+    },
+    "stats-feature": {
+      name: "stats-feature",
+      description: "A stats feature component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/new-york/blocks/stats-feature.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/stats-feature.tsx")),
+      source: "__registry__/new-york/blocks/stats-feature.tsx",
+      meta: undefined,
+    },
+    "stats-grid": {
+      name: "stats-grid",
+      description: "A stats grid component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/blocks/stats-grid.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/stats-grid.tsx")),
+      source: "__registry__/new-york/blocks/stats-grid.tsx",
+      meta: undefined,
+    },
+    "table-basic": {
+      name: "table-basic",
+      description: "A basic table component.",
+      type: "registry:block",
+      registryDependencies: ["table","badge","avatar"],
+      files: [{
+        path: "registry/new-york/blocks/table-basic.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/table-basic.tsx")),
+      source: "__registry__/new-york/blocks/table-basic.tsx",
+      meta: undefined,
+    },
+    "table-complex": {
+      name: "table-complex",
+      description: "A complex table component.",
+      type: "registry:block",
+      registryDependencies: ["table"],
+      files: [{
+        path: "registry/new-york/blocks/table-complex.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/table-complex.tsx")),
+      source: "__registry__/new-york/blocks/table-complex.tsx",
+      meta: undefined,
+    },
+    "table-interactive": {
+      name: "table-interactive",
+      description: "An interactive table component.",
+      type: "registry:block",
+      registryDependencies: ["table","button","input","dropdown-menu"],
+      files: [{
+        path: "registry/new-york/blocks/table-interactive.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/table-interactive.tsx")),
+      source: "__registry__/new-york/blocks/table-interactive.tsx",
+      meta: undefined,
+    },
+    "testimonials-carousel": {
+      name: "testimonials-carousel",
+      description: "An testimonials carousel component.",
+      type: "registry:block",
+      registryDependencies: ["card","button","avatar"],
+      files: [{
+        path: "registry/new-york/blocks/testimonials-carousel.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/testimonials-carousel.tsx")),
+      source: "__registry__/new-york/blocks/testimonials-carousel.tsx",
+      meta: undefined,
+    },
+    "testimonials-featured": {
+      name: "testimonials-featured",
+      description: "An featured testimonials component.",
+      type: "registry:block",
+      registryDependencies: ["card","avatar","badge"],
+      files: [{
+        path: "registry/new-york/blocks/testimonials-featured.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/testimonials-featured.tsx")),
+      source: "__registry__/new-york/blocks/testimonials-featured.tsx",
+      meta: undefined,
+    },
+    "testimonials-grid": {
+      name: "testimonials-grid",
+      description: "A grid of testimonials.",
+      type: "registry:block",
+      registryDependencies: ["card","avatar"],
+      files: [{
+        path: "registry/new-york/blocks/testimonials-grid.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/testimonials-grid.tsx")),
+      source: "__registry__/new-york/blocks/testimonials-grid.tsx",
+      meta: undefined,
+    },
     "contact-form": {
       name: "contact-form",
       description: "A contact form with email sending functionality.",
@@ -4495,6 +5350,861 @@ export const Index: Record<string, any> = {
       categories: ["authentication","login"],
       component: React.lazy(() => import("@/registry/default/blocks/login-02/page.tsx")),
       source: "__registry__/default/blocks/login-02/page.tsx",
+      meta: undefined,
+    },
+    "animated-group": {
+      name: "animated-group",
+      description: "A simple animated group block.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/blocks/animated-group.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/animated-group.tsx")),
+      source: "__registry__/default/blocks/animated-group.tsx",
+      meta: undefined,
+    },
+    "cta-card": {
+      name: "cta-card",
+      description: "A simple call to action card block.",
+      type: "registry:block",
+      registryDependencies: ["button","card"],
+      files: [{
+        path: "registry/default/blocks/cta-card.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/cta-card.tsx")),
+      source: "__registry__/default/blocks/cta-card.tsx",
+      meta: undefined,
+    },
+    "cta-centered": {
+      name: "cta-centered",
+      description: "A centered call to action block.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/default/blocks/cta-centered.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/cta-centered.tsx")),
+      source: "__registry__/default/blocks/cta-centered.tsx",
+      meta: undefined,
+    },
+    "event-registration-form-1": {
+      name: "event-registration-form-1",
+      description: "A form for event registration.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","radio-group","checkbox","select","use-toast","badge","tooltip"],
+      files: [{
+        path: "registry/default/blocks/event-registration-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/event-registration-form-1.tsx")),
+      source: "__registry__/default/blocks/event-registration-form-1.tsx",
+      meta: undefined,
+    },
+    "event-registration-form-2": {
+      name: "event-registration-form-2",
+      description: "A form for event registration.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","textarea","checkbox","select","use-toast","separator"],
+      files: [{
+        path: "registry/default/blocks/event-registration-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/event-registration-form-2.tsx")),
+      source: "__registry__/default/blocks/event-registration-form-2.tsx",
+      meta: undefined,
+    },
+    "event-registration-form-3": {
+      name: "event-registration-form-3",
+      description: "A form for event registration.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","use-toast","radio-group"],
+      files: [{
+        path: "registry/default/blocks/event-registration-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/event-registration-form-3.tsx")),
+      source: "__registry__/default/blocks/event-registration-form-3.tsx",
+      meta: undefined,
+    },
+    "faq-accordion": {
+      name: "faq-accordion",
+      description: "A FAQ accordion component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/blocks/faq-accordion.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/faq-accordion.tsx")),
+      source: "__registry__/default/blocks/faq-accordion.tsx",
+      meta: undefined,
+    },
+    "faq-grid": {
+      name: "faq-grid",
+      description: "A FAQ grid component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/default/blocks/faq-grid.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/faq-grid.tsx")),
+      source: "__registry__/default/blocks/faq-grid.tsx",
+      meta: undefined,
+    },
+    "faq-tabs": {
+      name: "faq-tabs",
+      description: "A FAQ tabs component.",
+      type: "registry:block",
+      registryDependencies: ["tabs","input"],
+      files: [{
+        path: "registry/default/blocks/faq-tabs.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/faq-tabs.tsx")),
+      source: "__registry__/default/blocks/faq-tabs.tsx",
+      meta: undefined,
+    },
+    "footer-dark": {
+      name: "footer-dark",
+      description: "A dark footer component.",
+      type: "registry:block",
+      registryDependencies: ["logo","input","button"],
+      files: [{
+        path: "registry/default/blocks/footer-dark.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/footer-dark.tsx")),
+      source: "__registry__/default/blocks/footer-dark.tsx",
+      meta: undefined,
+    },
+    "footer-multi-column": {
+      name: "footer-multi-column",
+      description: "A multi-column footer component.",
+      type: "registry:block",
+      registryDependencies: ["logo","input","button"],
+      files: [{
+        path: "registry/default/blocks/footer-multi-column.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/footer-multi-column.tsx")),
+      source: "__registry__/default/blocks/footer-multi-column.tsx",
+      meta: undefined,
+    },
+    "footer-simple": {
+      name: "footer-simple",
+      description: "A simple footer component.",
+      type: "registry:block",
+      registryDependencies: ["logo"],
+      files: [{
+        path: "registry/default/blocks/footer-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/footer-simple.tsx")),
+      source: "__registry__/default/blocks/footer-simple.tsx",
+      meta: undefined,
+    },
+    "hero-app": {
+      name: "hero-app",
+      description: "A hero app component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge"],
+      files: [{
+        path: "registry/default/blocks/hero-app.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/hero-app.tsx")),
+      source: "__registry__/default/blocks/hero-app.tsx",
+      meta: undefined,
+    },
+    "hero-centered": {
+      name: "hero-centered",
+      description: "A centered hero component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge"],
+      files: [{
+        path: "registry/default/blocks/hero-centered.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/hero-centered.tsx")),
+      source: "__registry__/default/blocks/hero-centered.tsx",
+      meta: undefined,
+    },
+    "hero-gradient": {
+      name: "hero-gradient",
+      description: "A gradient hero component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/default/blocks/hero-gradient.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/hero-gradient.tsx")),
+      source: "__registry__/default/blocks/hero-gradient.tsx",
+      meta: undefined,
+    },
+    "hero-simple": {
+      name: "hero-simple",
+      description: "A simple hero component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/default/blocks/hero-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/hero-simple.tsx")),
+      source: "__registry__/default/blocks/hero-simple.tsx",
+      meta: undefined,
+    },
+    "hero-split": {
+      name: "hero-split",
+      description: "A split hero component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/default/blocks/hero-split.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/hero-split.tsx")),
+      source: "__registry__/default/blocks/hero-split.tsx",
+      meta: undefined,
+    },
+    "hero-video": {
+      name: "hero-video",
+      description: "A video hero component.",
+      type: "registry:block",
+      registryDependencies: ["button","dialog"],
+      files: [{
+        path: "registry/default/blocks/hero-video.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/hero-video.tsx")),
+      source: "__registry__/default/blocks/hero-video.tsx",
+      meta: undefined,
+    },
+    "infinite-slider": {
+      name: "infinite-slider",
+      description: "An infinite slider component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/blocks/infinite-slider.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/infinite-slider.tsx")),
+      source: "__registry__/default/blocks/infinite-slider.tsx",
+      meta: undefined,
+    },
+    "login-form-1": {
+      name: "login-form-1",
+      description: "A login form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","checkbox","use-toast","password-input"],
+      files: [{
+        path: "registry/default/blocks/login-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/login-form-1.tsx")),
+      source: "__registry__/default/blocks/login-form-1.tsx",
+      meta: undefined,
+    },
+    "login-form-2": {
+      name: "login-form-2",
+      description: "A login form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","use-toast"],
+      files: [{
+        path: "registry/default/blocks/login-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/login-form-2.tsx")),
+      source: "__registry__/default/blocks/login-form-2.tsx",
+      meta: undefined,
+    },
+    "login-form-3": {
+      name: "login-form-3",
+      description: "A login form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","use-toast"],
+      files: [{
+        path: "registry/default/blocks/login-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/login-form-3.tsx")),
+      source: "__registry__/default/blocks/login-form-3.tsx",
+      meta: undefined,
+    },
+    "logo-cloud-featured": {
+      name: "logo-cloud-featured",
+      description: "A logo cloud featured component.",
+      type: "registry:block",
+      registryDependencies: ["badge"],
+      files: [{
+        path: "registry/default/blocks/logo-cloud-featured.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/logo-cloud-featured.tsx")),
+      source: "__registry__/default/blocks/logo-cloud-featured.tsx",
+      meta: undefined,
+    },
+    "logo-cloud-grid": {
+      name: "logo-cloud-grid",
+      description: "A logo cloud grid component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/default/blocks/logo-cloud-grid.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/logo-cloud-grid.tsx")),
+      source: "__registry__/default/blocks/logo-cloud-grid.tsx",
+      meta: undefined,
+    },
+    "logo-cloud-infinite": {
+      name: "logo-cloud-infinite",
+      description: "A logo cloud infinite component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/blocks/logo-cloud-infinite.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/logo-cloud-infinite.tsx")),
+      source: "__registry__/default/blocks/logo-cloud-infinite.tsx",
+      meta: undefined,
+    },
+    "logo-cloud-simple": {
+      name: "logo-cloud-simple",
+      description: "A logo cloud simple component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/blocks/logo-cloud-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/logo-cloud-simple.tsx")),
+      source: "__registry__/default/blocks/logo-cloud-simple.tsx",
+      meta: undefined,
+    },
+    "navbar-animated": {
+      name: "navbar-animated",
+      description: "A navbar animated component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","avatar","sheet","logo"],
+      files: [{
+        path: "registry/default/blocks/navbar-animated.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/navbar-animated.tsx")),
+      source: "__registry__/default/blocks/navbar-animated.tsx",
+      meta: undefined,
+    },
+    "navbar-bottom-icons": {
+      name: "navbar-bottom-icons",
+      description: "A navbar bottom icons component.",
+      type: "registry:block",
+      registryDependencies: ["button","separator","tooltip"],
+      files: [{
+        path: "registry/default/blocks/navbar-bottom-icons.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/navbar-bottom-icons.tsx")),
+      source: "__registry__/default/blocks/navbar-bottom-icons.tsx",
+      meta: undefined,
+    },
+    "navbar-desktop": {
+      name: "navbar-desktop",
+      description: "A navbar desktop component.",
+      type: "registry:block",
+      registryDependencies: ["button","logo","navigation-menu","mode-toggle"],
+      files: [{
+        path: "registry/default/blocks/navbar-desktop.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/navbar-desktop.tsx")),
+      source: "__registry__/default/blocks/navbar-desktop.tsx",
+      meta: undefined,
+    },
+    "navbar-dropdown": {
+      name: "navbar-dropdown",
+      description: "A navbar dropdown component.",
+      type: "registry:block",
+      registryDependencies: ["button","dropdown-menu"],
+      files: [{
+        path: "registry/default/blocks/navbar-dropdown.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/navbar-dropdown.tsx")),
+      source: "__registry__/default/blocks/navbar-dropdown.tsx",
+      meta: undefined,
+    },
+    "navbar-mobile": {
+      name: "navbar-mobile",
+      description: "A navbar mobile component.",
+      type: "registry:block",
+      registryDependencies: ["button","logo","sheet","mode-toggle"],
+      files: [{
+        path: "registry/default/blocks/navbar-mobile.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/navbar-mobile.tsx")),
+      source: "__registry__/default/blocks/navbar-mobile.tsx",
+      meta: undefined,
+    },
+    "navbar-responsive": {
+      name: "navbar-responsive",
+      description: "A navbar responsive component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","sheet"],
+      files: [{
+        path: "registry/default/blocks/navbar-responsive.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/navbar-responsive.tsx")),
+      source: "__registry__/default/blocks/navbar-responsive.tsx",
+      meta: undefined,
+    },
+    "navbar-simple": {
+      name: "navbar-simple",
+      description: "A simple navbar component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/default/blocks/navbar-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/navbar-simple.tsx")),
+      source: "__registry__/default/blocks/navbar-simple.tsx",
+      meta: undefined,
+    },
+    "newsletter-form-1": {
+      name: "newsletter-form-1",
+      description: "A newsletter form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","use-toast"],
+      files: [{
+        path: "registry/default/blocks/newsletter-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/newsletter-form-1.tsx")),
+      source: "__registry__/default/blocks/newsletter-form-1.tsx",
+      meta: undefined,
+    },
+    "newsletter-form-2": {
+      name: "newsletter-form-2",
+      description: "A newsletter form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","use-toast","checkbox","switch","tooltip"],
+      files: [{
+        path: "registry/default/blocks/newsletter-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/newsletter-form-2.tsx")),
+      source: "__registry__/default/blocks/newsletter-form-2.tsx",
+      meta: undefined,
+    },
+    "newsletter-form-3": {
+      name: "newsletter-form-3",
+      description: "A newsletter form component.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","use-toast","select"],
+      files: [{
+        path: "registry/default/blocks/newsletter-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/newsletter-form-3.tsx")),
+      source: "__registry__/default/blocks/newsletter-form-3.tsx",
+      meta: undefined,
+    },
+    "pricing-comparison": {
+      name: "pricing-comparison",
+      description: "A pricing comparison component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge","table","use-media-query"],
+      files: [{
+        path: "registry/default/blocks/pricing-comparison.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/pricing-comparison.tsx")),
+      source: "__registry__/default/blocks/pricing-comparison.tsx",
+      meta: undefined,
+    },
+    "pricing-simple": {
+      name: "pricing-simple",
+      description: "A simple pricing component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge","separator"],
+      files: [{
+        path: "registry/default/blocks/pricing-simple.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/pricing-simple.tsx")),
+      source: "__registry__/default/blocks/pricing-simple.tsx",
+      meta: undefined,
+    },
+    "pricing-toggle": {
+      name: "pricing-toggle",
+      description: "A toggle pricing component.",
+      type: "registry:block",
+      registryDependencies: ["button","badge","separator","tabs","tooltip"],
+      files: [{
+        path: "registry/default/blocks/pricing-toggle.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/pricing-toggle.tsx")),
+      source: "__registry__/default/blocks/pricing-toggle.tsx",
+      meta: undefined,
+    },
+    "progressive-blur": {
+      name: "progressive-blur",
+      description: "A progressive blur component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/blocks/progressive-blur.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/progressive-blur.tsx")),
+      source: "__registry__/default/blocks/progressive-blur.tsx",
+      meta: undefined,
+    },
+    "questionnaire-form-1": {
+      name: "questionnaire-form-1",
+      description: "A questionnaire form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","radio-group","checkbox","textarea","use-toast"],
+      files: [{
+        path: "registry/default/blocks/questionnaire-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/questionnaire-form-1.tsx")),
+      source: "__registry__/default/blocks/questionnaire-form-1.tsx",
+      meta: undefined,
+    },
+    "questionnaire-form-2": {
+      name: "questionnaire-form-2",
+      description: "A questionnaire form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","separator","progress","radio-group","checkbox","textarea","use-toast"],
+      files: [{
+        path: "registry/default/blocks/questionnaire-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/questionnaire-form-2.tsx")),
+      source: "__registry__/default/blocks/questionnaire-form-2.tsx",
+      meta: undefined,
+    },
+    "questionnaire-form-3": {
+      name: "questionnaire-form-3",
+      description: "A questionnaire form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","textarea","use-toast"],
+      files: [{
+        path: "registry/default/blocks/questionnaire-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/questionnaire-form-3.tsx")),
+      source: "__registry__/default/blocks/questionnaire-form-3.tsx",
+      meta: undefined,
+    },
+    "reset-password-form-1": {
+      name: "reset-password-form-1",
+      description: "A reset password form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","alert"],
+      files: [{
+        path: "registry/default/blocks/reset-password-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/reset-password-form-1.tsx")),
+      source: "__registry__/default/blocks/reset-password-form-1.tsx",
+      meta: undefined,
+    },
+    "reset-password-form-2": {
+      name: "reset-password-form-2",
+      description: "A reset password form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","password-input","use-toast"],
+      files: [{
+        path: "registry/default/blocks/reset-password-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/reset-password-form-2.tsx")),
+      source: "__registry__/default/blocks/reset-password-form-2.tsx",
+      meta: undefined,
+    },
+    "reset-password-form-3": {
+      name: "reset-password-form-3",
+      description: "A reset password form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form"],
+      files: [{
+        path: "registry/default/blocks/reset-password-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/reset-password-form-3.tsx")),
+      source: "__registry__/default/blocks/reset-password-form-3.tsx",
+      meta: undefined,
+    },
+    "signup-form-2": {
+      name: "signup-form-2",
+      description: "A signup form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","use-toast","password-input","separator","badge"],
+      files: [{
+        path: "registry/default/blocks/signup-form-2.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/signup-form-2.tsx")),
+      source: "__registry__/default/blocks/signup-form-2.tsx",
+      meta: undefined,
+    },
+    "signup-form-3": {
+      name: "signup-form-3",
+      description: "A signup form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","checkbox","use-toast","password-input"],
+      files: [{
+        path: "registry/default/blocks/signup-form-3.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/signup-form-3.tsx")),
+      source: "__registry__/default/blocks/signup-form-3.tsx",
+      meta: undefined,
+    },
+    "stats-cards": {
+      name: "stats-cards",
+      description: "A stats cards component.",
+      type: "registry:block",
+      registryDependencies: ["card"],
+      files: [{
+        path: "registry/default/blocks/stats-cards.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/stats-cards.tsx")),
+      source: "__registry__/default/blocks/stats-cards.tsx",
+      meta: undefined,
+    },
+    "stats-feature": {
+      name: "stats-feature",
+      description: "A stats feature component.",
+      type: "registry:block",
+      registryDependencies: ["button"],
+      files: [{
+        path: "registry/default/blocks/stats-feature.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/stats-feature.tsx")),
+      source: "__registry__/default/blocks/stats-feature.tsx",
+      meta: undefined,
+    },
+    "stats-grid": {
+      name: "stats-grid",
+      description: "A stats grid component.",
+      type: "registry:block",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/blocks/stats-grid.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/stats-grid.tsx")),
+      source: "__registry__/default/blocks/stats-grid.tsx",
+      meta: undefined,
+    },
+    "table-basic": {
+      name: "table-basic",
+      description: "A basic table component.",
+      type: "registry:block",
+      registryDependencies: ["table","badge","avatar"],
+      files: [{
+        path: "registry/default/blocks/table-basic.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/table-basic.tsx")),
+      source: "__registry__/default/blocks/table-basic.tsx",
+      meta: undefined,
+    },
+    "table-complex": {
+      name: "table-complex",
+      description: "A complex table component.",
+      type: "registry:block",
+      registryDependencies: ["table"],
+      files: [{
+        path: "registry/default/blocks/table-complex.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/table-complex.tsx")),
+      source: "__registry__/default/blocks/table-complex.tsx",
+      meta: undefined,
+    },
+    "table-interactive": {
+      name: "table-interactive",
+      description: "An interactive table component.",
+      type: "registry:block",
+      registryDependencies: ["table","button","input","dropdown-menu"],
+      files: [{
+        path: "registry/default/blocks/table-interactive.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/table-interactive.tsx")),
+      source: "__registry__/default/blocks/table-interactive.tsx",
+      meta: undefined,
+    },
+    "testimonials-carousel": {
+      name: "testimonials-carousel",
+      description: "An testimonials carousel component.",
+      type: "registry:block",
+      registryDependencies: ["card","button","avatar"],
+      files: [{
+        path: "registry/default/blocks/testimonials-carousel.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/testimonials-carousel.tsx")),
+      source: "__registry__/default/blocks/testimonials-carousel.tsx",
+      meta: undefined,
+    },
+    "testimonials-featured": {
+      name: "testimonials-featured",
+      description: "An featured testimonials component.",
+      type: "registry:block",
+      registryDependencies: ["card","avatar","badge"],
+      files: [{
+        path: "registry/default/blocks/testimonials-featured.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/testimonials-featured.tsx")),
+      source: "__registry__/default/blocks/testimonials-featured.tsx",
+      meta: undefined,
+    },
+    "testimonials-grid": {
+      name: "testimonials-grid",
+      description: "A grid of testimonials.",
+      type: "registry:block",
+      registryDependencies: ["card","avatar"],
+      files: [{
+        path: "registry/default/blocks/testimonials-grid.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/testimonials-grid.tsx")),
+      source: "__registry__/default/blocks/testimonials-grid.tsx",
       meta: undefined,
     },
     "contact-form": {
