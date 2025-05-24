@@ -30,6 +30,7 @@ import {
 import { updateTailwindContent } from "../utils/updaters/update-tailwind-content.js";
 import { text, select, intro, confirm, spinner } from "@clack/prompts";
 import kleur from "kleur";
+import { cwd } from "process";
 
 export const initOptionsSchema = z.object({
   cwd: z.string(),
@@ -40,12 +41,27 @@ export const initOptionsSchema = z.object({
   silent: z.boolean(),
   isNewProject: z.boolean(),
   srcDir: z.boolean().optional(),
+  cssVariables: z.boolean(),
+
+  style: z.string(),
 });
 
 export const init = new Command()
   .name("init")
   .description("initialize your project and install dependencies")
-  .argument("[components...]", "the components to add.")
+  .argument(
+    "[components...]",
+    "the components to add or a url to the component."
+  )
+  .option(
+    "-t, --template <template>",
+    "the template to use. (next, next-monorepo)"
+  )
+  .option(
+    "-b, --base-color <base-color>",
+    "the base color to use. (neutral, gray, zinc, stone, slate)",
+    undefined
+  )
   .option("-y, --yes", "skip confirmation prompt.", true)
   .option("-d, --defaults,", "use default configuration.", false)
   .option("-f, --force", "force overwrite of existing configuration.", false)
@@ -60,14 +76,35 @@ export const init = new Command()
     "use the src directory when creating a new project.",
     false
   )
+  .option(
+    "--no-src-dir",
+    "do not use the src directory when creating a new project."
+  )
+  .option("--css-variables", "use css variables for theming.", true)
+  .option("--no-css-variables", "do not use css variables for theming.")
   .action(async (components, opts) => {
     try {
       const options = initOptionsSchema.parse({
         cwd: path.resolve(opts.cwd),
         isNewProject: false,
         components,
+        style: "index",
         ...opts,
       });
+
+      // We need to check if we're initializing with a new style.
+      // We fetch the payload of the first item.
+      // This is okay since the request is cached and deduped.
+      if (components.length > 0 && isUrl(components[0])) {
+        const item = await getRegistryItem(components[0], "");
+
+        // Skip base color if style.
+        // We set a default and let the style override it.
+        if (item?.type === "registry:style") {
+          options.baseColor = "neutral";
+          options.style = item.extends ?? "index";
+        }
+      }
       intro(kleur.green("Welcome to ⍺xion.js CLI"));
 
       await runInit(options);
@@ -133,13 +170,18 @@ export async function runInit(options) {
 
   // Add components.
   const fullConfig = await resolveConfigPaths(options.cwd, config);
-  const components = ["index", ...(options.components || [])];
+  const components = [
+    ...(options.style === "none" ? [] : [options.style]),
+    ...(options.components ?? []),
+  ];
   await addComponents(components, fullConfig, {
     // Init will always overwrite files.
     overwrite: true,
     silent: options.silent,
+    style: options.style,
     isNewProject:
       options.isNewProject || projectInfo?.framework.name === "next-app",
+    cwd: options.cwd,
   });
 
   // If a new project is using src dir, let's update the tailwind content config.

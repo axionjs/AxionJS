@@ -30,7 +30,6 @@ export async function getProjectInfo(cwd) {
     tailwindCssFile,
     tailwindVersion,
     aliasPrefix,
-    packageJson,
   ] = await Promise.all([
     fg.glob("**/{next,vite,astro}.config.*|gatsby-config.*|composer.json", {
       cwd,

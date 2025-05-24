@@ -13,14 +13,12 @@ import {
   getProjectInfo,
   getProjectTailwindVersionFromConfig,
 } from "./get-project-info.js";
-import path from "path";
 
 export async function addComponents(components, config, options) {
   options = {
     overwrite: false,
     silent: false,
     isNewProject: false,
-    cwd: process.cwd(),
     ...options,
   };
 
@@ -33,8 +31,7 @@ export async function addComponents(components, config, options) {
     "media-uploader",
     "inventory-manager",
   ];
-  const cwd = path.resolve(options.cwd);
-  const projectInfo = await getProjectInfo(cwd);
+  const projectInfo = await getProjectInfo(options.cwd);
 
   // if user is asking a dynamic component, we need to show a message that dynamic components are only supported in app router
   if (

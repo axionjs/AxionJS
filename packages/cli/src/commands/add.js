@@ -23,6 +23,7 @@ export const addOptionsSchema = z.object({
   path: z.string().optional(),
   silent: z.boolean(),
   srcDir: z.boolean().optional(),
+  cssVariables: z.boolean(),
 });
 
 export const add = new Command()
@@ -49,6 +50,12 @@ export const add = new Command()
     "use the src directory when creating a new project.",
     false
   )
+  .option(
+    "--no-src-dir",
+    "do not use the src directory when creating a new project."
+  )
+  .option("--css-variables", "use css variables for theming.", true)
+  .option("--no-css-variables", "do not use css variables for theming.")
   .action(async (components, opts) => {
     try {
       const options = addOptionsSchema.parse({

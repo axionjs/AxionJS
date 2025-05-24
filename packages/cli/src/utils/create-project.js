@@ -17,7 +17,7 @@ export async function createProject(options) {
   };
   // handling the version of the next.js project
   let projectName = "my-app";
-  let nextVersion = "15.1.0";
+  let nextVersion = "latest";
 
   if (!options.force) {
     const proceed = await confirm({
@@ -102,10 +102,13 @@ export async function createProject(options) {
       `--use-${packageManager}`,
     ];
 
-    if (nextVersion.startsWith("15")) {
+    if (
+      options.version.startsWith("15") ||
+      options.version.startsWith("latest") ||
+      options.version.startsWith("canary")
+    ) {
       args.push("--turbopack");
     }
-
     try {
       await execa(
         "npx",
@@ -129,6 +132,7 @@ export async function createProject(options) {
 
     createSpinner?.stop("Created a new Next.js project.");
   }
+
   outro("Next.js project created successfully");
   return {
     projectPath,
