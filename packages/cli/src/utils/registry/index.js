@@ -10,6 +10,12 @@ import {
   registryResolvedItemsTreeSchema,
   stylesSchema,
 } from "./schema.js";
+import { getTargetStyleFromConfig } from "../get-config.js";
+import {
+  getProjectInfo,
+  getProjectTailwindVersionFromConfig,
+} from "../get-project-info.js";
+
 import { buildTailwindThemeColorsFromCssVars } from "../updaters/update-tailwind-config.js";
 import deepmerge from "deepmerge";
 import { HttpsProxyAgent } from "https-proxy-agent";
@@ -345,10 +351,13 @@ async function resolveRegistryDependencies(url, config) {
   const visited = new Set();
   const payload = [];
 
+  const style = config.resolvedPaths?.cwd
+    ? await getTargetStyleFromConfig(config.resolvedPaths.cwd, config.style)
+    : config.style;
   async function resolveDependencies(itemUrl) {
-    const path = `styles/${config.style}/${itemUrl}.json`;
-
-    const url = getRegistryUrl(isUrl(itemUrl) ? itemUrl : path);
+    const url = getRegistryUrl(
+      isUrl(itemUrl) ? itemUrl : `styles/${style}/${itemUrl}.json`
+    );
 
     if (visited.has(url)) {
       return;
@@ -379,7 +388,10 @@ async function resolveRegistryDependencies(url, config) {
 }
 
 export async function registryGetTheme(name, config) {
-  const baseColor = await getRegistryBaseColor(name);
+  const [baseColor, tailwindVersion] = await Promise.all([
+    getRegistryBaseColor(name),
+    getProjectTailwindVersionFromConfig(config),
+  ]);
   if (!baseColor) {
     return null;
   }
@@ -425,6 +437,11 @@ export async function registryGetTheme(name, config) {
         ...theme.cssVars.dark,
       },
     };
+  }
+
+  // Update theme to be v4 compatible.
+  if (tailwindVersion === "v4") {
+    theme.cssVars.light.radius = "0.6rem";
   }
 
   return theme;

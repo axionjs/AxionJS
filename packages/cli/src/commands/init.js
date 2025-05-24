@@ -8,7 +8,11 @@ import { handleError } from "../utils/handle-error.js";
 import * as ERRORS from "../utils/errors.js";
 import { preFlightInit } from "../preflights/preflight-init.js";
 import { createProject } from "../utils/create-project.js";
-import { getProjectConfig, getProjectInfo } from "../utils/get-project-info.js";
+import {
+  getProjectConfig,
+  getProjectInfo,
+  getProjectTailwindVersionFromConfig,
+} from "../utils/get-project-info.js";
 import {
   DEFAULT_COMPONENTS,
   DEFAULT_TAILWIND_CONFIG,
@@ -263,39 +267,44 @@ async function promptForMinimalConfig(defaultConfig, opts) {
   let cssVariables = defaultConfig.tailwind.cssVariables;
 
   if (!opts.defaults) {
-    const [styles, baseColors] = await Promise.all([
+    const [styles, baseColors, tailwindVersion] = await Promise.all([
       getRegistryStyles(),
       getRegistryBaseColors(),
+      getProjectTailwindVersionFromConfig(defaultConfig),
     ]);
 
-    const options = {
-      style: await select({
+    const options = {};
+
+    // Conditionally handle style prompt based on Tailwind version
+    if (tailwindVersion !== "v4") {
+      options.style = await select({
         message: `Which ${highlighter.info("style")} would you like to use?`,
-        initialValue: styles.findIndex((s) => s.name === style),
         options: styles.map((style) => ({
-          label: style.label,
+          label:
+            style.name === "new-york" ? "New York (Recommended)" : style.label,
           value: style.name,
         })),
-      }),
-      tailwindBaseColor: await select({
-        message: `Which color would you like to use as the ${highlighter.info(
-          "base color"
-        )}?`,
-        options: baseColors.map((color) => ({
-          label: color.label,
-          value: color.name,
-        })),
-      }),
-      tailwindCssVariables: await confirm({
-        message: `Would you like to use ${highlighter.info(
-          "CSS variables"
-        )} for theming?`,
-        initialValue: defaultConfig?.tailwind.cssVariables,
-        active: "yes",
-        inactive: "no",
-      }),
-    };
+      });
+    } else {
+      options.style = "new-york";
+    }
 
+    // Handle base color prompt
+    options.tailwindBaseColor = await select({
+      message: `Which color would you like to use as the ${highlighter.info("base color")}?`,
+      options: baseColors.map((color) => ({
+        label: color.label,
+        value: color.name,
+      })),
+    });
+
+    // Handle CSS variables toggle
+    options.tailwindCssVariables = await confirm({
+      message: `Would you like to use ${highlighter.info("CSS variables")} for theming?`,
+      initialValue: defaultConfig?.tailwind.cssVariables,
+    });
+
+    // Assign results
     style = options.style;
     baseColor = options.tailwindBaseColor;
     cssVariables = options.tailwindCssVariables;

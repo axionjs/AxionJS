@@ -26,7 +26,7 @@ export const rawConfigSchema = z
     rsc: z.coerce.boolean().default(false),
     tsx: z.coerce.boolean().default(true),
     tailwind: z.object({
-      config: z.string(),
+      config: z.string().optional(),
       css: z.string(),
       baseColor: z.string(),
       cssVariables: z.boolean().default(true),
@@ -102,7 +102,9 @@ export async function resolveConfigPaths(cwd, config) {
     ...config,
     resolvedPaths: {
       cwd,
-      tailwindConfig: path.resolve(cwd, config.tailwind.config),
+      tailwindConfig: config.tailwind.config
+        ? path.resolve(cwd, config.tailwind.config)
+        : "",
       tailwindCss: path.resolve(cwd, config.tailwind.css),
       utils: await resolveImport(config.aliases["utils"], tsConfig),
       components: await resolveImport(config.aliases["components"], tsConfig),
@@ -181,4 +183,10 @@ export async function getRawConfig(cwd) {
       `Invalid configuration found in ${highlighter.info(componentPath)}.`
     );
   }
+}
+
+// TODO: Cache this call.
+export async function getTargetStyleFromConfig(cwd, fallback) {
+  const projectInfo = await getProjectInfo(cwd);
+  return projectInfo?.tailwindVersion === "v4" ? "new-york-v4" : fallback;
 }

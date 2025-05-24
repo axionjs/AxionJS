@@ -9,7 +9,10 @@ import {
 } from "./updaters/update-dependencies.js";
 import { updateFiles } from "./updaters/update-files.js";
 import { updateTailwindConfig } from "./updaters/update-tailwind-config.js";
-import { getProjectInfo } from "./get-project-info.js";
+import {
+  getProjectInfo,
+  getProjectTailwindVersionFromConfig,
+} from "./get-project-info.js";
 import path from "path";
 
 export async function addComponents(components, config, options) {
@@ -60,12 +63,17 @@ export async function addComponents(components, config, options) {
   }
   registrySpinner?.succeed();
 
+  const tailwindVersion = await getProjectTailwindVersionFromConfig(config);
+
   await updateTailwindConfig(tree.tailwind?.config, config, {
     silent: options.silent,
+    tailwindVersion,
   });
   await updateCssVars(tree.cssVars, config, {
     cleanupDefaultNextStyles: options.isNewProject,
     silent: options.silent,
+    tailwindVersion,
+    tailwindConfig: tree.tailwind?.config,
   });
 
   await updateDependencies(tree.dependencies, config, {

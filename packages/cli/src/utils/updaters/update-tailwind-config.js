@@ -5,12 +5,7 @@ import { highlighter } from "../highlighter.js";
 import { spinner } from "../spinner.js";
 import deepmerge from "deepmerge";
 import objectToString from "stringify-object";
-import {
-  Project,
-  QuoteKind,
-  ScriptKind,
-  SyntaxKind,
-} from "ts-morph";
+import { Project, QuoteKind, ScriptKind, SyntaxKind } from "ts-morph";
 
 export async function updateTailwindConfig(tailwindConfig, config, options) {
   if (!tailwindConfig) {
@@ -19,8 +14,14 @@ export async function updateTailwindConfig(tailwindConfig, config, options) {
 
   options = {
     silent: false,
+    tailwindVersion: "v3",
     ...options,
   };
+
+  // No tailwind config in v4.
+  if (options.tailwindVersion === "v4") {
+    return;
+  }
 
   const tailwindFileRelativePath = path.relative(
     config.resolvedPaths.cwd,
