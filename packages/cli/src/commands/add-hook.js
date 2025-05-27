@@ -22,7 +22,6 @@ export const addHooksOptionsSchema = z.object({
   path: z.string().optional(),
   silent: z.boolean(),
   srcDir: z.boolean().optional(),
-  cssVariables: z.boolean(),
 });
 
 export const addHookCommand = new Command()
@@ -46,12 +45,6 @@ export const addHookCommand = new Command()
     "use the src directory when creating a new project.",
     false
   )
-  .option(
-    "--no-src-dir",
-    "do not use the src directory when creating a new project."
-  )
-  .option("--css-variables", "use css variables for theming.", true)
-  .option("--no-css-variables", "do not use css variables for theming.")
   .action(async (hooks, opts) => {
     try {
       const options = addHooksOptionsSchema.parse({
