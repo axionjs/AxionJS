@@ -21,6 +21,7 @@ export const addOptionsSchema = z.object({
   path: z.string().optional(),
   silent: z.boolean(),
   srcDir: z.boolean().optional(),
+  cssVariables: z.boolean(),
 });
 export const addAuthOptionsSchema = addOptionsSchema.omit({ all: true });
 
@@ -52,6 +53,17 @@ export const addAuthCommand = new Command()
   )
   .option("-p, --path <path>", "the path to add the component to.")
   .option("-s, --silent", "mute output.", false)
+  .option(
+    "--src-dir",
+    "use the src directory when creating a new project.",
+    false
+  )
+  .option(
+    "--no-src-dir",
+    "do not use the src directory when creating a new project."
+  )
+  .option("--css-variables", "use css variables for theming.", true)
+  .option("--no-css-variables", "do not use css variables for theming.")
   .action(async (components, opts) => {
     try {
       const cwd = path.resolve(opts.cwd);
@@ -95,6 +107,7 @@ export const addAuthCommand = new Command()
           silent: true,
           isNewProject: false,
           srcDir: options.srcDir,
+          style: "index",
         });
       }
       if (errors[ERRORS.MISSING_DIR_OR_EMPTY_PROJECT]) {
@@ -119,6 +132,7 @@ export const addAuthCommand = new Command()
           silent: true,
           isNewProject: true,
           srcDir: options.srcDir,
+          style: "index",
         });
       }
 

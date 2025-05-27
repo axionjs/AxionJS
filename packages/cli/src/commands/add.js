@@ -114,6 +114,7 @@ export const add = new Command()
           silent: true,
           isNewProject: false,
           srcDir: options.srcDir,
+          style: "index",
         });
       }
 
@@ -139,6 +140,7 @@ export const add = new Command()
           silent: true,
           isNewProject: true,
           srcDir: options.srcDir,
+          style: "index",
         });
       }
 

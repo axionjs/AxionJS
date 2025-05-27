@@ -22,6 +22,7 @@ export const addHooksOptionsSchema = z.object({
   path: z.string().optional(),
   silent: z.boolean(),
   srcDir: z.boolean().optional(),
+  cssVariables: z.boolean(),
 });
 
 export const addHookCommand = new Command()
@@ -39,11 +40,18 @@ export const addHookCommand = new Command()
   .option("-a, --all", "add all available hooks", false)
   .option("-p, --path <path>", "the path to add the hook to.")
   .option("-s, --silent", "mute output.", false)
+  .option("-s, --silent", "mute output.", false)
   .option(
     "--src-dir",
     "use the src directory when creating a new project.",
     false
   )
+  .option(
+    "--no-src-dir",
+    "do not use the src directory when creating a new project."
+  )
+  .option("--css-variables", "use css variables for theming.", true)
+  .option("--no-css-variables", "do not use css variables for theming.")
   .action(async (hooks, opts) => {
     try {
       const options = addHooksOptionsSchema.parse({
@@ -81,6 +89,7 @@ export const addHookCommand = new Command()
           silent: true,
           isNewProject: false,
           srcDir: options.srcDir,
+          style: "index",
         });
       }
 
@@ -106,6 +115,7 @@ export const addHookCommand = new Command()
           silent: true,
           isNewProject: true,
           srcDir: options.srcDir,
+          style: "index",
         });
       }
 
