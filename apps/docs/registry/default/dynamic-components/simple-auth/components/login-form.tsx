@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState, useTransition } from "react";
-
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   Form,
   FormField,
@@ -12,69 +12,67 @@ import {
   FormLabel,
   FormItem,
   FormMessage,
-} from "@/registry/new-york/ui/form";
-import { CardWrapper } from "@/registry/new-york/dynamic-components/simple-auth/components/card-wrapper";
-import { Input } from "@/registry/new-york/ui/input";
-import { Button } from "@/registry/new-york/ui/button";
-import { FormError } from "@/registry/new-york/dynamic-components/simple-auth/components/form-error";
-import { FormSuccess } from "@/registry/new-york/dynamic-components/simple-auth/components/form-success";
-import { register } from "@/registry/new-york/dynamic-components/simple-auth/actions/auth-actions";
-import { RegisterSchema } from "@/registry/new-york/dynamic-components/simple-auth/schemas";
+} from "@/registry/default/ui/form";
+import { CardWrapper } from "@/registry/default/dynamic-components/simple-auth/components/card-wrapper";
+import { Input } from "@/registry/default/ui/input";
+import { Button } from "@/registry/default/ui/button";
+import { FormError } from "@/registry/default/dynamic-components/simple-auth/components/form-error";
+import { FormSuccess } from "@/registry/default/dynamic-components/simple-auth/components/form-success";
+import { login } from "@/registry/default/dynamic-components/simple-auth/actions/auth-actions";
+import Link from "next/link";
+import { LoginSchema } from "@/registry/default/dynamic-components/simple-auth/schemas";
 
-export const RegisterForm = () => {
+export const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
-      name: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      login(values, callbackUrl)
+        .then((data) => {
+          if (data?.error) {
+            form.reset();
+            setError(data.error);
+          }
+
+          if (data?.success) {
+            form.reset();
+            setSuccess(data.success);
+            router.push(callbackUrl || "/dashboard");
+          }
+        })
+        .catch(() => {
+          setError("");
+        });
     });
   };
+
   return (
     <CardWrapper
-      mainHeaderLabel="Register"
-      subHeaderLabel="Create an account"
-      backButtonLabel="Already have an account?"
-      backButtonHref={`${process.env.NEXT_PUBLIC_BASE_PATH}/auth/login`}
+      mainHeaderLabel="Login"
+      subHeaderLabel="Welcome Back"
+      backButtonLabel="Don't have an account?"
+      backButtonHref={`${process.env.NEXT_PUBLIC_BASE_PATH}/auth/register`}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isPending}
-                      {...field}
-                      placeholder="Jhon Doe"
-                      type="text"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="email"
@@ -93,7 +91,6 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="password"
@@ -108,6 +105,18 @@ export const RegisterForm = () => {
                       type="password"
                     />
                   </FormControl>
+                  <Button
+                    size="sm"
+                    variant="link"
+                    asChild
+                    className="px-0 font-normal"
+                  >
+                    <Link
+                      href={`${process.env.NEXT_PUBLIC_BASE_PATH}/auth/reset`}
+                    >
+                      Forgot password?
+                    </Link>
+                  </Button>
                   <FormMessage />
                 </FormItem>
               )}
@@ -116,7 +125,7 @@ export const RegisterForm = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button disabled={isPending} type="submit" className="w-full">
-            Create an account
+            Login
           </Button>
         </form>
       </Form>

@@ -60,151 +60,155 @@ export const dynamicComponents: Registry["items"] = [
     ],
     description: "A contact form with email sending functionality.",
   },
-  // {
-  //   name: "simple-auth",
-  //   type: "registry:dynamic-component",
-  //   registryDependencies: ["button", "input", "form", "card"],
-  //   dependencies: [
-  //     "nodemailer",
-  //     "zod",
-  //     "prisma",
-  //     "@prisma/client",
-  //     "react-spinners",
-  //     "@react-email/components",
-  //     "@react-email/render",
-  //     "uuid",
-  //     "bcryptjs",
-  //     "next-auth@beta",
-  //     "@auth/prisma-adapter",
-  //     "lucide-react",
-  //   ],
-  //   files: [
-  //     {
-  //       path: "dynamic-components/simple-auth/components/login-form.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/components/register-form.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/components/new-password-form.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/components/new-verification-form.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/components/reset-form.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/components/card-wrapper.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/components/back-button.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/components/form-error.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/components/form-success.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/actions/auth-actions.ts",
-  //       type: "registry:actions",
-  //     },
-  //     {
-  //       path: "lib/db.ts",
-  //       type: "registry:lib",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/lib/auth.ts",
-  //       type: "registry:lib",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/lib/routes.ts",
-  //       type: "registry:lib",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/lib/auth-helpers.ts",
-  //       type: "registry:lib",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/lib/user.ts",
-  //       type: "registry:lib",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/lib/get-user.ts",
-  //       type: "registry:lib",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/lib/next-auth.d.ts",
-  //       type: "registry:lib",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/lib/auth.config.ts",
-  //       type: "registry:lib",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/lib/mail.ts",
-  //       type: "registry:lib",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/route.ts",
-  //       type: "registry:api",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/emails/verification-email.tsx",
-  //       type: "registry:email",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/emails/reset-password-email.tsx",
-  //       type: "registry:email",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/auth/login/page.tsx",
-  //       target: "app/auth/login/page.tsx",
-  //       type: "registry:page",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/auth/register/page.tsx",
-  //       target: "app/auth/register/page.tsx",
-  //       type: "registry:page",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/auth/reset/page.tsx",
-  //       target: "app/auth/reset/page.tsx",
-  //       type: "registry:page",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/auth/new-password/page.tsx",
-  //       target: "app/auth/new-password/page.tsx",
-  //       type: "registry:page",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/auth/verify/page.tsx",
-  //       target: "app/auth/verify/page.tsx",
-  //       type: "registry:page",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/auth/verify/page.tsx",
-  //       target: "app/auth/layout.tsx",
-  //       type: "registry:file",
-  //     },
-  //     {
-  //       path: "dynamic-components/simple-auth/middleware.ts",
-  //       type: "registry:middleware",
-  //     },
-  //   ],
-  //   description:
-  //     "A simple authentication system with email verification and password reset.",
-  // },
+  {
+    name: "simple-auth",
+    type: "registry:dynamic-component",
+    registryDependencies: ["button", "input", "form", "card"],
+    dependencies: [
+      "nodemailer",
+      "zod",
+      "prisma",
+      "@prisma/client",
+      "react-spinners",
+      "@react-email/components",
+      "@react-email/render",
+      "uuid",
+      "bcryptjs",
+      "next-auth@beta",
+      "@auth/prisma-adapter",
+      "lucide-react",
+    ],
+    files: [
+      {
+        path: "dynamic-components/simple-auth/components/login-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/simple-auth/components/register-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/simple-auth/components/new-password-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/simple-auth/components/new-verification-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/simple-auth/components/reset-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/simple-auth/components/card-wrapper.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/simple-auth/components/back-button.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/simple-auth/components/form-error.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/simple-auth/components/form-success.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/simple-auth/actions/auth-actions.ts",
+        type: "registry:actions",
+      },
+      {
+        path: "lib/db.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/simple-auth/lib/auth.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/simple-auth/lib/routes.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/simple-auth/lib/auth-helpers.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/simple-auth/lib/user.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/simple-auth/lib/get-user.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/simple-auth/lib/next-auth.d.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/simple-auth/lib/auth.config.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/simple-auth/lib/mail.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/simple-auth/route.ts",
+        type: "registry:api",
+      },
+      {
+        path: "dynamic-components/simple-auth/emails/verification-email.tsx",
+        type: "registry:email",
+      },
+      {
+        path: "dynamic-components/simple-auth/emails/reset-password-email.tsx",
+        type: "registry:email",
+      },
+      {
+        path: "dynamic-components/simple-auth/auth/login/page.tsx",
+        target: "app/auth/login/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/simple-auth/auth/register/page.tsx",
+        target: "app/auth/register/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/simple-auth/auth/reset/page.tsx",
+        target: "app/auth/reset/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/simple-auth/auth/new-password/page.tsx",
+        target: "app/auth/new-password/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/simple-auth/auth/verify/page.tsx",
+        target: "app/auth/verify/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/simple-auth/schemas/index.ts",
+        type: "registry:schemas",
+      },
+      {
+        path: "dynamic-components/simple-auth/auth/layout.tsx",
+        target: "app/auth/layout.tsx",
+        type: "registry:file",
+      },
+      {
+        path: "dynamic-components/simple-auth/middleware.ts",
+        type: "registry:middleware",
+      },
+    ],
+    description:
+      "A simple authentication system with email verification and password reset.",
+  },
 
   {
     name: "simple-crud-table",

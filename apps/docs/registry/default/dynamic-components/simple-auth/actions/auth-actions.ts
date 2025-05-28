@@ -1,13 +1,13 @@
 "use server";
 
 import * as z from "zod";
-import { db } from "@/registry/new-york/auth/lib/db";
-import { getUserByEmail } from "@/registry/new-york/auth/lib/user";
+import { db } from "@/registry/default/auth/lib/db";
+import { getUserByEmail } from "@/registry/default/auth/lib/user";
 import {
   signIn,
   signOut,
-} from "@/registry/new-york/dynamic-components/simple-auth/lib/auth";
-import { DEFAULT_LOGIN_REDIRECT } from "@/registry/new-york/dynamic-components/simple-auth/lib/routes";
+} from "@/registry/default/dynamic-components/simple-auth/lib/auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/registry/default/dynamic-components/simple-auth/lib/routes";
 import { AuthError } from "next-auth";
 import {
   generatePasswordResetToken,
@@ -16,17 +16,17 @@ import {
   getVerificationTokenByToken,
   hashPassword,
   verifyPassword,
-} from "@/registry/new-york/auth/lib/auth-helpers";
+} from "@/registry/default/auth/lib/auth-helpers";
 import {
   sendPasswordResetEmail,
   sendVerificationEmail,
-} from "@/registry/new-york/dynamic-components/simple-auth/lib/mail";
+} from "@/registry/default/dynamic-components/simple-auth/lib/mail";
 import {
   LoginSchema,
   RegisterSchema,
   ResetSchema,
   NewPasswordSchema,
-} from "@/registry/new-york/dynamic-components/simple-auth/schemas";
+} from "@/registry/default/dynamic-components/simple-auth/schemas";
 
 export const login = async (
   values: z.infer<typeof LoginSchema>,

@@ -1,8 +1,8 @@
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
-import { getUserByEmail } from "@/registry/new-york/dynamic-components/simple-auth/lib/user";
-import { verifyPassword } from "@/registry/new-york/dynamic-components/simple-auth/lib/auth-helpers";
-import { LoginSchema } from "@/registry/new-york/dynamic-components/simple-auth/schemas";
+import { getUserByEmail } from "@/registry/default/dynamic-components/simple-auth/lib/user";
+import { verifyPassword } from "@/registry/default/dynamic-components/simple-auth/lib/auth-helpers";
+import { LoginSchema } from "@/registry/default/dynamic-components/simple-auth/schemas";
 
 export default {
   providers: [

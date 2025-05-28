@@ -12,14 +12,14 @@ import {
   FormLabel,
   FormItem,
   FormMessage,
-} from "@/registry/new-york/ui/form";
-import { CardWrapper } from "@/registry/new-york/dynamic-components/simple-auth/components/card-wrapper";
-import { Input } from "@/registry/new-york/ui/input";
-import { Button } from "@/registry/new-york/ui/button";
-import { FormError } from "@/registry/new-york/dynamic-components/simple-auth/components/form-error";
-import { FormSuccess } from "@/registry/new-york/dynamic-components/simple-auth/components/form-success";
-import { register } from "@/registry/new-york/dynamic-components/simple-auth/actions/auth-actions";
-import { RegisterSchema } from "@/registry/new-york/dynamic-components/simple-auth/schemas";
+} from "@/registry/default/ui/form";
+import { CardWrapper } from "@/registry/default/dynamic-components/simple-auth/components/card-wrapper";
+import { Input } from "@/registry/default/ui/input";
+import { Button } from "@/registry/default/ui/button";
+import { FormError } from "@/registry/default/dynamic-components/simple-auth/components/form-error";
+import { FormSuccess } from "@/registry/default/dynamic-components/simple-auth/components/form-success";
+import { register } from "@/registry/default/dynamic-components/simple-auth/actions/auth-actions";
+import { RegisterSchema } from "@/registry/default/dynamic-components/simple-auth/schemas";
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");

@@ -12,14 +12,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/registry/new-york/ui/form";
-import { FormSuccess } from "@/registry/new-york/dynamic-components/simple-auth/components/form-success";
-import { FormError } from "@/registry/new-york/dynamic-components/simple-auth/components/form-error";
-import { Input } from "@/registry/new-york/ui/input";
-import { reset } from "@/registry/new-york/dynamic-components/simple-auth/actions/auth-actions";
-import { CardWrapper } from "@/registry/new-york/dynamic-components/simple-auth/components/card-wrapper";
-import { Button } from "@/registry/new-york/ui/button";
-import { ResetSchema } from "@/registry/new-york/dynamic-components/simple-auth/schemas";
+} from "@/registry/default/ui/form";
+import { FormSuccess } from "@/registry/default/dynamic-components/simple-auth/components/form-success";
+import { FormError } from "@/registry/default/dynamic-components/simple-auth/components/form-error";
+import { Input } from "@/registry/default/ui/input";
+import { reset } from "@/registry/default/dynamic-components/simple-auth/actions/auth-actions";
+import { CardWrapper } from "@/registry/default/dynamic-components/simple-auth/components/card-wrapper";
+import { Button } from "@/registry/default/ui/button";
+import { ResetSchema } from "@/registry/default/dynamic-components/simple-auth/schemas";
 
 export function ResetForm() {
   const [error, setError] = useState<string | undefined>("");

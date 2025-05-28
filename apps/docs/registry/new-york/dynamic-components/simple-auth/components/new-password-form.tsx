@@ -20,10 +20,7 @@ import { FormSuccess } from "@/registry/new-york/dynamic-components/simple-auth/
 import { FormError } from "@/registry/new-york/dynamic-components/simple-auth/components/form-error";
 import { Input } from "@/registry/new-york/ui/input";
 import { newPassword } from "@/registry/new-york/dynamic-components/simple-auth/actions/auth-actions";
-
-export const NewPasswordSchema = z.object({
-  password: z.string().min(6, { message: "Minimum 6 characters required" }),
-});
+import { NewPasswordSchema } from "@/registry/new-york/dynamic-components/simple-auth/schemas";
 
 export function NewPasswordForm() {
   const searchParams = useSearchParams();
