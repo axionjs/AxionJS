@@ -121,6 +121,24 @@ model Account {
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+  userId  String?  
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
 `,
   "contact-form": `
 model ContactMessage {

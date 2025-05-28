@@ -16,7 +16,6 @@ export async function ensurePrismaInitialized(cwd) {
     try {
       await execa("npx", ["prisma", "init"], {
         cwd,
-        stdio: "inherit", // Show output in the terminal
       });
       initSpinner.succeed("Prisma initialized successfully.");
     } catch (error) {
