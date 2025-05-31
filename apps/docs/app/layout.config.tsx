@@ -8,18 +8,23 @@ export const baseOptions: BaseLayoutProps = {
     {
       text: "Documentation",
       url: "/docs",
-      active: "nested-url",
+      active: "url",
     },
 
     {
       text: "Charts",
       url: "/charts",
-      active: "nested-url",
+      active: "url",
     },
     {
-      text: "UI Blocks",
+      text: "Blocks",
       url: "/blocks",
-      active: "nested-url",
+      active: "url",
+    },
+    {
+      text: "Theme",
+      url: "/theme",
+      active: "url",
     },
   ],
 };

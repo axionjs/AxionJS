@@ -29,7 +29,53 @@ import {
 } from "@/registry/new-york/ui/card";
 import { useToast } from "@/lib/use-toast";
 import PasswordInput from "@/registry/new-york/ui/password-input";
-import { signupAction } from "@/actions/auth-actions";
+
+// TODO: Create server action for signup
+// Create a file: app/actions/auth-actions.ts
+//
+// "use server";
+//
+// import { z } from "zod";
+// import { redirect } from "next/navigation";
+//
+// const signupSchema = z.object({
+//   name: z.string().min(2),
+//   email: z.string().email(),
+//   password: z.string().min(8),
+//   confirmPassword: z.string(),
+// }).refine((data) => data.password === data.confirmPassword, {
+//   message: "Passwords do not match",
+//   path: ["confirmPassword"],
+// });
+//
+// export async function signupAction(formData: z.infer<typeof signupSchema>) {
+//   try {
+//     // Validate the form data
+//     const validatedFields = signupSchema.parse(formData);
+//
+//     // TODO: Implement your authentication logic here
+//     // Examples:
+//     // - Hash the password using bcrypt
+//     // - Save user to database
+//     // - Send verification email
+//     // - Create session/JWT token
+//
+//     // Example with a database call:
+//     // const hashedPassword = await bcrypt.hash(validatedFields.password, 10);
+//     // const user = await db.user.create({
+//     //   data: {
+//     //     name: validatedFields.name,
+//     //     email: validatedFields.email,
+//     //     password: hashedPassword,
+//     //   },
+//     // });
+//
+//     return { success: true, message: "Account created successfully" };
+//   } catch (error) {
+//     console.error("Signup error:", error);
+//     throw new Error("Failed to create account");
+//   }
+// }
 
 const formSchema = z
   .object({
@@ -68,7 +114,14 @@ export function SignupForm1() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsPending(true);
-      await signupAction(values);
+
+      // TODO: Import and use the signupAction server action
+      // import { signupAction } from "@/actions/auth-actions";
+      // await signupAction(values);
+
+      // For now, simulate the signup process
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       toast({
         title: "Account created",
         description: "Your account has been created successfully.",
@@ -84,6 +137,33 @@ export function SignupForm1() {
       setIsPending(false);
     }
   }
+
+  // TODO: Implement OAuth server actions
+  // Create server actions for GitHub and Google OAuth:
+  //
+  // export async function signInWithGitHub() {
+  //   "use server";
+  //   // Implement GitHub OAuth logic
+  //   // redirect to GitHub OAuth URL
+  // }
+  //
+  // export async function signInWithGoogle() {
+  //   "use server";
+  //   // Implement Google OAuth logic
+  //   // redirect to Google OAuth URL
+  // }
+
+  const handleGitHubSignup = async () => {
+    // TODO: Call GitHub OAuth server action
+    // await signInWithGitHub();
+    console.log("GitHub signup clicked");
+  };
+
+  const handleGoogleSignup = async () => {
+    // TODO: Call Google OAuth server action
+    // await signInWithGoogle();
+    console.log("Google signup clicked");
+  };
 
   return (
     <Card className="w-full max-w-md mx-auto">
@@ -221,6 +301,7 @@ export function SignupForm1() {
           <Button
             variant="outline"
             type="button"
+            onClick={handleGitHubSignup}
             className="flex items-center justify-center gap-2"
           >
             <svg
@@ -242,6 +323,7 @@ export function SignupForm1() {
           <Button
             variant="outline"
             type="button"
+            onClick={handleGoogleSignup}
             className="flex items-center justify-center gap-2"
           >
             <svg

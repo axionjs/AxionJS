@@ -85,6 +85,9 @@ import TestimonialsCarousel from "@/registry/new-york/blocks/testimonials-carous
 import TestimonialsFeatured from "@/registry/new-york/blocks/testimonials-featured";
 import TestimonialsGrid from "@/registry/new-york/blocks/testimonials-grid";
 
+// Import the new Bottom Navigation component
+import BottomNavigation from "@/app/components/docs/BottomNavigationPreview";
+
 // Component metadata with NPX commands
 export const formComponents = [
   {
@@ -268,7 +271,6 @@ export const formComponents = [
         description: "Hero section with gradient background",
         installCommand: "npx axionjs add hero-gradient",
       },
-
       {
         name: "hero-simple",
         component: HeroSimple,
@@ -302,14 +304,14 @@ export const formComponents = [
         description: "Animated navigation bar",
         installCommand: "npx axionjs add navbar-animated",
       },
+
       {
         name: "navbar-bottom-icons",
-        component: NavbarBottomIcons,
-        displayName: "Navbar Bottom Icons",
-        description: "Navigation bar with bottom icons",
+        component: (props) => <BottomNavigation mode="preview" {...props} />,
+        displayName: "Navbar Bottom with Icons",
+        description: "All-in-one bottom navigation with preview mode",
         installCommand: "npx axionjs add navbar-bottom-icons",
       },
-
       {
         name: "navbar-desktop",
         component: NavbarDesktop,

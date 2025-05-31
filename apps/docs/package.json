@@ -13,6 +13,7 @@
     "build:registry": "tsx --tsconfig ./tsconfig.scripts.json ./scripts/build-registry.mts && prettier --log-level silent --write \"registry/**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.2.18",
     "@auth/prisma-adapter": "^2.9.0",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
@@ -55,6 +56,7 @@
     "@repo/ui": "*",
     "@theguild/remark-mermaid": "^0.2.0",
     "@types/lodash.template": "^4.5.3",
+    "ai": "^4.3.16",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.6.0",
@@ -70,6 +72,8 @@
     "fumadocs-mdx": "11.1.2",
     "fumadocs-twoslash": "^2.0.2",
     "fumadocs-ui": "^14.6.1",
+    "immer": "^10.1.1",
+    "input-otp": "^1.4.2",
     "lodash.template": "^4.5.0",
     "lucide-react": "^0.469.0",
     "motion": "^12.0.6",
@@ -100,6 +104,7 @@
     "tailwindcss-animate": "^1.0.7",
     "ts-morph": "^25.0.1",
     "tsx": "^4.19.2",
+    "use-sync-external-store": "^1.5.0",
     "vaul": "^1.1.2",
     "zod": "^3.24.1",
     "zustand": "^5.0.3"
