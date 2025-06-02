@@ -63,6 +63,13 @@ export const registryItemSchema = z.object({
   $schema: z.string().optional(),
   name: z.string(),
   type: registryItemTypeSchema,
+  label: z.string().optional(),
+  activeColor: z
+    .object({
+      light: z.string(),
+      dark: z.string(),
+    })
+    .optional(),
   title: z.string().optional(),
   author: z.string().min(2).optional(),
   description: z.string().optional(),
@@ -72,6 +79,7 @@ export const registryItemSchema = z.object({
   files: z.array(registryItemFileSchema).optional(),
   tailwind: registryItemTailwindSchema.optional(),
   cssVars: registryItemCssVarsSchema.optional(),
+  cssVarsV4: registryItemCssVarsSchema.optional(),
   meta: z.record(z.string(), z.any()).optional(),
   docs: z.string().optional(),
   categories: z.array(z.string()).optional(),
@@ -102,10 +110,6 @@ export const iconsSchema = z.record(
 );
 
 export const registryBaseColorSchema = z.object({
-  inlineColors: z.object({
-    light: z.record(z.string(), z.string()),
-    dark: z.record(z.string(), z.string()),
-  }),
   cssVars: z.object({
     light: z.record(z.string(), z.string()),
     dark: z.record(z.string(), z.string()),

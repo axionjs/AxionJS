@@ -2,6 +2,7 @@ import { existsSync, promises as fs } from "fs";
 import { tmpdir } from "os";
 import path from "path";
 import template from "lodash/template";
+import { themes } from "../registry/registry-themes";
 import { rimraf } from "rimraf";
 import {
   Registry,
@@ -12,8 +13,6 @@ import {
 import { Project, ScriptKind } from "ts-morph";
 import { z } from "zod";
 import { registry } from "../registry";
-import { baseColors } from "../registry/registry-base-colors";
-import { colorMapping, colors } from "../registry/registry-colors";
 import { iconLibraries, icons } from "../registry/registry-icons";
 import { styles } from "../registry/registry-styles";
 
@@ -413,6 +412,104 @@ async function buildStylesIndex() {
       registryDependencies: ["utils"],
       tailwind: {
         config: {
+          theme: {
+            extend: {
+              colors: {
+                background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
+                card: {
+                  DEFAULT: "hsl(var(--card))",
+                  foreground: "hsl(var(--card-foreground))",
+                },
+                popover: {
+                  DEFAULT: "hsl(var(--popover))",
+                  foreground: "hsl(var(--popover-foreground))",
+                },
+                primary: {
+                  DEFAULT: "hsl(var(--primary))",
+                  foreground: "hsl(var(--primary-foreground))",
+                },
+                secondary: {
+                  DEFAULT: "hsl(var(--secondary))",
+                  foreground: "hsl(var(--secondary-foreground))",
+                },
+                muted: {
+                  DEFAULT: "hsl(var(--muted))",
+                  foreground: "hsl(var(--muted-foreground))",
+                },
+                accent: {
+                  DEFAULT: "hsl(var(--accent))",
+                  foreground: "hsl(var(--accent-foreground))",
+                },
+                destructive: {
+                  DEFAULT: "hsl(var(--destructive))",
+                  foreground: "hsl(var(--destructive-foreground))",
+                },
+                border: "hsl(var(--border))",
+                input: "hsl(var(--input))",
+                ring: "hsl(var(--ring))",
+              },
+              borderRadius: {
+                lg: "var(--radius)",
+                md: "calc(var(--radius) - 2px)",
+                sm: "calc(var(--radius) - 4px)",
+                xl: "calc(var(--radius) + 2px)",
+              },
+              fontFamily: {
+                display: ["var(--font-display)", "sans-serif"],
+                text: ["var(--font-text)", "sans-serif"],
+              },
+              keyframes: {
+                shine: {
+                  from: { backgroundPosition: "200% 0" },
+                  to: { backgroundPosition: "-200% 0" },
+                },
+                fadeIn: {
+                  "0%": { opacity: "0" },
+                  "100%": { opacity: "1" },
+                },
+                fadeOut: {
+                  "0%": { opacity: "1" },
+                  "100%": { opacity: "0" },
+                },
+                scaleUp: {
+                  "0%": { transform: "scale(0.95)" },
+                  "100%": { transform: "scale(1)" },
+                },
+                scaleDown: {
+                  "0%": { transform: "scale(1)" },
+                  "100%": { transform: "scale(0.95)" },
+                },
+                slideIn: {
+                  "0%": { transform: "translateX(-100%)" },
+                  "100%": { transform: "translateX(0)" },
+                },
+                slideOut: {
+                  "0%": { transform: "translateX(0)" },
+                  "100%": { transform: "translateX(-100%)" },
+                },
+                marquee: {
+                  from: { transform: "translateX(0)" },
+                  to: { transform: "translateX(calc(-100% - var(--gap)))" },
+                },
+                "marquee-vertical": {
+                  from: { transform: "translateY(0)" },
+                  to: { transform: "translateY(calc(-100% - var(--gap)))" },
+                },
+              },
+              animation: {
+                fadeIn: "fadeIn 500ms ease",
+                fadeOut: "fadeOut 500ms ease",
+                scaleUp: "scaleUp 300ms ease",
+                scaleDown: "scaleDown 300ms ease",
+                slideIn: "slideIn 500ms ease",
+                slideOut: "slideOut 500ms ease",
+                shine: "shine 8s ease infinite",
+                marquee: "marquee 20s linear infinite",
+                "marquee-vertical": "marquee-vertical 20s linear infinite",
+              },
+            },
+          },
           plugins: [`require("tailwindcss-animate")`],
         },
       },
@@ -427,64 +524,15 @@ async function buildStylesIndex() {
     );
   }
 }
-
 // ----------------------------------------------------------------------------
-// Build registry/colors/index.json.
-// ----------------------------------------------------------------------------
-async function buildThemes() {
-  const colorsTargetPath = path.join(REGISTRY_PATH, "colors");
-  rimraf.sync(colorsTargetPath);
-  if (!existsSync(colorsTargetPath)) {
-    await fs.mkdir(colorsTargetPath, { recursive: true });
-  }
-
-  const colorsData: Record<string, any> = {};
-  for (const [color, value] of Object.entries(colors)) {
-    if (typeof value === "string") {
-      colorsData[color] = value;
-      continue;
-    }
-
-    if (Array.isArray(value)) {
-      colorsData[color] = value.map((item) => ({
-        ...item,
-        rgbChannel: item.rgb.replace(/^rgb\((\d+),(\d+),(\d+)\)$/, "$1 $2 $3"),
-        hslChannel: item.hsl.replace(
-          /^hsl\(([\d.]+),([\d.]+%),([\d.]+%)\)$/,
-          "$1 $2 $3"
-        ),
-      }));
-      continue;
-    }
-
-    if (typeof value === "object") {
-      colorsData[color] = {
-        ...value,
-        rgbChannel: value.rgb.replace(/^rgb\((\d+),(\d+),(\d+)\)$/, "$1 $2 $3"),
-        hslChannel: value.hsl.replace(
-          /^hsl\(([\d.]+),([\d.]+%),([\d.]+%)\)$/,
-          "$1 $2 $3"
-        ),
-      };
-      continue;
-    }
-  }
-
-  await fs.writeFile(
-    path.join(colorsTargetPath, "index.json"),
-    JSON.stringify(colorsData, null, 2),
-    "utf8"
-  );
-
-  // ----------------------------------------------------------------------------
-  // Build registry/colors/[base].json.
-  // ----------------------------------------------------------------------------
-  const BASE_STYLES = `@tailwind base;
+// Base CSS template for Tailwind
+const BASE_STYLES = `@tailwind base;
 @tailwind components;
 @tailwind utilities;
-  `;
+`;
 
-  const BASE_STYLES_WITH_VARIABLES = `@tailwind base;
+// Base CSS template with CSS variables
+const BASE_STYLES_WITH_VARIABLES = `@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -510,11 +558,6 @@ async function buildThemes() {
     --input: <%- colors.light["input"] %>;
     --ring: <%- colors.light["ring"] %>;
     --radius: 0.5rem;
-    --chart-1: <%- colors.light["chart-1"] %>;
-    --chart-2: <%- colors.light["chart-2"] %>;
-    --chart-3: <%- colors.light["chart-3"] %>;
-    --chart-4: <%- colors.light["chart-4"] %>;
-    --chart-5: <%- colors.light["chart-5"] %>;
   }
 
   .dark {
@@ -537,11 +580,6 @@ async function buildThemes() {
     --border: <%- colors.dark["border"] %>;
     --input: <%- colors.dark["input"] %>;
     --ring: <%- colors.dark["ring"] %>;
-    --chart-1: <%- colors.dark["chart-1"] %>;
-    --chart-2: <%- colors.dark["chart-2"] %>;
-    --chart-3: <%- colors.dark["chart-3"] %>;
-    --chart-4: <%- colors.dark["chart-4"] %>;
-    --chart-5: <%- colors.dark["chart-5"] %>;
   }
 }
 
@@ -554,179 +592,143 @@ async function buildThemes() {
   }
 }`;
 
-  for (const baseColor of ["slate", "gray", "zinc", "neutral", "stone"]) {
-    const base: Record<string, any> = {
-      inlineColors: {},
-      cssVars: {},
+async function buildThemes() {
+  const themesTargetPath = path.join(REGISTRY_PATH, "themes");
+  const colorsTargetPath = path.join(REGISTRY_PATH, "colors");
+
+  // Clean up existing directories
+  rimraf.sync(themesTargetPath);
+  rimraf.sync(colorsTargetPath);
+
+  // Create fresh directories
+  await fs.mkdir(themesTargetPath, { recursive: true });
+  await fs.mkdir(colorsTargetPath, { recursive: true });
+
+  // Generate theme CSS variables
+  let themeCSS = `
+/* This file is auto-generated by scripts/build-themes.ts */
+/* Do not edit directly */\n\n`;
+
+  // Process each theme
+  for (const theme of themes) {
+    const { name, cssVars, cssVarsV4 } = theme;
+
+    // Create complete theme JSON representation
+    const themeJson = {
+      name,
+      label: theme.label,
+      activeColor: theme.activeColor,
+      cssVars,
+      cssVarsV4,
+      inlineColorsTemplate: template(BASE_STYLES)({}),
+      cssVarsTemplate: template(BASE_STYLES_WITH_VARIABLES)({
+        colors: cssVars,
+      }),
     };
-    for (const [mode, values] of Object.entries(colorMapping)) {
-      base["inlineColors"][mode] = {};
-      base["cssVars"][mode] = {};
-      for (const [key, value] of Object.entries(values)) {
-        if (typeof value === "string") {
-          // Chart colors do not have a 1-to-1 mapping with tailwind colors.
-          if (key.startsWith("chart-")) {
-            base["cssVars"][mode][key] = value;
-            continue;
-          }
 
-          const resolvedColor = value.replace(/{{base}}-/g, `${baseColor}-`);
-          base["inlineColors"][mode][key] = resolvedColor;
-
-          const [resolvedBase, scale] = resolvedColor.split("-");
-          const color = scale
-            ? colorsData[resolvedBase].find(
-                (item: any) => item.scale === parseInt(scale)
-              )
-            : colorsData[resolvedBase];
-          if (color) {
-            base["cssVars"][mode][key] = color.hslChannel;
-          }
-        }
-      }
-    }
-
-    // Build css vars.
-    base["inlineColorsTemplate"] = template(BASE_STYLES)({});
-    base["cssVarsTemplate"] = template(BASE_STYLES_WITH_VARIABLES)({
-      colors: base["cssVars"],
-    });
-
+    // Write theme JSON file
     await fs.writeFile(
-      path.join(REGISTRY_PATH, `colors/${baseColor}.json`),
-      JSON.stringify(base, null, 2),
+      path.join(themesTargetPath, `${name}.json`),
+      JSON.stringify(themeJson, null, 2),
       "utf8"
     );
 
-    // ----------------------------------------------------------------------------
-    // Build registry/themes.css
-    // ----------------------------------------------------------------------------
-    const THEME_STYLES_WITH_VARIABLES = `
-.theme-<%- theme %> {
-  --background: <%- colors.light["background"] %>;
-  --foreground: <%- colors.light["foreground"] %>;
+    // Generate CSS variables for this theme
+    themeCSS += generateThemeCSS(name, cssVars);
 
-  --muted: <%- colors.light["muted"] %>;
-  --muted-foreground: <%- colors.light["muted-foreground"] %>;
+    // Create color JSON file for v4 compatibility
+    const colorJson = {
+      name,
+      cssVars,
+      cssVarsV4,
+    };
 
-  --popover: <%- colors.light["popover"] %>;
-  --popover-foreground: <%- colors.light["popover-foreground"] %>;
+    await fs.writeFile(
+      path.join(colorsTargetPath, `${name}.json`),
+      JSON.stringify(colorJson, null, 2),
+      "utf8"
+    );
+  }
 
-  --card: <%- colors.light["card"] %>;
-  --card-foreground: <%- colors.light["card-foreground"] %>;
+  // Write combined themes.css
+  await fs.writeFile(path.join(REGISTRY_PATH, "themes.css"), themeCSS, "utf8");
 
-  --border: <%- colors.light["border"] %>;
-  --input: <%- colors.light["input"] %>;
+  // Create colors/index.json with all color data
+  const colorsIndex = {
+    themes: themes.map((theme) => ({
+      name: theme.name,
+      label: theme.label,
+      activeColor: theme.activeColor,
+    })),
+  };
 
-  --primary: <%- colors.light["primary"] %>;
-  --primary-foreground: <%- colors.light["primary-foreground"] %>;
+  const themesIndex = {
+    themes: themes.map((theme) => ({
+      name: theme.name,
+      label: theme.label,
+      activeColor: theme.activeColor,
+    })),
+  };
+  // Write themes/index.json
+  await fs.writeFile(
+    path.join(themesTargetPath, "index.json"),
+    JSON.stringify(themesIndex, null, 2),
+    "utf8"
+  );
 
-  --secondary: <%- colors.light["secondary"] %>;
-  --secondary-foreground: <%- colors.light["secondary-foreground"] %>;
-
-  --accent: <%- colors.light["accent"] %>;
-  --accent-foreground: <%- colors.light["accent-foreground"] %>;
-
-  --destructive: <%- colors.light["destructive"] %>;
-  --destructive-foreground: <%- colors.light["destructive-foreground"] %>;
-
-  --ring: <%- colors.light["ring"] %>;
-
-  --radius: <%- colors.light["radius"] %>;
+  await fs.writeFile(
+    path.join(colorsTargetPath, "index.json"),
+    JSON.stringify(colorsIndex, null, 2),
+    "utf8"
+  );
 }
 
-.dark .theme-<%- theme %> {
-  --background: <%- colors.dark["background"] %>;
-  --foreground: <%- colors.dark["foreground"] %>;
+function generateThemeCSS(themeName: string, cssVars: any) {
+  return `
+.theme-${themeName} {
+  --background: ${cssVars.light.background};
+  --foreground: ${cssVars.light.foreground};
+  --card: ${cssVars.light.card};
+  --card-foreground: ${cssVars.light["card-foreground"]};
+  --popover: ${cssVars.light.popover};
+  --popover-foreground: ${cssVars.light["popover-foreground"]};
+  --primary: ${cssVars.light.primary};
+  --primary-foreground: ${cssVars.light["primary-foreground"]};
+  --secondary: ${cssVars.light.secondary};
+  --secondary-foreground: ${cssVars.light["secondary-foreground"]};
+  --muted: ${cssVars.light.muted};
+  --muted-foreground: ${cssVars.light["muted-foreground"]};
+  --accent: ${cssVars.light.accent};
+  --accent-foreground: ${cssVars.light["accent-foreground"]};
+  --destructive: ${cssVars.light.destructive};
+  --destructive-foreground: ${cssVars.light["destructive-foreground"]};
+  --border: ${cssVars.light.border};
+  --input: ${cssVars.light.input};
+  --ring: ${cssVars.light.ring};
+  --radius: ${cssVars.light.radius || "0.5rem"};
+}
 
-  --muted: <%- colors.dark["muted"] %>;
-  --muted-foreground: <%- colors.dark["muted-foreground"] %>;
-
-  --popover: <%- colors.dark["popover"] %>;
-  --popover-foreground: <%- colors.dark["popover-foreground"] %>;
-
-  --card: <%- colors.dark["card"] %>;
-  --card-foreground: <%- colors.dark["card-foreground"] %>;
-
-  --border: <%- colors.dark["border"] %>;
-  --input: <%- colors.dark["input"] %>;
-
-  --primary: <%- colors.dark["primary"] %>;
-  --primary-foreground: <%- colors.dark["primary-foreground"] %>;
-
-  --secondary: <%- colors.dark["secondary"] %>;
-  --secondary-foreground: <%- colors.dark["secondary-foreground"] %>;
-
-  --accent: <%- colors.dark["accent"] %>;
-  --accent-foreground: <%- colors.dark["accent-foreground"] %>;
-
-  --destructive: <%- colors.dark["destructive"] %>;
-  --destructive-foreground: <%- colors.dark["destructive-foreground"] %>;
-
-  --ring: <%- colors.dark["ring"] %>;
-}`;
-
-    const themeCSS = [];
-    for (const theme of baseColors) {
-      themeCSS.push(
-        // @ts-ignore
-        template(THEME_STYLES_WITH_VARIABLES)({
-          colors: theme.cssVars,
-          theme: theme.name,
-        })
-      );
-    }
-
-    await fs.writeFile(
-      path.join(REGISTRY_PATH, `themes.css`),
-      themeCSS.join("\n"),
-      "utf8"
-    );
-
-    // ----------------------------------------------------------------------------
-    // Build registry/themes/[theme].json
-    // ----------------------------------------------------------------------------
-    rimraf.sync(path.join(REGISTRY_PATH, "themes"));
-    for (const baseColor of ["slate", "gray", "zinc", "neutral", "stone"]) {
-      const payload: Record<string, any> = {
-        name: baseColor,
-        label: baseColor.charAt(0).toUpperCase() + baseColor.slice(1),
-        cssVars: {},
-      };
-      for (const [mode, values] of Object.entries(colorMapping)) {
-        payload.cssVars[mode] = {};
-        for (const [key, value] of Object.entries(values)) {
-          if (typeof value === "string") {
-            const resolvedColor = value.replace(/{{base}}-/g, `${baseColor}-`);
-            payload.cssVars[mode][key] = resolvedColor;
-
-            const [resolvedBase, scale] = resolvedColor.split("-");
-            const color = scale
-              ? colorsData[resolvedBase].find(
-                  (item: any) => item.scale === parseInt(scale)
-                )
-              : colorsData[resolvedBase];
-            if (color) {
-              payload["cssVars"][mode][key] = color.hslChannel;
-            }
-          }
-        }
-      }
-
-      const targetPath = path.join(REGISTRY_PATH, "themes");
-
-      // Create directory if it doesn't exist.
-      if (!existsSync(targetPath)) {
-        await fs.mkdir(targetPath, { recursive: true });
-      }
-
-      await fs.writeFile(
-        path.join(targetPath, `${payload.name}.json`),
-        JSON.stringify(payload, null, 2),
-        "utf8"
-      );
-    }
-  }
+.dark .theme-${themeName} {
+  --background: ${cssVars.dark.background};
+  --foreground: ${cssVars.dark.foreground};
+  --card: ${cssVars.dark.card};
+  --card-foreground: ${cssVars.dark["card-foreground"]};
+  --popover: ${cssVars.dark.popover};
+  --popover-foreground: ${cssVars.dark["popover-foreground"]};
+  --primary: ${cssVars.dark.primary};
+  --primary-foreground: ${cssVars.dark["primary-foreground"]};
+  --secondary: ${cssVars.dark.secondary};
+  --secondary-foreground: ${cssVars.dark["secondary-foreground"]};
+  --muted: ${cssVars.dark.muted};
+  --muted-foreground: ${cssVars.dark["muted-foreground"]};
+  --accent: ${cssVars.dark.accent};
+  --accent-foreground: ${cssVars.dark["accent-foreground"]};
+  --destructive: ${cssVars.dark.destructive};
+  --destructive-foreground: ${cssVars.dark["destructive-foreground"]};
+  --border: ${cssVars.dark.border};
+  --input: ${cssVars.dark.input};
+  --ring: ${cssVars.dark.ring};
+}\n\n`;
 }
 
 // ----------------------------------------------------------------------------

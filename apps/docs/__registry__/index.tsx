@@ -2550,6 +2550,21 @@ export const Index: Record<string, any> = {
       source: "__registry__/new-york/blocks/reset-password-form-3.tsx",
       meta: undefined,
     },
+    "signup-form-1": {
+      name: "signup-form-1",
+      description: "A signup form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","use-toast","password-input","toast"],
+      files: [{
+        path: "registry/new-york/blocks/signup-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/blocks/signup-form-1.tsx")),
+      source: "__registry__/new-york/blocks/signup-form-1.tsx",
+      meta: undefined,
+    },
     "signup-form-2": {
       name: "signup-form-2",
       description: "A signup form.",
@@ -6171,6 +6186,21 @@ export const Index: Record<string, any> = {
       categories: undefined,
       component: React.lazy(() => import("@/registry/default/blocks/reset-password-form-3.tsx")),
       source: "__registry__/default/blocks/reset-password-form-3.tsx",
+      meta: undefined,
+    },
+    "signup-form-1": {
+      name: "signup-form-1",
+      description: "A signup form.",
+      type: "registry:block",
+      registryDependencies: ["button","input","form","card","use-toast","password-input","toast"],
+      files: [{
+        path: "registry/default/blocks/signup-form-1.tsx",
+        type: "registry:component",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/blocks/signup-form-1.tsx")),
+      source: "__registry__/default/blocks/signup-form-1.tsx",
       meta: undefined,
     },
     "signup-form-2": {

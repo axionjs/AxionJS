@@ -707,30 +707,26 @@ export const blocks: Registry["items"] = [
     ],
     description: "A reset password form.",
   },
-  // {
-  //   name: "signup-form-1",
-  //   type: "registry:block",
-  //   registryDependencies: [
-  //     "button",
-  //     "input",
-  //     "form",
-  //     "card",
-  //     "use-toast",
-  //     "password-input",
-  //     "toast",
-  //   ],
-  //   files: [
-  //     {
-  //       path: "blocks/signup-form-1.tsx",
-  //       type: "registry:component",
-  //     },
-  //     {
-  //       path: "apps/docs/actions/auth-actions.ts",
-  //       type: "registry:actions",
-  //     },
-  //   ],
-  //   description: "A signup form.",
-  // },
+  {
+    name: "signup-form-1",
+    type: "registry:block",
+    registryDependencies: [
+      "button",
+      "input",
+      "form",
+      "card",
+      "use-toast",
+      "password-input",
+      "toast",
+    ],
+    files: [
+      {
+        path: "blocks/signup-form-1.tsx",
+        type: "registry:component",
+      },
+    ],
+    description: "A signup form.",
+  },
   {
     name: "signup-form-2",
     type: "registry:block",
