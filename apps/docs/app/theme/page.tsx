@@ -23,7 +23,7 @@ export default function ThemeEditorPage() {
   return (
     <HomeLayout {...baseOptions}>
       <ThemeProvider>
-        <div className="flex  overflow-hidden pt-4">
+        <div className="flex overflow-hidden pt-4">
           {/* Main Content Area */}
           <div className="flex-1 overflow-y-auto pb-20">
             <div className="mx-4 md:ml-16 md:mr-8">

@@ -1,5 +1,4 @@
-import { generateText } from "ai";
-import { google } from "@ai-sdk/google";
+import { GoogleGenAI } from "@google/genai";
 import type { ThemeData } from "../lib/stores/theme-store";
 import { googleFonts, getSortedFonts } from ".././lib/fonts";
 
@@ -454,9 +453,12 @@ export async function generateThemeFromPrompt(
       process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
     if (apiKey) {
-      const model = google("gemini-1.5-flash", {
-        apiKey: apiKey,
-      });
+      // Validate API key format (Gemini API keys start with "AIza")
+      if (!apiKey.startsWith("AIza")) {
+        throw new Error("Invalid API key format");
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
 
       // Get available fonts for the prompt
       const availableFonts = getSortedFonts()
@@ -468,22 +470,89 @@ export async function generateThemeFromPrompt(
         
         Create a theme based on: "${description}"
         
-        BRAND/CULTURAL KNOWLEDGE EXAMPLES:
+        ACCURATE BRAND COLORS - USE THESE EXACT COLORS (when mentioned):
+        - Vercel: Black (#000000) primary, minimal design, Inter font
+        - Next.js: Black (#000000) primary, clean tech aesthetic, Inter font
+        - React: Blue (#61DAFB) primary, modern web framework
+        - Vue: Green (#4FC08D) primary, progressive framework
+        - Svelte: Orange (#FF3E00) primary, modern compiler
+        - Angular: Red (#DD0031) primary, enterprise framework
+        - Tailwind CSS: Blue (#06B6D4) primary, utility-first CSS
+        - Supabase: Green (#3ECF8E) primary, database platform
+        - Prisma: Dark blue (#2D3748) primary, database toolkit
+        - Planetscale: Purple (#6366F1) primary, database platform
+        - Railway: Purple (#8B5CF6) primary, deployment platform
+        - Render: Blue (#0066CC) primary, cloud platform
+        - Netlify: Teal (#00C7B7) primary, web platform
+        - Cloudflare: Orange (#F48120) primary, web infrastructure
         - Uber: Black (#000000) primary, clean sans-serif fonts like Inter/Roboto
         - Material UI: Blue (#1976d2) primary, Roboto font family
-        - Islamic theme: Deep green (#006847), Arabic fonts like Noto Naskh Arabic
-        - Business theme: Navy blue (#1e40af), professional fonts like Montserrat/Open Sans
-        - Apple: Light gray background, blue (#007AFF) primary, SF Pro fonts (use Inter as substitute)
-        - Airbnb: Coral/pink (#FF5A5F), Circular fonts (use Nunito as substitute)
-        - Stripe: Purple (#635bff), Inter font
-        - GitHub: Black/gray theme with accent colors
-        - Netflix: Red (#e50914), custom fonts (use Bebas Neue for display)
+        - Apple: Blue (#007AFF) primary, SF Pro fonts (use Inter as substitute)
+        - Airbnb: Coral/pink (#FF5A5F) primary, Circular fonts (use Nunito as substitute)
+        - Stripe: Purple (#635bff) primary, Inter font
+        - GitHub: Dark gray (#24292e) primary, monospace accents
+        - Netflix: Red (#e50914) primary, custom fonts (use Bebas Neue for display)
+        - Spotify: Green (#1db954) primary, Circular fonts (use Montserrat)
+        - Discord: Purple (#5865F2) primary, modern chat platform
+        - Slack: Purple (#4A154B) primary, workplace messaging
+        - Microsoft: Blue (#0078D4) primary, Segoe UI fonts (use Inter)
+        - Google: Blue (#4285F4) primary, Google Sans fonts (use Inter)
+        - Amazon: Orange (#FF9900) primary, Amazon Ember fonts (use Inter)
+        - Facebook/Meta: Blue (#1877F2) primary, modern social platform
+        - Twitter/X: Black (#000000) primary, social media platform
+        - LinkedIn: Blue (#0077B5) primary, professional network
+        - YouTube: Red (#FF0000) primary, video platform
+        - Instagram: Pink gradient (#E4405F) primary, photo sharing
+        - TikTok: Black (#000000) primary, short video platform
+        - Pinterest: Red (#BD081C) primary, visual discovery
+        - Reddit: Orange (#FF4500) primary, social news
+        - Twitch: Purple (#9146FF) primary, live streaming
         
-        CULTURAL THEMES:
-        - Islamic: Green (#006847), gold accents, Arabic fonts
-        - Japanese: Red (#dc143c), minimalist, clean fonts
-        - Scandinavian: Blues/whites, clean modern fonts
+        IMPORTANT INSTRUCTIONS:
+        
+        1. IF A BRAND IS LISTED ABOVE: Use the exact colors and fonts specified.
+        
+        2. IF A BRAND IS NOT LISTED ABOVE: Use your extensive knowledge of brand identities to determine:
+           - Their official primary brand color
+           - Appropriate fonts that match their design language
+           - Their overall aesthetic and design philosophy
+           
+        3. FOR UNKNOWN BRANDS OR GENERAL THEMES: Create appropriate themes based on:
+           - Industry context (tech, finance, fashion, etc.)
+           - Cultural context (Japanese, Scandinavian, etc.)
+           - Style descriptions (minimalist, playful, corporate, etc.)
+           - Color preferences mentioned in the description
+        
+        EXAMPLES OF YOUR KNOWLEDGE USAGE:
+        - Tesla: Use their minimalist black/white aesthetic with clean fonts
+        - McDonald's: Use their red and yellow branding
+        - Coca-Cola: Use their classic red branding
+        - IBM: Use their corporate blue branding
+        - Samsung: Use their blue corporate identity
+        - Nike: Use their bold black branding with dynamic fonts
+        - Adidas: Use their black and white minimalist approach
+        - Ferrari: Use their iconic red branding
+        - BMW: Use their blue and white corporate colors
+        - Any other brand: Apply your knowledge of their visual identity
+        
+        CULTURAL AND STYLE THEMES:
+        - Islamic: Deep green (#006847), gold accents, Arabic fonts like Amiri/Noto Sans Arabic
+        - Japanese: Red (#dc143c), minimalist, clean fonts like Noto Serif JP
+        - Chinese: Red (#dc143c), traditional, Noto Serif SC fonts
         - Indian: Saffron (#ff6600), warm colors, Devanagari fonts (use Mukti/Hind)
+        - Scandinavian: Blue (#4682b4), clean modern fonts like Montserrat
+        - Korean: Red (#cd2e3a), modern, Noto Sans KR fonts
+        - Minimalist: Gray (#374151), clean, Inter font
+        - Dark theme: Dark gray (#1f2937), gothic, Oswald font
+        - Gaming: Purple (#8b5cf6), futuristic, Orbitron font
+        - Retro: Red (#dc2626), vintage, Bebas Neue font
+        - Corporate: Navy blue (#1e40af), professional, Montserrat font
+        - Healthcare: Green (#059669), trustworthy, Inter font
+        - Finance: Dark green (#065f46), secure, Inter font
+        - Education: Blue (#2563eb), academic, Merriweather font
+        - Food: Orange (#ea580c), appetizing, Playfair Display font
+        - Fashion: Dark gray (#1f2937), elegant, Playfair Display font
+        - Travel: Cyan (#0891b2), adventurous, Montserrat font
         
         CONSTRAINTS:
         - Background is ALWAYS white (#ffffff) - DO NOT CHANGE
@@ -497,30 +566,42 @@ export async function generateThemeFromPrompt(
         
         AVAILABLE FONTS: ${availableFonts}
         
-        Use your knowledge of brands, cultures, and design systems to pick appropriate colors and fonts.
-        If no specific color mentioned, infer from brand/culture/style described.
+        CRITICAL: 
+        - Use your vast knowledge of brands, companies, and visual identities
+        - If you recognize a brand not in the predefined list, apply their actual brand colors
+        - Be creative and accurate based on real-world brand knowledge
+        - Explain your reasoning for color and font choices
         
         RESPONSE FORMAT (JSON only):
         {
-          "primaryColor": "#1976d2",
-          "accentColor": "#e3f2fd",
-          "displayFont": "Roboto",
-          "textFont": "Roboto",
+          "primaryColor": "#000000",
+          "accentColor": "#f5f5f5",
+          "displayFont": "Inter",
+          "textFont": "Inter",
           "displayWeight": 600,
           "textWeight": 400,
           "borderRadius": "0.5rem",
-          "reasoning": "Brief explanation of choices"
+          "reasoning": "Detailed explanation of why you chose these specific colors and fonts based on brand knowledge or theme context"
         }
       `;
 
-      const { text } = await generateText({
-        model,
-        prompt,
-        maxTokens: 600,
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: prompt,
+        config: {
+          systemInstruction:
+            "You are an expert UI/UX designer with extensive knowledge of global brands, companies, and design systems. When a brand is mentioned that's not in the predefined list, use your knowledge of their actual brand colors and design language. Always respond with valid JSON only.",
+          maxOutputTokens: 800,
+        },
       });
 
+      const aiResponseText = response.text;
+
       // Parse AI response
-      const aiResponse = JSON.parse(text.trim());
+      const cleanResponse = aiResponseText
+        .replace(/```json\s*|\s*```/g, "")
+        .trim();
+      const aiResponse = JSON.parse(cleanResponse);
 
       // Use AI suggestions or parsed values, with fallbacks
       const primaryColor =
@@ -571,7 +652,7 @@ export async function generateThemeFromPrompt(
       };
     }
   } catch (error) {
-    console.warn("AI generation failed, using rule-based generation:", error);
+    // Silently fall back to rule-based generation on any error
   }
 
   // Enhanced fallback with better inference
@@ -595,7 +676,51 @@ function inferThemeFromDescription(description: string): {
 } {
   const desc = description.toLowerCase();
 
-  // Brand-specific themes
+  // Tech/Development brands - Updated with correct colors
+  if (desc.includes("vercel")) {
+    return { primaryColor: "#000000", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("next.js") || desc.includes("nextjs")) {
+    return { primaryColor: "#000000", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("react")) {
+    return { primaryColor: "#61DAFB", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("vue")) {
+    return { primaryColor: "#4FC08D", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("svelte")) {
+    return { primaryColor: "#FF3E00", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("angular")) {
+    return { primaryColor: "#DD0031", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("tailwind")) {
+    return { primaryColor: "#06B6D4", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("supabase")) {
+    return { primaryColor: "#3ECF8E", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("prisma")) {
+    return { primaryColor: "#2D3748", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("planetscale")) {
+    return { primaryColor: "#6366F1", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("railway")) {
+    return { primaryColor: "#8B5CF6", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("render")) {
+    return { primaryColor: "#0066CC", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("netlify")) {
+    return { primaryColor: "#00C7B7", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("cloudflare")) {
+    return { primaryColor: "#F48120", displayFont: "Inter", textFont: "Inter" };
+  }
+
+  // Existing brand themes
   if (desc.includes("uber")) {
     return { primaryColor: "#000000", displayFont: "Inter", textFont: "Inter" };
   }
@@ -640,6 +765,12 @@ function inferThemeFromDescription(description: string): {
       textFont: "Open Sans",
     };
   }
+  if (desc.includes("discord")) {
+    return { primaryColor: "#5865F2", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("slack")) {
+    return { primaryColor: "#4A154B", displayFont: "Inter", textFont: "Inter" };
+  }
   if (desc.includes("facebook") || desc.includes("meta")) {
     return {
       primaryColor: "#1877f2",
@@ -648,7 +779,20 @@ function inferThemeFromDescription(description: string): {
     };
   }
   if (desc.includes("twitter") || desc.includes("x")) {
-    return { primaryColor: "#1da1f2", displayFont: "Inter", textFont: "Inter" };
+    return { primaryColor: "#000000", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("linkedin")) {
+    return { primaryColor: "#0077B5", displayFont: "Inter", textFont: "Inter" };
+  }
+  if (desc.includes("youtube")) {
+    return {
+      primaryColor: "#FF0000",
+      displayFont: "Roboto",
+      textFont: "Roboto",
+    };
+  }
+  if (desc.includes("instagram")) {
+    return { primaryColor: "#E4405F", displayFont: "Inter", textFont: "Inter" };
   }
 
   // Cultural themes
