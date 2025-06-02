@@ -1,9 +1,5 @@
 import { promises as fs } from "fs";
 import path from "path";
-import {
-  registryItemCssVarsSchema,
-  registryItemTailwindSchema,
-} from "../registry/schema.js";
 import { highlighter } from "../highlighter.js";
 import { spinner } from "../spinner.js";
 import postcss from "postcss";
@@ -18,6 +14,8 @@ export async function updateCssVars(cssVars, config, options) {
     cleanupDefaultNextStyles: false,
     silent: false,
     tailwindVersion: "v3",
+    overwriteCssVars: false,
+    initIndex: true,
     ...options,
   };
   const cssFilepath = config.resolvedPaths.tailwindCss;
@@ -26,7 +24,7 @@ export async function updateCssVars(cssVars, config, options) {
     cssFilepath
   );
   const cssVarsSpinner = spinner(
-    `Updating ${highlighter.info(cssFilepathRelative)}`,
+    `Updating CSS variables in ${highlighter.info(cssFilepathRelative)}`,
     {
       silent: options.silent,
     }
@@ -36,6 +34,8 @@ export async function updateCssVars(cssVars, config, options) {
     cleanupDefaultNextStyles: options.cleanupDefaultNextStyles,
     tailwindVersion: options.tailwindVersion,
     tailwindConfig: options.tailwindConfig,
+    overwriteCssVars: options.overwriteCssVars,
+    initIndex: options.initIndex,
   });
   await fs.writeFile(cssFilepath, output, "utf8");
   cssVarsSpinner.succeed();
@@ -46,6 +46,8 @@ export async function transformCssVars(input, cssVars, config, options) {
     cleanupDefaultNextStyles: false,
     tailwindVersion: "v3",
     tailwindConfig: undefined,
+    overwriteCssVars: false,
+    initIndex: true,
     ...options,
   };
 
@@ -56,13 +58,31 @@ export async function transformCssVars(input, cssVars, config, options) {
   }
 
   if (options.tailwindVersion === "v4") {
-    plugins = [addCustomVariant({ params: "dark (&:is(.dark *))" })];
+    plugins = [];
+
+    // Only add tw-animate-css if project does not have tailwindcss-animate
+    if (config.resolvedPaths?.cwd) {
+      const packageInfo = getPackageInfo(config.resolvedPaths.cwd);
+      if (
+        !packageInfo?.dependencies?.["tailwindcss-animate"] &&
+        !packageInfo?.devDependencies?.["tailwindcss-animate"] &&
+        options.initIndex
+      ) {
+        plugins.push(addCustomImport({ params: "tw-animate-css" }));
+      }
+    }
+
+    plugins.push(addCustomVariant({ params: "dark (&:is(.dark *))" }));
 
     if (options.cleanupDefaultNextStyles) {
       plugins.push(cleanupDefaultNextStylesPlugin());
     }
 
-    plugins.push(updateCssVarsPluginV4(cssVars));
+    plugins.push(
+      updateCssVarsPluginV4(cssVars, {
+        overwriteCssVars: options.overwriteCssVars,
+      })
+    );
     plugins.push(updateThemePlugin(cssVars));
 
     if (options.tailwindConfig) {
@@ -72,8 +92,10 @@ export async function transformCssVars(input, cssVars, config, options) {
     }
   }
 
-  if (config.tailwind.cssVariables) {
-    plugins.push(updateBaseLayerPlugin());
+  if (config.tailwind.cssVariables && options.initIndex) {
+    plugins.push(
+      updateBaseLayerPlugin({ tailwindVersion: options.tailwindVersion })
+    );
   }
 
   const result = await postcss(plugins).process(input, {
@@ -91,12 +113,18 @@ export async function transformCssVars(input, cssVars, config, options) {
   return output;
 }
 
-function updateBaseLayerPlugin() {
+function updateBaseLayerPlugin({ tailwindVersion }) {
   return {
     postcssPlugin: "update-base-layer",
     Once(root) {
       const requiredRules = [
-        { selector: "*", apply: "border-border outline-ring/50" },
+        {
+          selector: "*",
+          apply:
+            tailwindVersion === "v4"
+              ? "border-border outline-ring/50"
+              : "border-border",
+        },
         { selector: "body", apply: "bg-background text-foreground" },
       ];
 
@@ -154,7 +182,6 @@ function updateBaseLayerPlugin() {
     },
   };
 }
-
 function updateCssVarsPlugin(cssVars) {
   return {
     postcssPlugin: "update-css-vars",
@@ -317,7 +344,41 @@ function updateCssVarsPluginV4(cssVars) {
     postcssPlugin: "update-css-vars-v4",
     Once(root) {
       Object.entries(cssVars).forEach(([key, vars]) => {
-        const selector = key === "light" ? ":root" : `.${key}`;
+        let selector = key === "light" ? ":root" : `.${key}`;
+
+        if (key === "theme") {
+          selector = "@theme";
+          const themeNode = upsertThemeNode(root);
+          Object.entries(vars).forEach(([key, value]) => {
+            const prop = `--${key.replace(/^--/, "")}`;
+            const newDecl = postcss.decl({
+              prop,
+              value,
+              raws: { semicolon: true },
+            });
+
+            const existingDecl = themeNode?.nodes?.find(
+              (node) => node.type === "decl" && node.prop === prop
+            );
+
+            // Only overwrite if overwriteCssVars is true
+            // i.e for registry:theme and registry:style
+            // We do not want new components to overwrite existing vars.
+            // Keep user defined vars.
+            if (options.overwriteCssVars) {
+              if (existingDecl) {
+                existingDecl.replaceWith(newDecl);
+              } else {
+                themeNode?.append(newDecl);
+              }
+            } else {
+              if (!existingDecl) {
+                themeNode?.append(newDecl);
+              }
+            }
+          });
+          return;
+        }
 
         let ruleNode = root.nodes?.find(
           (node) => node.type === "rule" && node.selector === selector
@@ -353,9 +414,21 @@ function updateCssVarsPluginV4(cssVars) {
           const existingDecl = ruleNode?.nodes.find(
             (node) => node.type === "decl" && node.prop === prop
           );
-          existingDecl
-            ? existingDecl.replaceWith(newDecl)
-            : ruleNode?.append(newDecl);
+          // Only overwrite if overwriteCssVars is true
+          // i.e for registry:theme and registry:style
+          // We do not want new components to overwrite existing vars.
+          // Keep user defined vars.
+          if (options.overwriteCssVars) {
+            if (existingDecl) {
+              existingDecl.replaceWith(newDecl);
+            } else {
+              ruleNode?.append(newDecl);
+            }
+          } else {
+            if (!existingDecl) {
+              ruleNode?.append(newDecl);
+            }
+          }
         });
       });
     },
@@ -414,7 +487,7 @@ function updateThemePlugin(cssVars) {
             }
             themeNode?.append(cssVarNode);
           }
-          break;
+          continue;
         }
 
         let prop =
@@ -483,16 +556,78 @@ function addCustomVariant({ params }) {
         (node) => node.type === "atrule" && node.name === "custom-variant"
       );
       if (!customVariant) {
+        // Find all import nodes
+        const importNodes = root.nodes.filter(
+          (node) => node.type === "atrule" && node.name === "import"
+        );
         const variantNode = postcss.atRule({
           name: "custom-variant",
           params,
           raws: { semicolon: true, before: "\n" },
         });
-        root.insertAfter(root.nodes[0], variantNode);
+
+        if (importNodes.length > 0) {
+          // Insert after the last import
+          const lastImport = importNodes[importNodes.length - 1];
+          root.insertAfter(lastImport, variantNode);
+        } else {
+          // If no imports, insert after the first node
+          root.insertAfter(root.nodes[0], variantNode);
+        }
+
         root.insertBefore(
           variantNode,
           postcss.comment({ text: "---break---" })
         );
+      }
+    },
+  };
+}
+
+function addCustomImport({ params }) {
+  return {
+    postcssPlugin: "add-custom-import",
+    Once(root) {
+      const importNodes = root.nodes.filter(
+        (node) => node.type === "atrule" && node.name === "import"
+      );
+
+      // Find custom variant node (to ensure we insert before it)
+      const customVariantNode = root.nodes.find(
+        (node) => node.type === "atrule" && node.name === "custom-variant"
+      );
+
+      // Check if our specific import already exists
+      const hasImport = importNodes.some(
+        (node) => node.params.replace(/["']/g, "") === params
+      );
+
+      if (!hasImport) {
+        const importNode = postcss.atRule({
+          name: "import",
+          params: `"${params}"`,
+          raws: { semicolon: true, before: "\n" },
+        });
+
+        if (importNodes.length > 0) {
+          // If there are existing imports, add after the last import
+          const lastImport = importNodes[importNodes.length - 1];
+          root.insertAfter(lastImport, importNode);
+        } else if (customVariantNode) {
+          // If no imports but has custom-variant, insert before it
+          root.insertBefore(customVariantNode, importNode);
+          root.insertBefore(
+            customVariantNode,
+            postcss.comment({ text: "---break---" })
+          );
+        } else {
+          // If no imports and no custom-variant, insert at the start
+          root.prepend(importNode);
+          root.insertAfter(
+            importNode,
+            postcss.comment({ text: "---break---" })
+          );
+        }
       }
     },
   };

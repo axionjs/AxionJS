@@ -59,7 +59,7 @@ export const init = new Command()
   )
   .option(
     "-b, --base-color <base-color>",
-    "the base color to use. (neutral, gray, zinc, stone, slate)",
+    "the base color to use. (neutral, gray, creativePurple, stone, slate)",
     undefined
   )
   .option("-y, --yes", "skip confirmation prompt.", true)
@@ -207,6 +207,26 @@ async function promptForConfig(defaultConfig = null) {
 
   logger.info("");
 
+  // Prompt for category
+  const selectedCategory = await select({
+    message: `Select a color category:`,
+    options: baseColors.map((cat) => ({
+      label: cat.category,
+      value: cat.category,
+    })),
+  });
+
+  // Prompt for theme within the selected category
+  const selectedTheme = await select({
+    message: `Select a theme:`,
+    options: baseColors
+      .find((cat) => cat.category === selectedCategory)
+      .themes.map((theme) => ({
+        label: theme.label,
+        value: theme.name,
+      })),
+  });
+
   const options = {
     typescript: await confirm({
       message: `Would you like to use ${highlighter.info(
@@ -223,15 +243,8 @@ async function promptForConfig(defaultConfig = null) {
         value: style.name,
       })),
     }),
-    tailwindBaseColor: await select({
-      message: `Which color would you like to use as the ${highlighter.info(
-        "base color"
-      )}?`,
-      options: baseColors.map((color) => ({
-        label: color.label,
-        value: color.name,
-      })),
-    }),
+    tailwindCategory: selectedCategory,
+    tailwindBaseColor: selectedTheme,
     tailwindCss: await text({
       message: `Where is your ${highlighter.info("global CSS")} file?`,
       initialValue: defaultConfig?.tailwind.css ?? DEFAULT_TAILWIND_CSS,
@@ -314,7 +327,6 @@ async function promptForMinimalConfig(defaultConfig, opts) {
       getRegistryBaseColors(),
       getProjectTailwindVersionFromConfig(defaultConfig),
     ]);
-
     const options = {};
 
     // Conditionally handle style prompt based on Tailwind version
@@ -331,14 +343,26 @@ async function promptForMinimalConfig(defaultConfig, opts) {
       options.style = "new-york";
     }
 
-    // Handle base color prompt
-    options.tailwindBaseColor = await select({
-      message: `Which color would you like to use as the ${highlighter.info("base color")}?`,
-      options: baseColors.map((color) => ({
-        label: color.label,
-        value: color.name,
+    // ---- Category → Theme selection for base color ----
+    const selectedCategory = await select({
+      message: `Select a color category:`,
+      options: baseColors.map((cat) => ({
+        label: cat.category,
+        value: cat.category,
       })),
     });
+
+    const selectedTheme = await select({
+      message: `Select a theme:`,
+      options: baseColors
+        .find((cat) => cat.category === selectedCategory)
+        .themes.map((theme) => ({
+          label: theme.label,
+          value: theme.name,
+        })),
+    });
+    options.tailwindBaseColor = selectedTheme;
+    // ---------------------------------------------------
 
     // Handle CSS variables toggle
     options.tailwindCssVariables = await confirm({

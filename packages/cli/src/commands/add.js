@@ -7,7 +7,11 @@ import * as ERRORS from "../utils/errors.js";
 import { handleError } from "../utils/handle-error.js";
 import { highlighter } from "../utils/highlighter.js";
 import { logger } from "../utils/logger.js";
-import { getRegistryIndex } from "../utils/registry/index.js";
+import {
+  getRegistryIndex,
+  getRegistryItem,
+  isUrl,
+} from "../utils/registry/index.js";
 import { Command } from "commander";
 import { confirm, multiselect, intro } from "@clack/prompts";
 import { z } from "zod";
@@ -63,16 +67,25 @@ export const add = new Command()
         cwd: path.resolve(opts.cwd),
         ...opts,
       });
-      // Confirm if user is installing themes.
-      // For now, we assume a theme is prefixed with "theme-".
-      const isTheme = options.components?.some((component) =>
-        component.includes("theme-")
-      );
-      if (!options.yes && isTheme) {
+
+      let itemType;
+
+      if (components.length > 0 && isUrl(components[0])) {
+        const item = await getRegistryItem(components[0], "");
+        itemType = item?.type;
+      }
+
+      if (
+        !options.yes &&
+        (itemType === "registry:style" || itemType === "registry:theme")
+      ) {
         logger.break();
         const confirmResult = await confirm({
           message: highlighter.warn(
-            "You are about to install a new theme. \nExisting CSS variables will be overwritten. Continue?"
+            `You are about to install a new ${itemType.replace(
+              "registry:",
+              ""
+            )} \nExisting CSS variables will be overwritten. Continue?`
           ),
           initialValue: false,
         });

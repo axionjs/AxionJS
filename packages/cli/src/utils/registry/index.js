@@ -80,31 +80,100 @@ export async function getRegistryItem(name, style) {
 export async function getRegistryBaseColors() {
   return [
     {
-      name: "neutral",
-      label: "Neutral",
+      category: "Modern",
+      themes: [
+        { name: "modernGradient", label: "Modern Gradient" },
+        { name: "modernGlass", label: "Modern Glass" },
+        { name: "modernNeon", label: "Modern Neon" },
+        { name: "modernTech", label: "Modern Tech" },
+        { name: "modernAurora", label: "Modern Aurora" },
+      ],
     },
     {
-      name: "gray",
-      label: "Gray",
+      category: "Minimal",
+      themes: [
+        { name: "default", label: "Default" },
+        { name: "mintFresh", label: "Mint Fresh" },
+        { name: "coffeeBrown", label: "Coffee Brown" },
+        { name: "lavenderMist", label: "Lavender Mist" },
+        { name: "bronzeCopper", label: "Bronze Copper" },
+        { name: "sageGreen", label: "Sage Green" },
+      ],
     },
     {
-      name: "zinc",
-      label: "Zinc",
+      category: "Gaming",
+      themes: [
+        { name: "cyberNeon", label: "Cyber Neon" },
+        { name: "neonLime", label: "Neon Lime" },
+        { name: "electricBlue", label: "Electric Blue" },
+        { name: "neonPink", label: "Neon Pink" },
+      ],
     },
     {
-      name: "stone",
-      label: "Stone",
+      category: "Corporate",
+      themes: [
+        { name: "businessBlue", label: "Business Blue" },
+        { name: "indigoDeep", label: "Indigo Deep" },
+        { name: "slateGray", label: "Slate Gray" },
+        { name: "sapphireBlue", label: "Sapphire Blue" },
+        { name: "midnightBlue", label: "Midnight Blue" },
+        { name: "charcoalDark", label: "Charcoal Dark" },
+        { name: "elegantNavy", label: "Elegant Navy" },
+      ],
     },
     {
-      name: "slate",
-      label: "Slate",
+      category: "Creative",
+      themes: [
+        { name: "creativePurple", label: "Creative Purple" },
+        { name: "sunsetOrange", label: "Sunset Orange" },
+        { name: "rosePink", label: "Rose Pink" },
+        { name: "coralRed", label: "Coral Red" },
+        { name: "violetDream", label: "Violet Dream" },
+        { name: "royalPurple", label: "Royal Purple" },
+        { name: "crimsonFire", label: "Crimson Fire" },
+        { name: "cherryBlossom", label: "Cherry Blossom" },
+        { name: "sunsetPeach", label: "Sunset Peach" },
+        { name: "magentaPop", label: "Magenta Pop" },
+        { name: "elegantBurgundy", label: "Elegant Burgundy" },
+        { name: "comicPop", label: "Comic Pop" },
+        { name: "comicBubble", label: "Comic Bubble" },
+        { name: "comicHero", label: "Comic Hero" },
+        { name: "comicRainbow", label: "Comic Rainbow" },
+      ],
+    },
+    {
+      category: "Monochrome",
+      themes: [
+        { name: "elegantPlatinum", label: "Elegant Platinum" },
+        { name: "arcticFrost", label: "Arctic Frost" },
+        { name: "steelGray", label: "Steel Gray" },
+      ],
+    },
+    {
+      category: "Vibrant",
+      themes: [
+        { name: "oceanBlue", label: "Ocean Blue" },
+        { name: "forestGreen", label: "Forest Green" },
+        { name: "goldenYellow", label: "Golden Yellow" },
+        { name: "tealMint", label: "Teal Mint" },
+        { name: "emeraldFresh", label: "Emerald Fresh" },
+        { name: "amberWarm", label: "Amber Warm" },
+        { name: "tropicalCyan", label: "Tropical Cyan" },
+      ],
+    },
+    {
+      category: "Unique",
+      themes: [
+        { name: "elegantGold", label: "Elegant Gold" },
+        { name: "elegantEmerald", label: "Elegant Emerald" },
+      ],
     },
   ];
 }
 
 export async function getRegistryBaseColor(baseColor) {
   try {
-    const [result] = await fetchRegistry([`colors/${baseColor}.json`]);
+    const [result] = await fetchRegistry([`themes/${baseColor}.json`]);
 
     return registryBaseColorSchema.parse(result);
   } catch (error) {
@@ -428,6 +497,10 @@ export async function registryGetTheme(name, config) {
       ...buildTailwindThemeColorsFromCssVars(baseColor.cssVars.dark),
     };
     theme.cssVars = {
+      theme: {
+        ...baseColor.cssVars.theme,
+        ...theme.cssVars.theme,
+      },
       light: {
         ...baseColor.cssVars.light,
         ...theme.cssVars.light,
@@ -437,11 +510,23 @@ export async function registryGetTheme(name, config) {
         ...theme.cssVars.dark,
       },
     };
-  }
 
-  // Update theme to be v4 compatible.
-  if (tailwindVersion === "v4") {
-    theme.cssVars.light.radius = "0.6rem";
+    // Update theme to be v4 compatible.
+    if (tailwindVersion === "v4" && baseColor.cssVarsV4) {
+      theme.cssVars = {
+        theme: {
+          ...baseColor.cssVarsV4.theme,
+          ...theme.cssVars.theme,
+        },
+        light: {
+          radius: "0.625rem",
+          ...baseColor.cssVarsV4.light,
+        },
+        dark: {
+          ...baseColor.cssVarsV4.dark,
+        },
+      };
+    }
   }
 
   return theme;
@@ -456,7 +541,7 @@ function getRegistryUrl(path) {
   return `${REGISTRY_URL}/${path.toLowerCase()}`;
 }
 
-function isUrl(path) {
+export function isUrl(path) {
   try {
     new URL(path);
     return true;

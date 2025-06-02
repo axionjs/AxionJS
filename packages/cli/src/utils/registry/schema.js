@@ -103,10 +103,6 @@ export const iconsSchema = z.record(
 );
 
 export const registryBaseColorSchema = z.object({
-  inlineColors: z.object({
-    light: z.record(z.string(), z.string()),
-    dark: z.record(z.string(), z.string()),
-  }),
   cssVars: registryItemCssVarsSchema,
   cssVarsV4: registryItemCssVarsSchema.optional(),
   inlineColorsTemplate: z.string(),
