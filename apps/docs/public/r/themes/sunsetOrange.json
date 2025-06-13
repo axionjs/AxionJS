@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "sunsetOrange",
   "label": "Sunset Orange",
   "activeColor": {

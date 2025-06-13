@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "comicRainbow",
   "label": "Comic Rainbow",
   "activeColor": {

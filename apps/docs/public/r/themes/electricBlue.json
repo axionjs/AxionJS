@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "electricBlue",
   "label": "Electric Blue",
   "activeColor": {

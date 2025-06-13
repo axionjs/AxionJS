@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "comicBubble",
   "label": "Comic Bubble",
   "activeColor": {

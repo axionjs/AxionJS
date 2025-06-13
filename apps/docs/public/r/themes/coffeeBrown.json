@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "coffeeBrown",
   "label": "Coffee Brown",
   "activeColor": {

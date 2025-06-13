@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "mintFresh",
   "label": "Mint Fresh",
   "activeColor": {

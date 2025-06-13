@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "slateGray",
   "label": "Slate Gray",
   "activeColor": {

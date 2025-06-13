@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "magentaPop",
   "label": "Magenta Pop",
   "activeColor": {

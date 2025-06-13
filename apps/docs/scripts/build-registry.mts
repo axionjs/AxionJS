@@ -102,6 +102,38 @@ async function syncStyles() {
   }
 }
 
+async function buildRegistryJsonFile() {
+  // 1. Fix the path for registry items.
+  const fixedRegistry = {
+    ...registry,
+    items: registry.items.map((item) => {
+      const files = item.files?.map((file) => {
+        return {
+          ...file,
+          path: `${file.path}`,
+        };
+      });
+
+      return {
+        ...item,
+        files,
+      };
+    }),
+  };
+
+  // 2. Write the content of the registry to `registry.json` and public folder
+  rimraf.sync(path.join(process.cwd(), `registry.json`));
+  rimraf.sync(path.join(process.cwd(), `public/registry.json`));
+
+  const registryJson = JSON.stringify(fixedRegistry, null, 2);
+
+  await fs.writeFile(path.join(process.cwd(), `registry.json`), registryJson);
+  await fs.writeFile(
+    path.join(process.cwd(), `public/registry.json`),
+    registryJson
+  );
+}
+
 // ----------------------------------------------------------------------------
 // Build __registry__/index.tsx.
 // ----------------------------------------------------------------------------
@@ -615,6 +647,7 @@ async function buildThemes() {
 
     // Create complete theme JSON representation
     const themeJson = {
+      type: "registry:theme",
       name,
       label: theme.label,
       activeColor: theme.activeColor,
@@ -806,6 +839,7 @@ try {
   await buildThemes();
   await buildRegistryIcons();
   await buildIcons();
+  await buildRegistryJsonFile();
 
   console.log("✅ Done!");
 } catch (error) {

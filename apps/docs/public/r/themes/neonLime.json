@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "neonLime",
   "label": "Neon Lime",
   "activeColor": {

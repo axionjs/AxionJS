@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "indigoDeep",
   "activeColor": {
     "light": "239 84% 67%",

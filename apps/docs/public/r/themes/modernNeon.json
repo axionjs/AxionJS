@@ -1,4 +1,5 @@
 {
+  "type": "registry:theme",
   "name": "modernNeon",
   "label": "Modern Neon",
   "activeColor": {
