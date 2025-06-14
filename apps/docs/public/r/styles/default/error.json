@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "auth/pages/auth/error/page.tsx",
-      "content": "import { ErrorCard } from \"@/registry/default/auth/components/error-card\";\n\nconst AuthErrorPage = () => {\n  return <ErrorCard />;\n};\n\nexport default AuthErrorPage;\n",
+      "content": "import { ErrorCard } from \"@/registry/default/auth/components/error-card\";\r\n\r\nconst AuthErrorPage = () => {\r\n  return <ErrorCard />;\r\n};\r\n\r\nexport default AuthErrorPage;\r\n",
       "type": "registry:page",
       "target": "app/auth/error/page.tsx"
     }

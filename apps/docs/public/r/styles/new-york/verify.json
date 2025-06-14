@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "auth/pages/auth/verify/page.tsx",
-      "content": "\"use client\";\n\nimport { NewVerificationForm } from \"@/registry/new-york/auth/components/new-verification-form\";\n\nexport default function VerifyPage() {\n  return <NewVerificationForm />;\n}\n",
+      "content": "\"use client\";\r\n\r\nimport { NewVerificationForm } from \"@/registry/new-york/auth/components/new-verification-form\";\r\n\r\nexport default function VerifyPage() {\r\n  return <NewVerificationForm />;\r\n}\r\n",
       "type": "registry:page",
       "target": "app/auth/verify/page.tsx"
     }

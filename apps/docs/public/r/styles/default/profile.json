@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "auth/pages/(protected)/profile/page.tsx",
-      "content": "import { CardWrapper } from \"@/registry/default/auth/components/card-wrapper\";\nimport { SettingsForm } from \"@/registry/default/auth/components/settings-form\";\n\nexport default function SettingsPage() {\n  return (\n    <div className=\"w-full mx-auto py-8 px-4\">\n      <CardWrapper\n        mainHeaderLabel=\"Profile\"\n        subHeaderLabel=\"Update your account settings\"\n        backButtonLabel=\"Back to Dashboard\"\n        backButtonHref=\"/dashboard\"\n      >\n        <SettingsForm />\n      </CardWrapper>\n    </div>\n  );\n}\n",
+      "content": "import { SettingsForm } from \"@/registry/default/auth/components/settings-form\";\r\n\r\nexport default function SettingsPage() {\r\n  return (\r\n    <div className=\"\">\r\n      <SettingsForm />\r\n    </div>\r\n  );\r\n}\r\n",
       "type": "registry:page",
       "target": "app/(protected)/profile/page.tsx"
     }

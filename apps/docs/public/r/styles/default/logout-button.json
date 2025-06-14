@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "auth/components/logout-button.tsx",
-      "content": "\"use client\";\n\nimport { logout } from \"@/registry/default/auth/actions/auth-actions\";\n\n// alternatively, use client-side signOut() from next-auth/react\n// import { signOut } from \"next-auth/react\";\n\ninterface LogoutButtonProps {\n  children: React.ReactNode;\n}\n\nexport function LogoutButton({ children }: LogoutButtonProps) {\n  const onClick = () => {\n    logout();\n  };\n\n  return (\n    <span onClick={onClick} className=\"cursor-pointer\">\n      {children}\n    </span>\n  );\n}\n",
+      "content": "\"use client\";\r\n\r\nimport { logout } from \"@/registry/default/auth/actions/auth-actions\";\r\n\r\n// alternatively, use client-side signOut() from next-auth/react\r\n// import { signOut } from \"next-auth/react\";\r\n\r\ninterface LogoutButtonProps {\r\n  children: React.ReactNode;\r\n}\r\n\r\nexport function LogoutButton({ children }: LogoutButtonProps) {\r\n  const onClick = () => {\r\n    logout();\r\n  };\r\n\r\n  return (\r\n    <span onClick={onClick} className=\"cursor-pointer\">\r\n      {children}\r\n    </span>\r\n  );\r\n}\r\n",
       "type": "registry:auth_comp",
       "target": ""
     }

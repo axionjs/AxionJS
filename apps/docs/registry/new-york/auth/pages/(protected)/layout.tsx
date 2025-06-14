@@ -8,7 +8,7 @@ interface ProtectedLayoutProps {
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   return (
     <SessionProvider>
-      <div className="grid items-center justify-center h-full grid-col-2 gap-y-10">
+      <div className="grid items-center justify-center h-full grid-col-2 ">
         <Navbar />
         {children}
       </div>

@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "auth/components/navbar.tsx",
-      "content": "import { UserButton } from \"@/registry/new-york/auth/components/user-button\";\n\nexport const Navbar = async () => {\n  return (\n    <nav className=\"flex w-full mt-9 justify-end rounded-xl p-4 shadow-lg\">\n      <UserButton />\n    </nav>\n  );\n};\n",
+      "content": "import { UserButton } from \"@/registry/new-york/auth/components/user-button\";\r\n\r\nexport const Navbar = async () => {\r\n  return (\r\n    <nav className=\"flex w-full mt-9 justify-end rounded-xl p-4 shadow-lg\">\r\n      <UserButton />\r\n    </nav>\r\n  );\r\n};\r\n",
       "type": "registry:auth_comp",
       "target": ""
     }

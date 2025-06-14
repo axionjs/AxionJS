@@ -7821,6 +7821,11 @@
           "path": "auth/pages/auth/layout.tsx",
           "type": "registry:file",
           "target": "app/auth/layout.tsx"
+        },
+        {
+          "path": "auth/pages/page.tsx",
+          "type": "registry:page",
+          "target": "app/page.tsx"
         }
       ],
       "registryDependencies": [
@@ -7841,7 +7846,10 @@
       "registryDependencies": [
         "register-form"
       ],
-      "description": "Register page for users to sign up."
+      "description": "Register page for users to sign up.",
+      "dependencies": [
+        "framer-motion"
+      ]
     },
     {
       "name": "change-password",
@@ -8067,7 +8075,10 @@
           "type": "registry:auth_comp"
         }
       ],
-      "description": "Social login buttons."
+      "description": "Social login buttons.",
+      "dependencies": [
+        "react-icons"
+      ]
     },
     {
       "name": "change-password-form",

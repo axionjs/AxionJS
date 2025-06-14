@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "auth/pages/auth/reset/page.tsx",
-      "content": "import { ResetForm } from \"@/registry/new-york/auth/components/reset-form\";\n\nexport default function ResetPage() {\n  return (\n    <div className=\"flex h-screen items-center justify-center\">\n      <ResetForm />\n    </div>\n  );\n}\n",
+      "content": "import { ResetForm } from \"@/registry/new-york/auth/components/reset-form\";\r\n\r\nexport default function ResetPage() {\r\n  return (\r\n    <div className=\"flex h-screen items-center justify-center\">\r\n      <ResetForm />\r\n    </div>\r\n  );\r\n}\r\n",
       "type": "registry:page",
       "target": "app/auth/reset/page.tsx"
     }

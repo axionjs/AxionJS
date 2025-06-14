@@ -6,7 +6,7 @@
   "files": [
     {
       "path": "hooks/use-debounce.tsx",
-      "content": "\"use client\";\n\nimport * as React from \"react\";\n\n/**\n * A hook that debounces a value.\n * @param value The value to debounce\n * @param delay The delay in milliseconds\n * @returns The debounced value\n */\nexport function useDebounce<T>(value: T, delay = 500): T {\n  const [debouncedValue, setDebouncedValue] = React.useState<T>(value);\n\n  React.useEffect(() => {\n    const timer = setTimeout(() => setDebouncedValue(value), delay);\n    return () => clearTimeout(timer);\n  }, [value, delay]);\n\n  return debouncedValue;\n}\n",
+      "content": "\"use client\";\r\n\r\nimport * as React from \"react\";\r\n\r\n/**\r\n * A hook that debounces a value.\r\n * @param value The value to debounce\r\n * @param delay The delay in milliseconds\r\n * @returns The debounced value\r\n */\r\nexport function useDebounce<T>(value: T, delay = 500): T {\r\n  const [debouncedValue, setDebouncedValue] = React.useState<T>(value);\r\n\r\n  React.useEffect(() => {\r\n    const timer = setTimeout(() => setDebouncedValue(value), delay);\r\n    return () => clearTimeout(timer);\r\n  }, [value, delay]);\r\n\r\n  return debouncedValue;\r\n}\r\n",
       "type": "registry:hook",
       "target": ""
     }

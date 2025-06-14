@@ -6,7 +6,7 @@
   "files": [
     {
       "path": "hooks/use-toggle.tsx",
-      "content": "\"use client\";\n\nimport * as React from \"react\";\n\n/**\n * A hook that provides toggle functionality\n * @param initialValue The initial state\n * @returns The current state and toggle function\n */\nexport function useToggle(initialValue = false): [boolean, () => void] {\n  const [value, setValue] = React.useState(initialValue);\n\n  const toggle = React.useCallback(() => {\n    setValue((v) => !v);\n  }, []);\n\n  return [value, toggle];\n}\n",
+      "content": "\"use client\";\r\n\r\nimport * as React from \"react\";\r\n\r\n/**\r\n * A hook that provides toggle functionality\r\n * @param initialValue The initial state\r\n * @returns The current state and toggle function\r\n */\r\nexport function useToggle(initialValue = false): [boolean, () => void] {\r\n  const [value, setValue] = React.useState(initialValue);\r\n\r\n  const toggle = React.useCallback(() => {\r\n    setValue((v) => !v);\r\n  }, []);\r\n\r\n  return [value, toggle];\r\n}\r\n",
       "type": "registry:hook",
       "target": ""
     }

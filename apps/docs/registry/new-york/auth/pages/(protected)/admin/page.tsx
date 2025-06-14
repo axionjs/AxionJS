@@ -7,7 +7,7 @@ import {
 import { Button } from "@/registry/new-york/ui/button";
 import { RoleGate } from "@/registry/new-york/auth/components/role-gate";
 import { FormSuccess } from "@/registry/new-york/auth/components/form-success";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/lib/generated/prisma";
 import { currentRole } from "@/registry/new-york/auth/lib/get-user";
 
 export default async function AdminPage() {
@@ -26,7 +26,7 @@ export default async function AdminPage() {
             <CardTitle>Admin Access</CardTitle>
           </CardHeader>
           <CardContent>
-            <RoleGate allowedRole={UserRole.ADMIN}>
+            <RoleGate allowedRole={UserRole?.ADMIN}>
               <FormSuccess message="You are allowed to view this content!" />
             </RoleGate>
             <p className="text-sm text-muted-foreground mb-4">

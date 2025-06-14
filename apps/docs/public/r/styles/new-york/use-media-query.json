@@ -6,7 +6,7 @@
   "files": [
     {
       "path": "hooks/use-media-query.tsx",
-      "content": "\"use client\";\n\nimport * as React from \"react\";\n\n/**\n * A hook that returns true if the media query matches\n * @param query The media query to match\n * @returns Whether the media query matches\n */\nexport function useMediaQuery(query: string): boolean {\n  const [matches, setMatches] = React.useState(false);\n\n  React.useEffect(() => {\n    if (typeof window === \"undefined\") return;\n\n    const media = window.matchMedia(query);\n    const updateMatch = () => setMatches(media.matches);\n\n    // Set initial value\n    updateMatch();\n\n    // Listen for changes\n    media.addEventListener(\"change\", updateMatch);\n\n    return () => media.removeEventListener(\"change\", updateMatch);\n  }, [query]);\n\n  return matches;\n}\n",
+      "content": "\"use client\";\r\n\r\nimport * as React from \"react\";\r\n\r\n/**\r\n * A hook that returns true if the media query matches\r\n * @param query The media query to match\r\n * @returns Whether the media query matches\r\n */\r\nexport function useMediaQuery(query: string): boolean {\r\n  const [matches, setMatches] = React.useState(false);\r\n\r\n  React.useEffect(() => {\r\n    if (typeof window === \"undefined\") return;\r\n\r\n    const media = window.matchMedia(query);\r\n    const updateMatch = () => setMatches(media.matches);\r\n\r\n    // Set initial value\r\n    updateMatch();\r\n\r\n    // Listen for changes\r\n    media.addEventListener(\"change\", updateMatch);\r\n\r\n    return () => media.removeEventListener(\"change\", updateMatch);\r\n  }, [query]);\r\n\r\n  return matches;\r\n}\r\n",
       "type": "registry:hook",
       "target": ""
     }

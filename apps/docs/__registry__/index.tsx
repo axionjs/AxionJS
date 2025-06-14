@@ -1238,6 +1238,10 @@ export const Index: Record<string, any> = {
         path: "registry/new-york/auth/pages/auth/layout.tsx",
         type: "registry:file",
         target: "app/auth/layout.tsx"
+      },{
+        path: "registry/new-york/auth/pages/page.tsx",
+        type: "registry:page",
+        target: "app/page.tsx"
       }],
       categories: undefined,
       component: React.lazy(() => import("@/registry/new-york/auth/pages/auth/login/page.tsx")),
@@ -5044,6 +5048,10 @@ export const Index: Record<string, any> = {
         path: "registry/default/auth/pages/auth/layout.tsx",
         type: "registry:file",
         target: "app/auth/layout.tsx"
+      },{
+        path: "registry/default/auth/pages/page.tsx",
+        type: "registry:page",
+        target: "app/page.tsx"
       }],
       categories: undefined,
       component: React.lazy(() => import("@/registry/default/auth/pages/auth/login/page.tsx")),

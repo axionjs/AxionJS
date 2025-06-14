@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "auth/components/form-success.tsx",
-      "content": "import { CheckCircleIcon } from \"lucide-react\";\n\ninterface FormSuccessProps {\n  message?: string;\n}\n\nexport const FormSuccess = ({ message }: FormSuccessProps) => {\n  if (!message) return null;\n  return (\n    <div className=\"flex items-center gap-x-2 bg-emerald-500/15 p-3 rounded-md text-sm text-emerald-500\">\n      <CheckCircleIcon className=\"h-4 w-4\" />\n      <p>{message}</p>\n    </div>\n  );\n};\n",
+      "content": "import { CheckCircleIcon } from \"lucide-react\";\r\n\r\ninterface FormSuccessProps {\r\n  message?: string;\r\n}\r\n\r\nexport const FormSuccess = ({ message }: FormSuccessProps) => {\r\n  if (!message) return null;\r\n  return (\r\n    <div className=\"flex items-center gap-x-2 bg-emerald-500/15 p-3 rounded-md text-sm text-emerald-500\">\r\n      <CheckCircleIcon className=\"h-4 w-4\" />\r\n      <p>{message}</p>\r\n    </div>\r\n  );\r\n};\r\n",
       "type": "registry:auth_comp",
       "target": ""
     }

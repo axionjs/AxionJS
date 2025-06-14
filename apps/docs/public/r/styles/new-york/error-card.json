@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "auth/components/error-card.tsx",
-      "content": "import { CardWrapper } from \"@/registry/new-york/auth/components/card-wrapper\";\nimport { AlertTriangleIcon } from \"lucide-react\";\n\nexport function ErrorCard() {\n  return (\n    <CardWrapper\n      mainHeaderLabel=\"Error\"\n      subHeaderLabel=\"Oops! Something went wrong\"\n      backButtonHref=\"/auth/login\"\n      backButtonLabel=\"Back to login\"\n    >\n      <div className=\"flex w-full items-center justify-center\">\n        <AlertTriangleIcon className=\"text-destructive\" />\n      </div>\n    </CardWrapper>\n  );\n}\n",
+      "content": "import { CardWrapper } from \"@/registry/new-york/auth/components/card-wrapper\";\r\nimport { AlertTriangleIcon } from \"lucide-react\";\r\n\r\nexport function ErrorCard() {\r\n  return (\r\n    <CardWrapper\r\n      mainHeaderLabel=\"Error\"\r\n      subHeaderLabel=\"Oops! Something went wrong\"\r\n      backButtonHref=\"/auth/login\"\r\n      backButtonLabel=\"Back to login\"\r\n    >\r\n      <div className=\"flex w-full items-center justify-center\">\r\n        <AlertTriangleIcon className=\"text-destructive\" />\r\n      </div>\r\n    </CardWrapper>\r\n  );\r\n}\r\n",
       "type": "registry:auth_comp",
       "target": ""
     }

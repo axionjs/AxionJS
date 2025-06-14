@@ -14,6 +14,11 @@ export const authRegistry: Registry["items"] = [
         type: "registry:file",
         target: "app/auth/layout.tsx",
       },
+      {
+        path: "auth/pages/page.tsx",
+        type: "registry:page",
+        target: "app/page.tsx",
+      },
     ],
     registryDependencies: ["login-form"],
     description: "Login page for users to sign in.",
@@ -31,6 +36,7 @@ export const authRegistry: Registry["items"] = [
     ],
     registryDependencies: ["register-form"],
     description: "Register page for users to sign up.",
+    dependencies: ["framer-motion"],
   },
 
   {
