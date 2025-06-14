@@ -410,4 +410,201 @@ export const dynamicComponents: Registry["items"] = [
     ],
     description: "An inventory manager with CRUD functionality.",
   },
+  {
+    name: "multi-step-form",
+    type: "registry:dynamic-component",
+    registryDependencies: [
+      "button",
+      "avatar",
+      "form",
+      "switch",
+      "input",
+      "textarea",
+      "radio-group",
+      "select",
+      "separator",
+      "progress",
+      "use-toast",
+    ],
+    dependencies: ["prisma", "@prisma/client"],
+    files: [
+      {
+        path: "dynamic-components/multi-step-form/actions/multi-step-form-actions.ts",
+        type: "registry:actions",
+      },
+      {
+        path: "lib/db.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/multi-step-form/components/onboarding-wizard.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/multi-step-form/components/avatar-upload-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/multi-step-form/components/notifications-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/multi-step-form/components/personal-info-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/multi-step-form/components/preferences-form.tsx",
+        type: "registry:component",
+      },
+
+      {
+        path: "dynamic-components/multi-step-form/onboarding/page.tsx",
+        target: "app/(multi-step-form)/onboarding/page.tsx",
+        type: "registry:page",
+      },
+    ],
+    description: "A multi-step form with progress tracking and validation.",
+  },
+  {
+    name: "quiz",
+    type: "registry:dynamic-component",
+    registryDependencies: [
+      "button",
+      "input",
+      "card",
+      "textarea",
+      "form",
+      "select",
+      "checkbox",
+      "radio-group",
+      "separator",
+      "use-toast",
+      "alert-dialog",
+      "progress",
+    ],
+    dependencies: ["prisma", "@prisma/client"],
+    files: [
+      {
+        path: "dynamic-components/quiz/actions/quiz-actions.ts",
+        type: "registry:actions",
+      },
+      {
+        path: "lib/db.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/quiz/components/quiz-builder.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/quiz/components/quiz-list.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/quiz/components/quiz-results.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/quiz/components/quiz-taker.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/quiz/lib/types.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/quiz/quizzes/[id]/results/[submissionId]/page.tsx",
+        target: "app/(quiz)/quizzes/[id]/results/[submissionId]/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/quiz/quizzes/[id]/take/page.tsx",
+        target: "app/(quiz)/quizzes/[id]/take/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/quiz/quizzes/[id]/page.tsx",
+        target: "app/(quiz)/quizzes/[id]/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/quiz/quizzes/create/page.tsx",
+        target: "app/(quiz)/quizzes/create/page.tsx",
+        type: "registry:page",
+      },
+      {
+        path: "dynamic-components/quiz/quizzes/page.tsx",
+        target: "app/(quiz)/quizzes/page.tsx",
+        type: "registry:page",
+      },
+    ],
+    description:
+      "A quiz component with creation, taking, and result viewing functionality.",
+  },
+  {
+    name: "social-auth",
+    type: "registry:dynamic-component",
+    registryDependencies: ["button", "card", "alert"],
+    dependencies: ["prisma", "@prisma/client"],
+    files: [
+      {
+        path: "dynamic-components/social-auth/actions/oauth-actions.ts",
+        type: "registry:actions",
+      },
+      {
+        path: "lib/db.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/social-auth/components/oauth-login.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/social-auth/lib/oauth-utils.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/social-auth/social/page.tsx",
+        target: "app/(social-auth)/social/page.tsx",
+        type: "registry:page",
+      },
+    ],
+    description:
+      "A social authentication component that allows users to log in using OAuth provider (Github).",
+  },
+  {
+    name: "two-factor-form",
+    type: "registry:dynamic-component",
+    registryDependencies: ["button", "card", "alert", "form", "input", "label"],
+    dependencies: ["nodemailer", "prisma", "@prisma/client"],
+    files: [
+      {
+        path: "dynamic-components/two-factor-form/actions/two-factor-actions.ts",
+        type: "registry:actions",
+      },
+      {
+        path: "lib/db.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/two-factor-form/components/two-factor-form.tsx",
+        type: "registry:component",
+      },
+      {
+        path: "dynamic-components/two-factor-form/lib/two-factor-utils.ts",
+        type: "registry:lib",
+      },
+      {
+        path: "dynamic-components/two-factor-form/emails/two-factor-template.tsx",
+        type: "registry:email",
+      },
+      {
+        path: "dynamic-components/two-factor-form/twoFA/page.tsx",
+        target: "app/(two-factor-form)/twoFA/page.tsx",
+        type: "registry:page",
+      },
+    ],
+    description:
+      "A social authentication component that allows users to log in using OAuth provider (Github).",
+  },
 ];

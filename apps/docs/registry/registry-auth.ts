@@ -246,6 +246,7 @@ export const authRegistry: Registry["items"] = [
       },
     ],
     description: "Social login buttons.",
+    dependencies: ["react-icons"],
   },
   {
     name: "change-password-form",

@@ -3072,6 +3072,174 @@ export const Index: Record<string, any> = {
       source: "__registry__/new-york/dynamic-components/inventory-manager/actions/inventory.ts",
       meta: undefined,
     },
+    "multi-step-form": {
+      name: "multi-step-form",
+      description: "A multi-step form with progress tracking and validation.",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","avatar","form","switch","input","textarea","radio-group","select","separator","progress","use-toast"],
+      files: [{
+        path: "registry/new-york/dynamic-components/multi-step-form/actions/multi-step-form-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/new-york/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/multi-step-form/components/onboarding-wizard.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/multi-step-form/components/avatar-upload-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/multi-step-form/components/notifications-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/multi-step-form/components/personal-info-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/multi-step-form/components/preferences-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/multi-step-form/onboarding/page.tsx",
+        type: "registry:page",
+        target: "app/(multi-step-form)/onboarding/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/dynamic-components/multi-step-form/actions/multi-step-form-actions.ts")),
+      source: "__registry__/new-york/dynamic-components/multi-step-form/actions/multi-step-form-actions.ts",
+      meta: undefined,
+    },
+    "quiz": {
+      name: "quiz",
+      description: "A quiz component with creation, taking, and result viewing functionality.",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","input","card","textarea","form","select","checkbox","radio-group","separator","use-toast","alert-dialog","progress"],
+      files: [{
+        path: "registry/new-york/dynamic-components/quiz/actions/quiz-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/new-york/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/quiz/components/quiz-builder.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/quiz/components/quiz-list.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/quiz/components/quiz-results.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/quiz/components/quiz-taker.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/quiz/lib/types.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/quiz/quizzes/[id]/results/[submissionId]/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/[id]/results/[submissionId]/page.tsx"
+      },{
+        path: "registry/new-york/dynamic-components/quiz/quizzes/[id]/take/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/[id]/take/page.tsx"
+      },{
+        path: "registry/new-york/dynamic-components/quiz/quizzes/[id]/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/[id]/page.tsx"
+      },{
+        path: "registry/new-york/dynamic-components/quiz/quizzes/create/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/create/page.tsx"
+      },{
+        path: "registry/new-york/dynamic-components/quiz/quizzes/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/dynamic-components/quiz/actions/quiz-actions.ts")),
+      source: "__registry__/new-york/dynamic-components/quiz/actions/quiz-actions.ts",
+      meta: undefined,
+    },
+    "social-auth": {
+      name: "social-auth",
+      description: "A social authentication component that allows users to log in using OAuth provider (Github).",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","card","alert"],
+      files: [{
+        path: "registry/new-york/dynamic-components/social-auth/actions/oauth-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/new-york/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/social-auth/components/oauth-login.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/social-auth/lib/oauth-utils.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/social-auth/social/page.tsx",
+        type: "registry:page",
+        target: "app/(social-auth)/social/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/dynamic-components/social-auth/actions/oauth-actions.ts")),
+      source: "__registry__/new-york/dynamic-components/social-auth/actions/oauth-actions.ts",
+      meta: undefined,
+    },
+    "two-factor-form": {
+      name: "two-factor-form",
+      description: "A social authentication component that allows users to log in using OAuth provider (Github).",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","card","alert","form","input","label"],
+      files: [{
+        path: "registry/new-york/dynamic-components/two-factor-form/actions/two-factor-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/new-york/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/two-factor-form/components/two-factor-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/two-factor-form/lib/two-factor-utils.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/two-factor-form/emails/two-factor-template.tsx",
+        type: "registry:email",
+        target: ""
+      },{
+        path: "registry/new-york/dynamic-components/two-factor-form/twoFA/page.tsx",
+        type: "registry:page",
+        target: "app/(two-factor-form)/twoFA/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/dynamic-components/two-factor-form/actions/two-factor-actions.ts")),
+      source: "__registry__/new-york/dynamic-components/two-factor-form/actions/two-factor-actions.ts",
+      meta: undefined,
+    },
     "area-chart-legend": {
       name: "area-chart-legend",
       description: "",
@@ -6708,6 +6876,174 @@ export const Index: Record<string, any> = {
       categories: undefined,
       component: React.lazy(() => import("@/registry/default/dynamic-components/inventory-manager/actions/inventory.ts")),
       source: "__registry__/default/dynamic-components/inventory-manager/actions/inventory.ts",
+      meta: undefined,
+    },
+    "multi-step-form": {
+      name: "multi-step-form",
+      description: "A multi-step form with progress tracking and validation.",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","avatar","form","switch","input","textarea","radio-group","select","separator","progress","use-toast"],
+      files: [{
+        path: "registry/default/dynamic-components/multi-step-form/actions/multi-step-form-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/default/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/multi-step-form/components/onboarding-wizard.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/multi-step-form/components/avatar-upload-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/multi-step-form/components/notifications-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/multi-step-form/components/personal-info-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/multi-step-form/components/preferences-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/multi-step-form/onboarding/page.tsx",
+        type: "registry:page",
+        target: "app/(multi-step-form)/onboarding/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/dynamic-components/multi-step-form/actions/multi-step-form-actions.ts")),
+      source: "__registry__/default/dynamic-components/multi-step-form/actions/multi-step-form-actions.ts",
+      meta: undefined,
+    },
+    "quiz": {
+      name: "quiz",
+      description: "A quiz component with creation, taking, and result viewing functionality.",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","input","card","textarea","form","select","checkbox","radio-group","separator","use-toast","alert-dialog","progress"],
+      files: [{
+        path: "registry/default/dynamic-components/quiz/actions/quiz-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/default/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/quiz/components/quiz-builder.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/quiz/components/quiz-list.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/quiz/components/quiz-results.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/quiz/components/quiz-taker.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/quiz/lib/types.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/quiz/quizzes/[id]/results/[submissionId]/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/[id]/results/[submissionId]/page.tsx"
+      },{
+        path: "registry/default/dynamic-components/quiz/quizzes/[id]/take/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/[id]/take/page.tsx"
+      },{
+        path: "registry/default/dynamic-components/quiz/quizzes/[id]/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/[id]/page.tsx"
+      },{
+        path: "registry/default/dynamic-components/quiz/quizzes/create/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/create/page.tsx"
+      },{
+        path: "registry/default/dynamic-components/quiz/quizzes/page.tsx",
+        type: "registry:page",
+        target: "app/(quiz)/quizzes/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/dynamic-components/quiz/actions/quiz-actions.ts")),
+      source: "__registry__/default/dynamic-components/quiz/actions/quiz-actions.ts",
+      meta: undefined,
+    },
+    "social-auth": {
+      name: "social-auth",
+      description: "A social authentication component that allows users to log in using OAuth provider (Github).",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","card","alert"],
+      files: [{
+        path: "registry/default/dynamic-components/social-auth/actions/oauth-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/default/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/social-auth/components/oauth-login.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/social-auth/lib/oauth-utils.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/social-auth/social/page.tsx",
+        type: "registry:page",
+        target: "app/(social-auth)/social/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/dynamic-components/social-auth/actions/oauth-actions.ts")),
+      source: "__registry__/default/dynamic-components/social-auth/actions/oauth-actions.ts",
+      meta: undefined,
+    },
+    "two-factor-form": {
+      name: "two-factor-form",
+      description: "A social authentication component that allows users to log in using OAuth provider (Github).",
+      type: "registry:dynamic-component",
+      registryDependencies: ["button","card","alert","form","input","label"],
+      files: [{
+        path: "registry/default/dynamic-components/two-factor-form/actions/two-factor-actions.ts",
+        type: "registry:actions",
+        target: ""
+      },{
+        path: "registry/default/lib/db.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/two-factor-form/components/two-factor-form.tsx",
+        type: "registry:component",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/two-factor-form/lib/two-factor-utils.ts",
+        type: "registry:lib",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/two-factor-form/emails/two-factor-template.tsx",
+        type: "registry:email",
+        target: ""
+      },{
+        path: "registry/default/dynamic-components/two-factor-form/twoFA/page.tsx",
+        type: "registry:page",
+        target: "app/(two-factor-form)/twoFA/page.tsx"
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/dynamic-components/two-factor-form/actions/two-factor-actions.ts")),
+      source: "__registry__/default/dynamic-components/two-factor-form/actions/two-factor-actions.ts",
       meta: undefined,
     },
     "area-chart-legend": {
