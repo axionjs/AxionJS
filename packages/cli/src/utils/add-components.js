@@ -30,6 +30,10 @@ export async function addComponents(components, config, options) {
     "simple-auth",
     "media-uploader",
     "inventory-manager",
+    "multi-step-form",
+    "quiz",
+    "social-auth",
+    "two-factor-form",
   ];
   const projectInfo = await getProjectInfo(options.cwd);
 

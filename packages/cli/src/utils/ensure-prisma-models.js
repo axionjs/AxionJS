@@ -140,6 +140,208 @@ model PasswordResetToken {
   @@unique([email, token])
 }
 `,
+  "social-auth": `
+model User {
+  id                    String                 @id @unique @default(cuid())
+  name                  String?
+  email                 String?                @unique
+  image                 String?
+  password              String?
+  accounts              Account[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+`,
+  "two-factor-form": `
+model User {
+  id                    String                 @id @unique @default(cuid())
+  name                  String?
+  email                 String?                @unique
+  image                 String?
+  password              String?
+  isTwoFactorEnabled    Boolean                @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+
+  @@map("users")
+}
+
+model TwoFactorToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+`,
+  "multi-step-form": `
+model UserProfile {
+  id                  String   @id @default(cuid())
+  email               String   @unique
+  name                String?
+  bio                 String?  @db.Text
+  avatarUrl           String?
+  preferences         Json?
+  completedOnboarding Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Quiz {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  questions   Question[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Question {
+  id      String           @id @default(cuid())
+  text    String
+  type    String // "multiple-choice", "multiple-answer", "true-false"
+  points  Int              @default(1)
+  options QuestionOption[]
+  quiz    Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId  String
+}
+
+model QuestionOption {
+  id         String   @id @default(cuid())
+  text       String
+  isCorrect  Boolean  @default(false)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+}
+
+model QuizSubmission {
+  id          String                 @id @default(cuid())
+  quizId      String
+  answers     QuizSubmissionAnswer[]
+  score       Int
+  totalPoints Int
+  submittedAt DateTime
+  createdAt   DateTime               @default(now())
+}
+
+model QuizSubmissionAnswer {
+  id              String         @id @default(cuid())
+  questionId      String
+  selectedOptions String[]
+  isCorrect       Boolean
+  submission      QuizSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  submissionId    String
+}
+`,
+  quiz: `
+  model UserProfile {
+    id        String   @id @default(cuid())
+    email     String   @unique
+    name      String?
+    bio       String?  @db.Text
+    avatarUrl String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  
+    // Relations
+    quizzes         Quiz[]
+    quizSubmissions QuizSubmission[]
+  }
+  
+  model Quiz {
+    id          String   @id @default(cuid())
+    title       String
+    description String?  @db.Text
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    createdById String?
+  
+    // Relations
+    createdBy   UserProfile?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+    questions   Question[]
+    submissions QuizSubmission[]
+  }
+  
+  model Question {
+    id     String @id @default(cuid())
+    text   String
+    type   String // "multiple-choice", "single-choice", "true-false"
+    points Int    @default(1)
+    quizId String
+  
+    // Relations
+    quiz    Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+    options QuestionOption[]
+    answers Answer[]
+  }
+  
+  model QuestionOption {
+    id         String  @id @default(cuid())
+    text       String
+    isCorrect  Boolean @default(false)
+    questionId String
+  
+    // Relations
+    question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+    answers  Answer[]
+  }
+  
+  model QuizSubmission {
+    id        String   @id @default(cuid())
+    quizId    String
+    userId    String
+    score     Int?
+    maxScore  Int?
+    completed Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  
+    // Relations
+    quiz    Quiz        @relation(fields: [quizId], references: [id], onDelete: Cascade)
+    user    UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+    answers Answer[]
+  }
+  
+  model Answer {
+    id           String  @id @default(cuid())
+    questionId   String
+    optionId     String?
+    submissionId String
+  
+    // Relations
+    question       Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+    selectedOption QuestionOption? @relation(fields: [optionId], references: [id], onDelete: SetNull)
+    submission     QuizSubmission  @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  }
+`,
   "contact-form": `
 model ContactMessage {
   id        String   @id @default(cuid())
