@@ -214,52 +214,6 @@ model UserProfile {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }
-
-model Quiz {
-  id          String     @id @default(cuid())
-  title       String
-  description String?
-  questions   Question[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-}
-
-model Question {
-  id      String           @id @default(cuid())
-  text    String
-  type    String // "multiple-choice", "multiple-answer", "true-false"
-  points  Int              @default(1)
-  options QuestionOption[]
-  quiz    Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  quizId  String
-}
-
-model QuestionOption {
-  id         String   @id @default(cuid())
-  text       String
-  isCorrect  Boolean  @default(false)
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  questionId String
-}
-
-model QuizSubmission {
-  id          String                 @id @default(cuid())
-  quizId      String
-  answers     QuizSubmissionAnswer[]
-  score       Int
-  totalPoints Int
-  submittedAt DateTime
-  createdAt   DateTime               @default(now())
-}
-
-model QuizSubmissionAnswer {
-  id              String         @id @default(cuid())
-  questionId      String
-  selectedOptions String[]
-  isCorrect       Boolean
-  submission      QuizSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  submissionId    String
-}
 `,
   quiz: `
   model UserProfile {
@@ -268,6 +222,8 @@ model QuizSubmissionAnswer {
     name      String?
     bio       String?  @db.Text
     avatarUrl String?
+    preferences         Json?
+    completedOnboarding Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
   
