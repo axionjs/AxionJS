@@ -1,0 +1,445 @@
+---
+title: Auth 2FA
+description: A secure, full-stack two-factor authentication component with email verification, progressive UI, and seamless Next.js server actions integration.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from 'fumadocs-ui/components/callout'
+import { CodeBlock } from 'fumadocs-ui/components/codeblock'
+import { Card, Cards } from 'fumadocs-ui/components/card'
+import { TypeTable } from 'fumadocs-ui/components/type-table'
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer'
+
+import Image from 'next/image'
+
+# Two-Factor Authentication Form
+
+A comprehensive, secure two-factor authentication component that provides email-based verification with a beautiful, progressive user interface. Features real-time validation, automatic code expiration, and seamless integration with Next.js server actions.
+
+<Image
+  src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1750094404/2f0653ed-8d2d-4a3e-9585-4cb285f561b1.png"
+  alt="Two-Factor Authentication Form Component"
+  width={1200}
+  height={600}
+  className="rounded-lg"
+/>
+
+<div className="my-8">
+    <div className="border rounded-md overflow-scroll" style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="two-factor-form"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+        />
+    </div>
+</div>
+
+## Installation
+
+<Steps>
+<Step>
+Install the component using the AxionsJS CLI:
+
+```bash
+npx axionjs add two-factor-form
+```
+</Step>
+
+<Step>
+Configure your environment variables in `.env`:
+
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+
+# Email Configuration
+EMAIL_SERVER_HOST="smtp.gmail.com"
+EMAIL_SERVER_PORT="587"
+EMAIL_SERVER_USER="your-email@gmail.com"
+EMAIL_SERVER_PASSWORD="your-app-password"
+EMAIL_FROM="Your App <your-email@gmail.com>"
+
+# Authentication
+AUTH_SECRET="your-auth-secret"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+```
+</Step>
+
+<Step>
+Set up Prisma schema and push to database:
+
+```bash
+npx prisma db push
+```
+</Step>
+</Steps>
+
+<Callout type="info">
+The component includes complete database models for users, two-factor tokens, and confirmations. Email templates and server actions are pre-configured and ready to use.
+</Callout>
+
+## Database Schema
+
+Add the following models to your `schema.prisma` file:
+
+```prisma title="schema.prisma"
+model User {
+  id                    String                 @id @unique @default(cuid())
+  name                  String?
+  email                 String?                @unique
+  image                 String?
+  password              String?
+  isTwoFactorEnabled    Boolean                @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+  accounts              Account[]
+
+  @@map("users")
+}
+
+model TwoFactorToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+```
+
+<Callout type="warn">
+Run `npx prisma db push` after adding the schema to apply changes to your database.
+</Callout>
+
+## Usage
+
+<Tabs items={['Basic Usage', 'Custom Integration', 'Authentication Flow']}>
+<Tab value="Basic Usage">
+
+Import and use the TwoFactorForm component:
+
+```tsx ts2js title="app/auth/2fa/page.tsx"
+"use client";
+import { TwoFactorForm } from "@/components/two-factor-form";
+
+export default function TwoFactorPage() {
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="mx-auto max-w-xl px-4">
+        <TwoFactorForm
+          onSuccess={(email) => {
+            console.log("2FA verified for:", email);
+            // Redirect to dashboard or handle success
+          }}
+          onError={(error) => {
+            console.error("2FA error:", error);
+            // Handle error state
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Custom Integration">
+
+Integrate with your authentication system:
+
+```tsx ts2js title="app/auth/verify/page.tsx"
+"use client";
+import { TwoFactorForm } from "@/components/two-factor-form";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+export default function VerifyPage() {
+  const router = useRouter();
+
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <TwoFactorForm
+        title="Verify Your Account"
+        description="Complete your login with two-factor authentication"
+        onSuccess={(email) => {
+          toast.success("Verification successful!");
+          router.push("/dashboard");
+        }}
+        onError={(error) => {
+          toast.error(error);
+        }}
+        className="w-full max-w-md"
+      />
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Authentication Flow">
+
+Complete authentication flow integration:
+
+```tsx ts2js title="components/auth-wrapper.tsx"
+"use client";
+import { useState } from "react";
+import { TwoFactorForm } from "@/components/two-factor-form";
+import { LoginForm } from "@/components/login-form";
+
+export function AuthWrapper() {
+  const [step, setStep] = useState<"login" | "2fa">("login");
+  const [userEmail, setUserEmail] = useState("");
+
+  if (step === "2fa") {
+    return (
+      <TwoFactorForm
+        onSuccess={() => {
+          // Complete authentication
+          window.location.href = "/dashboard";
+        }}
+        onError={(error) => {
+          if (error.includes("Invalid")) {
+            setStep("login");
+          }
+        }}
+      />
+    );
+  }
+
+  return (
+    <LoginForm
+      onTwoFactorRequired={(email) => {
+        setUserEmail(email);
+        setStep("2fa");
+      }}
+    />
+  );
+}
+```
+
+</Tab>
+</Tabs>
+
+## Key Features
+
+<Cards>
+<Card title="Progressive UI" href="#progressive-ui">
+Two-step interface with smooth transitions and progress indicators
+</Card>
+<Card title="Email Verification" href="#email-verification">
+Secure 6-digit code delivery with beautiful email templates
+</Card>
+<Card title="Auto Expiration" href="#auto-expiration">
+Tokens automatically expire after 5 minutes for enhanced security
+</Card>
+<Card title="Real-time Validation" href="#validation">
+Instant feedback with Zod schema validation and error handling
+</Card>
+<Card title="Resend Functionality" href="#resend">
+Easy code resending with rate limiting and user feedback
+</Card>
+<Card title="Accessibility" href="#accessibility">
+Full keyboard navigation and screen reader support
+</Card>
+</Cards>
+
+## Component Props
+
+<TypeTable
+  type={{
+    onSuccess: {
+      type: '(email: string) => void',
+      description: 'Callback function called when 2FA verification is successful',
+      default: 'undefined'
+    },
+    onError: {
+      type: '(error: string) => void', 
+      description: 'Callback function called when an error occurs',
+      default: 'undefined'
+    },
+    title: {
+      type: 'string',
+      description: 'Custom title for the form',
+      default: '"Two-Factor Authentication"'
+    },
+    description: {
+      type: 'string',
+      description: 'Custom description text',
+      default: '"Secure your account with an additional layer of protection"'
+    },
+    className: {
+      type: 'string',
+      description: 'Additional CSS classes for styling',
+      default: '""'
+    }
+  }}
+/>
+
+## Server Actions
+
+The component utilizes Next.js server actions for secure backend operations:
+
+<Tabs items={['Request Code', 'Verify Code', 'Token Management']}>
+<Tab value="Request Code">
+
+```tsx ts2js title="actions/two-factor-actions.ts"
+export const requestTwoFactorCode = async (
+  values: { email: string }
+): Promise<TwoFactorActionResult> => {
+  const validatedFields = TwoFactorRequestSchema.safeParse(values);
+  
+  if (!validatedFields.success) {
+    return { error: "Invalid email address" };
+  }
+
+  const { email } = validatedFields.data;
+  
+  // Generate and send 2FA token
+  const twoFactorToken = await generateTwoFactorToken(email);
+  await sendTwoFactorTokenEmail(email, twoFactorToken.token);
+
+  return {
+    success: "Verification code sent to your email",
+    twoFactorRequired: true,
+  };
+};
+```
+
+**Features:**
+- Email validation with Zod schema
+- Automatic token cleanup (removes old tokens)
+- Secure 6-digit code generation
+- Professional email template delivery
+
+</Tab>
+<Tab value="Verify Code">
+
+```tsx ts2js title="actions/two-factor-actions.ts"
+export const verifyTwoFactorCode = async (
+  values: { email: string; code: string }
+): Promise<TwoFactorActionResult> => {
+  const twoFactorToken = await getTwoFactorTokenByEmail(email);
+  
+  if (!twoFactorToken || twoFactorToken.token !== code) {
+    return { error: "Invalid verification code" };
+  }
+
+  const hasExpired = new Date(twoFactorToken.expires) < new Date();
+  if (hasExpired) {
+    return { error: "Verification code has expired" };
+  }
+
+  // Clean up token after successful verification
+  await db.twoFactorToken.delete({ where: { id: twoFactorToken.id } });
+  
+  return { success: "Two-factor authentication verified successfully" };
+};
+```
+
+**Features:**
+- Secure token comparison
+- Automatic expiration checking
+- Token cleanup after verification
+- Comprehensive error handling
+
+</Tab>
+<Tab value="Token Management">
+
+```tsx ts2js title="actions/two-factor-actions.ts"
+export const generateTwoFactorToken = async (
+  email: string
+): Promise<TwoFactorToken> => {
+  const token = crypto.randomInt(100_000, 1_000_000).toString();
+  const expires = new Date(new Date().getTime() + 5 * 60 * 1000); // 5 minutes
+
+  // Delete existing token if any
+  const existingToken = await getTwoFactorTokenByEmail(email);
+  if (existingToken) {
+    await db.twoFactorToken.delete({ where: { id: existingToken.id } });
+  }
+
+  // Create new token
+  return await db.twoFactorToken.create({
+    data: { email, token, expires },
+  });
+};
+```
+
+**Features:**
+- Cryptographically secure token generation
+- 5-minute expiration window
+- Automatic cleanup of existing tokens
+- Type-safe database operations
+
+</Tab>
+</Tabs>
+
+## Email Templates
+
+The component includes a beautiful, responsive email template:
+
+```tsx ts2js title="emails/two-factor-template.tsx"
+export const getTwoFactorEmailTemplate = (token: string) => {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Two-Factor Authentication Code</title>
+        <style>
+          .container { max-width: 600px; margin: 40px auto; background: white; }
+          .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+          .code { font-size: 36px; font-weight: bold; letter-spacing: 8px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>🔐 Two-Factor Authentication</h1>
+          </div>
+          <div class="content">
+            <div class="code">${token}</div>
+            <p>This code expires in 5 minutes.</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+  
+  return { html, text: `Your verification code: ${token}` };
+};
+```
+
+**Email Features:**
+- Responsive design for all devices
+- Professional gradient styling
+- Clear, large verification code display
+- Security warnings and instructions
+- Plain text fallback for accessibility
+
+## Security Features
+
+The Two-Factor Authentication Form implements multiple security layers:
+
+- **Token Expiration**: All codes expire after 5 minutes
+- **Single Use**: Tokens are deleted after successful verification
+- **Rate Limiting**: Prevents spam and abuse (configurable)
+- **Secure Generation**: Uses Node.js crypto for token generation
+- **Input Validation**: Comprehensive validation with Zod schemas
+- **SQL Injection Protection**: Prisma provides built-in protection
+
+<Callout type="warn">
+Always use HTTPS in production and ensure your email provider supports secure authentication.
+</Callout>
+
+## Conclusion
+
+The `Two-Factor` Authentication Form provides a complete, `production-ready` solution for adding email-based 2FA to your Next.js applications. With its progressive UI, comprehensive security features, and seamless server actions integration, it delivers both excellent user experience and robust security protection.

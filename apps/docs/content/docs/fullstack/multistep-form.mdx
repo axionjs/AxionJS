@@ -1,0 +1,501 @@
+---
+title: Multi-Step Onboarding
+description: A comprehensive, multi-step onboarding wizard component with form validation, progress tracking, and seamless Next.js server actions integration.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from 'fumadocs-ui/components/callout'
+import { CodeBlock } from 'fumadocs-ui/components/codeblock'
+import { Card, Cards } from 'fumadocs-ui/components/card'
+import { TypeTable } from 'fumadocs-ui/components/type-table'
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer'
+
+import Image from 'next/image'
+
+# Multi-Step Onboarding Wizard
+
+A powerful, accessible multi-step onboarding wizard that guides users through profile completion with real-time validation, progress indicators, and seamless Next.js server actions integration. Perfect for user registration, profile setup, and data collection workflows.
+
+<Image
+  src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1750098580/Screenshot_2025-06-16_232700_ggokqe.png"
+  alt="Multi-Step Onboarding Wizard Component"
+  width={1200}
+  height={600}
+  className="rounded-lg"
+/>
+
+<div className="my-8">
+    <div className="border rounded-md overflow-scroll" style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="multi-step-form"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+        />
+    </div>
+</div>
+
+## Installation
+
+<Steps>
+<Step>
+Install the component using the AxionsJS CLI:
+
+```bash
+npx axionjs add multi-step-form
+```
+</Step>
+
+<Step>
+Configure your environment variables in `.env`:
+
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+
+# Next.js Configuration
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-nextauth-secret"
+```
+</Step>
+
+<Step>
+Set up Prisma schema and push to database:
+
+```bash
+npx prisma db push
+```
+</Step>
+</Steps>
+
+<Callout type="info">
+The component includes complete database models for user profiles, form validation schemas, and server actions. All forms are pre-configured with accessibility features and responsive design.
+</Callout>
+
+## Database Schema
+
+Add the following model to your `schema.prisma` file:
+
+```prisma title="schema.prisma"
+model UserProfile {
+  id                  String   @id @default(cuid())
+  email               String   @unique
+  name                String?
+  bio                 String?  @db.Text
+  avatarUrl           String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  preferences         Json?
+  completedOnboarding Boolean  @default(false)
+
+  // Relations
+  quizzes         Quiz[]
+  quizSubmissions QuizSubmission[]
+}
+```
+
+<Callout type="warn">
+Run `npx prisma db push` after adding the schema to apply changes to your database.
+</Callout>
+
+## Usage
+
+<Tabs items={['Basic Usage', 'Custom Configuration', 'Advanced Integration']}>
+<Tab value="Basic Usage">
+
+Import and use the OnboardingWizard component:
+
+```tsx ts2js title="app/onboarding/page.tsx"
+import { OnboardingWizard } from "@/components/onboarding-wizard";
+
+export default function OnboardingPage() {
+  return (
+    <div className="container py-10">
+      <h1 className="text-3xl font-bold text-center mb-8">
+        Complete Your Profile
+      </h1>
+      <OnboardingWizard
+        redirectUrl="/dashboard"
+        showStepIndicator={true}
+        submitButtonLabel="Complete Setup"
+      />
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Custom Configuration">
+
+Customize the wizard with additional props:
+
+```tsx ts2js title="app/setup/page.tsx"
+"use client";
+import { OnboardingWizard } from "@/components/onboarding-wizard";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+export default function SetupPage() {
+  const router = useRouter();
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="mx-auto max-w-2xl px-4">
+        <OnboardingWizard
+          title="Welcome to Our Platform"
+          initialStep={1}
+          showStepIndicator={true}
+          submitButtonLabel="Get Started"
+          onComplete={(data) => {
+            toast.success("Profile setup complete!");
+            router.push("/dashboard");
+          }}
+          className="bg-white shadow-lg"
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Advanced Integration">
+
+Integrate with authentication and custom validation:
+
+```tsx ts2js title="components/auth-onboarding.tsx"
+"use client";
+import { OnboardingWizard } from "@/components/onboarding-wizard";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+
+export function AuthOnboarding() {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!session) {
+    redirect("/auth/signin");
+  }
+
+  return (
+    <OnboardingWizard
+      redirectUrl="/dashboard"
+      onComplete={(data) => {
+        // Custom completion logic
+        console.log("Onboarding completed:", data);
+        // Analytics tracking
+        gtag("event", "onboarding_complete", {
+          user_id: session.user.id,
+        });
+      }}
+    />
+  );
+}
+```
+
+</Tab>
+</Tabs>
+
+## Key Features
+
+<Cards>
+<Card title="Multi-Step Flow" href="#multi-step">
+4-step guided process with validation and progress tracking
+</Card>
+<Card title="Form Validation" href="#validation">
+Real-time validation with Zod schemas and React Hook Form
+</Card>
+<Card title="Avatar Upload" href="#avatar">
+Built-in avatar upload with preview and file handling
+</Card>
+<Card title="Progress Indicators" href="#progress">
+Visual progress bar and step indicators for better UX
+</Card>
+<Card title="Server Actions" href="#server-actions">
+Seamless Next.js server actions integration for data persistence
+</Card>
+<Card title="Accessibility" href="#accessibility">
+Full keyboard navigation and screen reader support
+</Card>
+</Cards>
+
+## Component Props
+
+<TypeTable
+  type={{
+    redirectUrl: {
+      type: 'string',
+      description: 'URL to redirect to after successful submission',
+      default: '"/dashboard"'
+    },
+    className: {
+      type: 'string',
+      description: 'Additional CSS classes for styling',
+      default: '""'
+    },
+    initialStep: {
+      type: 'number',
+      description: 'Initial step to show (1-based)',
+      default: '1'
+    },
+    showStepIndicator: {
+      type: 'boolean',
+      description: 'Show step indicators and progress bar',
+      default: 'true'
+    },
+    submitButtonLabel: {
+      type: 'string',
+      description: 'Label for the submission button',
+      default: '"Complete Setup"'
+    },
+    onComplete: {
+      type: '(data: OnboardingFormValues) => void',
+      description: 'Callback function called when onboarding is complete',
+      default: 'undefined'
+    }
+  }}
+/>
+
+## Form Steps
+
+The onboarding wizard consists of 4 comprehensive steps:
+
+<Tabs items={['Personal Info', 'Profile Picture', 'Preferences', 'Notifications']}>
+<Tab value="Personal Info">
+
+**Step 1: Personal Information**
+- Name (required, minimum 2 characters)
+- Bio (optional, maximum 500 characters)
+- Real-time validation with helpful error messages
+
+```tsx ts2js title="components/personal-info-form.tsx"
+<FormField
+  control={form.control}
+  name="name"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Full Name</FormLabel>
+      <FormControl>
+        <Input placeholder="Enter your full name" {...field} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+```
+
+</Tab>
+<Tab value="Profile Picture">
+
+**Step 2: Profile Picture**
+- Optional avatar upload with preview
+- File type validation (images only)
+- Automatic fallback to user initials
+- Remove/replace functionality
+
+```tsx ts2js title="components/avatar-upload-form.tsx"
+<Avatar className="h-24 w-24">
+  <AvatarImage src={previewUrl || ""} />
+  <AvatarFallback className="text-lg">
+    {form.getValues().name
+      ? form.getValues().name.charAt(0).toUpperCase()
+      : "?"}
+  </AvatarFallback>
+</Avatar>
+```
+
+</Tab>
+<Tab value="Preferences">
+
+**Step 3: User Preferences**
+- Theme selection (light, dark, system)
+- Email frequency preferences
+- Marketing email opt-in
+- Required field validation
+
+```tsx ts2js title="components/preferences-form.tsx"
+<FormField
+  control={form.control}
+  name="theme"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Theme Preference</FormLabel>
+      <Select onValueChange={field.onChange} defaultValue={field.value}>
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue placeholder="Select a theme" />
+          </SelectTrigger>
+        </FormControl>
+        <SelectContent>
+          <SelectItem value="light">Light</SelectItem>
+          <SelectItem value="dark">Dark</SelectItem>
+          <SelectItem value="system">System</SelectItem>
+        </SelectContent>
+      </Select>
+    </FormItem>
+  )}
+/>
+```
+
+</Tab>
+<Tab value="Notifications">
+
+**Step 4: Notification Settings**
+- Email notifications toggle
+- Push notifications preferences
+- Activity summary options
+- Security alerts settings
+- Optional step with skip functionality
+
+```tsx ts2js title="components/notifications-form.tsx"
+<FormField
+  control={form.control}
+  name="emailNotifications"
+  render={({ field }) => (
+    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+      <div className="space-y-0.5">
+        <FormLabel className="text-base">Email notifications</FormLabel>
+        <FormDescription>
+          Receive emails about your account activity.
+        </FormDescription>
+      </div>
+      <FormControl>
+        <Switch checked={field.value} onCheckedChange={field.onChange} />
+      </FormControl>
+    </FormItem>
+  )}
+/>
+```
+
+</Tab>
+</Tabs>
+
+## Server Actions
+
+The component utilizes Next.js server actions for secure data persistence:
+
+```tsx ts2js title="actions/multi-step-form-actions.ts"
+"use server";
+
+import { revalidatePath } from "next/cache";
+import type { OnboardingFormValues } from "@/components/onboarding-wizard";
+import { db } from "@/lib/db";
+
+export async function saveOnboardingData(data: OnboardingFormValues) {
+  try {
+    // Extract and structure user preferences
+    const preferences = {
+      theme: data.theme,
+      emailFrequency: data.emailFrequency,
+      marketingEmails: data.marketingEmails,
+      notifications: {
+        email: data.emailNotifications,
+        push: data.pushNotifications,
+        activitySummary: data.activitySummary,
+        newFeatures: data.newFeatures,
+        securityAlerts: data.securityAlerts,
+      },
+    };
+
+    // Update user profile with upsert operation
+    await db.userProfile.upsert({
+      where: { id: userId },
+      update: {
+        name: data.name,
+        bio: data.bio || null,
+        avatarUrl: data.avatarUrl || null,
+        preferences: preferences,
+        completedOnboarding: true,
+        updatedAt: new Date(),
+      },
+      create: {
+        id: userId,
+        email: "user@example.com", // From auth session
+        name: data.name,
+        bio: data.bio || null,
+        avatarUrl: data.avatarUrl || null,
+        preferences: preferences,
+        completedOnboarding: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (error) {
+    console.error("Error saving onboarding data:", error);
+    return { success: false, error: "Failed to save onboarding data" };
+  }
+}
+```
+
+**Server Action Features:**
+- Type-safe data handling with TypeScript
+- Upsert operations for flexible data management
+- Automatic path revalidation for fresh data
+- Comprehensive error handling and logging
+- Structured JSON preferences storage
+
+## Form Validation
+
+The wizard uses Zod for comprehensive form validation:
+
+```tsx ts2js title="components/onboarding-wizard.tsx"
+const formSchema = z.object({
+  // Step 1: Personal Information
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  bio: z
+    .string()
+    .max(500, { message: "Bio must not exceed 500 characters" })
+    .optional(),
+
+  // Step 2: Profile Picture
+  avatarUrl: z.string().optional(),
+
+  // Step 3: Preferences
+  theme: z.enum(["light", "dark", "system"], {
+    required_error: "Please select a theme preference",
+  }),
+  emailFrequency: z.enum(["daily", "weekly", "monthly", "never"], {
+    required_error: "Please select an email frequency",
+  }),
+  marketingEmails: z.boolean().default(false),
+
+  // Step 4: Notifications
+  emailNotifications: z.boolean().default(true),
+  pushNotifications: z.boolean().default(true),
+  activitySummary: z.boolean().default(true),
+  newFeatures: z.boolean().default(true),
+  securityAlerts: z.boolean().default(true),
+});
+```
+
+**Validation Features:**
+- Step-by-step validation prevents invalid progression
+- Real-time error messages with helpful guidance
+- Optional fields with smart defaults
+- Type-safe form data throughout the application
+
+## Accessibility Features
+
+The Multi-Step Onboarding Wizard is built with accessibility in mind:
+
+- **Keyboard Navigation**: Full keyboard support with proper focus management
+- **Screen Reader Support**: ARIA labels, roles, and live regions
+- **Progress Indicators**: Clear step progression for assistive technologies
+- **Form Validation**: Accessible error messages and field descriptions
+- **Focus Management**: Automatic focus movement between steps
+- **Skip Functionality**: Optional steps can be skipped for better UX
+
+<Callout type="info">
+The component follows WCAG 2.1 AA guidelines and has been tested with popular screen readers.
+</Callout>
+
+## Conclusion
+
+The Multi-Step Onboarding Wizard provides a complete, production-ready solution for user onboarding in Next.js applications. With its comprehensive form validation, accessibility features, and seamless server actions integration, it delivers an excellent user experience while maintaining robust data handling and security.

@@ -1,0 +1,539 @@
+---
+title: Contact Form
+description: A comprehensive full-stack contact form component with email functionality, admin dashboard, and message management built on top of AxionJS.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { CodeBlock } from 'fumadocs-ui/components/codeblock';
+import { Card, Cards } from 'fumadocs-ui/components/card';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+import Image from 'next/image';
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer';
+
+# Contact Form
+
+A full-stack contact form solution that provides form validation, email sending capabilities, database storage, and an admin dashboard for managing messages. Built with Next.js Server Actions and modern React patterns.
+
+<div className="my-8">
+  <Image 
+    src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1749986096/Screenshot_2025-06-15_161407_qj0frq.png"
+    alt="Contact Form with Admin Dashboard"
+    width={1200}
+    height={800}
+    className="rounded-lg border shadow-lg"
+    priority
+  />
+</div>
+
+<div className="my-8">
+    <div   className="border rounded-md overflow-scroll"
+              style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="contact-form"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+            />
+    </div>
+</div>
+
+<Callout type="info">
+This component streamlines communication by capturing inquiries efficiently and providing tools for effective follow-up, all powered by Next.js Server Actions.
+</Callout>
+
+## Features
+
+<Cards>
+  <Card title="Server Actions">
+    Utilizes Next.js Server Actions for secure and efficient backend operations.
+  </Card>
+  <Card title="Dual Validation">
+    Robust client-side and server-side validation using Zod for data integrity.
+  </Card>
+  <Card title="Email & DB Integration">
+    Automated email notifications and persistent message storage in PostgreSQL.
+  </Card>
+  <Card title="Admin Dashboard">
+    A complete interface for viewing, managing, and responding to messages.
+  </Card>
+</Cards>
+
+## Installation
+
+<Steps>
+<Step>
+### Install the Component
+
+```bash title="Terminal"
+npx axionjs add contact-form
+```
+This command installs the contact form system, including frontend components, server actions, and database configurations.
+</Step>
+
+<Step>
+### Configure Environment Variables
+
+Update your `.env` file with necessary credentials:
+
+```env title=".env"
+# Database
+DATABASE_URL="your-postgresql-connection-string"
+
+# Email Configuration
+EMAIL_SERVER_HOST="smtp.gmail.com"
+EMAIL_SERVER_PORT="587"
+EMAIL_SERVER_USER="your-email@gmail.com"
+EMAIL_SERVER_PASSWORD="your-app-password" # Use app-specific password for Gmail
+ADMIN_EMAIL="admin@yourdomain.com" # Email to receive notifications
+EMAIL_FROM="Your App Name <noreply@yourdomain.com>" # Sender email address
+```
+</Step>
+
+<Step>
+### Database Setup
+The component uses Prisma. Add the following schema to your `schema.prisma` file.
+
+```prisma title="schema.prisma"
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  status    String   @default("UNREAD") // e.g., UNREAD, READ, ARCHIVED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+}
+```
+</Step>
+
+<Step>
+### Run Database Migrations
+Apply the schema changes to your database:
+```bash title="Terminal"
+npx prisma db push
+```
+</Step>
+</Steps>
+
+## Libraries Used
+
+This component leverages several modern libraries and frameworks:
+
+- **Next.js 14+**: App Router with Server Actions
+- **React Hook Form**: Form state management and validation
+- **Zod**: Schema validation for both client and server
+- **Prisma**: Database ORM for PostgreSQL
+- **Nodemailer**: Email sending functionality
+- **Lucide React**: Modern icon library
+- **date-fns**: Date formatting utilities
+- **Tailwind CSS**: Utility-first CSS framework
+
+## Usage
+
+<Tabs items={['Frontend Form', 'Server Action', 'Admin Page']}>
+<Tab value="Frontend Form">
+Embed the contact form in any page.
+```tsx title="app/contact/page.tsx"
+import ContactForm from "@/components/contact-form";
+
+export default function ContactPage() {
+  return (
+    <main className="min-h-screen flex items-center justify-center">
+      <ContactForm />
+    </main>
+  );
+}
+```
+</Tab>
+
+<Tab value="Server Action">
+The core logic for handling form submissions.
+```tsx title="actions/contact-actions.ts"
+"use server";
+
+import { z } from "zod";
+import nodemailer from "nodemailer";
+import { revalidatePath } from "next/cache";
+import { db } from "@/lib/db";
+
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Please enter a valid email address."),
+  message: z.string().min(10, "Message must be at least 10 characters."),
+});
+
+export async function sendEmail(data: unknown) {
+  const result = formSchema.safeParse(data);
+  
+  if (!result.success) {
+    return {
+      success: false,
+      error: "Invalid form data. Please check your inputs.",
+    };
+  }
+
+  const { name, email, message } = result.data;
+
+  try {
+    // Store in database
+    await db.contactMessage.create({
+      data: { name, email, message, status: "UNREAD" },
+    });
+
+    // Send email notification
+    const transporter = nodemailer.createTransporter({
+      host: process.env.EMAIL_SERVER_HOST,
+      port: Number(process.env.EMAIL_SERVER_PORT),
+      auth: {
+        user: process.env.EMAIL_SERVER_USER,
+        pass: process.env.EMAIL_SERVER_PASSWORD,
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to: process.env.ADMIN_EMAIL,
+      subject: `New Contact Form Submission from ${name}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong> ${message}</p>
+      `,
+    });
+
+    revalidatePath("/admin/messages");
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return {
+      success: false,
+      error: "Failed to send message. Please try again later.",
+    };
+  }
+}
+```
+</Tab>
+
+<Tab value="Admin Page">
+A page to display and manage submitted messages.
+```tsx title="app/admin/messages/page.tsx"
+import { getMessages } from "@/actions/contact-actions";
+import { MessageList } from "@/components/message-list";
+
+export default async function AdminMessagesPage() {
+  const messages = await getMessages();
+  
+  return (
+    <div className="container py-10">
+      <h1 className="text-3xl font-bold mb-8">Contact Messages</h1>
+      <MessageList initialMessages={messages} />
+    </div>
+  );
+}
+```
+</Tab>
+</Tabs>
+
+## Component Structure
+
+The contact form system consists of several interconnected components:
+
+### Core Components
+
+- **ContactForm**: Main form component with validation
+- **MessageList**: Admin interface for managing messages
+- **Admin Dashboard**: Overview of message statistics
+
+### Hooks
+
+- **useContactForm**: Form state management and submission logic
+- **useMessageList**: Message management operations
+
+### Server Actions (`actions/contact-actions.ts`)
+
+- **sendEmail**: Handles form submission and email sending
+- **getMessages**: Retrieves messages from database
+- **updateMessageStatus**: Updates message read/unread status
+- **deleteMessage**: Removes messages from database
+- **getUnreadMessageCounts**: Gets count of unread messages
+- **getTotalMessageCount**: Gets total message count
+
+## Customization
+
+<Tabs items={['Styling', 'Validation Schema', 'Email Template']}>
+<Tab value="Styling">
+Customize form elements using Tailwind CSS.
+```tsx title="components/contact-form.tsx"
+// Customize form appearance
+<Input
+  placeholder="Your name"
+  className="h-12 bg-background border-blue-500 focus:ring-blue-500"
+  {...field}
+/>
+```
+</Tab>
+
+<Tab value="Validation Schema">
+Modify Zod schema for different validation rules.
+```tsx title="lib/validations/contact.ts"
+const formSchema = z.object({
+  name: z.string().min(1, "Name is required").max(100, "Name too long"),
+  email: z.string().email("Invalid email format"),
+  message: z.string().min(5, "Message too short").max(1000, "Message too long"),
+  phone: z.string().optional(), // Add optional phone field
+});
+```
+</Tab>
+
+<Tab value="Email Template">
+Adjust the HTML email template within the `sendEmail` server action.
+```tsx title="actions/contact-actions.ts"
+// actions/contact-actions.ts
+"use server";
+
+export async function sendEmail(data: unknown) {
+  // ... validation logic
+  
+  await transporter.sendMail({
+    from: process.env.EMAIL_FROM,
+    to: process.env.ADMIN_EMAIL,
+    subject: `New Contact: ${name}`,
+    html: `
+      <div style="font-family: Arial, sans-serif;">
+        <h2 style="color: #333;">New Contact Form Submission</h2>
+        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Message:</strong></p>
+          <p style="background: white; padding: 15px; border-radius: 4px;">${message}</p>
+        </div>
+      </div>
+    `,
+  });
+}
+```
+</Tab>
+</Tabs>
+
+## Configuration Options
+
+### Form Behavior
+
+<Callout type="info">
+You can customize form behavior by modifying the `useContactForm` hook parameters.
+</Callout>
+
+```tsx ts2js
+const form = useForm<FormValues>({
+  resolver: zodResolver(formSchema),
+  defaultValues: {
+    name: "",
+    email: "",
+    message: "",
+  },
+  mode: "onChange", // Validate on change
+});
+```
+
+### Database Schema
+Extend the `ContactMessage` model in `schema.prisma` as needed.
+```prisma title="schema.prisma"
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?  // Optional phone field
+  company   String?  // Optional company field
+  message   String
+  status    String   @default("UNREAD")
+  priority  String   @default("NORMAL") // Add priority field
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+```
+<Callout>
+Remember to run `npx prisma db push` after modifying your schema.
+</Callout>
+
+## Admin Dashboard Features
+
+### Message Management
+
+- **Status Tracking**: Mark messages as read/unread
+- **Filtering**: Filter messages by status (all, unread, read)
+- **Bulk Operations**: Delete multiple messages
+- **Search**: Search through messages (can be extended)
+
+### Dashboard Metrics
+
+The admin dashboard displays:
+- Total message count
+- Unread message count
+- Recent activity overview
+
+## Error Handling
+
+The component includes comprehensive error handling:
+
+### Client-Side Errors
+
+```tsx ts2js
+try {
+  const result = await sendEmail(data);
+  if (result.success) {
+    // Success handling
+  } else {
+    toast({
+      title: "Failed to send",
+      description: result.error,
+      variant: "destructive",
+    });
+  }
+} catch (error) {
+  // Network error handling
+}
+```
+
+### Server-Side Errors
+
+```tsx ts2js
+export async function sendEmail(data: unknown) {
+  try {
+    // Validation
+    const result = formSchema.safeParse(data);
+    if (!result.success) {
+      return { success: false, error: "Invalid form data" };
+    }
+    
+    // Database and email operations
+    // ...
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Error:", error);
+    return { success: false, error: "Server error occurred" };
+  }
+}
+```
+
+## Security Considerations
+
+<Callout type="warning">
+Ensure proper security measures are in place for production use.
+</Callout>
+
+### Email Security
+
+- Use app-specific passwords for Gmail
+- Store credentials securely in environment variables
+- Implement rate limiting for form submissions
+
+### Data Validation
+
+- Server-side validation is always performed
+- Input sanitization prevents XSS attacks
+- SQL injection protection via Prisma ORM
+
+### Access Control (Admin Routes)
+Protect your admin dashboard using authentication.
+```tsx title="app/admin/layout.tsx or middleware.ts"
+// Add authentication to admin routes
+import { auth } from "@/lib/auth";
+
+export default async function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await auth();
+  
+  if (!session?.user?.isAdmin) {
+    redirect("/login");
+  }
+  
+  return <>{children}</>;
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Email not sending:**
+- Verify SMTP credentials
+- Check email server settings
+- Ensure app passwords are used for Gmail
+
+**Database connection issues:**
+- Verify DATABASE_URL format
+- Check database permissions
+- Run Prisma migrations
+
+**Form validation errors:**
+- Check Zod schema configuration
+- Verify form field naming consistency
+- Ensure proper error handling
+
+### Debugging
+
+Enable debug logging:
+
+```tsx ts2js
+// Add to your environment variables
+DEBUG=nodemailer:*
+```
+
+## API Reference
+
+### Server Actions
+
+<TypeTable
+  type={{
+    sendEmail: {
+      type: 'async (data: FormData) => Promise<{ success: boolean; error?: string }>',
+      description: 'Processes form submission, saves to DB, and sends email.'
+    },
+    getMessages: {
+      type: 'async () => Promise<ContactMessage[]>',
+      description: 'Retrieves all contact messages.'
+    },
+    updateMessageStatus: {
+      type: 'async (id: string, status: string) => Promise<ContactMessage | { error: string }>',
+      description: 'Updates the status of a message (e.g., "READ", "UNREAD").'
+    },
+    deleteMessage: {
+      type: 'async (id: string) => Promise<{ success: boolean; error?: string }>',
+      description: 'Deletes a message from the database.'
+    },
+    getUnreadMessageCount: {
+      type: 'async () => Promise<number>',
+      description: 'Gets the count of unread messages.'
+    }
+  }}
+/>
+
+### Hooks
+
+<TypeTable
+  type={{
+    'useContactForm()': {
+      type: '() => { form: UseFormReturn; onSubmit: (data: FormValues) => Promise<void>; isPending: boolean; isSuccess: boolean; }',
+      description: 'Manages form state, validation, and submission logic.'
+    },
+    'useMessageList(initialMessages: Message[])': {
+      type: '(initialMessages: ContactMessage[]) => { /* ...return values... */ }',
+      description: 'Manages message list state, filtering, and operations for the admin dashboard.'
+    }
+  }}
+/>
+
+---
+
+This contact form component provides a complete solution for handling user inquiries with professional email integration and admin management capabilities. The modular design allows for easy customization while maintaining robust functionality.

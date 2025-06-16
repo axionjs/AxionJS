@@ -1,5 +1,5 @@
 ---
-title: RBAC Auth
+title: Auth RBAC
 description: A complete Role-Based Access Control authentication system with advanced security features
 ---
 
@@ -7,12 +7,32 @@ import { Callout } from 'fumadocs-ui/components/callout';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { CodeBlock } from 'fumadocs-ui/components/codeblock';
+import Image from 'next/image';
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer';
 
 # RBAC Authentication System
 
 A comprehensive, production-ready authentication system with Role-Based Access Control (RBAC), built with modern security practices and seamless integration using Next.js Server Actions.
 
-![RBAC Auth Dashboard](https://res.cloudinary.com/dmfh8lexl/image/upload/v1749922935/Screenshot_2025-06-14_223857_nedg98.png)
+<Image 
+  src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1749922935/Screenshot_2025-06-14_223857_nedg98.png"
+  alt="RBAC Auth Dashboard"
+  width={1200}
+  height={800}
+  className="rounded-lg border"
+/>
+
+<div className="my-8">
+    <div   className="border rounded-md overflow-scroll"
+              style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="auth"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+            />
+    </div>
+</div>
 
 <Callout type="info">
   This authentication system provides enterprise-grade security with minimal setup. Perfect for applications requiring user management, role-based permissions, and advanced security features using Next.js Server Actions for optimal performance.
@@ -20,16 +40,16 @@ A comprehensive, production-ready authentication system with Role-Based Access C
 
 ## Features
 
-- 🔐 **Complete Authentication Flow** - Login, Register, Password Reset
-- 👥 **Role-Based Access Control** - Admin/User roles with extensible system
-- 🔒 **Two-Factor Authentication** - Email-based 2FA for enhanced security
-- ✉️ **Email Verification** - Secure email confirmation system
-- 🖼️ **Profile Management** - Image upload with Cloudinary integration
-- 🔑 **OAuth Integration** - Google & GitHub authentication
-- 🛡️ **Session Management** - Secure session handling with NextAuth.js
-- 📧 **Email Services** - Password reset and verification emails
-- 🎨 **Modern UI** - Beautiful components with shadcn/ui
-- ⚡ **Server Actions** - Type-safe server-side operations without API routes
+-  **Complete Authentication Flow** - Login, Register, Password Reset
+-  **Role-Based Access Control** - Admin/User roles with extensible system
+-  **Two-Factor Authentication** - Email-based 2FA for enhanced security
+-  **Email Verification** - Secure email confirmation system
+-  **Profile Management** - Image upload with Cloudinary integration
+-  **OAuth Integration** - Google & GitHub authentication
+-  **Session Management** - Secure session handling with NextAuth.js
+-  **Email Services** - Password reset and verification emails
+-  **Modern UI** - Beautiful components with shadcn/ui
+-  **Server Actions** - Type-safe server-side operations without API routes
 
 ## Tech Stack
 
@@ -43,7 +63,7 @@ A comprehensive, production-ready authentication system with Role-Based Access C
 - **Security**: bcryptjs for password hashing
 - **Server Actions**: Type-safe server operations
 
-## Quick Setup
+## Installation
 
 <Steps>
 
@@ -51,7 +71,7 @@ A comprehensive, production-ready authentication system with Role-Based Access C
 ### Install the component
 
 ```bash
-npx axionjs add rbac-auth
+npx axionjs add auth
 ```
 </Step>
 
@@ -60,54 +80,37 @@ npx axionjs add rbac-auth
 
 Create a `.env.local` file with the following variables:
 
-<Tabs items={['Database', 'Auth', 'OAuth', 'Email', 'Services']}>
-<Tab value="Database">
+<Step>
 ```env
 DATABASE_URL="postgresql://username:password@host:port/database?sslmode=require"
-```
-</Tab>
 
-<Tab value="Auth">
-```env
 AUTH_SECRET="your-auth-secret-key"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
-```
-</Tab>
 
-<Tab value="OAuth">
-```env
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 GITHUB_CLIENT_ID="your-github-client-id"
 GITHUB_CLIENT_SECRET="your-github-client-secret"
-```
-</Tab>
 
-<Tab value="Email">
-```env
 EMAIL_SERVER_HOST="smtp.gmail.com"
 EMAIL_SERVER_PORT="587"
 EMAIL_SERVER_USER="your-email@gmail.com"
 EMAIL_SERVER_PASSWORD="your-app-password"
 EMAIL_FROM="Your App Name"
-```
-</Tab>
 
-<Tab value="Services">
-```env
+// For User Avatar
 CLOUDINARY_API_KEY="your-cloudinary-key"
 CLOUDINARY_API_SECRET="your-cloudinary-secret"
 CLOUDINARY_CLOUD_NAME="your-cloud-name"
 ```
-</Tab>
-</Tabs>
+
+</Step>
 </Step>
 
 <Step>
 ### Run database migrations
 
 ```bash
-npx prisma generate
 npx prisma db push
 ```
 </Step>
@@ -130,7 +133,7 @@ The system includes pre-built, accessible forms for all authentication flows:
 
 <Tabs items={['Login', 'Register', 'Password Reset']}>
 <Tab value="Login">
-```tsx
+```tsx ts2js
 import { LoginForm } from "@/components/auth/login-form";
 
 export default function LoginPage() {
@@ -140,7 +143,7 @@ export default function LoginPage() {
 </Tab>
 
 <Tab value="Register">
-```tsx
+```tsx ts2js
 import { RegisterForm } from "@/components/auth/register-form";
 
 export default function RegisterPage() {
@@ -150,7 +153,7 @@ export default function RegisterPage() {
 </Tab>
 
 <Tab value="Password Reset">
-```tsx
+```tsx ts2js
 import { ResetForm } from "@/components/auth/reset-form";
 
 export default function ResetPage() {
@@ -164,7 +167,7 @@ export default function ResetPage() {
 
 Protect routes and components based on user roles:
 
-```tsx
+```tsx ts2js
 import { RoleGate } from "@/components/auth/role-gate";
 import { UserRole } from "@prisma/client";
 
@@ -181,7 +184,7 @@ export default function AdminPanel() {
 
 Complete user settings with profile management:
 
-```tsx
+```tsx ts2js
 import { SettingsForm } from "@/components/auth/settings-form";
 
 export default function SettingsPage() {
@@ -195,7 +198,7 @@ This system leverages Next.js Server Actions for type-safe, secure server-side o
 
 ### Authentication Actions
 
-```tsx
+```tsx ts2js
 // All authentication logic handled via Server Actions
 import { login, register, logout } from "@/actions/auth-actions";
 
@@ -215,7 +218,7 @@ const handleLogin = async (formData: FormData) => {
 
 ### Profile Management Actions
 
-```tsx
+```tsx ts2js
 // Profile updates via Server Actions
 import { settings, updateUserImage, changePassword } from "@/actions/auth-actions";
 
@@ -238,7 +241,7 @@ const handlePasswordChange = async (currentPassword, newPassword) => {
 
 Automatic 2FA setup with email-based verification using Server Actions:
 
-```tsx
+```tsx ts2js
 // 2FA token generation and verification
 const generateTwoFactorToken = async (email: string) => {
   const token = crypto.randomInt(100_000, 1_000_000).toString();
@@ -255,7 +258,7 @@ const generateTwoFactorToken = async (email: string) => {
 
 Secure email verification for new registrations and email changes:
 
-```tsx
+```tsx ts2js
 // Server Action for email verification
 export const newVerification = async (token: string) => {
   const existingToken = await getVerificationTokenByToken(token);
@@ -278,7 +281,7 @@ export const newVerification = async (token: string) => {
 
 Integrated Cloudinary support with Server Actions:
 
-```tsx
+```tsx ts2js
 // Server Action for image upload
 export async function updateUserImage(userId: string, imageData: string) {
   const uploadResponse = await cloudinary.uploader.upload(imageData, {
@@ -319,7 +322,7 @@ enum UserRole {
 <Step>
 ### Create Role Management Server Actions
 
-```tsx
+```tsx ts2js
 // Server Action for role management
 export const updateUserRole = async (userId: string, role: UserRole) => {
   const currentUser = await currentUser();
@@ -357,7 +360,7 @@ export const getUsersByRole = async (role: UserRole) => {
 <Step>
 ### Implement Role-Based Components
 
-```tsx
+```tsx ts2js
 // Role-based navigation
 export function RoleBasedNavigation() {
   const { data: session } = useSession();
@@ -403,7 +406,7 @@ This system uses Server Actions instead of traditional API routes for several ad
 
 <Tabs items={['Server Actions', 'Benefits', 'Security']}>
 <Tab value="Server Actions">
-```tsx
+```tsx ts2js
 // Direct server function calls
 "use server";
 
@@ -443,7 +446,7 @@ const handleSubmit = async (formData: FormData) => {
 
 The complete authentication flow using Server Actions:
 
-```tsx
+```tsx ts2js
 // Registration Flow
 export const register = async (values: RegisterFormData) => {
   // 1. Validate input
@@ -474,7 +477,7 @@ export const register = async (values: RegisterFormData) => {
 
 All components use Tailwind CSS and can be easily customized:
 
-```tsx
+```tsx ts2js
 // Override default styles
 <LoginForm className="custom-login-form" />
 
@@ -491,7 +494,7 @@ const customTheme = {
 
 Customize email templates in `/components/emails/`:
 
-```tsx
+```tsx ts2js
 // Custom verification email
 export default function CustomVerificationEmail({ confirmLink }) {
   return (
@@ -570,7 +573,7 @@ model User {
 
 ### Monitoring and Logging
 
-```tsx
+```tsx ts2js
 // Add logging to Server Actions
 export const loginWithLogging = async (values: LoginFormData) => {
   try {
@@ -598,17 +601,7 @@ export const loginWithLogging = async (values: LoginFormData) => {
 4. **2FA Not Working**: Ensure email service is configured and tokens aren't expired.
 5. **Server Actions Not Working**: Ensure you have "use server" directive at the top of your action files.
 
-### Debug Mode
 
-Enable debug logging for troubleshooting:
+## Conclusion
+This RBAC authentication system provides a robust, secure foundation for user management in your Next.js applications. With its modern architecture, advanced security features, and seamless integration using Server Actions, you can focus on building your application while ensuring a secure and scalable authentication solution.
 
-```tsx
-// Add to your Server Actions
-if (process.env.NODE_ENV === 'development') {
-  console.log('Debug info:', { userId, action, timestamp: new Date() });
-}
-```
-
-## Support
-
-For issues and feature requests, visit the AxionJS GitHub repository.

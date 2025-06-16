@@ -38,7 +38,6 @@ import HeroVideo from "@/registry/new-york/blocks/hero-video";
 
 // Navigation components
 import NavbarAnimated from "@/registry/new-york/blocks/navbar-animated";
-import NavbarBottomIcons from "@/registry/new-york/blocks/navbar-bottom-icons";
 import NavbarDesktop from "@/registry/new-york/blocks/navbar-desktop";
 import NavbarDropdown from "@/registry/new-york/blocks/navbar-dropdown";
 import NavbarMobile from "@/registry/new-york/blocks/navbar-mobile";

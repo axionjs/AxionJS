@@ -24,16 +24,16 @@ export function FileTree({
 }: FileTreeProps) {
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
 
-  // Initially expand all directory nodes for better discoverability
+  // Initially expand directories up to level 2 for better discoverability
   useEffect(() => {
     const allDirPaths = new Set<string>();
 
-    const findAllDirs = (nodes: RegistryNode[], parentPath = "") => {
+    const findAllDirs = (nodes: RegistryNode[], level = 0) => {
       for (const node of nodes) {
-        if (node.type === "directory") {
+        if (node.type === "directory" && level < 2) {
           allDirPaths.add(node.path);
           if (node.children) {
-            findAllDirs(node.children, node.path);
+            findAllDirs(node.children, level + 1);
           }
         }
       }
@@ -53,20 +53,27 @@ export function FileTree({
     setExpandedPaths(newExpanded);
   };
 
-  const renderNode = (node: RegistryNode, level = 0) => {
+  const renderNode = (
+    node: RegistryNode,
+    level = 0,
+    isLast = false,
+    parentLines: boolean[] = []
+  ) => {
     const isDirectory = node.type === "directory";
     const isExpanded = expandedPaths.has(node.path);
     const isSelected = node.path === selectedPath;
+    const indentSize = 20;
 
     return (
       <div key={node.path}>
         <div
           className={cn(
-            "flex items-center py-1 px-2 cursor-pointer hover:bg-muted/50 transition-colors",
-            isSelected && "bg-muted text-primary",
-            "rounded-md"
+            "flex items-center py-1.5 px-2 cursor-pointer group transition-all duration-200",
+            "hover:bg-accent/60 hover:border-l-2 hover:border-primary/30",
+            isSelected &&
+              "bg-accent border-l-2 border-primary text-accent-foreground font-medium",
+            "relative"
           )}
-          style={{ paddingLeft: `${(level + 1) * 8}px` }}
           onClick={() => {
             if (isDirectory) {
               toggleExpand(node.path);
@@ -75,32 +82,98 @@ export function FileTree({
             }
           }}
         >
-          {isDirectory && (
-            <span className="mr-1">
-              {isExpanded ? (
-                <ChevronDown size={16} />
-              ) : (
-                <ChevronRight size={16} />
-              )}
-            </span>
-          )}
-          <span className="mr-1.5">
-            {isDirectory ? (
-              isExpanded ? (
-                <FolderOpen size={16} className="shrink-0" />
-              ) : (
-                <Folder size={16} className="shrink-0" />
-              )
-            ) : (
-              <File size={16} className="shrink-0" />
+          {/* Vertical lines for tree structure */}
+          <div className="absolute left-0 top-0 bottom-0 flex">
+            {parentLines.map((showLine, index) => (
+              <div
+                key={index}
+                className="relative"
+                style={{ width: `${indentSize}px` }}
+              >
+                {showLine && (
+                  <div className="absolute left-2 top-0 bottom-0 w-px bg-border opacity-40" />
+                )}
+              </div>
+            ))}
+            {level > 0 && (
+              <div className="relative" style={{ width: `${indentSize}px` }}>
+                {/* Vertical line */}
+                <div
+                  className="absolute left-2 top-0 w-px bg-border opacity-40"
+                  style={{ height: isLast ? "50%" : "100%" }}
+                />
+                {/* Horizontal line */}
+                <div className="absolute left-2 top-1/2 w-3 h-px bg-border opacity-40" />
+              </div>
             )}
-          </span>
-          <span className="text-sm truncate">{node.name}</span>
+          </div>
+
+          {/* Content */}
+          <div
+            className="flex items-center"
+            style={{
+              marginLeft: `${
+                level * indentSize + (level > 0 ? indentSize : 0)
+              }px`,
+            }}
+          >
+            {isDirectory && (
+              <div
+                className={cn(
+                  "mr-1 p-0.5 rounded transition-colors",
+                  "group-hover:bg-accent-foreground/10"
+                )}
+              >
+                {isExpanded ? (
+                  <ChevronDown size={14} className="text-muted-foreground" />
+                ) : (
+                  <ChevronRight size={14} className="text-muted-foreground" />
+                )}
+              </div>
+            )}
+
+            <div
+              className={cn(
+                "mr-2 p-0.5 rounded transition-colors",
+                isSelected && "text-primary",
+                "group-hover:text-primary"
+              )}
+            >
+              {isDirectory ? (
+                isExpanded ? (
+                  <FolderOpen size={16} className="shrink-0" />
+                ) : (
+                  <Folder size={16} className="shrink-0" />
+                )
+              ) : (
+                <File
+                  size={16}
+                  className="shrink-0 text-muted-foreground group-hover:text-foreground"
+                />
+              )}
+            </div>
+
+            <span
+              className={cn(
+                "text-sm truncate transition-colors",
+                isSelected
+                  ? "text-accent-foreground font-medium"
+                  : "text-foreground",
+                "group-hover:text-foreground"
+              )}
+            >
+              {node.name}
+            </span>
+          </div>
         </div>
 
         {isDirectory && isExpanded && node.children && (
-          <div>
-            {node.children.map((child) => renderNode(child, level + 1))}
+          <div className="relative">
+            {node.children.map((child, index) => {
+              const isChildLast = index === node.children!.length - 1;
+              const newParentLines = [...parentLines, !isLast];
+              return renderNode(child, level + 1, isChildLast, newParentLines);
+            })}
           </div>
         )}
       </div>
@@ -108,8 +181,13 @@ export function FileTree({
   };
 
   return (
-    <div className={cn("w-full py-2", className)}>
-      {files.map((file) => renderNode(file))}
+    <div className={cn("w-full py-2 text-sm", className)}>
+      <div className="space-y-0.5">
+        {files.map((file, index) => {
+          const isLast = index === files.length - 1;
+          return renderNode(file, 0, isLast);
+        })}
+      </div>
     </div>
   );
 }
