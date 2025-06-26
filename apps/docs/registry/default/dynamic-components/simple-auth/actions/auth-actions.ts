@@ -1,8 +1,8 @@
 "use server";
 
 import * as z from "zod";
-import { db } from "@/registry/default/auth/lib/db";
-import { getUserByEmail } from "@/registry/default/auth/lib/user";
+import { db } from "@/registry/default/dynamic-components/auth/lib/db";
+import { getUserByEmail } from "@/registry/default/dynamic-components/auth/lib/user";
 import {
   signIn,
   signOut,
@@ -16,7 +16,7 @@ import {
   getVerificationTokenByToken,
   hashPassword,
   verifyPassword,
-} from "@/registry/default/auth/lib/auth-helpers";
+} from "@/registry/default/dynamic-components/auth/lib/auth-helpers";
 import {
   sendPasswordResetEmail,
   sendVerificationEmail,

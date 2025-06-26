@@ -27,7 +27,6 @@ const REGISTRY_INDEX_WHITELIST: z.infer<typeof registryItemTypeSchema>[] = [
   "registry:example",
   "registry:internal",
   "registry:dynamic-component",
-  "registry:auth",
 ];
 
 const project = new Project({
@@ -53,7 +52,6 @@ async function syncStyles() {
     "lib",
     "charts",
     "dynamic-components",
-    "auth",
   ];
 
   // Clean up sync directories.

@@ -9448,6 +9448,243 @@
       "description": "A grid of testimonials."
     },
     {
+      "name": "rbac-auth",
+      "type": "registry:dynamic-component",
+      "registryDependencies": [
+        "badge",
+        "form",
+        "input",
+        "button",
+        "label",
+        "card",
+        "avatar",
+        "switch",
+        "dropdown-menu"
+      ],
+      "dependencies": [
+        "prisma",
+        "@prisma/client",
+        "@auth/prisma-adapter",
+        "framer-motion",
+        "nodemailer",
+        "@react-email/components",
+        "react-spinners",
+        "next-auth@beta",
+        "bcryptjs",
+        "react-icons",
+        "cloudinary",
+        "uuid"
+      ],
+      "files": [
+        {
+          "path": "dynamic-components/auth/pages/auth/login/page.tsx",
+          "type": "registry:page",
+          "target": "app/auth/login/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/auth/layout.tsx",
+          "type": "registry:file",
+          "target": "app/auth/layout.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/page.tsx",
+          "type": "registry:page",
+          "target": "app/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/auth/register/page.tsx",
+          "type": "registry:page",
+          "target": "app/auth/register/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/(protected)/profile/change-password/page.tsx",
+          "type": "registry:page",
+          "target": "app/(protected)/profile/change-password/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/auth/verify/page.tsx",
+          "type": "registry:page",
+          "target": "app/auth/verify/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/auth/new-password/page.tsx",
+          "type": "registry:page",
+          "target": "app/auth/new-password/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/auth/reset/page.tsx",
+          "type": "registry:page",
+          "target": "app/auth/reset/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/(protected)/admin/page.tsx",
+          "type": "registry:page",
+          "target": "app/(protected)/admin/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/(protected)/layout.tsx",
+          "type": "registry:file",
+          "target": "app/(protected)/layout.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/pages/dashboard/page.tsx",
+          "type": "registry:page",
+          "target": "app/dashboard/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/lib/get-user.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "dynamic-components/auth/components/user-info.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/pages/(protected)/profile/page.tsx",
+          "type": "registry:page",
+          "target": "app/(protected)/profile/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/lib/mail.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "dynamic-components/auth/pages/auth/error/page.tsx",
+          "type": "registry:page",
+          "target": "app/auth/error/page.tsx"
+        },
+        {
+          "path": "dynamic-components/auth/middleware.ts",
+          "type": "registry:middleware"
+        },
+        {
+          "path": "dynamic-components/auth/components/login-form.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/schemas/index.ts",
+          "type": "registry:schemas"
+        },
+        {
+          "path": "dynamic-components/auth/route.ts",
+          "type": "registry:api"
+        },
+        {
+          "path": "dynamic-components/auth/components/register-form.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/social.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/change-password-form.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/new-password-form.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/new-verification-form.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/reset-form.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/card-wrapper.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/back-button.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/error-card.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/form-success.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/form-error.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/navbar.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/user-button.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/logout-button.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/actions/auth-actions.ts",
+          "type": "registry:actions"
+        },
+        {
+          "path": "dynamic-components/auth/lib/auth-helpers.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "dynamic-components/auth/lib/user.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "dynamic-components/auth/lib/auth.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "dynamic-components/auth/lib/next-auth.d.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "dynamic-components/auth/lib/routes.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "dynamic-components/auth/lib/auth.config.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "dynamic-components/auth/actions/two-factor.ts",
+          "type": "registry:actions"
+        },
+        {
+          "path": "dynamic-components/auth/lib/db.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "dynamic-components/auth/components/settings-form.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/components/role-gate.tsx",
+          "type": "registry:auth_comp"
+        },
+        {
+          "path": "dynamic-components/auth/emails/reset-password-email.tsx",
+          "type": "registry:email"
+        },
+        {
+          "path": "dynamic-components/auth/emails/verification-email.tsx",
+          "type": "registry:email"
+        },
+        {
+          "path": "dynamic-components/auth/emails/two-factor-email.tsx",
+          "type": "registry:email"
+        }
+      ],
+      "description": "A role-based authentication system with user management, email verification, and password reset functionality."
+    },
+    {
       "name": "contact-form",
       "type": "registry:dynamic-component",
       "registryDependencies": [
