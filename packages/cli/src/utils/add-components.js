@@ -24,6 +24,7 @@ export async function addComponents(components, config, options) {
 
   // List of dynamic components
   const dynamicComponentNames = [
+    "rbac-auth",
     "contact-form",
     "subscribe-newsletter",
     "simple-crud-table",
@@ -80,11 +81,6 @@ export async function addComponents(components, config, options) {
   await updateDependencies(tree.dependencies, config, {
     silent: options.silent,
   });
-
-  if (options.category === "auth") {
-    // Ensure Prisma is initialized and auth models are added
-    await setupPrisma(config.resolvedPaths.cwd, "auth");
-  }
 
   // Dynamically ensure Prisma models for each component
   for (const component of components) {

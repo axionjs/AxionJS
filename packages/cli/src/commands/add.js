@@ -15,7 +15,6 @@ import {
 import { Command } from "commander";
 import { confirm, multiselect, intro } from "@clack/prompts";
 import { z } from "zod";
-import { addAuthCommand } from "./add-auth.js";
 import { addHookCommand } from "./add-hook.js";
 
 export const addOptionsSchema = z.object({
@@ -33,7 +32,6 @@ export const addOptionsSchema = z.object({
 export const add = new Command()
   .name("add")
   .description("add a component to your project")
-  .addCommand(addAuthCommand)
   .addCommand(addHookCommand)
   .argument(
     "[components...]",

@@ -11,7 +11,6 @@ import { getRegistryIndex } from "../utils/registry/index.js";
 import { Command } from "commander";
 import { confirm, multiselect, intro } from "@clack/prompts";
 import { z } from "zod";
-import { addAuthCommand } from "./add-auth.js";
 
 export const addHooksOptionsSchema = z.object({
   hooks: z.array(z.string()).optional(),
@@ -27,7 +26,6 @@ export const addHooksOptionsSchema = z.object({
 export const addHookCommand = new Command()
   .name("hook")
   .description("add a hook to your project")
-  .addCommand(addAuthCommand)
   .argument("[hooks...]", "the hooks to add or a url to the hook.")
   .option("-y, --yes", "skip confirmation prompt.", false)
   .option("-o, --overwrite", "overwrite existing files.", false)
@@ -38,7 +36,6 @@ export const addHookCommand = new Command()
   )
   .option("-a, --all", "add all available hooks", false)
   .option("-p, --path <path>", "the path to add the hook to.")
-  .option("-s, --silent", "mute output.", false)
   .option("-s, --silent", "mute output.", false)
   .option(
     "--src-dir",

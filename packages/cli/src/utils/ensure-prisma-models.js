@@ -10,7 +10,7 @@ const PRISMA_SCHEMA_PATH = path.resolve(PRISMA_DIR, "schema.prisma");
 
 // Mapping of component types to their Prisma models
 const COMPONENT_MODELS = {
-  auth: `
+  "rbac-auth": `
 enum UserRole {
   USER
   ADMIN
