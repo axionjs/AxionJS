@@ -206,7 +206,7 @@ export function OnboardingWizard({
   const nextStep = async () => {
     // Validate current step fields
     const isValid = await form.trigger(
-      stepValidationFields[step as keyof typeof stepValidationFields] as any,
+      stepValidationFields[step as keyof typeof stepValidationFields] as any
     );
 
     if (isValid || steps[step - 1].isOptional) {
@@ -335,7 +335,7 @@ export function OnboardingWizard({
     <div
       className={cn(
         "w-full max-w-2xl mx-auto bg-background text-foreground rounded-lg border shadow-md p-6",
-        className,
+        className
       )}
     >
       {/* Step indicator */}
@@ -365,7 +365,7 @@ export function OnboardingWizard({
                       ? "bg-primary text-primary-foreground"
                       : stepItem.id === step
                         ? "bg-primary/10 text-primary border-2 border-primary"
-                        : "bg-muted text-muted-foreground",
+                        : "bg-muted text-muted-foreground"
                   )}
                   aria-hidden="true"
                 >
@@ -380,7 +380,7 @@ export function OnboardingWizard({
                     "text-xs mt-1",
                     stepItem.id === step
                       ? "text-primary font-medium"
-                      : "text-muted-foreground",
+                      : "text-muted-foreground"
                   )}
                 >
                   {stepItem.title}

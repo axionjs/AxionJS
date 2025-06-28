@@ -7,9 +7,6 @@ export default function TwoFA() {
       <div className="mx-auto max-w-xl px-4">
         <div className="grid gap-8">
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-800">
-              Two-Factor Authentication
-            </h2>
             <TwoFactorForm
               onSuccess={(email) => {
                 console.log("2FA Success for:", email);

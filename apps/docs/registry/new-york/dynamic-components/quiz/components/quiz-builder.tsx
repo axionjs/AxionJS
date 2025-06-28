@@ -118,7 +118,7 @@ export function QuizBuilder({ quiz, isEditing = false }: QuizBuilderProps) {
       // Validate that each question has at least one correct answer
       const hasInvalidQuestions = data.questions.some((question) => {
         const correctOptions = question.options.filter(
-          (option) => option.isCorrect,
+          (option) => option.isCorrect
         );
 
         if (question.type === "multiple-choice") {
@@ -244,7 +244,7 @@ export function QuizBuilder({ quiz, isEditing = false }: QuizBuilderProps) {
   // Handle radio option selection (for single-choice and true-false)
   const handleRadioOptionChange = (
     questionIndex: number,
-    optionIndex: number,
+    optionIndex: number
   ) => {
     const options = form.getValues(`questions.${questionIndex}.options`);
 
@@ -380,7 +380,7 @@ export function QuizBuilder({ quiz, isEditing = false }: QuizBuilderProps) {
                                   field.onChange(value);
                                   handleQuestionTypeChange(
                                     questionIndex,
-                                    value,
+                                    value
                                   );
                                 }}
                                 defaultValue={field.value}
@@ -455,7 +455,7 @@ export function QuizBuilder({ quiz, isEditing = false }: QuizBuilderProps) {
                               >
                                 {/* Option Correctness */}
                                 {form.watch(
-                                  `questions.${questionIndex}.type`,
+                                  `questions.${questionIndex}.type`
                                 ) === "multiple-choice" ? (
                                   <FormField
                                     control={form.control}
@@ -475,14 +475,14 @@ export function QuizBuilder({ quiz, isEditing = false }: QuizBuilderProps) {
                                   <RadioGroup
                                     value={form
                                       .watch(
-                                        `questions.${questionIndex}.options`,
+                                        `questions.${questionIndex}.options`
                                       )
                                       .findIndex((opt) => opt.isCorrect)
                                       .toString()}
                                     onValueChange={(value) =>
                                       handleRadioOptionChange(
                                         questionIndex,
-                                        Number.parseInt(value),
+                                        Number.parseInt(value)
                                       )
                                     }
                                     className="flex items-center space-x-2"
@@ -507,7 +507,7 @@ export function QuizBuilder({ quiz, isEditing = false }: QuizBuilderProps) {
                                             {...field}
                                             disabled={
                                               form.watch(
-                                                `questions.${questionIndex}.type`,
+                                                `questions.${questionIndex}.type`
                                               ) === "true-false"
                                             }
                                           />
@@ -520,7 +520,7 @@ export function QuizBuilder({ quiz, isEditing = false }: QuizBuilderProps) {
 
                                 {/* Remove Option Button */}
                                 {form.watch(
-                                  `questions.${questionIndex}.type`,
+                                  `questions.${questionIndex}.type`
                                 ) !== "true-false" && (
                                   <Button
                                     type="button"

@@ -20,7 +20,7 @@ const initialState: SubscribeFormState = {};
 export default function NewsletterSubscription() {
   const [state, formAction, isPending] = useActionState(
     subscribeToNewsletter,
-    initialState,
+    initialState
   );
 
   return (

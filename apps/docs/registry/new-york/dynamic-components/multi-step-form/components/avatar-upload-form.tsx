@@ -25,7 +25,7 @@ interface AvatarUploadFormProps {
 
 export function AvatarUploadForm({ form }: AvatarUploadFormProps) {
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(
-    form.getValues().avatarUrl || null,
+    form.getValues().avatarUrl || null
   );
 
   // In a real implementation, this would upload to a storage service

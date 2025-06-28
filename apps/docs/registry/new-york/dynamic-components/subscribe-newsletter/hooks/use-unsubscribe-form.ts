@@ -19,7 +19,7 @@ export function useUnsubscribeForm(token: string) {
     } catch (error) {
       setIsUnsubscribed(false);
       setMessage(
-        "An error occurred while processing your request. Please try again later.",
+        "An error occurred while processing your request. Please try again later."
       );
     } finally {
       setIsLoading(false);

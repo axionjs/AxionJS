@@ -23,23 +23,29 @@ export function useCrudTable(initialPageSize = 5) {
     direction: "asc" | "desc";
   }>({ field: "name", direction: "asc" });
 
+  // Track individual operation loading states
+  const [operationLoading, setOperationLoading] = useState<{
+    creating: boolean;
+    updating: string | null;
+    deleting: string | null;
+  }>({
+    creating: false,
+    updating: null,
+    deleting: null,
+  });
+
   const fetchData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const result = await getProducts(
         page,
         pageSize,
         sortConfig.field,
-        sortConfig.direction,
+        sortConfig.direction
       );
 
-      if (!result.products.length) {
-        setError("No products found");
-        return;
-      }
-
       setData(result);
-      setError(null);
     } catch (err) {
       setError("Failed to fetch products");
       console.error(err);
@@ -57,52 +63,106 @@ export function useCrudTable(initialPageSize = 5) {
   };
 
   const handleCreate = async (
-    productData: Omit<Product, "id" | "createdAt" | "updatedAt">,
+    productData: Omit<Product, "id" | "createdAt" | "updatedAt">
   ) => {
+    setOperationLoading((prev) => ({ ...prev, creating: true }));
+    setError(null);
+
     try {
       if (!productData.name || !productData.price) {
-        return {
-          success: false,
-          error: "Name and price are required fields",
-        };
+        setError("Name and price are required fields");
+        return { success: false, error: "Name and price are required fields" };
       }
 
       if (productData.price <= 0) {
-        return {
-          success: false,
-          error: "Price must be greater than 0",
-        };
+        setError("Price must be greater than 0");
+        return { success: false, error: "Price must be greater than 0" };
       }
+
+      // Optimistic update - add temporary product
+      const tempProduct = {
+        id: `temp-${Date.now()}`,
+        ...productData,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      setData((prev) => ({
+        products: [tempProduct, ...prev.products],
+        totalCount: prev.totalCount + 1,
+      }));
+
       await createProduct(productData);
-      await fetchData();
+      await fetchData(); // Refresh to get real data
       return { success: true };
     } catch (err) {
+      // Revert optimistic update on error
+      await fetchData();
+      const errorMsg = "Failed to create product";
+      setError(errorMsg);
       console.error(err);
-      return { success: false, error: "Failed to create product" };
+      return { success: false, error: errorMsg };
+    } finally {
+      setOperationLoading((prev) => ({ ...prev, creating: false }));
     }
   };
 
   const handleUpdate = async (
-    productData: Partial<Product> & { id: string },
+    productData: Partial<Product> & { id: string }
   ) => {
+    setOperationLoading((prev) => ({ ...prev, updating: productData.id }));
+    setError(null);
+
     try {
+      // Optimistic update
+      setData((prev) => ({
+        ...prev,
+        products: prev.products.map((product) =>
+          product.id === productData.id
+            ? { ...product, ...productData }
+            : product
+        ),
+      }));
+
       await updateProduct(productData);
-      await fetchData();
+      await fetchData(); // Refresh to get real data
       return { success: true };
     } catch (err) {
+      // Revert optimistic update on error
+      await fetchData();
+      const errorMsg = "Failed to update product";
+      setError(errorMsg);
       console.error(err);
-      return { success: false, error: "Failed to update product" };
+      return { success: false, error: errorMsg };
+    } finally {
+      setOperationLoading((prev) => ({ ...prev, updating: null }));
     }
   };
 
   const handleDelete = async (id: string) => {
+    setOperationLoading((prev) => ({ ...prev, deleting: id }));
+    setError(null);
+
     try {
+      // Optimistic update - remove product immediately
+      const productToDelete = data.products.find((p) => p.id === id);
+      setData((prev) => ({
+        products: prev.products.filter((product) => product.id !== id),
+        totalCount: prev.totalCount - 1,
+      }));
+
       await deleteProduct(id);
-      await fetchData();
+      // Don't fetch data again since we already updated optimistically
       return { success: true };
     } catch (err) {
+      // Revert optimistic update on error
+      await fetchData();
+      const errorMsg = "Failed to delete product";
+      setError(errorMsg);
       console.error(err);
-      return { success: false, error: "Failed to delete product" };
+      return { success: false, error: errorMsg };
+    } finally {
+      setOperationLoading((prev) => ({ ...prev, deleting: null }));
     }
   };
 
@@ -117,6 +177,7 @@ export function useCrudTable(initialPageSize = 5) {
     page,
     pageSize,
     sortConfig,
+    operationLoading,
     setPage,
     setPageSize,
     handleSort,

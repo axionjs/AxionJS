@@ -32,7 +32,7 @@ export interface OAuthConfig {
 
 export const initiateOAuthLogin = async (
   provider: "github",
-  redirectUrl?: string,
+  redirectUrl?: string
 ): Promise<OAuthActionResult> => {
   try {
     if (!["github"].includes(provider)) {
@@ -60,7 +60,7 @@ export const initiateOAuthLogin = async (
 export const handleOAuthCallback = async (
   provider: string,
   code: string,
-  state?: string,
+  state?: string
 ): Promise<OAuthActionResult> => {
   try {
     // This is a simplified example - you'll need to implement the full OAuth flow
@@ -116,7 +116,7 @@ async function exchangeGitHubCode(code: string) {
           client_secret: process.env.GITHUB_CLIENT_SECRET!,
           code,
         }),
-      },
+      }
     );
 
     if (!tokenResponse.ok) {
@@ -193,7 +193,7 @@ export const createOrUpdateOAuthUser = async (
     email: string;
     name?: string;
     image?: string;
-  },
+  }
 ) => {
   try {
     // Check if user exists with this email

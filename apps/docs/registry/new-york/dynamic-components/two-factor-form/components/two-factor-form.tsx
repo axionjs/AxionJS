@@ -30,7 +30,8 @@ const VerificationSchema = z.object({
   code: z
     .string()
     .min(6, "Code must be 6 digits")
-    .max(6, "Code must be 6 digits"),
+    .max(6, "Code must be 6 digits")
+    .regex(/^\d+$/, "Code must contain only numbers"),
 });
 
 interface TwoFactorFormProps {
@@ -45,7 +46,7 @@ export function TwoFactorForm({
   onSuccess,
   onError,
   title = "Two-Factor Authentication",
-  description = "Enter your email to receive a verification code",
+  description = "Secure your account with an additional layer of protection",
   className = "",
 }: TwoFactorFormProps) {
   const [step, setStep] = useState<"email" | "verification">("email");
@@ -94,7 +95,7 @@ export function TwoFactorForm({
   };
 
   const handleVerificationSubmit = (
-    values: z.infer<typeof VerificationSchema>,
+    values: z.infer<typeof VerificationSchema>
   ) => {
     setMessage(null);
 
@@ -129,106 +130,189 @@ export function TwoFactorForm({
   };
 
   return (
-    <Card className={className}>
-      <CardHeader className="text-center">
-        <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-          <Shield className="h-6 w-6 text-blue-600" />
-        </div>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>
-          {step === "email"
-            ? description
-            : `Enter the 6-digit code sent to ${email}`}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {message && (
-          <Alert variant={message.type === "error" ? "destructive" : "default"}>
-            <AlertDescription>{message.text}</AlertDescription>
-          </Alert>
-        )}
+    <div className={`w-full max-w-md mx-auto ${className}`}>
+      <Card className="border-0 shadow-lg bg-card">
+        <CardHeader className="text-center space-y-4 pb-8">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 ring-8 ring-primary/5">
+            <Shield className="h-8 w-8 text-primary" />
+          </div>
+          <div className="space-y-2">
+            <CardTitle className="text-2xl font-semibold tracking-tight">
+              {title}
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">
+              {step === "email"
+                ? description
+                : "We've sent a verification code to your email"}
+            </CardDescription>
+          </div>
+        </CardHeader>
 
-        {step === "email" ? (
-          <form
-            onSubmit={emailForm.handleSubmit(handleEmailSubmit)}
-            className="space-y-4"
-          >
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  className="pl-10"
-                  disabled={isPending}
-                  {...emailForm.register("email")}
-                />
-              </div>
-              {emailForm.formState.errors.email && (
-                <p className="text-sm text-red-600">
-                  {emailForm.formState.errors.email.message}
-                </p>
-              )}
-            </div>
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Sending Code...
-                </>
+        <CardContent className="space-y-6">
+          {/* Progress indicator */}
+          <div className="flex items-center justify-center space-x-2">
+            <div
+              className={`h-2 w-8 rounded-full transition-colors ${
+                step === "email" ? "bg-primary" : "bg-primary/30"
+              }`}
+            />
+            <div
+              className={`h-2 w-8 rounded-full transition-colors ${
+                step === "verification" ? "bg-primary" : "bg-muted"
+              }`}
+            />
+          </div>
+
+          {/* Alert Messages */}
+          {message && (
+            <Alert
+              variant={message.type === "error" ? "destructive" : "default"}
+              className="border-l-4"
+            >
+              {message.type === "error" ? (
+                <AlertCircle className="h-4 w-4" />
               ) : (
-                "Send Verification Code"
+                <CheckCircle className="h-4 w-4" />
               )}
-            </Button>
-          </form>
-        ) : (
-          <form
-            onSubmit={verificationForm.handleSubmit(handleVerificationSubmit)}
-            className="space-y-4"
-          >
-            <div className="space-y-2">
-              <Label htmlFor="code">Verification Code</Label>
-              <Input
-                id="code"
-                type="text"
-                placeholder="Enter 6-digit code"
-                maxLength={6}
-                className="text-center text-lg tracking-widest"
+              <AlertDescription className="font-medium">
+                {message.text}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {step === "email" ? (
+            <form
+              onSubmit={emailForm.handleSubmit(handleEmailSubmit)}
+              className="space-y-6"
+            >
+              <div className="space-y-3">
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-medium text-foreground"
+                >
+                  Email Address
+                </Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email address"
+                    className="pl-10 h-12 bg-background border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    disabled={isPending}
+                    {...emailForm.register("email")}
+                  />
+                </div>
+                {emailForm.formState.errors.email && (
+                  <p className="text-sm text-destructive flex items-center gap-1">
+                    <AlertCircle className="h-3 w-3" />
+                    {emailForm.formState.errors.email.message}
+                  </p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-12 font-medium"
                 disabled={isPending}
-                {...verificationForm.register("code")}
-              />
-              {verificationForm.formState.errors.code && (
-                <p className="text-sm text-red-600">
-                  {verificationForm.formState.errors.code.message}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Button type="submit" className="w-full" disabled={isPending}>
+              >
                 {isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Verifying...
+                    Sending verification code...
                   </>
                 ) : (
-                  "Verify Code"
+                  "Send Verification Code"
                 )}
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={resetForm}
-                disabled={isPending}
-              >
-                Use Different Email
-              </Button>
-            </div>
-          </form>
-        )}
-      </CardContent>
-    </Card>
+            </form>
+          ) : (
+            <form
+              onSubmit={verificationForm.handleSubmit(handleVerificationSubmit)}
+              className="space-y-6"
+            >
+              <div className="text-center space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Code sent to{" "}
+                  <span className="font-medium text-foreground">{email}</span>
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <Label
+                  htmlFor="code"
+                  className="text-sm font-medium text-foreground"
+                >
+                  Verification Code
+                </Label>
+                <Input
+                  id="code"
+                  type="text"
+                  placeholder="000000"
+                  maxLength={6}
+                  className="text-center text-2xl font-mono tracking-[0.5em] h-16 bg-background border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  disabled={isPending}
+                  {...verificationForm.register("code")}
+                  onChange={(e) => {
+                    // Only allow numbers
+                    const value = e.target.value.replace(/\D/g, "");
+                    e.target.value = value;
+                    verificationForm.setValue("code", value);
+                  }}
+                />
+                {verificationForm.formState.errors.code && (
+                  <p className="text-sm text-destructive flex items-center gap-1">
+                    <AlertCircle className="h-3 w-3" />
+                    {verificationForm.formState.errors.code.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-3">
+                <Button
+                  type="submit"
+                  className="w-full h-12 font-medium"
+                  disabled={isPending}
+                >
+                  {isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Verifying code...
+                    </>
+                  ) : (
+                    "Verify Code"
+                  )}
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full h-12 font-medium text-muted-foreground hover:text-foreground"
+                  onClick={resetForm}
+                  disabled={isPending}
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Use different email
+                </Button>
+              </div>
+
+              <div className="text-center">
+                <p className="text-xs text-muted-foreground">
+                  Didn't receive the code?{" "}
+                  <button
+                    type="button"
+                    className="text-primary hover:underline font-medium"
+                    onClick={() => handleEmailSubmit({ email })}
+                    disabled={isPending}
+                  >
+                    Resend code
+                  </button>
+                </p>
+              </div>
+            </form>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }

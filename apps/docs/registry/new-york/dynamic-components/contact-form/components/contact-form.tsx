@@ -18,7 +18,7 @@ export default function ContactForm() {
   const { form, onSubmit, isPending, isSuccess } = useContactForm();
 
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-muted/30">
+    <section className="w-full py-12 md:py-24 lg:py-32  mx-auto">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">

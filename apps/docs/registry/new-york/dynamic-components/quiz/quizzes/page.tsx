@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function QuizzesPage() {
   const { quizzes = [] } = await getQuizzes().then((res) =>
-    res.success ? res : { quizzes: [] },
+    res.success ? res : { quizzes: [] }
   );
 
   const quizzesWithQuestions = quizzes.map((quiz: any) => ({
@@ -16,7 +16,9 @@ export default async function QuizzesPage() {
 
   return (
     <Suspense fallback={<div>Loading quizzes...</div>}>
-      <QuizList quizzes={quizzesWithQuestions} />
+      <div className="container mx-auto px-24">
+        <QuizList quizzes={quizzesWithQuestions} />
+      </div>
     </Suspense>
   );
 }

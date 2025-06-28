@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCrudTable } from "@/registry/new-york/dynamic-components/simple-crud-table/hooks/use-crud-table";
 import { useState } from "react";
+import { Skeleton } from "@/registry/new-york/ui/skeleton";
+import { Loader2 } from "lucide-react";
 
 export function SimpleCrudTable() {
   const {
@@ -27,6 +29,7 @@ export function SimpleCrudTable() {
     handleCreate,
     handleUpdate,
     handleDelete,
+    operationLoading,
   } = useCrudTable();
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -73,6 +76,33 @@ export function SimpleCrudTable() {
     cancelEditing();
   };
 
+  const TableSkeleton = () => (
+    <>
+      {Array.from({ length: pageSize }).map((_, index) => (
+        <TableRow key={index}>
+          <TableCell>
+            <Skeleton className="h-4 w-[120px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-[200px]" />
+          </TableCell>
+          <TableCell className="text-right">
+            <Skeleton className="h-4 w-[60px] ml-auto" />
+          </TableCell>
+          <TableCell className="text-right">
+            <Skeleton className="h-4 w-[40px] ml-auto" />
+          </TableCell>
+          <TableCell className="text-right">
+            <div className="flex justify-end space-x-2">
+              <Skeleton className="h-8 w-12" />
+              <Skeleton className="h-8 w-16" />
+            </div>
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
+  );
+
   return (
     <div className="space-y-4">
       {/* Create/Edit Form */}
@@ -82,6 +112,7 @@ export function SimpleCrudTable() {
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           className="flex-1 min-w-[200px]"
+          disabled={operationLoading.creating || operationLoading.updating}
         />
         <Input
           placeholder="Description"
@@ -90,6 +121,7 @@ export function SimpleCrudTable() {
             setFormData({ ...formData, description: e.target.value })
           }
           className="flex-1 min-w-[200px]"
+          disabled={operationLoading.creating || operationLoading.updating}
         />
         <Input
           type="number"
@@ -102,6 +134,7 @@ export function SimpleCrudTable() {
             })
           }
           className="w-[120px]"
+          disabled={operationLoading.creating || operationLoading.updating}
         />
         <Input
           type="number"
@@ -114,29 +147,39 @@ export function SimpleCrudTable() {
             })
           }
           className="w-[120px]"
+          disabled={operationLoading.creating || operationLoading.updating}
         />
         <div className="flex gap-2">
-          <Button onClick={handleSubmit}>
+          <Button
+            onClick={handleSubmit}
+            disabled={operationLoading.creating || operationLoading.updating}
+          >
+            {(operationLoading.creating || operationLoading.updating) && (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
             {editingId ? "Update" : "Create"}
           </Button>
           {editingId && (
-            <Button variant="outline" onClick={cancelEditing}>
+            <Button
+              variant="outline"
+              onClick={cancelEditing}
+              disabled={operationLoading.updating}
+            >
               Cancel
             </Button>
           )}
         </div>
       </div>
 
-      {/* Loading and Error States */}
-      {loading && <div>Loading...</div>}
-      {error && <div className="text-red-500">{error}</div>}
+      {/* Error State */}
+      {error && <div className="text-red-500 text-sm">{error}</div>}
 
       {/* Product Table */}
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead
-              className="cursor-pointer"
+              className="cursor-pointer hover:bg-muted/50 transition-colors"
               onClick={() => handleSort("name")}
             >
               Name{" "}
@@ -145,7 +188,7 @@ export function SimpleCrudTable() {
             </TableHead>
             <TableHead>Description</TableHead>
             <TableHead
-              className="cursor-pointer text-right"
+              className="cursor-pointer text-right hover:bg-muted/50 transition-colors"
               onClick={() => handleSort("price")}
             >
               Price{" "}
@@ -153,7 +196,7 @@ export function SimpleCrudTable() {
                 (sortConfig.direction === "asc" ? "↑" : "↓")}
             </TableHead>
             <TableHead
-              className="cursor-pointer text-right"
+              className="cursor-pointer text-right hover:bg-muted/50 transition-colors"
               onClick={() => handleSort("stock")}
             >
               Stock{" "}
@@ -164,59 +207,120 @@ export function SimpleCrudTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.products.map((product) => (
-            <TableRow key={product.id}>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>{product.description}</TableCell>
-              <TableCell className="text-right">
-                ${product.price.toFixed(2)}
-              </TableCell>
-              <TableCell className="text-right">{product.stock}</TableCell>
-              <TableCell className="text-right space-x-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => startEditing(product)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  Delete
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {loading ? (
+            <TableSkeleton />
+          ) : (
+            data.products.map((product) => (
+              <TableRow
+                key={product.id}
+                className={`transition-all duration-200 ${
+                  operationLoading.deleting === product.id
+                    ? "opacity-50 bg-destructive/10"
+                    : "hover:bg-muted/50"
+                }`}
+              >
+                <TableCell>
+                  {operationLoading.updating === product.id ? (
+                    <Skeleton className="h-4 w-[120px]" />
+                  ) : (
+                    product.name
+                  )}
+                </TableCell>
+                <TableCell>
+                  {operationLoading.updating === product.id ? (
+                    <Skeleton className="h-4 w-[200px]" />
+                  ) : (
+                    product.description
+                  )}
+                </TableCell>
+                <TableCell className="text-right">
+                  {operationLoading.updating === product.id ? (
+                    <Skeleton className="h-4 w-[60px] ml-auto" />
+                  ) : (
+                    `$${product.price.toFixed(2)}`
+                  )}
+                </TableCell>
+                <TableCell className="text-right">
+                  {operationLoading.updating === product.id ? (
+                    <Skeleton className="h-4 w-[40px] ml-auto" />
+                  ) : (
+                    product.stock
+                  )}
+                </TableCell>
+                <TableCell className="text-right space-x-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => startEditing(product)}
+                    disabled={
+                      operationLoading.updating === product.id ||
+                      operationLoading.deleting === product.id ||
+                      operationLoading.creating
+                    }
+                  >
+                    {operationLoading.updating === product.id && (
+                      <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                    )}
+                    Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleDelete(product.id)}
+                    disabled={
+                      operationLoading.deleting === product.id ||
+                      operationLoading.updating === product.id ||
+                      operationLoading.creating
+                    }
+                  >
+                    {operationLoading.deleting === product.id && (
+                      <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                    )}
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
         <TableFooter>
           <TableRow>
             <TableCell colSpan={5} className="text-center">
               <div className="flex items-center justify-between">
                 <div className="text-sm text-muted-foreground">
-                  Showing {(page - 1) * pageSize + 1} to{" "}
-                  {Math.min(page * pageSize, data.totalCount)} of{" "}
-                  {data.totalCount} products
+                  {loading ? (
+                    <Skeleton className="h-4 w-[200px]" />
+                  ) : (
+                    <>
+                      Showing {(page - 1) * pageSize + 1} to{" "}
+                      {Math.min(page * pageSize, data.totalCount)} of{" "}
+                      {data.totalCount} products
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center space-x-2">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setPage(Math.max(1, page - 1))}
-                    disabled={page === 1}
+                    disabled={page === 1 || loading}
                   >
                     Previous
                   </Button>
                   <span className="text-sm">
-                    Page {page} of {totalPages}
+                    {loading ? (
+                      <Skeleton className="h-4 w-[80px]" />
+                    ) : (
+                      <>
+                        Page {page} of {totalPages}
+                      </>
+                    )}
                   </span>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setPage(Math.min(totalPages, page + 1))}
-                    disabled={page === totalPages}
+                    disabled={page === totalPages || loading}
                   >
                     Next
                   </Button>

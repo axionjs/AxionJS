@@ -111,7 +111,7 @@ export const useInventoryDataTable = () => {
   // Handle pagination changes
   const handlePaginationChange = (
     newPageIndex: number,
-    newPageSize: number,
+    newPageSize: number
   ) => {
     setPageIndex(newPageIndex);
     setPageSize(newPageSize);
