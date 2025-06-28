@@ -3,8 +3,8 @@
 import * as React from "react";
 import { Search } from "lucide-react";
 import { useDebounce } from "@/registry/new-york/hooks/use-debounce";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/registry/new-york/ui/input";
+import { Card, CardContent } from "@/registry/new-york/ui/card";
 
 export function DebouncedSearchPreview() {
   const [inputValue, setInputValue] = React.useState("");

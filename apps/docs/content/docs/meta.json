@@ -1,14 +1,9 @@
 {
   "title": "Documentation",
-  "root": "docs",
+  "root": "true",
   "pages": [
     "---Getting Started---",
-    "Introduction",
-    "Installation",
-    "Theming",
-    "Dark-Mode",
-    "CLI",
-    "Typography",
+    "(root)",
     "---Accessibility---",
     "accessibility",
     "---Fullstack Components---",

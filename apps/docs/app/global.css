@@ -143,6 +143,7 @@
     --chart-6: 300 70% 50%;
     --radius: 0.5rem;
     --fd-layout-width: 1600px;
+    --fd-sidebar-width: 550px;
   }
 
   .dark {
@@ -191,18 +192,31 @@
 .rounded-full {
   border-radius: 9999px;
 }
-
 /* Accessibility Tool CSS */
 /* High contrast example (very simplistic) */
-/* Accessibility Tool CSS */
 
+/* Accessibility Tool CSS */
 /* Contrast Levels */
 .contrast-medium {
   filter: contrast(150%);
 }
-
 .contrast-high {
   filter: contrast(200%);
+}
+
+/* Windows-like Contrast Modes */
+.contrast-windows-inverted {
+  filter: invert(100%);
+  background-color: black !important;
+  color: white !important;
+}
+.contrast-windows-dark {
+  background-color: #1a1a1a !important; /* Dark background */
+  color: #f0f0f0 !important; /* Light text */
+}
+.contrast-windows-light {
+  background-color: #f0f0f0 !important; /* Light background */
+  color: #1a1a1a !important; /* Dark text */
 }
 
 /* Highlight links - different levels */
@@ -212,7 +226,6 @@
   text-decoration-thickness: 0.15em !important;
   text-underline-offset: 0.2em !important;
 }
-
 .highlight-links-high a {
   outline: 3px solid yellow;
   background-color: yellow;
@@ -227,7 +240,6 @@
 .text-size-medium {
   font-size: 1.2em !important;
 }
-
 .text-size-high {
   font-size: 1.5em !important;
 }
@@ -237,7 +249,6 @@
   letter-spacing: 0.05em !important;
   word-spacing: 0.1em !important;
 }
-
 .text-spacing-high * {
   letter-spacing: 0.1em !important;
   word-spacing: 0.2em !important;
@@ -257,7 +268,6 @@
   font-family: "OpenDyslexic";
   src: url("../app/fonts/OpenDyslexic-Regular.otf") format("woff2");
 }
-
 .dyslexia-friendly * {
   font-family: "OpenDyslexic", sans-serif !important;
 }
@@ -266,7 +276,6 @@
 .line-height-medium * {
   line-height: 1.6 !important;
 }
-
 .line-height-high * {
   line-height: 2 !important;
 }
@@ -275,9 +284,29 @@
 .saturation-medium {
   filter: saturate(50%);
 }
-
 .saturation-high {
   filter: grayscale(100%);
+}
+
+/* Cursor Size */
+/*
+   For more precise control over cursor appearance, especially for "medium" and "big",
+   it's often necessary to use custom SVG or .cur files, or a JavaScript-driven
+   custom cursor component that replaces the native cursor.
+   These are example SVG data URLs for demonstration. You might want to
+   create more sophisticated cursor designs.
+*/
+.cursor-medium {
+  cursor:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mouse-pointer-icon lucide-mouse-pointer"><path d="M12.586 12.586 19 19"/><path d="M3.688 3.037a.497.497 0 0 0-.651.651l6.5 15.999a.501.501 0 0 0 .947-.062l1.569-6.083a2 2 0 0 1 1.448-1.479l6.124-1.579a.5.5 0 0 0 .063-.947z"/></svg>')
+      12 12,
+    auto !important;
+}
+.cursor-high {
+  cursor:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mouse-pointer-icon lucide-mouse-pointer"><path d="M12.586 12.586 19 19"/><path d="M3.688 3.037a.497.497 0 0 0-.651.651l6.5 15.999a.501.501 0 0 0 .947-.062l1.569-6.083a2 2 0 0 1 1.448-1.479l6.124-1.579a.5.5 0 0 0 .063-.947z"/></svg>')
+      18 18,
+    auto !important;
 }
 
 /* Screen reader highlighting */
@@ -296,7 +325,6 @@
 .focus-mode *:not(:focus):not(:active) {
   opacity: 0.7;
 }
-
 .focus-mode:focus,
 .focus-mode:active {
   opacity: 1 !important;
@@ -310,17 +338,6 @@
   transition: none !important;
 }
 
-/* Accessibility panel positioning and animation */
-.accessibility-panel-container {
-  position: fixed;
-  z-index: 9999;
-  transition: transform 0.3s ease-in-out;
-}
-
-.accessibility-panel-container.hidden {
-  transform: translateX(100%);
-}
-
 /* Print-friendly */
 @media print {
   .print-friendly {
@@ -329,13 +346,11 @@
     color: #000 !important;
     background: #fff !important;
   }
-
   .print-friendly a {
     text-decoration: underline !important;
     color: #000 !important;
   }
 }
-
 /* Improved keyboard navigation indicators */
 .keyboard-navigation:focus {
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.8) !important;
@@ -344,7 +359,6 @@
   display: grid;
   font-size: 16px;
 }
-
 * {
   scroll-behavior: smooth;
   scrollbar-width: 2px;
@@ -378,3 +392,13 @@
 }
 /* -------------------- */
 /* -------------------- */
+/* @media (min-width: 768px) {
+  /* .md\:\[--fd-sidebar-width\:260px\] {
+    --fd-sidebar-width: 300px !important;
+  } */
+/* .md\:ms-auto {
+    margin-inline-start: 50px !important;
+  } */
+/* .md\:border-e {
+    border-inline-end-width: 0px !important;
+  } */

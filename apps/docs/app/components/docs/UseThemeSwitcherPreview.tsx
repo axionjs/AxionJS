@@ -3,8 +3,8 @@
 import * as React from "react";
 import { Moon, Sun, Laptop } from "lucide-react";
 import { useTheme } from "@/registry/new-york/hooks/use-theme";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/registry/new-york/ui/button";
+import { Card, CardContent } from "@/registry/new-york/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -3,17 +3,16 @@
 import React, { useState, useEffect } from "react";
 import { Skeleton } from "@/registry/new-york/ui/skeleton";
 import { Label } from "@/registry/new-york/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { Slider } from "@/registry/new-york/ui/slider";
 import { Switch } from "@/registry/new-york/ui/switch";
 import { Button } from "@/registry/new-york/ui/button";
-import ColorPicker from "@/components/ui/color-picker";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
+} from "@/registry/new-york/ui/select";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 
 // Always show skeleton

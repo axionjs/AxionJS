@@ -24,7 +24,7 @@ export default defineConfig({
     rehypeCodeOptions: {
       // Direct Shiki theme configuration
       themes: {
-        light: "kanagawa-lotus",
+        light: "github-light",
         dark: "material-theme-ocean",
       },
       defaultColor: false,

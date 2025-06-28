@@ -5,7 +5,7 @@ import { Input } from "@/registry/new-york/ui/input";
 import { Eye, EyeOff, Mail, Search, User, Calendar, Lock } from "lucide-react";
 import { ColorPicker } from "@/registry/new-york/ui/color-picker";
 import { Label } from "@/registry/new-york/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { Slider } from "@/registry/new-york/ui/slider";
 import { Switch } from "@/registry/new-york/ui/switch";
 import {
   Select,
@@ -13,7 +13,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
+} from "@/registry/new-york/ui/select";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 
 /*

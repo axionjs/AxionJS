@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import { Marquee } from "@/registry/new-york/ui/marquee";
 import { Label } from "@/registry/new-york/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { Slider } from "@/registry/new-york/ui/slider";
 import { Switch } from "@/registry/new-york/ui/switch";
 import { Input } from "@/registry/new-york/ui/input";
 import { Button } from "@/registry/new-york/ui/button";
 
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
-import ColorPicker from "@/components/ui/color-picker";
+import { ColorPicker } from "@/registry/new-york/ui/color-picker";
 import { Plus, Trash2 } from "lucide-react";
 
 export function HorizontalMarqueePreview() {

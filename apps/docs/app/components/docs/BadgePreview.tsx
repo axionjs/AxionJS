@@ -9,13 +9,13 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
+} from "@/registry/new-york/ui/select";
 import { Input } from "@/registry/new-york/ui/input";
 import { ColorPicker } from "@/registry/new-york/ui/color-picker";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/registry/new-york/ui/switch";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
-import { Slider } from "@/components/ui/slider";
+import { Slider } from "@/registry/new-york/ui/slider";
 
 // Basic badge preview with all variants
 export function BadgePreview() {

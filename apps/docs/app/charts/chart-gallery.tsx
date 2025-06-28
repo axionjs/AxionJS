@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { MoonIcon, SunIcon, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/registry/new-york/ui/button";
 import { useTheme } from "./theme-provider";
 import { ThemeSync, forceThemeSync, useStoredTheme } from "./theme-sync-utils";
 import { ChartCard } from "./chart-card";

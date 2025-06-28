@@ -6,1291 +6,473 @@ description: A comprehensive accessibility solution for enhancing web applicatio
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 import { TypeTable } from "fumadocs-ui/components/type-table";
 import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { Steps, Step } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+import { RegistryViewer } from "@/app/components/docs/RegistryViewer";
+import Image from "next/image";
 
 # Accessibility Toolkit
 
-The **Accessibility Toolkit** provides a comprehensive solution for making your web applications accessible to all users, including those with visual, motor, or cognitive impairments. This component suite offers customizable features like contrast adjustment, text resizing, screen reader support, and keyboard navigation enhancements.
+A comprehensive, free, and open-source accessibility toolkit for React applications. Built with TypeScript and Tailwind CSS, it provides essential accessibility features without any external dependencies or tracking.
 
-## Preview
-
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
-  <div>
-    <p className="text-sm text-muted-foreground mb-2">Accessibility Panel</p>
-    <img 
-      src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1742229608/Screenshot_2025-03-17_213915_exenz5.png" 
-      alt="Accessibility Panel with various accessibility options" 
-      className="rounded-md border shadow-sm w-full"
+<div
+  className="flex flex-col sm:flex-row gap-4 justify-center items-center my-8"
+>
+  <div className="w-full sm:w-1/3 flex justify-center">
+    <Image
+      src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1751132356/Screenshot_2025-06-28_223502_otjog0.png"
+      alt="Accessibility Panel Screenshot 1"
+      width={400}
+      height={250}
+      className="rounded-lg border shadow"
+      style={{ maxWidth: "100%", height: "auto" }}
     />
   </div>
-
-  <div>
-    <p className="text-sm text-muted-foreground mb-2">Reading Options</p>
-    <img 
-      src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1742229608/Screenshot_2025-03-17_213927_cqffqi.png" 
-      alt="Reading options tab with text customization and screen reader settings" 
-      className="rounded-md border shadow-sm w-full"
+  <div className="w-full sm:w-1/3 flex justify-center">
+    <Image
+      src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1751132363/Screenshot_2025-06-28_223523_l1egmy.png"
+      alt="Accessibility Panel Screenshot 2"
+      width={400}
+      height={250}
+      className="rounded-lg border shadow"
+      style={{ maxWidth: "100%", height: "auto" }}
     />
   </div>
-
-  <div>
-    <p className="text-sm text-muted-foreground mb-2">Accessibility Trigger</p>
-    <img 
-      src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1742229608/Screenshot_2025-03-17_213859_hoibp0.png" 
-      alt="Floating accessibility trigger button" 
-      className="rounded-md border shadow-sm w-full"
+  <div className="w-full sm:w-1/3 flex justify-center">
+    <Image
+      src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1751132389/Screenshot_2025-06-28_223939_ni9890.png"
+      alt="Accessibility Panel Screenshot 3"
+      width={400}
+      height={250}
+      className="rounded-lg border shadow"
+      style={{ maxWidth: "100%", height: "auto" }}
     />
   </div>
 </div>
 
 ## Installation
 
-<Tabs items={["CLI", "Manual"]}>
-  <Tab value="CLI">
-    Install the complete accessibility toolkit using:
-    ```bash
-    npx axionjs add accessibility
-    ```
-    
-    This will add all necessary components and utilities to your project.
-  </Tab>
-  <Tab value="Manual">
-    ### 1. Create the Directory Structure
-
-    First, set up your directories:
-    ```bash
-    mkdir -p lib components/accessibility
-    ```
-
-    ### 2. Install Dependencies
-
-    Ensure the required dependencies are installed:
-    ```bash
-    npm install zustand @radix-ui/react-dialog @radix-ui/react-tabs lucide-react
-    ```
-
-    ### 3. Add Files to Your Project
-    
-    Create all the necessary files in the following structure:
-
-    #### File Structure:
-    
-    ```
-    ├── lib/
-    │   ├── accessibility-store.ts
-    │   └── screen-reader-service.ts
-    │
-    └── components/accessibility/
-        ├── AccessibilityProvider.tsx
-        ├── AccessibilityTool.tsx
-        ├── AccessibilityTrigger.tsx
-        └── AccessibilitySlider.tsx
-    ```
-    
-    #### lib/accessibility-store.ts
-    
-    ```tsx ts2js
-    "use client";
-
-    import { create } from "zustand";
-    import { persist } from "zustand/middleware";
-
-    // Define types for feature intensity levels
-    export type FeatureIntensity = "default" | "medium" | "high";
-
-    interface AccessibilityState {
-      isOpen: boolean;
-      toggleOpen: () => void;
-
-      // Accessibility features with intensity levels
-      contrast: FeatureIntensity;
-      setContrast: (level: FeatureIntensity) => void;
-
-      highlightLinks: FeatureIntensity;
-      setHighlightLinks: (level: FeatureIntensity) => void;
-
-      textSize: FeatureIntensity;
-      setTextSize: (level: FeatureIntensity) => void;
-
-      textSpacing: FeatureIntensity;
-      setTextSpacing: (level: FeatureIntensity) => void;
-
-      hideImages: boolean;
-      toggleHideImages: () => void;
-
-      dyslexiaFriendly: boolean;
-      toggleDyslexiaFriendly: () => void;
-
-      lineHeight: FeatureIntensity;
-      setLineHeight: (level: FeatureIntensity) => void;
-
-      saturation: FeatureIntensity;
-      setSaturation: (level: FeatureIntensity) => void;
-
-      // Screen reader
-      screenReader: {
-        enabled: boolean;
-        speed: "normal" | "slow";
-        volume: number; // 0 to 1
-      };
-      toggleScreenReader: () => void;
-      setScreenReaderSpeed: (speed: "normal" | "slow") => void;
-      setScreenReaderVolume: (volume: number) => void;
-
-      // Reset all settings
-      resetAll: () => void;
-    }
-
-    // Default state to use when resetting
-    const defaultState = {
-      isOpen: false,
-      contrast: "default" as FeatureIntensity,
-      highlightLinks: "default" as FeatureIntensity,
-      textSize: "default" as FeatureIntensity,
-      textSpacing: "default" as FeatureIntensity,
-      hideImages: false,
-      dyslexiaFriendly: false,
-      lineHeight: "default" as FeatureIntensity,
-      saturation: "default" as FeatureIntensity,
-      screenReader: {
-        enabled: false,
-        speed: "normal" as "normal" | "slow",
-        volume: 0.8,
-      },
-    };
-
-    export const useAccessibilityStore = create<AccessibilityState>()(
-      persist(
-        (set) => ({
-          ...defaultState,
-
-          toggleOpen: () =>
-            set((state) => ({
-              isOpen: !state.isOpen,
-            })),
-
-          // Feature setters with intensity levels
-          setContrast: (level) =>
-            set(() => ({
-              contrast: level,
-            })),
-
-          setHighlightLinks: (level) =>
-            set(() => ({
-              highlightLinks: level,
-            })),
-
-          setTextSize: (level) =>
-            set(() => ({
-              textSize: level,
-            })),
-
-          setTextSpacing: (level) =>
-            set(() => ({
-              textSpacing: level,
-            })),
-
-          toggleHideImages: () =>
-            set((state) => ({
-              hideImages: !state.hideImages,
-            })),
-
-          toggleDyslexiaFriendly: () =>
-            set((state) => ({
-              dyslexiaFriendly: !state.dyslexiaFriendly,
-            })),
-
-          setLineHeight: (level) =>
-            set(() => ({
-              lineHeight: level,
-            })),
-
-          setSaturation: (level) =>
-            set(() => ({
-              saturation: level,
-            })),
-
-          // Screen reader controls
-          toggleScreenReader: () =>
-            set((state) => {
-              // Create a clean toggle without side effects - the component will handle cleanup
-              return {
-                screenReader: {
-                  ...state.screenReader,
-                  enabled: !state.screenReader.enabled,
-                },
-              };
-            }),
-
-          setScreenReaderSpeed: (speed) =>
-            set((state) => ({
-              screenReader: {
-                ...state.screenReader,
-                speed,
-              },
-            })),
-
-          setScreenReaderVolume: (volume) =>
-            set((state) => ({
-              screenReader: {
-                ...state.screenReader,
-                volume,
-              },
-            })),
-
-          // Reset all settings to default
-          resetAll: () => set(defaultState),
-        }),
-        {
-          name: "accessibility-storage", // localStorage key
-        }
-      )
-    );
-    ```
-    
-    #### lib/screen-reader-service.ts
-    
-    ```tsx ts2js
-    "use client";
-
-    class ScreenReaderService {
-      private speechSynthesis: SpeechSynthesis | null = null;
-      private utterance: SpeechSynthesisUtterance | null = null;
-      private isReading: boolean = false;
-      private isMounted: boolean = false;
-      private currentElement: HTMLElement | null = null;
-      private lastElementSelector: string = "";
-      private highlightClass = "screen-reader-highlight";
-
-      constructor() {
-        this.isMounted = typeof window !== "undefined";
-
-        // Only initialize these in the browser environment
-        if (this.isMounted) {
-          try {
-            this.speechSynthesis = window.speechSynthesis;
-            this.utterance = new SpeechSynthesisUtterance();
-
-            // Cancel any existing speech synthesis that might be running
-            if (this.speechSynthesis) {
-              this.speechSynthesis.cancel();
-            }
-          } catch (error) {
-            console.error("Error initializing speech synthesis:", error);
-            this.isMounted = false;
-          }
-        }
-      }
-
-      public cleanup() {
-        if (!this.isMounted) return;
-
-        // Important: Use the same function reference for addEventListener and removeEventListener
-        // This ensures event listeners are properly removed
-        document.removeEventListener("mouseover", this.handleHover);
-        document.removeEventListener("focusin", this.handleFocus);
-        this.stop();
-      }
-
-      // Store bound methods to ensure same reference is used for add/remove event listener
-      private handleHover = this.handleHoverImpl.bind(this);
-      private handleFocus = this.handleFocusImpl.bind(this);
-
-      public initialize() {
-        if (!this.isMounted) return;
-
-        // Setup event listeners with the bound methods
-        document.addEventListener("mouseover", this.handleHover);
-        document.addEventListener("focusin", this.handleFocus);
-      }
-
-      public setSpeed(speed: "normal" | "slow") {
-        if (!this.utterance) return;
-
-        // Normal is around 1, slow is around 0.7
-        this.utterance.rate = speed === "normal" ? 1 : 0.7;
-      }
-
-      public setVolume(volume: number) {
-        if (!this.utterance) return;
-
-        // Volume between 0 and 1
-        this.utterance.volume = Math.max(0, Math.min(1, volume));
-      }
-
-      public async readElement(element: HTMLElement) {
-        if (!this.speechSynthesis || !this.utterance || !element) return;
-
-        // Stop any ongoing reading
-        this.stop();
-
-        // Get the text content of the element
-        const textToRead = this.getReadableText(element);
-        if (!textToRead) return;
-
-        // Highlight the element
-        this.highlightElement(element);
-
-        // Set the text to be read
-        this.utterance.text = textToRead;
-
-        // Start reading
-        this.isReading = true;
-        this.currentElement = element;
-        this.speechSynthesis.speak(this.utterance);
-
-        // Add event listener to remove highlight when done
-        this.utterance.onend = () => {
-          this.isReading = false;
-          this.removeHighlight();
-          this.currentElement = null;
-        };
-      }
-
-      public readPage() {
-        const mainContent = document.querySelector("main") || document.body;
-        this.readElement(mainContent as HTMLElement);
-      }
-
-      public stop() {
-        if (!this.speechSynthesis) return;
-
-        this.speechSynthesis.cancel();
-        this.isReading = false;
-        this.removeHighlight();
-        this.currentElement = null;
-      }
-
-      public pause() {
-        if (!this.speechSynthesis || !this.isReading) return;
-
-        this.speechSynthesis.pause();
-      }
-
-      public resume() {
-        if (!this.speechSynthesis || !this.isReading) return;
-
-        this.speechSynthesis.resume();
-      }
-
-      private handleHoverImpl(event: MouseEvent) {
-        if (!this.isReading && event.target instanceof HTMLElement) {
-          // Don't read trivial elements like spans inside buttons, etc.
-          if (this.isSignificantElement(event.target)) {
-            this.lastElementSelector = this.getElementSelector(event.target);
-          }
-        }
-      }
-
-      private handleFocusImpl(event: FocusEvent) {
-        if (!this.isReading && event.target instanceof HTMLElement) {
-          this.readElement(event.target);
-        }
-      }
-
-      private highlightElement(element: HTMLElement) {
-        this.removeHighlight();
-        element.classList.add(this.highlightClass);
-      }
-
-      private removeHighlight() {
-        const highlighted = document.querySelectorAll(`.${this.highlightClass}`);
-        highlighted.forEach((el) => el.classList.remove(this.highlightClass));
-      }
-
-      private getReadableText(element: HTMLElement): string {
-        // Get text based on element type and role
-        if (element.tagName === "IMG") {
-          return element.alt || "Image";
-        }
-
-        if (element.tagName === "A") {
-          return `Link: ${element.textContent || ""}`;
-        }
-
-        if (element.tagName === "BUTTON") {
-          return `Button: ${element.textContent || ""}`;
-        }
-
-        if (element.tagName === "INPUT") {
-          const inputEl = element as HTMLInputElement;
-          return `${inputEl.placeholder || inputEl.name || "Input field"}`;
-        }
-
-        // Default to regular text content
-        return element.textContent || "";
-      }
-
-      private isSignificantElement(element: HTMLElement): boolean {
-        const significantTags = [
-          "A",
-          "BUTTON",
-          "H1",
-          "H2",
-          "H3",
-          "H4",
-          "H5",
-          "H6",
-          "P",
-          "LI",
-          "IMG",
-        ];
-        return (
-          significantTags.includes(element.tagName) ||
-          element.hasAttribute("role") ||
-          element.hasAttribute("aria-label")
-        );
-      }
-
-      private getElementSelector(element: HTMLElement): string {
-        // Create a simple selector path for the element
-        const id = element.id ? `#${element.id}` : "";
-        if (id) return id;
-
-        const classes = Array.from(element.classList)
-          .map((c) => `.${c}`)
-          .join("");
-        return `${element.tagName.toLowerCase()}${classes}`;
-      }
-    }
-
-    // Singleton instance
-    export const screenReaderService = new ScreenReaderService();
-
-    export default screenReaderService;
-    ```
-    
-    #### components/accessibility/AccessibilityProvider.tsx
-    
-    ```tsx ts2js
-    "use client";
-
-    import React, { useEffect } from "react";
-    import { useAccessibilityStore } from "@/lib/accessibility-store";
-
-    export function AccessibilityProvider({
-      children,
-    }: {
-      children: React.ReactNode;
-    }) {
-      const {
-        contrast,
-        highlightLinks,
-        textSize,
-        textSpacing,
-        hideImages,
-        dyslexiaFriendly,
-        lineHeight,
-        saturation,
-        screenReader,
-      } = useAccessibilityStore();
-
-      // Apply all accessibility settings to the HTML element
-      useEffect(() => {
-        const html = document.documentElement;
-
-        // Remove all potential classes first
-        const classesToRemove = [
-          "contrast-medium",
-          "contrast-high",
-          "highlight-links-medium",
-          "highlight-links-high",
-          "text-size-medium",
-          "text-size-high",
-          "text-spacing-medium",
-          "text-spacing-high",
-          "hide-images",
-          "dyslexia-friendly",
-          "line-height-medium",
-          "line-height-high",
-          "saturation-medium",
-          "saturation-high",
-        ];
-
-        html.classList.remove(...classesToRemove);
-
-        // Apply contrast settings
-        if (contrast === "medium") {
-          html.classList.add("contrast-medium");
-        } else if (contrast === "high") {
-          html.classList.add("contrast-high");
-        }
-
-        // Apply highlight links settings
-        if (highlightLinks === "medium") {
-          html.classList.add("highlight-links-medium");
-        } else if (highlightLinks === "high") {
-          html.classList.add("highlight-links-high");
-        }
-
-        // Apply text size settings
-        if (textSize === "medium") {
-          html.classList.add("text-size-medium");
-        } else if (textSize === "high") {
-          html.classList.add("text-size-high");
-        }
-
-        // Apply text spacing settings
-        if (textSpacing === "medium") {
-          html.classList.add("text-spacing-medium");
-        } else if (textSpacing === "high") {
-          html.classList.add("text-spacing-high");
-        }
-
-        // Apply hide images setting
-        if (hideImages) {
-          html.classList.add("hide-images");
-        }
-
-        // Apply dyslexia-friendly setting
-        if (dyslexiaFriendly) {
-          html.classList.add("dyslexia-friendly");
-        }
-
-        // Apply line height settings
-        if (lineHeight === "medium") {
-          html.classList.add("line-height-medium");
-        } else if (lineHeight === "high") {
-          html.classList.add("line-height-high");
-        }
-
-        // Apply saturation settings
-        if (saturation === "medium") {
-          html.classList.add("saturation-medium");
-        } else if (saturation === "high") {
-          html.classList.add("saturation-high");
-        }
-
-        // Add data attribute for screen reader enabled state
-        // This allows for potential CSS targeting if needed
-        if (screenReader.enabled) {
-          html.setAttribute("data-screen-reader", "enabled");
-        } else {
-          html.removeAttribute("data-screen-reader");
-        }
-
-        // Listen for Ctrl + U to open or close the accessibility menu
-        const handleKeyDown = (event: KeyboardEvent) => {
-          // Check if ctrlKey (or metaKey for Mac) + key "u"
-          if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "u") {
-            event.preventDefault();
-            // We can't directly call toggleOpen here because of the dependency array
-            // Instead, dispatch a custom event that will be caught elsewhere
-            document.dispatchEvent(new CustomEvent("toggleAccessibilityPanel"));
-          }
-        };
-
-        document.addEventListener("keydown", handleKeyDown);
-
-        return () => {
-          document.removeEventListener("keydown", handleKeyDown);
-        };
-      }, [
-        contrast,
-        highlightLinks,
-        textSize,
-        textSpacing,
-        hideImages,
-        dyslexiaFriendly,
-        lineHeight,
-        saturation,
-        screenReader.enabled,
-      ]);
-
-      return <>{children}</>;
-    }
-    ```
-    
-    #### components/accessibility/AccessibilityTool.tsx
-    
-    ```tsx ts2js
-    "use client";
-
-    import React, { useEffect } from "react";
-    import {
-      Dialog,
-      DialogContent,
-      DialogHeader,
-      DialogTitle,
-      DialogDescription,
-    } from "@/registry/new-york/ui/dialog";
-    import {
-      Tabs,
-      TabsContent,
-      TabsList,
-      TabsTrigger,
-    } from "@/registry/new-york/ui/tabs";
-    import { Button } from "@/registry/new-york/ui/button";
-    import { Switch } from "@/registry/new-york/ui/switch";
-    import { Slider } from "@/registry/new-york/ui/slider";
-    import {
-      FeatureIntensity,
-      useAccessibilityStore,
-    } from "@/lib/accessibility-store";
-    import { AccessibilitySlider } from "@/components/accessibility/AccessibilitySlider";
-    import screenReaderService from "@/lib/screen-reader-service";
-
-    import {
-      LucideContrast,
-      LucideEye,
-      LucideMaximize,
-      LucideText,
-      LucideImageOff,
-      LucideType,
-      LucideUnderline,
-      LucideVolume2,
-      LucideRefreshCw,
-      LucideX,
-      LucideLineChart,
-      LucideInfo,
-      LucideUser,
-      LucideZap,
-    } from "lucide-react";
-
-    export function AccessibilityTool() {
-      const {
-        isOpen,
-        toggleOpen,
-
-        contrast,
-        setContrast,
-
-        highlightLinks,
-        setHighlightLinks,
-
-        textSize,
-        setTextSize,
-
-        textSpacing,
-        setTextSpacing,
-
-        hideImages,
-        toggleHideImages,
-
-        dyslexiaFriendly,
-        toggleDyslexiaFriendly,
-
-        lineHeight,
-        setLineHeight,
-
-        saturation,
-        setSaturation,
-
-        screenReader,
-        toggleScreenReader,
-        setScreenReaderSpeed,
-        setScreenReaderVolume,
-
-        resetAll,
-      } = useAccessibilityStore();
-
-      // Initialize screen reader
-      useEffect(() => {
-        // When enabled, initialize the service
-        if (screenReader.enabled) {
-          console.log("Initializing screen reader");
-          screenReaderService.initialize();
-          screenReaderService.setSpeed(screenReader.speed);
-          screenReaderService.setVolume(screenReader.volume);
-        } else {
-          // When disabled, clean up the service
-          console.log("Cleaning up screen reader");
-          screenReaderService.cleanup();
-        }
-
-        // Always clean up on component unmount
-        return () => {
-          console.log("Component unmounting, cleaning up screen reader");
-          screenReaderService.cleanup();
-        };
-      }, [screenReader.enabled, screenReader.speed, screenReader.volume]);
-
-      // Handle screen reader toggle with proper cleanup
-      const handleScreenReaderToggle = () => {
-        if (screenReader.enabled) {
-          // If currently enabled, clean up before toggling state
-          screenReaderService.cleanup();
-        }
-        toggleScreenReader();
-      };
-
-      const readPageContent = () => {
-        if (screenReader.enabled) {
-          screenReaderService.readPage();
-        }
-      };
-
-      return (
-        <Dialog open={isOpen} onOpenChange={toggleOpen}>
-          <DialogContent className="h-[85vh] max-w-md w-full overflow-y-auto">
-            <DialogHeader className="space-y-2">
-              <DialogTitle className="text-2xl flex items-center gap-2">
-                <LucideZap className="h-6 w-6 text-blue-500" />
-                Accessibility Panel
-              </DialogTitle>
-              <DialogDescription>
-                Customize your browsing experience to match your needs
-              </DialogDescription>
-            </DialogHeader>
-
-            <Tabs defaultValue="visual" className="w-full">
-              <TabsList className="grid grid-cols-3 mb-4">
-                <TabsTrigger value="visual">Visual</TabsTrigger>
-                <TabsTrigger value="reading">Reading</TabsTrigger>
-                <TabsTrigger value="navigation">Navigation</TabsTrigger>
-              </TabsList>
-
-              {/* Visual Tab */}
-              <TabsContent value="visual" className="space-y-6">
-                <div className="grid gap-6">
-                  <AccessibilitySlider
-                    value={contrast}
-                    onChange={setContrast}
-                    label="Contrast"
-                    icon={<LucideContrast className="h-4 w-4" />}
-                  />
-
-                  <AccessibilitySlider
-                    value={saturation}
-                    onChange={setSaturation}
-                    label="Color Saturation"
-                    icon={<LucideEye className="h-4 w-4" />}
-                  />
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <LucideImageOff className="h-4 w-4" />
-                      <span className="text-sm font-medium">Hide Images</span>
-                    </div>
-                    <Switch
-                      checked={hideImages}
-                      onCheckedChange={toggleHideImages}
-                    />
-                  </div>
-                </div>
-              </TabsContent>
-
-              {/* Reading Tab */}
-              <TabsContent value="reading" className="space-y-6">
-                <div className="grid gap-6">
-                  <AccessibilitySlider
-                    value={textSize}
-                    onChange={setTextSize}
-                    label="Text Size"
-                    icon={<LucideMaximize className="h-4 w-4" />}
-                  />
-
-                  <AccessibilitySlider
-                    value={textSpacing}
-                    onChange={setTextSpacing}
-                    label="Text Spacing"
-                    icon={<LucideText className="h-4 w-4" />}
-                  />
-
-                  <AccessibilitySlider
-                    value={lineHeight}
-                    onChange={setLineHeight}
-                    label="Line Height"
-                    icon={<LucideLineChart className="h-4 w-4" />}
-                  />
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <LucideType className="h-4 w-4" />
-                      <span className="text-sm font-medium">
-                        Dyslexia Friendly Font
-                      </span>
-                    </div>
-                    <Switch
-                      checked={dyslexiaFriendly}
-                      onCheckedChange={toggleDyslexiaFriendly}
-                    />
-                  </div>
-
-                  <div className="space-y-4 border p-4 rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <LucideVolume2 className="h-4 w-4" />
-                        <span className="text-sm font-medium">Screen Reader</span>
-                      </div>
-                      <Switch
-                        checked={screenReader.enabled}
-                        onCheckedChange={toggleScreenReader}
-                      />
-                    </div>
-
-                    {screenReader.enabled && (
-                      <div className="pt-2 space-y-4">
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-xs">Reading Speed</span>
-                            <span className="text-xs font-medium">
-                              {screenReader.speed === "normal" ? "Normal" : "Slow"}
-                            </span>
-                          </div>
-                          <Tabs
-                            value={screenReader.speed}
-                            onValueChange={(v) =>
-                              setScreenReaderSpeed(v as "normal" | "slow")
-                            }
-                            className="w-full"
-                          >
-                            <TabsList className="grid grid-cols-2 w-full">
-                              <TabsTrigger value="normal" className="text-xs">
-                                Normal
-                              </TabsTrigger>
-                              <TabsTrigger value="slow" className="text-xs">
-                                Slow
-                              </TabsTrigger>
-                            </TabsList>
-                          </Tabs>
-                        </div>
-
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-xs">Volume</span>
-                            <span className="text-xs font-medium">
-                              {Math.round(screenReader.volume * 100)}%
-                            </span>
-                          </div>
-                          <Slider
-                            value={[screenReader.volume * 100]}
-                            min={0}
-                            max={100}
-                            step={10}
-                            onValueChange={(value) =>
-                              setScreenReaderVolume(value[0] / 100)
-                            }
-                          />
-                        </div>
-
-                        <Button
-                          onClick={readPageContent}
-                          className="w-full"
-                          variant="outline"
-                        >
-                          Read Page Content
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </TabsContent>
-
-              {/* Navigation Tab */}
-              <TabsContent value="navigation" className="space-y-6">
-                <div className="grid gap-6">
-                  <AccessibilitySlider
-                    value={highlightLinks}
-                    onChange={setHighlightLinks}
-                    label="Highlight Links"
-                    icon={<LucideUnderline className="h-4 w-4" />}
-                  />
-
-                  <div className="p-4 bg-blue-50 rounded-lg space-y-2">
-                    <div className="flex items-start gap-2">
-                      <LucideInfo className="h-4 w-4 text-blue-500 mt-0.5" />
-                      <div>
-                        <h4 className="text-sm font-medium">Keyboard Shortcuts</h4>
-                        <ul className="text-xs space-y-1 mt-1">
-                          <li>Ctrl + U: Toggle Accessibility Panel</li>
-                          <li>Tab: Navigate through elements</li>
-                          <li>Enter: Activate focused element</li>
-                          <li>Esc: Close dialogs or menus</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-
-            <div className="flex justify-between mt-6 pt-4 border-t">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={resetAll}
-                className="flex items-center gap-1"
-              >
-                <LucideRefreshCw className="h-3.5 w-3.5" />
-                Reset All
-              </Button>
-
-              <Button
-                variant="default"
-                size="sm"
-                onClick={toggleOpen}
-                className="flex items-center gap-1"
-              >
-                <LucideX className="h-3.5 w-3.5" />
-                Close
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      );
-    }
-    ```
-    
-    #### components/accessibility/AccessibilityTrigger.tsx
-    
-    ```tsx ts2js
-    "use client";
-
-    import React, { useEffect } from "react";
-    import { useAccessibilityStore } from "@/lib/accessibility-store";
-    import { Button } from "@/registry/new-york/ui/button";
-    import {
-      LucideAccessibility,
-      LucideEye,
-      LucideVolume2,
-      LucideZap,
-    } from "lucide-react";
-    import {
-      Tooltip,
-      TooltipContent,
-      TooltipProvider,
-      TooltipTrigger,
-    } from "@/registry/new-york/ui/tooltip";
-
-    export function AccessibilityTrigger() {
-      const { toggleOpen, screenReader } = useAccessibilityStore();
-
-      // Listen for the custom event to toggle the panel
-      useEffect(() => {
-        const handleToggleEvent = () => {
-          toggleOpen();
-        };
-
-        document.addEventListener("toggleAccessibilityPanel", handleToggleEvent);
-        return () => {
-          document.removeEventListener(
-            "toggleAccessibilityPanel",
-            handleToggleEvent
-          );
-        };
-      }, [toggleOpen]);
-
-      return (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="default"
-                size="lg"
-                className="fixed bottom-4 right-4 z-50 rounded-full w-16 h-16 shadow-lg bg-blue-600 hover:bg-blue-700 flex items-center justify-center"
-                onClick={toggleOpen}
-                aria-label="Open Accessibility Menu"
-              >
-                <div className="relative">
-                  <LucideAccessibility className="w-8 h-8 text-white" />
-                  {screenReader.enabled && (
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-white animate-pulse" />
-                  )}
-                </div>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="left">
-              <p>Accessibility Options (Ctrl+U)</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      );
-    }
-    ```
-    
-    #### components/accessibility/AccessibilitySlider.tsx
-    
-    ```tsx ts2js
-    "use client";
-
-    import React from "react";
-    import { FeatureIntensity } from "@/lib/accessibility-store";
-    import { Tabs, TabsList, TabsTrigger } from "@/registry/new-york/ui/tabs";
-
-    interface AccessibilitySliderProps {
-      value: FeatureIntensity;
-      onChange: (value: FeatureIntensity) => void;
-      label: string;
-      icon: React.ReactNode;
-    }
-
-    export function AccessibilitySlider({
-      value,
-      onChange,
-      label,
-      icon,
-    }: AccessibilitySliderProps) {
-      return (
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 flex items-center justify-center">{icon}</div>
-            <span className="text-sm font-medium">{label}</span>
-          </div>
-          <Tabs
-            value={value}
-            onValueChange={(v) => onChange(v as FeatureIntensity)}
-            className="w-full"
-          >
-            <TabsList className="grid grid-cols-3 w-full">
-              <TabsTrigger value="default" className="text-xs">
-                Default
-              </TabsTrigger>
-              <TabsTrigger value="medium" className="text-xs">
-                Medium
-              </TabsTrigger>
-              <TabsTrigger value="high" className="text-xs">
-                High
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-      );
-    }
-    ```
-    </Tab>
-</Tabs>
-## File Structure
-
-Here's the complete file structure for the Accessibility Toolkit:
-
-<Files>
-  <Folder name="lib" defaultOpen>
-    <File name="accessibility-store.ts" />
-    <File name="screen-reader-service.ts" />
-  </Folder>
-  <Folder name="components" defaultOpen>
-    <Folder name="accessibility" defaultOpen>
-      <File name="AccessibilityProvider.tsx" />
-      <File name="AccessibilityTool.tsx" />
-      <File name="AccessibilityTrigger.tsx" />
-      <File name="AccessibilitySlider.tsx" />
-    </Folder>
-  </Folder>
-  <Folder name="styles">
-    <File name="accessibility.css" />
-  </Folder>
-</Files>
+## CLI
+```bash
+npx axionjs add accessibility
+```
+## Manual
+<div className="my-8">
+  <div
+    className="border rounded-md overflow-scroll"
+    style={{ height: "500px" }}
+  >
+    <RegistryViewer
+      componentName="accessibility"
+      style="new-york"
+      className="h-full border-0 bg-transparent"
+      showPreview={true}
+    />
+  </div>
+</div>
+## Quick Start
+
+Once installed, the accessibility toolkit will automatically add a floating accessibility button to your application. Users can:
+
+- Click the accessibility button in the bottom-right corner
+- Use the keyboard shortcut `Ctrl+U` (or `Cmd+U` on Mac) to open the accessibility panel
+- Navigate through different accessibility options using tabs
+- Customize their experience with various accessibility features
 
 ## Features
 
-The Accessibility Toolkit provides a comprehensive set of features to make your application more accessible:
+The Accessibility Toolkit provides a comprehensive set of features organized into four main categories:
 
-### Visual Adjustments
+### Vision Adjustments
 
-- **Contrast Enhancement**: Three levels of contrast adjustment to help users with visual impairments
-- **Color Saturation Control**: Adjust color saturation for users with color sensitivity
-- **Text Size Adjustment**: Increase text size for better readability
-- **Image Hiding**: Toggle images off for users who find them distracting
-- **Line Height Adjustment**: Improve readability with increased line spacing
+**Contrast Enhancement**
+- Default, Inverted, Dark, and Light contrast modes
+- Helps users with visual impairments and light sensitivity
 
-### Reading Enhancements
+**Link Highlighting**  
+- Three intensity levels for making links more visible
+- Adds outlines and background colors to improve link identification
 
-- **Text Spacing**: Adjust letter and word spacing for improved readability
-- **Dyslexia-Friendly Font**: Toggle a font designed for users with dyslexia
-- **Line Height Control**: Adjust line spacing for easier reading
+**Color Saturation**
+- Adjust color intensity from normal to grayscale
+- Helpful for users with color sensitivity or visual processing disorders
+
+**Hide Images**
+- Toggle to hide all images on the page
+- Reduces visual clutter and distractions
+
+### Content Adjustments
+
+**Text Size**
+- Three levels: Default, Medium (1.2x), High (1.5x)
+- Improves readability for users with vision impairments
+
+**Text Spacing**
+- Adjustable letter and word spacing
+- Enhances readability for users with dyslexia
+
+**Line Height**
+- Customizable line spacing for better text flow
+- Reduces visual crowding between lines
+
+**Dyslexia-Friendly Font**
+- Toggleable OpenDyslexic font
+- Specially designed for users with dyslexia
+
+### Interaction Features
+
+**Cursor Size**
+- Adjustable cursor size for better visibility
+- Helpful for users with motor impairments or vision issues
+
+**Keyboard Shortcuts**
+- Built-in keyboard navigation support
+- Complete accessibility panel control via keyboard
 
 ### Screen Reader
 
-- **Built-in Screen Reader**: Native JavaScript-based screen reader without external dependencies
-- **Reading Speed Control**: Adjust the speed of text-to-speech
-- **Volume Control**: Adjust the volume of the screen reader
-- **Element Focus Reading**: Automatically read focused elements
-- **On-Demand Page Reading**: Button to read the entire page content
+**Built-in Text-to-Speech**
+- Native JavaScript implementation
+- No external dependencies or third-party services
 
-### Navigation Assistance
+**Hover and Focus Reading**
+- Automatically reads content as users navigate
+- Supports all interactive elements
 
-- **Link Highlighting**: Make links more visible with different intensity levels
-- **Keyboard Shortcuts**: Built-in keyboard shortcuts for accessibility features
-- **Keyboard Navigation**: Enhanced keyboard navigation with appropriate focus states
+**Customizable Settings**
+- Adjustable speech speed (Normal/Slow)
+- Volume control with visual indicator
+- Visual highlighting of currently read elements
 
-## Components API
+## Component Architecture
 
-### AccessibilityProvider
+The toolkit is built around a single main component with integrated functionality:
 
-<TypeTable
-  type={{
-    children: {
-      description: "The content to be wrapped by the provider",
-      type: "React.ReactNode",
-      required: true,
-    }
-  }}
-/>
+### AccessibilityUI
 
-### AccessibilityTool
+The main component that wraps your entire application and provides all accessibility features.
 
-<TypeTable
-  type={{
-    // No props required for the AccessibilityTool
-  }}
-/>
+```tsx
+import { AccessibilityUI } from '@/components/AccessibilityUI'
 
-### AccessibilityTrigger
+function App() {
+  return (
+    <AccessibilityUI>
+      <YourAppContent />
+    </AccessibilityUI>
+  )
+}
+```
 
-<TypeTable
-  type={{
-    // No props required for the AccessibilityTrigger
-  }}
-/>
+**Props:**
 
-### AccessibilitySlider
-
-<TypeTable
-  type={{
-    value: {
-      description: "Current intensity level of the feature",
-      type: '"default" | "medium" | "high"',
-      required: true,
-    },
-    onChange: {
-      description: "Function called when the intensity level changes",
-      type: '(value: "default" | "medium" | "high") => void',
-      required: true,
-    },
-    label: {
-      description: "Label for the slider",
-      type: "string",
-      required: true,
-    },
-    icon: {
-      description: "Icon to display beside the label",
-      type: "React.ReactNode",
-      required: true,
-    }
-  }}
-/>
-
-
-
-## Human-Computer Interaction (HCI) Principles
-
-The Accessibility Toolkit is designed with key HCI principles in mind:
-
-### Perceivability
-
-Ensures content can be perceived through multiple senses:
-
-- Visual adjustments for those with low vision or color blindness
-- Screen reader for those who cannot see the screen
-- Text customization for easier reading
-
-### Operability
-
-Makes sure users can navigate and interact with your application:
-
-- Keyboard shortcuts for efficient navigation
-- Enhanced focus states for better visibility
-- Link highlighting for easier identification of interactive elements
-- Reduced motion options for those with vestibular disorders
-
-### Understandability
-
-Helps users understand the content and interface:
-
-- Dyslexia-friendly font for easier reading
-- Text spacing options to improve readability
-- Line height adjustment for better content comprehension
-- Consistent UI patterns throughout the accessibility interface
-
-### Robustness
-
-Works across different browsers and with various assistive technologies:
-
-- Built on web standards that are compatible with assistive technologies
-- Native JavaScript implementation without external dependencies
-- Progressive enhancement approach that degrades gracefully
-
-## Comparison with Other Tools
-
-The Accessibility Toolkit provides a free and open-source alternative to commercial solutions like UserWay and AccessiBe.
-
-### Advantages Over Commercial Solutions
-I'll convert the TypeTable into a table structure like you requested:
-
-| Feature | Description |
-| --- | --- |
-| Cost | Free and open-source with no recurring subscription fees |
-| Privacy | No data collection or external scripts that track user behavior |
-| Customization | Full control over the code and styling - integrate perfectly with your design system |
-| Performance | Lightweight implementation with minimal impact on page load times |
-| Integration | Native React/Next.js implementation with no iframes or external dependencies |
-| Control | Complete control over features and implementation details |
-
-### UserWay vs. This Toolkit
-
-| Feature | UserWay | Accessibility Toolkit |
+| Prop | Type | Description |
 | --- | --- | --- |
-| Cost | $490/year minimum | Free |
-| Screen Reader | ✓ | ✓ |
-| Contrast Adjustments | ✓ | ✓ |
-| Text Customization | ✓ | ✓ |
-| Dyslexia Support | ✓ | ✓ |
-| Self-hosted | ✗ | ✓ |
-| Custom Styling | Limited | Unlimited |
-| Privacy-focused | ✗ (uses tracking) | ✓ (no tracking) |
-| Open Source | ✗ | ✓ |
+| `children` | `React.ReactNode` | The content to be wrapped by the accessibility provider |
 
-## Browser Support
+### Key Features
 
-The Accessibility Toolkit has been tested and is compatible with:
+**Floating Trigger Button**
+- Fixed position button in bottom-right corner
+- Visual indicator when screen reader is active
+- Accessible via keyboard navigation
 
-- Chrome 76+
-- Firefox 70+
-- Safari 13.1+
-- Edge 79+
-- iOS Safari 13.4+
-- Android Chrome 76+
+**Responsive Sidebar Panel**
+- Slides in from the right
+- Fully keyboard accessible
+- Organized tabs for different feature categories
+- Responsive design that works on all screen sizes
 
-Note that the screen reader functionality has some limitations in Safari due to browser-specific speech synthesis limitations.
+**Persistent Settings**
+- All preferences saved to localStorage
+- Settings persist across browser sessions
+- Reset functionality to restore defaults
 
-## Best Practices
+## State Management
 
-### Implementation Recommendations
+The toolkit uses Zustand for state management with the following store structure:
 
-- **Add Early**: Implement accessibility features early in your development process
-- **Test With Users**: Get feedback from users with disabilities
-- **Combine With Semantic HTML**: Use proper HTML elements and ARIA attributes
-- **Keyboard Testing**: Ensure all functionality is accessible via keyboard
-- **Progressive Enhancement**: Design your site to work without JavaScript first
+### AccessibilityStore
 
-### Common Pitfalls to Avoid
+```tsx
+interface AccessibilityState {
+  // Panel visibility
+  isOpen: boolean
+  toggleOpen: () => void
 
-- **Over-relying on the toolkit**: The toolkit enhances accessibility but doesn't replace good semantic HTML
-- **Not testing with actual assistive technology**: Test with real screen readers like NVDA or VoiceOver
-- **Ignoring keyboard navigation**: Ensure all interactive elements are keyboard accessible
-- **Assuming one size fits all**: Different disabilities require different accommodations
-- **Implementing and forgetting**: Accessibility is an ongoing process
+  // Contrast settings
+  contrast: ContrastMode
+  setContrast: (level: ContrastMode) => void
 
-## Accessibility Compliance
+  // Text and content settings
+  textSize: FeatureIntensity
+  textSpacing: FeatureIntensity
+  lineHeight: FeatureIntensity
+  dyslexiaFriendly: boolean
+  hideImages: boolean
 
-While this toolkit helps improve accessibility, it does not guarantee full compliance with legal standards. Use it as part of a broader accessibility strategy that includes:
+  // Visual enhancements
+  highlightLinks: FeatureIntensity
+  saturation: FeatureIntensity
+  cursorSize: FeatureIntensity
 
-- Proper semantic HTML
-- ARIA attributes where appropriate
-- Regular accessibility audits
-- User testing with people who have disabilities
+  // Screen reader
+  screenReader: {
+    enabled: boolean
+    speed: "normal" | "slow"
+    volume: number
+  }
 
-The toolkit can help with requirements from:
+  // Utility functions
+  resetAll: () => void
+}
+```
 
-- Web Content Accessibility Guidelines (WCAG) 2.1 AA
+### Type Definitions
+
+```tsx
+export type FeatureIntensity = "default" | "medium" | "high"
+export type ContrastMode = "default" | "inverted" | "dark" | "light"
+```
+
+## CSS Implementation
+
+The toolkit applies accessibility features through CSS classes added to the `<html>` element:
+
+### Contrast Classes
+- `.contrast-medium` - 150% contrast
+- `.contrast-high` - 200% contrast  
+- `.contrast-windows-inverted` - Full color inversion
+- `.contrast-windows-dark` - Dark mode styling
+- `.contrast-windows-light` - High contrast light mode
+
+### Text Enhancement Classes
+- `.text-size-medium` - 1.2x text size
+- `.text-size-high` - 1.5x text size
+- `.text-spacing-medium` - Increased letter/word spacing
+- `.dyslexia-friendly` - OpenDyslexic font family
+
+### Visual Feature Classes
+- `.highlight-links-medium/high` - Link highlighting with outlines
+- `.hide-images` - Hides all images and media
+- `.cursor-medium/high` - Enlarged cursor sizes
+- `.screen-reader-highlight` - Highlights currently read elements
+
+## Screen Reader Service
+
+The built-in screen reader service provides:
+
+### Automatic Content Reading
+- Reads content on hover and focus events
+- Intelligent element detection and text extraction
+- Support for form elements, links, buttons, and headings
+
+### Text Processing
+- Extracts appropriate text from different element types
+- Handles ARIA labels and accessibility attributes
+- Provides context for interactive elements
+
+### Visual Feedback
+- Highlights currently read elements
+- Prevents re-reading of the same content
+- Smooth transitions between elements
+
+## Keyboard Navigation
+
+The toolkit supports full keyboard accessibility:
+
+### Shortcuts
+- `Ctrl+U` (or `Cmd+U`) - Toggle accessibility panel
+- `Tab` - Navigate through elements
+- `Enter` - Activate focused element
+- `Esc` - Close dialogs and panels
+
+### Focus Management
+- Proper focus trapping within the accessibility panel
+- Clear focus indicators throughout the interface
+- Logical tab order for all interactive elements
+
+## Browser Compatibility
+
+Tested and supported browsers:
+
+| Browser | Version | Screen Reader Support |
+| --- | --- | --- |
+| Chrome | 76+ | ✓ Full support |
+| Firefox | 70+ | ✓ Full support |
+| Safari | 13.1+ | ⚠︎ Limited speech synthesis |
+| Edge | 79+ | ✓ Full support |
+| iOS Safari | 13.4+ | ⚠︎ Limited speech synthesis |
+| Android Chrome | 76+ | ✓ Full support |
+
+## Performance Considerations
+
+The toolkit is designed for optimal performance:
+
+- **Lightweight**: Minimal JavaScript bundle size
+- **Lazy Loading**: Features are only active when needed
+- **Efficient Rendering**: Uses React's built-in optimization
+- **Memory Management**: Proper cleanup of event listeners and services
+
+## Accessibility Standards Compliance
+
+The toolkit helps meet various accessibility standards:
+
+### WCAG 2.1 AA Compliance
+- **Perceivable**: Visual adjustments, screen reader support
+- **Operable**: Keyboard navigation, customizable interactions  
+- **Understandable**: Clear UI, consistent behavior
+- **Robust**: Cross-browser compatibility, assistive technology support
+
+### Legal Compliance Support
 - Americans with Disabilities Act (ADA)
 - Section 508 of the Rehabilitation Act
 - European Accessibility Act (EAA)
+- Web Content Accessibility Guidelines (WCAG)
+
+## Comparison with Commercial Solutions
+
+### Advantages Over Paid Services
+
+| Feature | Commercial Tools | Accessibility Toolkit |
+| --- | --- | --- |
+| **Cost** | $490+/year | Free & Open Source |
+| **Privacy** | Data collection | No tracking |
+| **Customization** | Limited | Full control |
+| **Integration** | External scripts | Native React |
+| **Performance** | Additional HTTP requests | Bundled with app |
+| **Maintenance** | Vendor dependency | Self-maintained |
+
+### Feature Comparison
+
+| Feature | UserWay | accessiBe | This Toolkit |
+| --- | --- | --- | --- |
+| Screen Reader | ✓ | ✓ | ✓ |
+| Contrast Adjustment | ✓ | ✓ | ✓ |
+| Text Customization | ✓ | ✓ | ✓ |
+| Keyboard Navigation | ✓ | ✓ | ✓ |
+| Self-Hosted | ✘ | ✘ | ✓ |
+| Open Source | ✘ | ✘ | ✓ |
+| Custom Styling | Limited | Limited | Unlimited |
+| GDPR Compliant | ⚠︎ | ⚠︎ | ✓ |
+
+## Best Practices
+
+### Implementation Guidelines
+
+<Callout type="info">
+**Start Early**: Implement accessibility features during development, not as an afterthought.
+</Callout>
+
+- Use semantic HTML elements alongside the toolkit
+- Test with actual screen readers (NVDA, JAWS, VoiceOver)
+- Ensure keyboard navigation works without the toolkit
+- Regular accessibility audits and user testing
+- Provide alternative text for images and media
+
+### Common Pitfalls to Avoid
+
+<Callout type="warn">
+**Don't Over-rely**: This toolkit enhances accessibility but doesn't replace proper semantic HTML and ARIA attributes.
+</Callout>
+
+- Assuming the toolkit covers all accessibility needs
+- Not testing with users who have disabilities
+- Ignoring mobile accessibility
+- Poor color contrast in base design
+- Missing focus indicators for custom components
+
+## Customization
+
+### Styling
+
+The toolkit uses Tailwind CSS classes and can be customized by:
+
+```css
+/* Custom CSS overrides */
+.accessibility-trigger {
+  /* Customize the floating button */
+  background-color: your-brand-color;
+}
+
+.contrast-high {
+  /* Modify high contrast settings */
+  filter: contrast(250%) brightness(1.1);
+}
+```
+
+### Adding Custom Features
+
+Extend the toolkit by adding new features to the store:
+
+```tsx
+// Add to accessibility-store.ts
+interface AccessibilityState {
+  customFeature: boolean
+  toggleCustomFeature: () => void
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Screen Reader Not Working**
+- Check browser compatibility
+- Ensure HTTPS connection (required for speech synthesis)
+- Verify audio is not muted
+
+**Styles Not Applying**
+- Confirm CSS is imported in your global styles
+- Check for CSS specificity conflicts
+- Ensure Tailwind CSS is properly configured
+
+**Performance Issues**
+- Disable features not needed for your application
+- Check for memory leaks in custom implementations
+- Monitor bundle size impact
 
 ## Contributing
 
-Contributions to the Accessibility Toolkit are welcome! Here's how you can help:
+We welcome contributions to improve the accessibility toolkit:
 
-- Implement new accessibility features
-- Improve existing features
-- Add tests and documentation
-- Report bugs and issues
-- Suggest enhancements
+### Ways to Contribute
+- Report bugs and suggest improvements
+- Add new accessibility features
+- Improve documentation
+- Create examples and tutorials
+- Test with different assistive technologies
 
-Please see the [GitHub repository](https://github.com/yourusername/accessibility-toolkit) for more information.
+### Development Setup
 
-## Conclusion
+```bash
+# Clone the repository
+git clone https://github.com/your-repo/accessibility-toolkit
 
-The Accessibility Toolkit represents a significant step forward in making web applications accessible to all users, regardless of ability. By implementing this toolkit, you're not only improving the user experience for people with disabilities but also creating a more inclusive digital environment.
+# Install dependencies
+npm install
 
-Remember that accessibility is a journey, not a destination. This toolkit is a starting point, and should be complemented with ongoing testing, feedback, and improvements to ensure your application remains accessible to all users.
+# Start development server
+npm run dev
+```
+
+## Roadmap
+
+Planned features for future releases:
+
+- **Voice Commands**: Navigate using voice recognition
+- **Reading Ruler**: Visual guide for line-by-line reading
+- **Animation Controls**: Reduce motion for sensitive users
+- **Color Blindness Simulator**: Test color accessibility
+- **Advanced Keyboard Shortcuts**: More navigation options
+- **Multi-language Support**: Localized screen reader voices
+
+## License
+
+This accessibility toolkit is released under the MIT License, making it free for both personal and commercial use.
+
+---
+
+<Callout>
+**Remember**: Accessibility is an ongoing journey, not a destination. This toolkit is designed to be a starting point for creating more inclusive web experiences.
+</Callout>

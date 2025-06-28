@@ -5,14 +5,15 @@ import { persist } from "zustand/middleware";
 
 // Define types for feature intensity levels
 export type FeatureIntensity = "default" | "medium" | "high";
+export type ContrastMode = "default" | "inverted" | "dark" | "light"; // New contrast modes
 
 interface AccessibilityState {
   isOpen: boolean;
   toggleOpen: () => void;
 
   // Accessibility features with intensity levels
-  contrast: FeatureIntensity;
-  setContrast: (level: FeatureIntensity) => void;
+  contrast: ContrastMode; // Changed to ContrastMode
+  setContrast: (level: ContrastMode) => void; // Changed to ContrastMode
 
   highlightLinks: FeatureIntensity;
   setHighlightLinks: (level: FeatureIntensity) => void;
@@ -35,6 +36,10 @@ interface AccessibilityState {
   saturation: FeatureIntensity;
   setSaturation: (level: FeatureIntensity) => void;
 
+  // New: Cursor Size
+  cursorSize: FeatureIntensity;
+  setCursorSize: (level: FeatureIntensity) => void;
+
   // Screen reader
   screenReader: {
     enabled: boolean;
@@ -45,91 +50,81 @@ interface AccessibilityState {
   setScreenReaderSpeed: (speed: "normal" | "slow") => void;
   setScreenReaderVolume: (volume: number) => void;
 
-  // Reset all settings
+  // Reset function
   resetAll: () => void;
 }
 
-// Default state to use when resetting
-const defaultState = {
+const initialState: AccessibilityState = {
   isOpen: false,
-  contrast: "default" as FeatureIntensity,
-  highlightLinks: "default" as FeatureIntensity,
-  textSize: "default" as FeatureIntensity,
-  textSpacing: "default" as FeatureIntensity,
+  toggleOpen: () => {},
+
+  contrast: "default",
+  setContrast: () => {},
+
+  highlightLinks: "default",
+  setHighlightLinks: () => {},
+
+  textSize: "default",
+  setTextSize: () => {},
+
+  textSpacing: "default",
+  setTextSpacing: () => {},
+
   hideImages: false,
+  toggleHideImages: () => {},
+
   dyslexiaFriendly: false,
-  lineHeight: "default" as FeatureIntensity,
-  saturation: "default" as FeatureIntensity,
+  toggleDyslexiaFriendly: () => {},
+
+  lineHeight: "default",
+  setLineHeight: () => {},
+
+  saturation: "default",
+  setSaturation: () => {},
+
+  cursorSize: "default", // Initialize cursor size
+  setCursorSize: () => {},
+
   screenReader: {
     enabled: false,
-    speed: "normal" as "normal" | "slow",
+    speed: "normal",
     volume: 0.8,
   },
+  toggleScreenReader: () => {},
+  setScreenReaderSpeed: () => {},
+  setScreenReaderVolume: () => {},
+
+  resetAll: () => {},
 };
 
 export const useAccessibilityStore = create<AccessibilityState>()(
   persist(
-    (set) => ({
-      ...defaultState,
+    (set, get) => ({
+      ...initialState, // Spread the initial state
 
-      toggleOpen: () =>
-        set((state) => ({
-          isOpen: !state.isOpen,
-        })),
+      toggleOpen: () => set((state) => ({ isOpen: !state.isOpen })),
 
-      // Feature setters with intensity levels
-      setContrast: (level) =>
-        set(() => ({
-          contrast: level,
-        })),
-
-      setHighlightLinks: (level) =>
-        set(() => ({
-          highlightLinks: level,
-        })),
-
-      setTextSize: (level) =>
-        set(() => ({
-          textSize: level,
-        })),
-
-      setTextSpacing: (level) =>
-        set(() => ({
-          textSpacing: level,
-        })),
-
+      setContrast: (level) => set(() => ({ contrast: level })),
+      setHighlightLinks: (level) => set(() => ({ highlightLinks: level })),
+      setTextSize: (level) => set(() => ({ textSize: level })),
+      setTextSpacing: (level) => set(() => ({ textSpacing: level })),
       toggleHideImages: () =>
-        set((state) => ({
-          hideImages: !state.hideImages,
-        })),
-
+        set((state) => ({ hideImages: !state.hideImages })),
       toggleDyslexiaFriendly: () =>
-        set((state) => ({
-          dyslexiaFriendly: !state.dyslexiaFriendly,
-        })),
+        set((state) => ({ dyslexiaFriendly: !state.dyslexiaFriendly })),
+      setLineHeight: (level) => set(() => ({ lineHeight: level })),
+      setSaturation: (level) => set(() => ({ saturation: level })),
 
-      setLineHeight: (level) =>
-        set(() => ({
-          lineHeight: level,
-        })),
+      // New: Set Cursor Size
+      setCursorSize: (level) => set(() => ({ cursorSize: level })),
 
-      setSaturation: (level) =>
-        set(() => ({
-          saturation: level,
-        })),
-
-      // Screen reader controls
       toggleScreenReader: () =>
-        set((state) => {
-          // Create a clean toggle without side effects - the component will handle cleanup
-          return {
-            screenReader: {
-              ...state.screenReader,
-              enabled: !state.screenReader.enabled,
-            },
-          };
-        }),
-
+        set((state) => ({
+          screenReader: {
+            ...state.screenReader,
+            enabled: !state.screenReader.enabled,
+          },
+        })),
       setScreenReaderSpeed: (speed) =>
         set((state) => ({
           screenReader: {
@@ -137,7 +132,6 @@ export const useAccessibilityStore = create<AccessibilityState>()(
             speed,
           },
         })),
-
       setScreenReaderVolume: (volume) =>
         set((state) => ({
           screenReader: {
@@ -146,11 +140,29 @@ export const useAccessibilityStore = create<AccessibilityState>()(
           },
         })),
 
-      // Reset all settings to default
-      resetAll: () => set(defaultState),
+      resetAll: () => {
+        // Reset to initial values (excluding isOpen, as that's managed by toggleOpen)
+        set({
+          contrast: "default",
+          highlightLinks: "default",
+          textSize: "default",
+          textSpacing: "default",
+          hideImages: false,
+          dyslexiaFriendly: false,
+          lineHeight: "default",
+          saturation: "default",
+          cursorSize: "default",
+          screenReader: {
+            enabled: false,
+            speed: "normal",
+            volume: 0.8,
+          },
+        });
+      },
     }),
     {
-      name: "accessibility-storage", // localStorage key
-    },
-  ),
+      name: "accessibility-storage", // unique name
+      getStorage: () => localStorage,
+    }
+  )
 );

@@ -1,0 +1,171 @@
+---
+title: AxionJS CLI
+description: Use the AxionJS CLI to initialize, add components, and manage hooks in your project.
+---
+
+# AxionJS CLI
+
+The AxionJS CLI helps you quickly scaffold, configure, and extend your project with components, hooks, and utilities.
+
+---
+
+## init
+
+Initialize configuration and dependencies for your project.
+
+This command will:
+- Install required dependencies
+- Add utility functions
+- Configure CSS variables for themeing
+- Set up import aliases and project structure
+- Create a components.json file
+
+```bash
+npx axionjs init
+```
+
+### CLI Experience
+
+The init command provides a beautiful, interactive setup experience:
+
+```bash
+$ npx axionjs init
+
+┌  Welcome to axion.js CLI
+✓ Preflight checks.
+✓ Validating Tailwind CSS.
+✓ Validating import alias.
+◇ Select a color category:
+│ Creative
+│
+◇ Select a theme:
+│ Sunset Orange
+│
+◇ components.json written successfully.
+✓ Checking registry.
+✓ Updating tailwind.config.js
+✓ Updating CSS variables in src\app\globals.css
+✓ Installing dependencies.
+✓ Created 1 file:
+
+Success! Project initialization completed.
+You may now add components.
+```
+
+### Options
+
+```txt
+Usage: axionjs init [options]
+
+initialize your project and install dependencies
+
+Options:
+  -y, --yes           skip confirmation prompt. (default: false)
+  -d, --defaults      use default configuration. (default: false)
+  -f, --force         force overwrite of existing configuration. (default: false)
+  -c, --cwd <cwd>     the working directory. defaults to the current directory.
+  -s, --silent        mute output. (default: false)
+  --src-dir           use the src directory when creating a new project. (default: false)
+  --no-src-dir        do not use the src directory when creating a new project.
+  --css-variables     use css variables for theming. (default: true)
+  --no-css-variables  do not use css variables for theming.
+  -h, --help          display help for command
+```
+
+---
+
+## add
+
+Add components, blocks, charts and hooks to your project.
+
+### Add a Component
+
+```bash
+npx axionjs add [component]
+```
+The following command provides a list of all available ui components:
+
+```bash
+npx axionjs add
+```
+
+### Interactive Component Selection
+
+When you run the add command without specifying a component, you'll get an interactive selection menu:
+
+```bash
+$ npx axionjs add
+┌
+◇ Which components would you like to add?
+│
+│ Hint: Space to select. A to toggle all. Enter to submit.
+│ │ chart
+✓ Checking registry.
+✓ Updating CSS variables in src\app\globals.css
+✓ Installing dependencies.
+✓ Created 1 file:
+  - src\components\ui\chart.jsx
+```
+
+#### Options
+
+```txt
+Usage: axionjs add [options] [components...]
+
+add a component to your project
+
+Arguments:
+  components         the names of components, charts or blocks to add or a url to the component.
+
+Options:
+  -y, --yes           skip confirmation prompt. (default: false)
+  -o, --overwrite     overwrite existing files. (default: false)
+  -c, --cwd <cwd>     the working directory. defaults to the current directory.
+  -a, --all           add all available components (default: false)
+  -p, --path <path>   the path to add the component to.
+  -s, --silent        mute output. (default: false)
+  --src-dir           use the src directory when creating a new project. (default: false)
+  --no-src-dir        do not use the src directory when creating a new project.
+  --css-variables     use css variables for theming. (default: true)
+  --no-css-variables  do not use css variables for theming.
+  -h, --help          display help for command
+```
+
+### Add a Hook
+Although you can add hooks directly using the add command but if you want to see a list of available hooks you can use its subcommand "hook" as:
+
+```bash
+npx axionjs add hook
+```
+This will give u the list of all available hooks
+
+Here is how the Hooks are added as a *subcommand* of `add`:
+
+```bash
+npx axionjs add hook [hookName]
+```
+
+#### Options
+
+```txt
+Usage: axionjs add hook [hook...]
+
+add a custom hook to your project
+
+Arguments:
+  hook               the hook(s) to add.
+
+```
+
+
+
+## Troubleshooting
+
+- If you see errors about missing files or invalid JSON, ensure your project directory is set up correctly and all required files exist.
+- For network or registry errors, check your internet connection and proxy settings.
+
+---
+
+## More
+
+For more details, visit the [GitHub repository](https://github.com/axionjs/AxionJS) or open an issue for support.

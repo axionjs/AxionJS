@@ -14,7 +14,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/registry/new-york/ui/popover";
 import {
   Sheet,
   SheetContent,

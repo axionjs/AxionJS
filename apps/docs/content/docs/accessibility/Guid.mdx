@@ -1,3 +1,388 @@
 ---
-title: Accessibility Guidelines
+title: Accessibility Best Practices
+description: Learn how to build inclusive and accessible applications with our comprehensive accessibility toolkit and guidelines.
 ---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
+
+# Accessibility Best Practices
+
+Building inclusive applications is at the core of our design philosophy. Our library provides comprehensive accessibility support through battle-tested primitives, WCAG compliance, and developer-friendly tools.
+
+<Callout type="info">
+**Quick Start**: Get started with our accessibility toolkit by running `npx axionjs add accessibility`. For comprehensive guides, visit [/docs/accessibility/AccessibilityToolkit](/docs/accessibility/AccessibilityToolkit).
+</Callout>
+
+## Foundation & Principles
+
+Our accessibility approach is built on three key pillars:
+
+### 1. Radix Primitives Integration
+
+We leverage **Radix UI primitives** as our foundation, which come with accessibility enhancements built-in:
+
+- **Keyboard Navigation**: Full keyboard support with proper focus management
+- **Screen Reader Support**: Semantic HTML with appropriate ARIA attributes
+- **Focus Management**: Automatic focus trapping and restoration
+- **High Contrast Mode**: Support for Windows High Contrast Mode
+
+### 2. WCAG & WAI-ARIA Compliance
+
+For custom components, charts, and complex UI blocks, we implement:
+
+- **WCAG 2.1 AA Standards**: Meeting international accessibility guidelines
+- **WAI-ARIA Roles**: Proper semantic roles for complex interactions
+- **Color Contrast**: Minimum 4.5:1 ratio for normal text, 3:1 for large text
+- **Responsive Design**: Accessible across all device sizes and orientations
+
+### 3. Developer Experience
+
+We make accessibility easy to implement with:
+
+- Built-in accessibility props for all components
+- TypeScript support for ARIA attributes
+- Comprehensive testing utilities
+- Clear documentation and examples
+
+## Example: Form Accessibility Deep Dive
+
+Our form components showcase comprehensive accessibility implementation. Here's how we enhance each component:
+
+<Tabs items={['Form Structure', 'ARIA Implementation', 'Error Handling']}>
+
+<Tab value="Form Structure">
+
+```tsx
+const FormItem = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const id = React.useId(); // Unique ID generation
+
+  return (
+    <FormItemContext.Provider value={{ id }}>
+      <div ref={ref} className={cn("space-y-2", className)} {...props} />
+    </FormItemContext.Provider>
+  );
+});
+```
+
+**Key Features:**
+- Automatic unique ID generation using `React.useId()`
+- Context-based ID sharing across form components
+- Semantic HTML structure with proper spacing
+
+</Tab>
+
+<Tab value="ARIA Implementation">
+
+```tsx
+const FormControl = React.forwardRef<
+  React.ElementRef<typeof Slot>,
+  React.ComponentPropsWithoutRef<typeof Slot>
+>(({ ...props }, ref) => {
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
+
+  return (
+    <Slot
+      ref={ref}
+      id={formItemId}
+      aria-describedby={
+        !error
+          ? `${formDescriptionId}`
+          : `${formDescriptionId} ${formMessageId}`
+      }
+      aria-invalid={!!error}
+      {...props}
+    />
+  );
+});
+```
+
+**ARIA Attributes:**
+- `aria-describedby`: Links input to description and error messages
+- `aria-invalid`: Indicates validation state
+- `id`: Unique identifier for label association
+
+</Tab>
+
+<Tab value="Error Handling">
+
+```tsx
+const FormMessage = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
+  const { error, formMessageId } = useFormField();
+  const body = error ? String(error?.message) : children;
+
+  if (!body) {
+    return null;
+  }
+
+  return (
+    <p
+      ref={ref}
+      id={formMessageId}
+      className={cn("text-[0.8rem] font-medium text-destructive", className)}
+      {...props}
+    >
+      {body}
+    </p>
+  );
+});
+```
+
+**Error Accessibility:**
+- Conditional rendering prevents empty error containers
+- Proper ID linking with form controls
+- High contrast error styling
+- Screen reader friendly error messages
+
+</Tab>
+
+</Tabs>
+
+## Global Accessibility Guidelines
+
+<Steps>
+
+<Step>
+
+### Semantic HTML First
+
+Always start with semantic HTML elements before adding ARIA attributes:
+
+```tsx
+// ✓ Good: Semantic button
+<button onClick={handleClick}>Submit Form</button>
+
+// ✘  Avoid: Generic div with ARIA
+<div role="button" onClick={handleClick}>Submit Form</div>
+```
+
+</Step>
+
+<Step>
+
+### Keyboard Navigation
+
+Ensure all interactive elements are keyboard accessible:
+
+```tsx
+// ✓ Complete keyboard support
+<div
+  role="button"
+  tabIndex={0}
+  onClick={handleClick}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  }}
+>
+  Custom Button
+</div>
+```
+
+</Step>
+
+<Step>
+
+### Focus Management
+
+Implement proper focus indicators and management:
+
+```css
+/* ✓ High contrast focus indicators */
+.focus-visible:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* ✓ Custom focus styles */
+.custom-focus:focus-visible {
+  box-shadow: 0 0 0 2px hsl(var(--background)), 
+              0 0 0 4px hsl(var(--ring));
+}
+```
+
+</Step>
+
+<Step>
+
+### Screen Reader Support
+
+Provide meaningful content for assistive technologies:
+
+```tsx
+// ✓ Descriptive labels and instructions
+<FormItem>
+  <FormLabel>Email Address</FormLabel>
+  <FormControl>
+    <Input
+      type="email"
+      placeholder="Enter your email"
+      aria-describedby="email-description email-error"
+    />
+  </FormControl>
+  <FormDescription id="email-description">
+    We'll use this to send you important updates
+  </FormDescription>
+  <FormMessage id="email-error" />
+</FormItem>
+```
+
+</Step>
+
+</Steps>
+
+## Component Accessibility Features
+
+### Enhanced Props System
+
+All our components accept comprehensive accessibility props:
+
+```tsx
+interface AccessibilityProps {
+  // ARIA Labels
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
+  
+  // States
+  'aria-expanded'?: boolean;
+  'aria-selected'?: boolean;
+  'aria-disabled'?: boolean;
+  
+  // Relationships
+  'aria-controls'?: string;
+  'aria-owns'?: string;
+  
+  // Live Regions
+  'aria-live'?: 'off' | 'polite' | 'assertive';
+  'aria-atomic'?: boolean;
+}
+
+// Usage example
+<Button
+  aria-label="Close dialog"
+  aria-expanded={isOpen}
+  aria-controls="dialog-content"
+>
+  <X className="h-4 w-4" />
+</Button>
+```
+
+### Chart Accessibility
+
+For data visualizations, we implement comprehensive accessibility:
+
+```tsx
+<Chart
+  data={data}
+  aria-label="Monthly sales data for 2024"
+  role="img"
+>
+  <ChartTooltip
+    content={({ active, payload }) => {
+      if (active && payload?.[0]) {
+        return (
+          <div
+            role="tooltip"
+            aria-live="polite"
+            className="chart-tooltip"
+          >
+            {`${payload[0].name}: ${payload[0].value}`}
+          </div>
+        );
+      }
+      return null;
+    }}
+  />
+  
+  {/* Alternative text representation */}
+  <div className="sr-only">
+    <table>
+      <caption>Monthly sales data for 2024</caption>
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Sales</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item) => (
+          <tr key={item.month}>
+            <td>{item.month}</td>
+            <td>{item.sales}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Chart>
+```
+
+## Testing & Validation
+
+### Automated Testing
+
+Use our built-in accessibility testing utilities:
+
+```bash
+# Install accessibility testing tools
+npx axionjs add accessibility
+
+# Run accessibility audits
+npm run test:a11y
+```
+
+### Manual Testing Checklist
+
+<Callout type="warn">
+Always perform manual testing in addition to automated checks:
+</Callout>
+
+- **Keyboard Navigation**: Tab through all interactive elements
+- **Screen Reader**: Test with NVDA, JAWS, or VoiceOver
+- **High Contrast**: Verify visibility in high contrast modes
+- **Zoom**: Test at 200% zoom level
+- **Color Blindness**: Use tools like Stark or Colour Oracle
+
+### Browser Extensions
+
+Recommended accessibility testing extensions:
+- **axe DevTools**: Automated accessibility testing
+- **WAVE**: Web accessibility evaluation
+- **Lighthouse**: Performance and accessibility audits
+- **Accessibility Insights**: Microsoft's accessibility testing suite
+
+## Best Practices Summary
+
+<Callout>
+**Remember**: Accessibility is not a feature—it's a fundamental requirement for inclusive design.
+</Callout>
+
+1. **Start with Semantic HTML**: Use proper HTML elements before adding ARIA
+2. **Test Early and Often**: Integrate accessibility testing into your workflow
+3. **Focus on User Experience**: Consider diverse user needs and contexts
+4. **Provide Multiple Ways**: Offer various ways to interact with content
+5. **Keep it Simple**: Complex ARIA can be more harmful than helpful
+6. **Stay Updated**: Follow WCAG guidelines and best practices
+
+## Resources & Further Reading
+
+- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
+- [Radix UI Accessibility](https://www.radix-ui.com/primitives/docs/overview/accessibility)
+- [AccessibilityToolkit Documentation](/docs/accessibility/AccessibilityToolkit)
+
+---
+
+<Callout type="info">
+**Need Help?** Join our community discussions or contribute to our accessibility guidelines on GitHub.
+</Callout>

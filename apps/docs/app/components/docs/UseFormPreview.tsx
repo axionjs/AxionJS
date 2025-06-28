@@ -2,11 +2,16 @@
 
 import * as React from "react";
 import { useForm } from "@/registry/new-york/hooks/use-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/registry/new-york/ui/button";
+import { Input } from "@/registry/new-york/ui/input";
 import { Label } from "@/registry/new-york/ui/label";
 import { Textarea } from "@/registry/new-york/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/registry/new-york/ui/card";
 import { useToast } from "@/registry/new-york/hooks/use-toast";
 
 interface LoginFormValues {
