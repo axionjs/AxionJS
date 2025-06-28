@@ -93,6 +93,7 @@ export async function addComponents(components, config, options) {
   await updateFiles(tree.files, config, {
     overwrite: options.overwrite,
     silent: options.silent,
+    path: options.path,
   });
 
   if (tree.docs) {

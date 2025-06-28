@@ -54,14 +54,25 @@ export async function updateFiles(files, config, options) {
       continue;
     }
 
-    let filePath = resolveFilePath(file, config, {
-      isSrcDir: projectInfo?.isSrcDir,
-      framework: projectInfo?.framework.name,
-      commonRoot: findCommonRoot(
-        files.map((f) => f.path),
-        file.path
-      ),
-    });
+    // If options.path is provided, always use it as the root for all files
+    let filePath;
+    if (options.path) {
+      // Place each file inside the custom path, preserving only the filename
+      filePath = path.join(
+        config.resolvedPaths.cwd,
+        options.path,
+        path.basename(file.path)
+      );
+    } else {
+      filePath = resolveFilePath(file, config, {
+        isSrcDir: projectInfo?.isSrcDir,
+        framework: projectInfo?.framework.name,
+        commonRoot: findCommonRoot(
+          files.map((f) => f.path),
+          file.path
+        ),
+      });
+    }
 
     if (!filePath) {
       continue;

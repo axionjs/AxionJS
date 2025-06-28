@@ -1,5 +1,4 @@
 import path from "path";
-import { runInit } from "./init.js";
 import { preFlightAdd } from "../preflights/preflight-add.js";
 import { addComponents } from "../utils/add-components.js";
 import { createProject } from "../utils/create-project.js";
@@ -16,6 +15,7 @@ import { Command } from "commander";
 import { confirm, multiselect, intro } from "@clack/prompts";
 import { z } from "zod";
 import { addHookCommand } from "./add-hook.js";
+import { runInit } from "./init.js";
 
 export const addOptionsSchema = z.object({
   components: z.array(z.string()).optional(),
@@ -126,6 +126,7 @@ export const add = new Command()
           isNewProject: false,
           srcDir: options.srcDir,
           style: "index",
+          cssVariables: options.cssVariables,
         });
       }
 
@@ -152,6 +153,7 @@ export const add = new Command()
           isNewProject: true,
           srcDir: options.srcDir,
           style: "index",
+          cssVariables: options.cssVariables,
         });
       }
 

@@ -13,7 +13,7 @@ export const DEFAULT_AUTH = "@/auth";
 export const DEFAULT_API = "@/api";
 export const DEFAULT_TAILWIND_CSS = "app/globals.css";
 export const DEFAULT_TAILWIND_CONFIG = "tailwind.config.js";
-export const DEFAULT_TAILWIND_BASE_COLOR = "slate";
+export const DEFAULT_TAILWIND_BASE_COLOR = "default";
 
 const explorer = cosmiconfig("components", {
   searchPlaces: ["components.json"],

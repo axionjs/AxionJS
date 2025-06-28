@@ -230,7 +230,7 @@ export async function getProjectConfig(cwd, defaultProjectInfo = null) {
     style: "new-york",
     tailwind: {
       config: projectInfo.tailwindConfigFile ?? "",
-      baseColor: "zinc",
+      baseColor: "default",
       css: projectInfo.tailwindCssFile,
       cssVariables: true,
       prefix: "",

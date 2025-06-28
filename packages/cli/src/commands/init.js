@@ -25,12 +25,13 @@ import {
 import { addComponents } from "../utils/add-components.js";
 import {
   getRegistryBaseColors,
+  getRegistryItem,
   getRegistryStyles,
+  isUrl,
 } from "../utils/registry/index.js";
 import { updateTailwindContent } from "../utils/updaters/update-tailwind-content.js";
 import { text, select, intro, confirm, spinner } from "@clack/prompts";
 import kleur from "kleur";
-import { cwd } from "process";
 
 export const initOptionsSchema = z.object({
   cwd: z.string(),
@@ -42,7 +43,6 @@ export const initOptionsSchema = z.object({
   isNewProject: z.boolean(),
   srcDir: z.boolean().optional(),
   cssVariables: z.boolean(),
-
   style: z.string(),
 });
 
@@ -52,15 +52,6 @@ export const init = new Command()
   .argument(
     "[components...]",
     "the components to add or a url to the component."
-  )
-  .option(
-    "-t, --template <template>",
-    "the template to use. (next, next-monorepo)"
-  )
-  .option(
-    "-b, --base-color <base-color>",
-    "the base color to use. (neutral, gray, creativePurple, stone, slate)",
-    undefined
   )
   .option("-y, --yes", "skip confirmation prompt.", true)
   .option("-d, --defaults,", "use default configuration.", false)
@@ -101,7 +92,6 @@ export const init = new Command()
         // Skip base color if style.
         // We set a default and let the style override it.
         if (item?.type === "registry:style") {
-          options.baseColor = "neutral";
           options.style = item.extends ?? "index";
         }
       }
@@ -236,27 +226,20 @@ async function promptForConfig(defaultConfig = null) {
       active: "yes",
       inactive: "no",
     }),
-    style: await select({
-      message: `Which ${highlighter.info("style")} would you like to use?`,
-      options: styles.map((style) => ({
-        label: style.label,
-        value: style.name,
-      })),
-    }),
     tailwindCategory: selectedCategory,
     tailwindBaseColor: selectedTheme,
     tailwindCss: await text({
       message: `Where is your ${highlighter.info("global CSS")} file?`,
       initialValue: defaultConfig?.tailwind.css ?? DEFAULT_TAILWIND_CSS,
     }),
-    tailwindCssVariables: await confirm({
-      message: `Would you like to use ${highlighter.info(
-        "CSS variables"
-      )} for theming?`,
-      initialValue: defaultConfig?.tailwind.cssVariables ?? true,
-      active: "yes",
-      inactive: "no",
-    }),
+    tailwindCssVariables: typeof opts.cssVariables === "boolean"
+      ? opts.cssVariables
+      : await confirm({
+          message: `Would you like to use ${highlighter.info("CSS variables")} for theming?`,
+          initialValue: defaultConfig?.tailwind.cssVariables ?? true,
+          active: "yes",
+          inactive: "no",
+        }),
     tailwindPrefix: await text({
       message: `Are you using a custom ${highlighter.info(
         "tailwind prefix eg. tw-"
@@ -289,7 +272,7 @@ async function promptForConfig(defaultConfig = null) {
 
   return rawConfigSchema.parse({
     $schema: "http://localhost:3001/schema.json",
-    style: options.style,
+    style: "new-york",
     tailwind: {
       config: options.tailwindConfig,
       css: options.tailwindCss,
@@ -328,20 +311,7 @@ async function promptForMinimalConfig(defaultConfig, opts) {
       getProjectTailwindVersionFromConfig(defaultConfig),
     ]);
     const options = {};
-
-    // Conditionally handle style prompt based on Tailwind version
-    if (tailwindVersion !== "v4") {
-      options.style = await select({
-        message: `Which ${highlighter.info("style")} would you like to use?`,
-        options: styles.map((style) => ({
-          label:
-            style.name === "new-york" ? "New York (Recommended)" : style.label,
-          value: style.name,
-        })),
-      });
-    } else {
-      options.style = "new-york";
-    }
+    options.style = "new-york";
 
     // ---- Category → Theme selection for base color ----
     const selectedCategory = await select({
@@ -364,11 +334,13 @@ async function promptForMinimalConfig(defaultConfig, opts) {
     options.tailwindBaseColor = selectedTheme;
     // ---------------------------------------------------
 
-    // Handle CSS variables toggle
-    options.tailwindCssVariables = await confirm({
-      message: `Would you like to use ${highlighter.info("CSS variables")} for theming?`,
-      initialValue: defaultConfig?.tailwind.cssVariables,
-    });
+    // Handle CSS variables toggle (respect CLI flag)
+    options.tailwindCssVariables = typeof opts.cssVariables === "boolean"
+      ? opts.cssVariables
+      : await confirm({
+          message: `Would you like to use ${highlighter.info("CSS variables")} for theming?`,
+          initialValue: defaultConfig?.tailwind.cssVariables,
+        });
 
     // Assign results
     style = options.style;

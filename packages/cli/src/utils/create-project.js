@@ -4,10 +4,7 @@ import { highlighter } from "./highlighter.js";
 import { logger } from "./logger.js";
 // import { spinner } from "../utils/spinner.js";
 import { execa } from "execa";
-import { handleError } from "./handle-error.js";
-import { fetchRegistry } from "./registry/index.js";
 import fs from "fs-extra";
-import { z } from "zod";
 // import prompts from "prompts";
 import { text, confirm, spinner, intro, outro } from "@clack/prompts";
 export async function createProject(options) {
