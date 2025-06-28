@@ -42,7 +42,7 @@ export function useCrudTable(initialPageSize = 5) {
         page,
         pageSize,
         sortConfig.field,
-        sortConfig.direction
+        sortConfig.direction,
       );
 
       setData(result);
@@ -63,7 +63,7 @@ export function useCrudTable(initialPageSize = 5) {
   };
 
   const handleCreate = async (
-    productData: Omit<Product, "id" | "createdAt" | "updatedAt">
+    productData: Omit<Product, "id" | "createdAt" | "updatedAt">,
   ) => {
     setOperationLoading((prev) => ({ ...prev, creating: true }));
     setError(null);
@@ -108,7 +108,7 @@ export function useCrudTable(initialPageSize = 5) {
   };
 
   const handleUpdate = async (
-    productData: Partial<Product> & { id: string }
+    productData: Partial<Product> & { id: string },
   ) => {
     setOperationLoading((prev) => ({ ...prev, updating: productData.id }));
     setError(null);
@@ -120,7 +120,7 @@ export function useCrudTable(initialPageSize = 5) {
         products: prev.products.map((product) =>
           product.id === productData.id
             ? { ...product, ...productData }
-            : product
+            : product,
         ),
       }));
 

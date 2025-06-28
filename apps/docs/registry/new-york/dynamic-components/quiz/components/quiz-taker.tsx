@@ -60,7 +60,7 @@ export function QuizTaker({ quiz }: QuizTakerProps) {
   const handleMultipleOptionSelect = (
     questionId: string,
     optionId: string,
-    isChecked: boolean
+    isChecked: boolean,
   ) => {
     const currentAnswers = answers[questionId] || [];
 
@@ -105,7 +105,7 @@ export function QuizTaker({ quiz }: QuizTakerProps) {
           ([questionId, selectedOptionIds]) => ({
             questionId,
             selectedOptionIds,
-          })
+          }),
         ),
       });
 
@@ -173,13 +173,13 @@ export function QuizTaker({ quiz }: QuizTakerProps) {
                     <Checkbox
                       id={option.id}
                       checked={(answers[currentQuestion.id] || []).includes(
-                        option.id
+                        option.id,
                       )}
                       onCheckedChange={(checked) =>
                         handleMultipleOptionSelect(
                           currentQuestion.id,
                           option.id,
-                          checked === true
+                          checked === true,
                         )
                       }
                     />

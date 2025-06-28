@@ -45,7 +45,7 @@ export function SubscriberList({
     (subscriber) =>
       subscriber.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (subscriber.name &&
-        subscriber.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        subscriber.name.toLowerCase().includes(searchTerm.toLowerCase())),
   );
 
   const handleDelete = async (id: string) => {

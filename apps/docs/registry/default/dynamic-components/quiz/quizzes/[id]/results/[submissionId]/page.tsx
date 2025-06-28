@@ -19,5 +19,9 @@ export default async function QuizResultsPage({
     notFound();
   }
 
-  return <QuizResults submission={submission} />;
+  return (
+    <div className="container mx-auto px-24">
+      <QuizResults submission={submission} />
+    </div>
+  );
 }

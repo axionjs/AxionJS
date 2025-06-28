@@ -21,7 +21,7 @@ const initialState: CampaignFormState = {};
 export function NewsletterCampaignForm() {
   const [state, formAction, isPending] = useActionState(
     createAndSendCampaign,
-    initialState
+    initialState,
   );
 
   return (

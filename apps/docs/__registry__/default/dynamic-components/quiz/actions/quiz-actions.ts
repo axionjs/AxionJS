@@ -201,11 +201,11 @@ export async function submitQuiz(data: QuizSubmissionFormData) {
       else if (question.type === "multiple-choice") {
         // All selected options must be correct and all correct options must be selected
         const allCorrectSelected = answer.selectedOptionIds.every((id) =>
-          correctOptions.includes(id),
+          correctOptions.includes(id)
         );
 
         const allSelectedCorrect = correctOptions.every((id: string) =>
-          answer.selectedOptionIds.includes(id),
+          answer.selectedOptionIds.includes(id)
         );
 
         if (allCorrectSelected && allSelectedCorrect) {
@@ -227,7 +227,7 @@ export async function submitQuiz(data: QuizSubmissionFormData) {
             answer.selectedOptionIds.map((optionId) => ({
               questionId: answer.questionId,
               optionId,
-            })),
+            }))
           ),
         },
       },

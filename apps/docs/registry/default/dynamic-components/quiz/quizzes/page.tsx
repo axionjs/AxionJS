@@ -16,7 +16,9 @@ export default async function QuizzesPage() {
 
   return (
     <Suspense fallback={<div>Loading quizzes...</div>}>
-      <QuizList quizzes={quizzesWithQuestions} />
+      <div className="container mx-auto px-24">
+        <QuizList quizzes={quizzesWithQuestions} />
+      </div>
     </Suspense>
   );
 }

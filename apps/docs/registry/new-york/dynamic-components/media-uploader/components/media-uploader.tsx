@@ -84,8 +84,8 @@ export function MediaUploader() {
     try {
       setFiles((prev) =>
         prev.map((f) =>
-          f.id === fileWithStatus.id ? { ...f, status: "uploading" } : f
-        )
+          f.id === fileWithStatus.id ? { ...f, status: "uploading" } : f,
+        ),
       );
 
       const reader = new FileReader();
@@ -101,8 +101,8 @@ export function MediaUploader() {
           prev.map((f) =>
             f.id === fileWithStatus.id
               ? { ...f, progress: (i / steps) * 100 }
-              : f
-          )
+              : f,
+          ),
         );
       }
 
@@ -124,8 +124,8 @@ export function MediaUploader() {
                 url: result.url,
                 thumbnailUrl: result.thumbnailUrl || result.url,
               }
-            : f
-        )
+            : f,
+        ),
       );
 
       router.refresh();
@@ -133,8 +133,8 @@ export function MediaUploader() {
       console.error("Upload failed:", error);
       setFiles((prev) =>
         prev.map((f) =>
-          f.id === fileWithStatus.id ? { ...f, status: "error" } : f
-        )
+          f.id === fileWithStatus.id ? { ...f, status: "error" } : f,
+        ),
       );
     }
   };
@@ -323,7 +323,7 @@ export function MediaUploader() {
                 "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all duration-200",
                 isDragging
                   ? "border-primary bg-primary/5"
-                  : "border-muted-foreground/25 hover:border-primary/50 hover:bg-accent/30"
+                  : "border-muted-foreground/25 hover:border-primary/50 hover:bg-accent/30",
               )}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}

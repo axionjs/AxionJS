@@ -37,7 +37,7 @@ export function QuizResults({ submission }: QuizResultsProps) {
       }
       return acc;
     },
-    {} as Record<string, string[]>
+    {} as Record<string, string[]>,
   );
 
   return (

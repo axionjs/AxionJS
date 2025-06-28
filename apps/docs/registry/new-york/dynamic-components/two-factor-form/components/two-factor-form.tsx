@@ -95,7 +95,7 @@ export function TwoFactorForm({
   };
 
   const handleVerificationSubmit = (
-    values: z.infer<typeof VerificationSchema>
+    values: z.infer<typeof VerificationSchema>,
   ) => {
     setMessage(null);
 

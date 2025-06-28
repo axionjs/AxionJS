@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function QuizzesPage() {
   const { quizzes = [] } = await getQuizzes().then((res) =>
-    res.success ? res : { quizzes: [] }
+    res.success ? res : { quizzes: [] },
   );
 
   const quizzesWithQuestions = quizzes.map((quiz: any) => ({

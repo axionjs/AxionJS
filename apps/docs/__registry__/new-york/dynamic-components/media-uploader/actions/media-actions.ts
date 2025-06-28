@@ -39,7 +39,7 @@ export async function uploadToCloudinary({
           resource_type: "video",
           public_id: publicId,
           folder: "videos",
-        },
+        }
       );
     } else {
       // For images
@@ -48,7 +48,7 @@ export async function uploadToCloudinary({
         {
           public_id: publicId,
           folder: "images",
-        },
+        }
       );
     }
 

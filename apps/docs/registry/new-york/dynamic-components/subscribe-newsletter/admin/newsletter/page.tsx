@@ -23,7 +23,7 @@ export default async function AdminNewsletterPage() {
   const campaigns = await getAllCampaigns();
 
   const activeSubscribersCount = subscribers.filter(
-    (sub) => sub.status === "ACTIVE"
+    (sub) => sub.status === "ACTIVE",
   ).length;
 
   return (
@@ -57,7 +57,7 @@ export default async function AdminNewsletterPage() {
               <p className="text-xs text-muted-foreground">
                 {campaigns.length > 0
                   ? `Last sent ${new Date(
-                      campaigns[0].createdAt
+                      campaigns[0].createdAt,
                     ).toLocaleDateString()}`
                   : "No campaigns sent yet"}
               </p>
