@@ -43,7 +43,7 @@ export async function getAllSubscribers() {
 
 export async function subscribeToNewsletter(
   prevState: SubscribeFormState,
-  formData: FormData,
+  formData: FormData
 ): Promise<SubscribeFormState> {
   // Validate form data
   const validatedFields = subscribeFormSchema.safeParse({
@@ -126,7 +126,7 @@ export async function subscribeToNewsletter(
 async function sendConfirmationEmail(
   email: string,
   name: string,
-  token: string,
+  token: string
 ) {
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_SERVER_HOST,
@@ -214,7 +214,7 @@ export async function getAllCampaigns() {
 
 export async function createAndSendCampaign(
   prevState: CampaignFormState,
-  formData: FormData,
+  formData: FormData
 ): Promise<CampaignFormState> {
   // Validate form data
   const validatedFields = campaignFormSchema.safeParse({
@@ -320,7 +320,7 @@ export async function createAndSendCampaign(
               sentAt: new Date(),
             },
           });
-        }),
+        })
       );
     }
 
@@ -369,7 +369,7 @@ export async function deleteSubscriber(id: string) {
 }
 
 export async function verifyUnsubscribeToken(
-  token: string,
+  token: string
 ): Promise<string | null> {
   try {
     const subscriber = await db.newsletterSubscriber.findUnique({

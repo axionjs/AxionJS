@@ -17,7 +17,7 @@ export async function getProducts(
   page: number = 1,
   pageSize: number = 5,
   sortField: string = "name",
-  sortOrder: "asc" | "desc" = "asc",
+  sortOrder: "asc" | "desc" = "asc"
 ) {
   const skip = (page - 1) * pageSize;
   const products = await db.product.findMany({
@@ -32,7 +32,7 @@ export async function getProducts(
 }
 
 export async function createProduct(
-  data: Omit<Product, "id" | "createdAt" | "updatedAt">,
+  data: Omit<Product, "id" | "createdAt" | "updatedAt">
 ) {
   console.log("Creating product with data:", data); // Debugging line
   const product = await db.product.create({ data });

@@ -16,5 +16,9 @@ export default async function QuizTakePage({ params }: QuizTakePageProps) {
     notFound();
   }
 
-  return <QuizTaker quiz={quiz} />;
+  return (
+    <div className="container mx-auto px-24">
+      <QuizTaker quiz={quiz} />
+    </div>
+  );
 }

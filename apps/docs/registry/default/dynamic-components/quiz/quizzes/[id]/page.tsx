@@ -16,5 +16,9 @@ export default async function QuizEditPage({ params }: QuizEditPageProps) {
     notFound();
   }
 
-  return <QuizBuilder quiz={quiz} isEditing />;
+  return (
+    <div className="container mx-auto px-24">
+      <QuizBuilder quiz={quiz} isEditing />
+    </div>
+  );
 }
