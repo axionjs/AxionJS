@@ -20,25 +20,13 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
-    "accessibility-tool": {
-      name: "accessibility-tool",
+    "accessibility": {
+      name: "accessibility",
       description: "",
       type: "registry:ui",
-      registryDependencies: ["dialog","switch","avatar","tabs","slider"],
+      registryDependencies: ["dialog","switch","button","avatar","tabs","tooltip","slider"],
       files: [{
-        path: "registry/new-york/ui/AccessibilityTool.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/ui/AccessibilityProvider.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/ui/AccessibilityTrigger.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/ui/AccessibilitySlider.tsx",
+        path: "registry/new-york/ui/AccessibilityUI.tsx",
         type: "registry:ui",
         target: ""
       },{
@@ -51,7 +39,7 @@ export const Index: Record<string, any> = {
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/ui/AccessibilityTool.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/ui/AccessibilityUI.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3456,25 +3444,13 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
-    "accessibility-tool": {
-      name: "accessibility-tool",
+    "accessibility": {
+      name: "accessibility",
       description: "",
       type: "registry:ui",
-      registryDependencies: ["dialog","switch","avatar","tabs","slider"],
+      registryDependencies: ["dialog","switch","button","avatar","tabs","tooltip","slider"],
       files: [{
-        path: "registry/default/ui/AccessibilityTool.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/ui/AccessibilityProvider.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/ui/AccessibilityTrigger.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/ui/AccessibilitySlider.tsx",
+        path: "registry/default/ui/AccessibilityUI.tsx",
         type: "registry:ui",
         target: ""
       },{
@@ -3487,7 +3463,7 @@ export const Index: Record<string, any> = {
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/ui/AccessibilityTool.tsx")),
+      component: React.lazy(() => import("@/registry/default/ui/AccessibilityUI.tsx")),
       source: "",
       meta: undefined,
     },

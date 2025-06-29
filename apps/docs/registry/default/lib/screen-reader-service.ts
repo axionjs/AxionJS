@@ -12,13 +12,11 @@ class ScreenReaderService {
   constructor() {
     this.isMounted = typeof window !== "undefined";
 
-    // Only initialize these in the browser environment
     if (this.isMounted) {
       try {
         this.speechSynthesis = window.speechSynthesis;
         this.utterance = new SpeechSynthesisUtterance();
 
-        // Cancel any existing speech synthesis that might be running
         if (this.speechSynthesis) {
           this.speechSynthesis.cancel();
         }
@@ -29,125 +27,128 @@ class ScreenReaderService {
     }
   }
 
-  // Implementation was moved to the updated initialize method above
-
   public cleanup() {
     if (!this.isMounted) return;
 
-    // Important: Use the same function reference for addEventListener and removeEventListener
-    // This ensures event listeners are properly removed
     document.removeEventListener("mouseover", this.handleHover);
     document.removeEventListener("focusin", this.handleFocus);
     this.stop();
   }
 
-  // Store bound methods to ensure same reference is used for add/remove event listener
-  private handleHover = this.handleHoverImpl.bind(this);
-  private handleFocus = this.handleFocusImpl.bind(this);
+  // Store bound handlers to ensure proper removal
+  private handleHover = this.createHandleEvent("mouseover");
+  private handleFocus = this.createHandleEvent("focusin");
 
-  public initialize() {
+  public initialize(
+    enabled: boolean,
+    speed: "normal" | "slow",
+    volume: number,
+  ) {
     if (!this.isMounted) return;
 
-    // Setup event listeners with the bound methods
-    document.addEventListener("mouseover", this.handleHover);
-    document.addEventListener("focusin", this.handleFocus);
+    // Set speech properties
+    this.utterance!.rate = speed === "slow" ? 0.8 : 1.0;
+    this.utterance!.volume = volume;
+
+    if (enabled) {
+      document.addEventListener("mouseover", this.handleHover);
+      document.addEventListener("focusin", this.handleFocus);
+    } else {
+      document.removeEventListener("mouseover", this.handleHover);
+      document.removeEventListener("focusin", this.handleFocus);
+      this.stop(); // Stop reading if disabled
+    }
   }
 
-  public setSpeed(speed: "normal" | "slow") {
-    if (!this.utterance) return;
+  private createHandleEvent(eventType: "mouseover" | "focusin") {
+    return (event: Event) => {
+      const target = event.target as HTMLElement;
 
-    // Normal is around 1, slow is around 0.7
-    this.utterance.rate = speed === "normal" ? 1 : 0.7;
+      // Avoid re-reading the same element if already highlighted and reading
+      if (
+        this.currentElement === target ||
+        !this.isSignificantElement(target)
+      ) {
+        return;
+      }
+
+      const selector = this.getElementSelector(target);
+
+      // Prevent reading the same element repeatedly, or if it's the accessibility trigger itself
+      if (
+        selector === this.lastElementSelector ||
+        target.closest(".accessibility-trigger") ||
+        target.closest(".accessibility-panel-container")
+      ) {
+        return;
+      }
+
+      this.stop(); // Stop current speech before starting new one
+      this.removeHighlight();
+
+      this.currentElement = target;
+      this.lastElementSelector = selector;
+
+      const text = this.getTextForElement(target);
+      if (text) {
+        this.speak(text);
+        this.addHighlight(target);
+      }
+    };
   }
 
-  public setVolume(volume: number) {
-    if (!this.utterance) return;
+  private speak(text: string) {
+    if (!this.speechSynthesis || !this.utterance) return;
 
-    // Volume between 0 and 1
-    this.utterance.volume = Math.max(0, Math.min(1, volume));
-  }
-
-  public async readElement(element: HTMLElement) {
-    if (!this.speechSynthesis || !this.utterance || !element) return;
-
-    // Stop any ongoing reading
-    this.stop();
-
-    // Get the text content of the element
-    const textToRead = this.getReadableText(element);
-    if (!textToRead) return;
-
-    // Highlight the element
-    this.highlightElement(element);
-
-    // Set the text to be read
-    this.utterance.text = textToRead;
-
-    // Start reading
-    this.isReading = true;
-    this.currentElement = element;
+    this.utterance.text = text;
     this.speechSynthesis.speak(this.utterance);
+    this.isReading = true;
 
-    // Add event listener to remove highlight when done
     this.utterance.onend = () => {
       this.isReading = false;
       this.removeHighlight();
       this.currentElement = null;
+      this.lastElementSelector = ""; // Reset after speech ends
+    };
+
+    this.utterance.onerror = (event) => {
+      console.error("SpeechSynthesisUtterance.onerror", event);
+      this.isReading = false;
+      this.removeHighlight();
+      this.currentElement = null;
+      this.lastElementSelector = "";
     };
   }
 
-  public readPage() {
-    const mainContent = document.querySelector("main") || document.body;
-    this.readElement(mainContent as HTMLElement);
-  }
-
   public stop() {
-    if (!this.speechSynthesis) return;
-
-    this.speechSynthesis.cancel();
-    this.isReading = false;
+    if (this.speechSynthesis && this.isReading) {
+      this.speechSynthesis.cancel();
+      this.isReading = false;
+    }
     this.removeHighlight();
     this.currentElement = null;
+    this.lastElementSelector = "";
   }
 
-  public pause() {
-    if (!this.speechSynthesis || !this.isReading) return;
-
-    this.speechSynthesis.pause();
-  }
-
-  public resume() {
-    if (!this.speechSynthesis || !this.isReading) return;
-
-    this.speechSynthesis.resume();
-  }
-
-  private handleHoverImpl(event: MouseEvent) {
-    if (!this.isReading && event.target instanceof HTMLElement) {
-      // Don't read trivial elements like spans inside buttons, etc.
-      if (this.isSignificantElement(event.target)) {
-        this.lastElementSelector = this.getElementSelector(event.target);
-      }
-    }
-  }
-
-  private handleFocusImpl(event: FocusEvent) {
-    if (!this.isReading && event.target instanceof HTMLElement) {
-      this.readElement(event.target);
-    }
-  }
-
-  private highlightElement(element: HTMLElement) {
-    this.removeHighlight();
+  private addHighlight(element: HTMLElement) {
     element.classList.add(this.highlightClass);
   }
 
   private removeHighlight() {
-    const highlighted = document.querySelectorAll(`.${this.highlightClass}`);
-    highlighted.forEach((el) => el.classList.remove(this.highlightClass));
+    document
+      .querySelectorAll(`.${this.highlightClass}`)
+      .forEach((el) => el.classList.remove(this.highlightClass));
   }
 
-  private getReadableText(element: HTMLElement): string {
+  private getTextForElement(element: HTMLElement): string {
+    // Check for explicit accessibility labels first
+    if (element.getAttribute("aria-label")) {
+      return element.getAttribute("aria-label")!;
+    }
+    if (element.getAttribute("title")) {
+      return element.getAttribute("title")!;
+    }
+
     // Get text based on element type and role
     if (element.tagName === "IMG") {
       return element.alt || "Image";
@@ -163,7 +164,62 @@ class ScreenReaderService {
 
     if (element.tagName === "INPUT") {
       const inputEl = element as HTMLInputElement;
-      return `${inputEl.placeholder || inputEl.name || "Input field"}`;
+      const type = inputEl.type;
+      const label =
+        inputEl.placeholder || inputEl.name || inputEl.id || "Input field";
+      if (type === "text") return `Text input: ${label}`;
+      if (type === "email") return `Email input: ${label}`;
+      if (type === "password") return `Password input: ${label}`;
+      if (type === "checkbox")
+        return `Checkbox: ${label} ${inputEl.checked ? "checked" : "unchecked"}`;
+      if (type === "radio")
+        return `Radio button: ${label} ${inputEl.checked ? "selected" : ""}`;
+      if (type === "submit") return `Submit button: ${inputEl.value || label}`;
+      return `${label}`;
+    }
+
+    if (element.tagName === "SELECT") {
+      const selectEl = element as HTMLSelectElement;
+      const label = selectEl.name || selectEl.id || "Select field";
+      const selectedOption = selectEl.options[selectEl.selectedIndex];
+      return `Dropdown: ${label}, current value ${selectedOption ? selectedOption.textContent : ""}`;
+    }
+
+    if (element.tagName === "TEXTAREA") {
+      const textareaEl = element as HTMLTextAreaElement;
+      const label = textareaEl.name || textareaEl.id || "Text area";
+      return `Text area: ${label}`;
+    }
+
+    if (element.hasAttribute("role")) {
+      const role = element.getAttribute("role");
+      const textContent = element.textContent || "";
+      switch (role) {
+        case "button":
+          return `Button: ${textContent}`;
+        case "link":
+          return `Link: ${textContent}`;
+        case "heading":
+          return `Heading: ${textContent}`;
+        case "listitem":
+          return `List item: ${textContent}`;
+        case "checkbox":
+          return `Checkbox: ${textContent} ${element.getAttribute("aria-checked") === "true" ? "checked" : "unchecked"}`;
+        case "radio":
+          return `Radio button: ${textContent} ${element.getAttribute("aria-checked") === "true" ? "selected" : ""}`;
+        case "textbox":
+          return `Text box: ${textContent}`;
+        case "combobox":
+          return `Combobox: ${textContent}`;
+        case "dialog":
+          return `Dialog: ${textContent}`;
+        case "alert":
+          return `Alert: ${textContent}`;
+        case "status":
+          return `Status: ${textContent}`;
+        default:
+          return `${role}: ${textContent}`;
+      }
     }
 
     // Default to regular text content
@@ -183,27 +239,37 @@ class ScreenReaderService {
       "P",
       "LI",
       "IMG",
+      "INPUT", // Added for inputs
+      "SELECT", // Added for selects
+      "TEXTAREA", // Added for textareas
+      "LABEL", // Labels for form elements
+      "SUMMARY", // For details/summary elements
+      "ARTICLE", // Article content
+      "SECTION", // Section content
+      "ASIDE", // Aside content
+      "MAIN", // Main content
+      "NAV", // Navigation elements
+      "FOOTER", // Footer content
+      "HEADER", // Header content
     ];
     return (
       significantTags.includes(element.tagName) ||
       element.hasAttribute("role") ||
-      element.hasAttribute("aria-label")
+      element.hasAttribute("aria-label") ||
+      element.hasAttribute("title")
     );
   }
 
   private getElementSelector(element: HTMLElement): string {
     // Create a simple selector path for the element
     const id = element.id ? `#${element.id}` : "";
-    if (id) return id;
-
     const classes = Array.from(element.classList)
-      .map((c) => `.${c}`)
+      .map((cls) => `.${cls}`)
       .join("");
-    return `${element.tagName.toLowerCase()}${classes}`;
+    return `${element.tagName}${id}${classes}`;
   }
 }
 
-// Singleton instance
-export const screenReaderService = new ScreenReaderService();
-
+// Export a singleton instance
+const screenReaderService = new ScreenReaderService();
 export default screenReaderService;

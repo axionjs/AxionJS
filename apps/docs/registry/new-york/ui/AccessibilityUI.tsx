@@ -133,7 +133,7 @@ export function AccessibilityUI({ children }: { children: React.ReactNode }) {
     screenReaderService.initialize(
       screenReader.enabled,
       screenReader.speed,
-      screenReader.volume
+      screenReader.volume,
     );
     return () => {
       screenReaderService.cleanup();
@@ -262,7 +262,7 @@ export function AccessibilityUI({ children }: { children: React.ReactNode }) {
     return () => {
       document.removeEventListener(
         "toggleAccessibilityPanel",
-        handleToggleEvent
+        handleToggleEvent,
       );
       document.removeEventListener("keydown", handleKeyDown); // Clean up keyboard listener
     };
@@ -533,7 +533,7 @@ export function AccessibilityUI({ children }: { children: React.ReactNode }) {
                       }
                       onChange={(val) =>
                         setScreenReaderSpeed(
-                          val === "medium" ? "slow" : "normal"
+                          val === "medium" ? "slow" : "normal",
                         )
                       }
                       icon={<LucideZap className="h-4 w-4" />}
