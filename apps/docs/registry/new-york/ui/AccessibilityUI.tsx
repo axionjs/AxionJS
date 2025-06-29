@@ -291,9 +291,9 @@ export function AccessibilityUI({ children }: { children: React.ReactNode }) {
               onClick={toggleOpen}
             >
               <div className="relative">
-                <LucidePersonStanding className="w-6 h-6 text-white" />
+                <LucidePersonStanding className="w-6 h-6 text-secondary" />
                 {screenReader.enabled && (
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-white animate-pulse" />
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-white dark:border animate-pulse" />
                 )}
               </div>
             </Button>

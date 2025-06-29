@@ -1,32 +1,39 @@
-"use client";
+import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
 
-import React from "react";
 import {
   Alert,
-  AlertTitle,
   AlertDescription,
+  AlertTitle,
 } from "@/registry/new-york/ui/alert";
 
 export default function AlertPreview() {
   return (
-    <div className="space-y-6 max-w-md mx-auto not-prose">
-      {/* Example 1: Default Alert */}
-      <div>
-        <h3 className="text-lg font-medium">Default Alert</h3>
-        <Alert variant="default">
-          <AlertTitle>Information</AlertTitle>
-          <AlertDescription>This is a default alert.</AlertDescription>
-        </Alert>
-      </div>
-
-      {/* Example 2: Destructive Alert */}
-      <div>
-        <h3 className="text-lg font-medium">Destructive Alert</h3>
-        <Alert variant="destructive">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>This is a destructive alert.</AlertDescription>
-        </Alert>
-      </div>
+    <div className="grid w-full max-w-xl items-start gap-4">
+      <Alert>
+        <CheckCircle2Icon />
+        <AlertTitle>Success! Your changes have been saved</AlertTitle>
+        <AlertDescription>
+          This is an alert with icon, title and description.
+        </AlertDescription>
+      </Alert>
+      <Alert>
+        <PopcornIcon />
+        <AlertTitle>
+          This Alert has a title and an icon. No description.
+        </AlertTitle>
+      </Alert>
+      <Alert variant="destructive">
+        <AlertCircleIcon />
+        <AlertTitle>Unable to process your payment.</AlertTitle>
+        <AlertDescription>
+          <p>Please verify your billing information and try again.</p>
+          <ul className="list-inside list-disc text-sm">
+            <li>Check your card details</li>
+            <li>Ensure sufficient funds</li>
+            <li>Verify billing address</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
     </div>
   );
 }

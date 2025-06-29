@@ -10,6 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/registry/new-york/ui/table";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/registry/new-york/ui/avatar";
 import { CheckIcon, MonitorIcon, SmartphoneIcon, XIcon } from "lucide-react";
 
 // Basic user data for standard table
@@ -174,13 +179,15 @@ export function BasicTable() {
             <TableRow key={item.id}>
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <img
-                    className="rounded-full"
-                    src={item.image}
-                    width={40}
-                    height={40}
-                    alt={item.name}
-                  />
+                  <Avatar>
+                    <AvatarImage src={item.image} alt={item.name} />
+                    <AvatarFallback>
+                      {item.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
                   <div>
                     <div className="font-medium">{item.name}</div>
                     <span className="mt-0.5 text-xs text-muted-foreground">

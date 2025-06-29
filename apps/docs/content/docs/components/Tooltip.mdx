@@ -23,7 +23,22 @@ import {
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-    // Code for DefaultTooltipPreview provided above
+    export function DefaultTooltipPreview() {
+      return (
+        <TooltipProvider className="not-prose">
+          <div className="flex items-center justify-center space-x-4">
+            <Tooltip>
+              <TooltipTrigger className="px-4 py-2 bg-gray-100 border rounded-lg">
+                Hover me
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                <span>Default Tooltip</span>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
+      );
+    }
     ```
   </Tab>
 </Tabs>
@@ -36,7 +51,26 @@ import {
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-    // Code for PlacementTooltipPreview provided above
+    export function PlacementTooltipPreview() {
+      const placements = ["top", "bottom", "left", "right"];
+
+      return (
+        <TooltipProvider className="not-prose">
+          <div className="grid grid-cols-2 gap-8">
+            {placements.map((placement) => (
+              <Tooltip key={placement}>
+                <TooltipTrigger className="px-4 py-2 bg-gray-100 border rounded-lg">
+                  Hover {placement}
+                </TooltipTrigger>
+                <TooltipContent side={placement} sideOffset={8}>
+                  <span>{`Tooltip on ${placement}`}</span>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+        </TooltipProvider>
+      );
+    }
     ```
   </Tab>
 </Tabs>
@@ -49,11 +83,25 @@ import {
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-    // Code for StyledTooltipPreview provided above
+    export function StyledTooltipPreview() {
+      return (
+        <TooltipProvider className="not-prose">
+          <div className="flex items-center justify-center space-x-4">
+            <Tooltip>
+              <TooltipTrigger className="px-4 py-2 bg-gray-100 border rounded-lg">
+                Styled Tooltip
+              </TooltipTrigger>
+              <TooltipContent className="bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg">
+                <span>Custom styled tooltip</span>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
+      );
+    }
     ```
   </Tab>
 </Tabs>
-
 
 ---
 
@@ -80,14 +128,39 @@ The `Tooltip` component provides a simple, accessible, and customizable tooltip 
 
     Create a `tooltip.tsx` file in your `components/ui` directory:
     ```tsx
-    // Full Tooltip component code provided in the query
-    ```
+   "use client";
 
-    ### 3. Add Preview Component
+import * as React from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
-    Create a `TooltipPreview.tsx` file for demonstration purposes:
-    ```tsx
-    // Full TooltipPreview.tsx code provided above
+import { cn } from "@/lib/utils";
+
+const TooltipProvider = TooltipPrimitive.Provider;
+
+const Tooltip = TooltipPrimitive.Root;
+
+const TooltipTrigger = TooltipPrimitive.Trigger;
+
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPrimitive.Portal>
+    <TooltipPrimitive.Content
+      ref={ref}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 overflow-hidden rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className,
+      )}
+      {...props}
+    />
+  </TooltipPrimitive.Portal>
+));
+TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+
     ```
   </Tab>
 </Tabs>
@@ -98,8 +171,8 @@ The `Tooltip` component provides a simple, accessible, and customizable tooltip 
 
 <Files>
   <Folder name="app" defaultOpen>
-    <Folder name="components">
-      <Folder name="ui">
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
         <File name="tooltip.tsx" />
       </Folder>
     </Folder>

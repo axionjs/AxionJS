@@ -25,7 +25,7 @@ export default defineConfig({
       // Direct Shiki theme configuration
       themes: {
         light: "github-light",
-        dark: "material-theme-ocean",
+        dark: "github-dark",
       },
       defaultColor: false,
       transformers: [

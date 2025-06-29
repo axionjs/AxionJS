@@ -1,0 +1,391 @@
+---
+title: Date Picker
+description: A date picker component with range and presets.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import {
+  BasicDatePickerPreview,
+  DateOfBirthPickerPreview,
+  DatePickerWithInputPreview,
+  DateTimePickerPreview,
+  NaturalLanguagePickerPreview,
+  DatePickerFormPreview,
+} from "@/app/components/docs/DatePickerPreview";
+
+
+## Installation
+
+The Date Picker is built using a composition of the `<Popover />` and the `<Calendar />` components.
+
+See installation instructions for the [Popover](/docs/components/popover#installation) and the [Calendar](/docs/components/calendar#installation) components.
+
+## Usage
+
+```tsx ts2js showLineNumbers title="components/example-date-picker.tsx"
+"use client"
+
+import * as React from "react"
+import { format } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+export function DatePickerDemo() {
+  const [date, setDate] = React.useState<Date>()
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          data-empty={!date}
+          className="data-[empty=true]:text-muted-foreground w-[280px] justify-start text-left font-normal"
+        >
+          <CalendarIcon />
+          {date ? format(date, "PPP") : <span>Pick a date</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0">
+        <Calendar mode="single" selected={date} onSelect={setDate} />
+      </PopoverContent>
+    </Popover>
+  )
+}
+```
+
+See the [React DayPicker](https://react-day-picker.js.org) documentation for more information.
+
+## Previews with Code
+
+### Basic Date Picker
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 h-72 pb-8 content-center items-center mx-auto"> 
+    <BasicDatePickerPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function BasicDatePickerPreview() {
+      const [date, setDate] = React.useState<Date>();
+
+      return (
+        <div className="p-4 flex items-center justify-center not-prose">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="ghost"
+                data-empty={!date}
+                className="data-[empty=true]:text-muted-foreground w-[280px] justify-center text-center font-normal"
+              >
+                <CalendarIcon />
+                {date ? format(date, "PPP") : <span>Pick a date</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar mode="single" selected={date} onSelect={setDate} />
+            </PopoverContent>
+          </Popover>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Date of Birth Picker
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 h-72 pb-8 content-center items-center mx-auto">
+    <DateOfBirthPickerPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function DateOfBirthPickerPreview() {
+      const [open, setOpen] = React.useState(false);
+      const [date, setDate] = React.useState<Date | undefined>(undefined);
+
+      return (
+        <div className="flex flex-col gap-3 not-prose">
+          <Label htmlFor="date" className="px-1">
+            Date of birth
+          </Label>
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                id="date"
+                className="w-48 justify-between font-normal"
+              >
+                {date ? date.toLocaleDateString() : "Select date"}
+                <ChevronDownIcon />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={date}
+                captionLayout="dropdown"
+                onSelect={(selectedDate) => {
+                  setDate(selectedDate);
+                  setOpen(false);
+                }}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Picker with Input
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 h-72 pb-8 content-center items-center mx-auto">
+    <DatePickerWithInputPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function DatePickerWithInputPreview() {
+      const [open, setOpen] = React.useState(false);
+      const [date, setDate] = React.useState<Date | undefined>(
+        new Date("2025-06-01")
+      );
+      const [month, setMonth] = React.useState<Date | undefined>(date);
+
+      function formatDate(d?: Date) {
+        if (!d) return "";
+        return d.toLocaleDateString("en-US", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        });
+      }
+
+      const [value, setValue] = React.useState(formatDate(date));
+
+      return (
+        <div className="flex flex-col gap-3 not-prose">
+          <Label htmlFor="date" className="px-1">
+            Subscription Date
+          </Label>
+          <div className="relative flex gap-2">
+            <Input
+              id="date"
+              value={value}
+              placeholder="June 01, 2025"
+              className="pr-10"
+              onChange={(e) => {
+                const newDate = new Date(e.target.value);
+                setValue(e.target.value);
+                if (!isNaN(newDate.getTime())) {
+                  setDate(newDate);
+                  setMonth(newDate);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  setOpen(true);
+                }
+              }}
+            />
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  id="date-picker"
+                  variant="ghost"
+                  className="absolute top-1/2 right-2 -translate-y-1/2"
+                >
+                  <CalendarIcon />
+                  <span className="sr-only">Select date</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-auto overflow-hidden p-0"
+                align="end"
+                alignOffset={-8}
+                sideOffset={10}
+              >
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  captionLayout="dropdown"
+                  month={month}
+                  onMonthChange={setMonth}
+                  onSelect={(selectedDate) => {
+                    setDate(selectedDate);
+                    setValue(formatDate(selectedDate));
+                    setOpen(false);
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Date and Time Picker
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 h-72 pb-8 content-center items-center mx-auto">
+    <DateTimePickerPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function DateTimePickerPreview() {
+      const [open, setOpen] = React.useState(false);
+      const [date, setDate] = React.useState<Date | undefined>(undefined);
+
+      return (
+        <div className="flex gap-4 not-prose">
+          <div className="flex flex-col gap-3">
+            <Label htmlFor="date-picker" className="px-1">
+              Date
+            </Label>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  id="date-picker"
+                  className="w-32 justify-between font-normal"
+                >
+                  {date ? date.toLocaleDateString() : "Select date"}
+                  <ChevronDownIcon />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  captionLayout="dropdown"
+                  onSelect={(selectedDate) => {
+                    setDate(selectedDate);
+                    setOpen(false);
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="flex flex-col gap-3">
+            <Label htmlFor="time-picker" className="px-1">
+              Time
+            </Label>
+            <Input
+              type="time"
+              id="time-picker"
+              step="1"
+              defaultValue="10:30:00"
+              className="appearance-none"
+            />
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Natural Language Picker
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 h-72 pb-8 content-center items-center mx-auto">
+    <NaturalLanguagePickerPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function NaturalLanguagePickerPreview() {
+      const [open, setOpen] = React.useState(false);
+      const [value, setValue] = React.useState("In 2 days");
+      const [date, setDate] = React.useState<Date | undefined>(
+        parseDate(value) || undefined
+      );
+      const [month, setMonth] = React.useState<Date | undefined>(date);
+
+      function formatDate(d?: Date) {
+        if (!d) return "";
+        return d.toLocaleDateString("en-US", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        });
+      }
+
+      return (
+        <div className="flex flex-col gap-3 not-prose">
+          <Label htmlFor="date" className="px-1">
+            Schedule Date
+          </Label>
+          <div className="relative flex gap-2">
+            <Input
+              id="date"
+              value={value}
+              placeholder="Tomorrow or next week"
+              className="pr-10"
+              onChange={(e) => {
+                setValue(e.target.value);
+                const newDate = parseDate(e.target.value);
+                if (newDate) {
+                  setDate(newDate);
+                  setMonth(newDate);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  setOpen(true);
+                }
+              }}
+            />
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  id="date-picker"
+                  variant="ghost"
+                  className="absolute top-1/2 right-2 -translate-y-1/2"
+                >
+                  <CalendarIcon />
+                  <span className="sr-only">Select date</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto overflow-hidden p-0" align="end">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  captionLayout="dropdown"
+                  month={month}
+                  onMonthChange={setMonth}
+                  onSelect={(selectedDate) => {
+                    setDate(selectedDate);
+                    setValue(formatDate(selectedDate));
+                    setOpen(false);
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="text-muted-foreground px-1 text-sm">
+            Your post will be published on{" "}
+            <span className="font-medium">{formatDate(date)}</span>.
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+

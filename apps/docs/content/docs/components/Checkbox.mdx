@@ -21,30 +21,55 @@ The `Checkbox` component is a versatile and accessible component that supports d
 ## Default Use Case: Simple Checkbox
 
 <Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="m-auto h-48 content-center">
+  <Tab value="Preview" className="m-auto h-96 content-center">
     <SimpleCheckboxPreview />
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-    import { Checkbox } from "@/app/components/ui/checkbox";
-    import { Label } from "@/app/components/ui/label";
+  "use client"
 
-    export function SimpleCheckboxPreview() {
-      return (
-        <div className="space-y-4">
-          <div className="flex items-center space-x-3">
-            <Checkbox id="checkbox-1" />
-            <Label htmlFor="checkbox-1">Default Checkbox</Label>
-          </div>
-          <div className="flex items-center space-x-3">
-            <Checkbox id="checkbox-2" disabled />
-            <Label htmlFor="checkbox-2" className="text-muted-foreground">
-              Disabled Checkbox
-            </Label>
-          </div>
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+
+export function CheckboxDemo() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center gap-3">
+        <Checkbox id="terms" />
+        <Label htmlFor="terms">Accept terms and conditions</Label>
+      </div>
+      <div className="flex items-start gap-3">
+        <Checkbox id="terms-2" defaultChecked />
+        <div className="grid gap-2">
+          <Label htmlFor="terms-2">Accept terms and conditions</Label>
+          <p className="text-muted-foreground text-sm">
+            By clicking this checkbox, you agree to the terms and conditions.
+          </p>
         </div>
-      );
-    }
+      </div>
+      <div className="flex items-start gap-3">
+        <Checkbox id="toggle" disabled />
+        <Label htmlFor="toggle">Enable notifications</Label>
+      </div>
+      <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+        <Checkbox
+          id="toggle-2"
+          defaultChecked
+          className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+        />
+        <div className="grid gap-1.5 font-normal">
+          <p className="text-sm leading-none font-medium">
+            Enable notifications
+          </p>
+          <p className="text-muted-foreground text-sm">
+            You can enable or disable notifications at any time.
+          </p>
+        </div>
+      </Label>
+    </div>
+  )
+}
+
     ```
   </Tab>
 </Tabs>
@@ -66,7 +91,7 @@ The `Checkbox` component is a versatile and accessible component that supports d
   Install the `Checkbox` component and required dependencies using the following command:
 
     ```bash
-    npm radix-ui/react-checkbox lucide-react
+    npm @radix-ui/react-checkbox lucide-react
     ```
     Add the following code to `components/ui/checkbox.tsx`:
 
@@ -128,8 +153,8 @@ The `Checkbox` component is a versatile and accessible component that supports d
 
 <Files>
   <Folder name="app" defaultOpen>
-    <Folder name="components">
-      <Folder name="ui">
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
         <File name="checkbox.tsx" />
       
       </Folder>

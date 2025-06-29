@@ -14,20 +14,110 @@ import {
 
 ## Previews with Code
 
-### Example 1: Default Container Example
+### Default Container
 
 <Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="px-4 h-48 pb-8 content-center">
+  <Tab value="Preview" className="px-4 h-72 pb-8 content-center">
     <DefaultContainerPreview />
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-    // Code for DefaultContainerPreview provided above
+"use client";
+
+import React from "react";
+import { Container } from "@/app/components/container";
+
+export function DefaultContainerPreview() {
+  return (
+    <div className="space-y-4 max-w-7xl mx-auto">
+      <Container>
+        <div className="p-4 bg-gray-100 border rounded-lg">
+          Default container content goes here.
+        </div>
+      </Container>
+    </div>
+  );   
+  }
     ```
   </Tab>
 </Tabs>
 
-### Example 2: Variant Container Example
+
+---
+
+## Installation
+
+The `Container` component provides consistent width and spacing for layout management.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add container
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install class-variance-authority tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `container.tsx` file in your `components/ui` directory:
+    ```tsx ts2js
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils"; // your shadcn-style utility for merging classes
+
+const containerVariants = cva("mx-auto w-full", {
+  variants: {
+    variant: {
+      default: "max-w-7xl px-4 sm:px-6 lg:px-8",
+      sm: "max-w-sm px-4 sm:px-6",
+      md: "max-w-md px-4 sm:px-6",
+      lg: "max-w-lg px-4 sm:px-6",
+      xl: "max-w-xl px-4 sm:px-6",
+      "2xl": "max-w-2xl px-4 sm:px-6",
+      "3xl": "max-w-3xl px-4 sm:px-6",
+      "4xl": "max-w-4xl px-4 sm:px-6",
+      "5xl": "max-w-5xl px-4 sm:px-6",
+      "6xl": "max-w-6xl px-4 sm:px-6",
+      "7xl": "max-w-7xl px-4 sm:px-6",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+export interface ContainerProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof containerVariants> {}
+
+export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
+  ({ className, variant, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(containerVariants({ variant }), className)}
+        {...props}
+      />
+    );
+  },
+);
+
+Container.displayName = "Container";
+    ```
+
+  </Tab>
+</Tabs>
+
+---
+
+### Variant Container 
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="px-4 h-auto pb-8 content-center">
@@ -35,12 +125,42 @@ import {
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-    // Code for VariantContainerPreview provided above
-    ```
+"use client";
+
+import React from "react";
+import { Container } from "@/app/components/container";
+
+export function VariantContainerPreview() {
+  const variants = [
+    "sm",
+    "md",
+    "lg",
+    "xl",
+    "2xl",
+    "3xl",
+    "4xl",
+    "5xl",
+    "6xl",
+    "7xl",
+  ];
+
+  return (
+    <div className="space-y-8 max-w-7xl mx-auto not-prose">
+      {variants.map((variant) => (
+        <Container key={variant} variant={variant}>
+          <div className="p-4 bg-gray-100 border rounded-lg">
+            This is a `{variant}` container.
+          </div>
+        </Container>
+      ))}
+    </div>
+  );
+}   
+ ```
   </Tab>
 </Tabs>
 
-### Example 3: Styled Container Example
+### Styled Container 
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="px-4 h-48 pb-8 content-center">
@@ -48,8 +168,21 @@ import {
   </Tab>
   <Tab value="Code" className="w-auto h-auto">
     ```tsx ts2js
-    // Code for StyledContainerPreview provided above
-    ```
+"use client";
+
+import React from "react";
+import { Container } from "@/app/components/container";
+
+export function StyledContainerPreview() {
+  return (
+    <div className="space-y-4 max-w-7xl mx-auto not-prose">
+      <Container className="bg-blue-50 border-2 border-blue-200 rounded-xl">
+        <div className="p-4">Custom styled container content.</div>
+      </Container>
+    </div>
+  );
+}   
+ ```
   </Tab>
 </Tabs>
 
@@ -77,16 +210,51 @@ The `Container` component provides consistent width and spacing for layout manag
     ### 2. Add the Component
 
     Create a `container.tsx` file in your `components/ui` directory:
-    ```tsx
-    // Full Container component code provided in the query
+    ```tsx ts2js
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils"; // your shadcn-style utility for merging classes
+
+const containerVariants = cva("mx-auto w-full", {
+  variants: {
+    variant: {
+      default: "max-w-7xl px-4 sm:px-6 lg:px-8",
+      sm: "max-w-sm px-4 sm:px-6",
+      md: "max-w-md px-4 sm:px-6",
+      lg: "max-w-lg px-4 sm:px-6",
+      xl: "max-w-xl px-4 sm:px-6",
+      "2xl": "max-w-2xl px-4 sm:px-6",
+      "3xl": "max-w-3xl px-4 sm:px-6",
+      "4xl": "max-w-4xl px-4 sm:px-6",
+      "5xl": "max-w-5xl px-4 sm:px-6",
+      "6xl": "max-w-6xl px-4 sm:px-6",
+      "7xl": "max-w-7xl px-4 sm:px-6",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+export interface ContainerProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof containerVariants> {}
+
+export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
+  ({ className, variant, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(containerVariants({ variant }), className)}
+        {...props}
+      />
+    );
+  },
+);
+
+Container.displayName = "Container";
     ```
 
-    ### 3. Add Preview Component
-
-    Create a `ContainerPreview.tsx` file for demonstration purposes:
-    ```tsx
-    // Full ContainerPreview.tsx code provided above
-    ```
   </Tab>
 </Tabs>
 
@@ -96,8 +264,8 @@ The `Container` component provides consistent width and spacing for layout manag
 
 <Files>
   <Folder name="app" defaultOpen>
-    <Folder name="components">
-      <Folder name="ui">
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
         <File name="container.tsx" />
       </Folder>
     </Folder>

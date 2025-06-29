@@ -204,7 +204,7 @@ The `Command` component is a flexible and accessible command palette for your ap
       DialogHeader,
       DialogTitle,
       DialogDescription,
-    } from "@/app/components/ui/dialog";
+    } from "@/components/ui/dialog";
 
     const Command = React.forwardRef<
       React.ElementRef<typeof CommandPrimitive>,
@@ -369,11 +369,10 @@ The `Command` component is a flexible and accessible command palette for your ap
 
 <Files>
   <Folder name="app" defaultOpen>
-    <Folder name="components">
-      <Folder name="ui">
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
         <File name="command.tsx" />
       </Folder>
-    
     </Folder>
   </Folder>
 </Files>
