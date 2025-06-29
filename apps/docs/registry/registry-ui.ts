@@ -49,15 +49,15 @@ export const ui: Registry["items"] = [
     ],
     files: [
       {
-        path: "ui/AccessibilityUI.tsx",
+        path: "ui/accessibility/components/AccessibilityUI.tsx",
         type: "registry:ui",
       },
       {
-        path: "lib/accessibility-store.ts",
+        path: "ui/accessibility/lib/accessibility-store.ts",
         type: "registry:lib",
       },
       {
-        path: "lib/screen-reader-service.ts",
+        path: "ui/accessibility/lib/screen-reader-service.ts",
         type: "registry:lib",
       },
     ],

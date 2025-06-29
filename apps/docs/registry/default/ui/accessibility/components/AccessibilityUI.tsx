@@ -5,24 +5,24 @@ import {
   useAccessibilityStore,
   FeatureIntensity,
   ContrastMode,
-} from "@/registry/new-york/lib/accessibility-store";
-import screenReaderService from "@/registry/new-york/lib/screen-reader-service";
+} from "@/registry/default/ui/accessibility/lib/accessibility-store";
+import screenReaderService from "@/registry/default/ui/accessibility/lib/screen-reader-service";
 
-import { Button } from "@/registry/new-york/ui/button";
-import { Switch } from "@/registry/new-york/ui/switch";
-import { Slider } from "@/registry/new-york/ui/slider";
+import { Button } from "@/registry/default/ui/button";
+import { Switch } from "@/registry/default/ui/switch";
+import { Slider } from "@/registry/default/ui/slider";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/registry/new-york/ui/tabs";
+} from "@/registry/default/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/registry/new-york/ui/tooltip";
+} from "@/registry/default/ui/tooltip";
 
 import {
   LucideEye,

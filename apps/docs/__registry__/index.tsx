@@ -26,20 +26,20 @@ export const Index: Record<string, any> = {
       type: "registry:ui",
       registryDependencies: ["dialog","switch","button","avatar","tabs","tooltip","slider"],
       files: [{
-        path: "registry/new-york/ui/AccessibilityUI.tsx",
+        path: "registry/new-york/ui/accessibility/components/AccessibilityUI.tsx",
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/new-york/lib/accessibility-store.ts",
+        path: "registry/new-york/ui/accessibility/lib/accessibility-store.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/new-york/lib/screen-reader-service.ts",
+        path: "registry/new-york/ui/accessibility/lib/screen-reader-service.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/ui/AccessibilityUI.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/ui/accessibility/components/AccessibilityUI.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3450,20 +3450,20 @@ export const Index: Record<string, any> = {
       type: "registry:ui",
       registryDependencies: ["dialog","switch","button","avatar","tabs","tooltip","slider"],
       files: [{
-        path: "registry/default/ui/AccessibilityUI.tsx",
+        path: "registry/default/ui/accessibility/components/AccessibilityUI.tsx",
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/default/lib/accessibility-store.ts",
+        path: "registry/default/ui/accessibility/lib/accessibility-store.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/default/lib/screen-reader-service.ts",
+        path: "registry/default/ui/accessibility/lib/screen-reader-service.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/ui/AccessibilityUI.tsx")),
+      component: React.lazy(() => import("@/registry/default/ui/accessibility/components/AccessibilityUI.tsx")),
       source: "",
       meta: undefined,
     },
