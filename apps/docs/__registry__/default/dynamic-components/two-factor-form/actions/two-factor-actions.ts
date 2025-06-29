@@ -37,7 +37,7 @@ export interface TwoFactorConfirmation {
 }
 // Request 2FA code
 export const requestTwoFactorCode = async (
-  values: z.infer<typeof TwoFactorRequestSchema>
+  values: z.infer<typeof TwoFactorRequestSchema>,
 ): Promise<TwoFactorActionResult> => {
   try {
     const validatedFields = TwoFactorRequestSchema.safeParse(values);
@@ -64,7 +64,7 @@ export const requestTwoFactorCode = async (
 
 // Verify 2FA code
 export const verifyTwoFactorCode = async (
-  values: z.infer<typeof TwoFactorVerifySchema>
+  values: z.infer<typeof TwoFactorVerifySchema>,
 ): Promise<TwoFactorActionResult> => {
   try {
     const validatedFields = TwoFactorVerifySchema.safeParse(values);
@@ -106,7 +106,7 @@ export const verifyTwoFactorCode = async (
 // Enable/Disable 2FA for a user
 export const toggleTwoFactor = async (
   userId: string,
-  enabled: boolean
+  enabled: boolean,
 ): Promise<TwoFactorActionResult> => {
   try {
     await db.user.update({
@@ -135,7 +135,7 @@ export const toggleTwoFactor = async (
 
 // Database operations using Prisma
 export const getTwoFactorTokenByToken = async (
-  token: string
+  token: string,
 ): Promise<TwoFactorToken | null> => {
   try {
     const twoFactorToken = await db.twoFactorToken.findUnique({
@@ -148,7 +148,7 @@ export const getTwoFactorTokenByToken = async (
 };
 
 export const getTwoFactorTokenByEmail = async (
-  email: string
+  email: string,
 ): Promise<TwoFactorToken | null> => {
   try {
     const twoFactorToken = await db.twoFactorToken.findFirst({
@@ -161,7 +161,7 @@ export const getTwoFactorTokenByEmail = async (
 };
 
 export const getTwoFactorConfirmationByUserId = async (
-  userId: string
+  userId: string,
 ): Promise<TwoFactorConfirmation | null> => {
   try {
     const twoFactorConfirmation = await db.twoFactorConfirmation.findUnique({
@@ -174,7 +174,7 @@ export const getTwoFactorConfirmationByUserId = async (
 };
 
 export const generateTwoFactorToken = async (
-  email: string
+  email: string,
 ): Promise<TwoFactorToken> => {
   const token = crypto.randomInt(100_000, 1_000_000).toString();
   const expires = new Date(new Date().getTime() + 5 * 60 * 1000); // 5 minute expiry

@@ -111,7 +111,7 @@ export async function getInventoryItem(id: string) {
 }
 
 export async function createInventoryItem(
-  values: z.infer<typeof inventoryFormSchema>
+  values: z.infer<typeof inventoryFormSchema>,
 ) {
   try {
     const validatedFields = inventoryFormSchema.parse(values);
@@ -144,7 +144,7 @@ export async function createInventoryItem(
 
 export async function updateInventoryItem(
   id: string,
-  values: z.infer<typeof inventoryFormSchema>
+  values: z.infer<typeof inventoryFormSchema>,
 ) {
   try {
     const validatedFields = inventoryFormSchema.parse(values);

@@ -35,33 +35,29 @@ export const ui: Registry["items"] = [
     },
   },
   {
-    name: "accessibility-tool",
+    name: "accessibility",
     type: "registry:ui",
     dependencies: ["zustand"],
-    registryDependencies: ["dialog", "switch", "avatar", "tabs", "slider"],
+    registryDependencies: [
+      "dialog",
+      "switch",
+      "button",
+      "avatar",
+      "tabs",
+      "tooltip",
+      "slider",
+    ],
     files: [
       {
-        path: "ui/AccessibilityTool.tsx",
+        path: "ui/accessibility/components/AccessibilityUI.tsx",
         type: "registry:ui",
       },
       {
-        path: "ui/AccessibilityProvider.tsx",
-        type: "registry:ui",
-      },
-      {
-        path: "ui/AccessibilityTrigger.tsx",
-        type: "registry:ui",
-      },
-      {
-        path: "ui/AccessibilitySlider.tsx",
-        type: "registry:ui",
-      },
-      {
-        path: "lib/accessibility-store.ts",
+        path: "ui/accessibility/lib/accessibility-store.ts",
         type: "registry:lib",
       },
       {
-        path: "lib/screen-reader-service.ts",
+        path: "ui/accessibility/lib/screen-reader-service.ts",
         type: "registry:lib",
       },
     ],

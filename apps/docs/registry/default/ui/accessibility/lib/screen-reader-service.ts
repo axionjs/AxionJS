@@ -42,7 +42,7 @@ class ScreenReaderService {
   public initialize(
     enabled: boolean,
     speed: "normal" | "slow",
-    volume: number
+    volume: number,
   ) {
     if (!this.isMounted) return;
 

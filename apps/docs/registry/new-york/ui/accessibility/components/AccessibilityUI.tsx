@@ -5,8 +5,8 @@ import {
   useAccessibilityStore,
   FeatureIntensity,
   ContrastMode,
-} from "@/registry/new-york/lib/accessibility-store";
-import screenReaderService from "@/registry/new-york/lib/screen-reader-service";
+} from "@/registry/new-york/ui/accessibility/lib/accessibility-store";
+import screenReaderService from "@/registry/new-york/ui/accessibility/lib/screen-reader-service";
 
 import { Button } from "@/registry/new-york/ui/button";
 import { Switch } from "@/registry/new-york/ui/switch";
@@ -133,7 +133,7 @@ export function AccessibilityUI({ children }: { children: React.ReactNode }) {
     screenReaderService.initialize(
       screenReader.enabled,
       screenReader.speed,
-      screenReader.volume
+      screenReader.volume,
     );
     return () => {
       screenReaderService.cleanup();
@@ -262,7 +262,7 @@ export function AccessibilityUI({ children }: { children: React.ReactNode }) {
     return () => {
       document.removeEventListener(
         "toggleAccessibilityPanel",
-        handleToggleEvent
+        handleToggleEvent,
       );
       document.removeEventListener("keydown", handleKeyDown); // Clean up keyboard listener
     };
@@ -533,7 +533,7 @@ export function AccessibilityUI({ children }: { children: React.ReactNode }) {
                       }
                       onChange={(val) =>
                         setScreenReaderSpeed(
-                          val === "medium" ? "slow" : "normal"
+                          val === "medium" ? "slow" : "normal",
                         )
                       }
                       icon={<LucideZap className="h-4 w-4" />}

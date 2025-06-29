@@ -20,38 +20,26 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
-    "accessibility-tool": {
-      name: "accessibility-tool",
+    "accessibility": {
+      name: "accessibility",
       description: "",
       type: "registry:ui",
-      registryDependencies: ["dialog","switch","avatar","tabs","slider"],
+      registryDependencies: ["dialog","switch","button","avatar","tabs","tooltip","slider"],
       files: [{
-        path: "registry/new-york/ui/AccessibilityTool.tsx",
+        path: "registry/new-york/ui/accessibility/components/AccessibilityUI.tsx",
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/new-york/ui/AccessibilityProvider.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/ui/AccessibilityTrigger.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/ui/AccessibilitySlider.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/new-york/lib/accessibility-store.ts",
+        path: "registry/new-york/ui/accessibility/lib/accessibility-store.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/new-york/lib/screen-reader-service.ts",
+        path: "registry/new-york/ui/accessibility/lib/screen-reader-service.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/new-york/ui/AccessibilityTool.tsx")),
+      component: React.lazy(() => import("@/registry/new-york/ui/accessibility/components/AccessibilityUI.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3456,38 +3444,26 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
-    "accessibility-tool": {
-      name: "accessibility-tool",
+    "accessibility": {
+      name: "accessibility",
       description: "",
       type: "registry:ui",
-      registryDependencies: ["dialog","switch","avatar","tabs","slider"],
+      registryDependencies: ["dialog","switch","button","avatar","tabs","tooltip","slider"],
       files: [{
-        path: "registry/default/ui/AccessibilityTool.tsx",
+        path: "registry/default/ui/accessibility/components/AccessibilityUI.tsx",
         type: "registry:ui",
         target: ""
       },{
-        path: "registry/default/ui/AccessibilityProvider.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/ui/AccessibilityTrigger.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/ui/AccessibilitySlider.tsx",
-        type: "registry:ui",
-        target: ""
-      },{
-        path: "registry/default/lib/accessibility-store.ts",
+        path: "registry/default/ui/accessibility/lib/accessibility-store.ts",
         type: "registry:lib",
         target: ""
       },{
-        path: "registry/default/lib/screen-reader-service.ts",
+        path: "registry/default/ui/accessibility/lib/screen-reader-service.ts",
         type: "registry:lib",
         target: ""
       }],
       categories: undefined,
-      component: React.lazy(() => import("@/registry/default/ui/AccessibilityTool.tsx")),
+      component: React.lazy(() => import("@/registry/default/ui/accessibility/components/AccessibilityUI.tsx")),
       source: "",
       meta: undefined,
     },

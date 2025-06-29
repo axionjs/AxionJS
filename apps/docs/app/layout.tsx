@@ -1,7 +1,7 @@
 import { RootProvider } from "fumadocs-ui/provider";
 import type { ReactNode } from "react";
 import "./global.css";
-import { AccessibilityUI } from "@/registry/new-york/ui/AccessibilityUI";
+import { AccessibilityUI } from "@/registry/new-york/ui/accessibility/components/AccessibilityUI";
 import { ToastProvider, ToastViewport } from "@/registry/new-york/ui/toast";
 
 export default function Layout({ children }: { children: ReactNode }) {
