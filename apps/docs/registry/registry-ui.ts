@@ -347,6 +347,17 @@ export const ui: Registry["items"] = [
     ],
   },
   {
+    name: "input-otp",
+    type: "registry:ui",
+    dependencies: ["input-otp"],
+    files: [
+      {
+        path: "ui/input-otp.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
     name: "label",
     type: "registry:ui",
     dependencies: ["@radix-ui/react-label"],

@@ -92,11 +92,8 @@ When you add a component with AxionJS, you get the complete source code in your 
 // This button is yours - modify it however you need
 export function Button({ variant, size, ...props }) {
   return (
-    <button
-      className={cn(buttonVariants({ variant, size }))}
-      {...props}
-    />
-  )
+    <button className={cn(buttonVariants({ variant, size }))} {...props} />
+  );
 }
 ```
 
@@ -117,16 +114,14 @@ This gives you:
 
 ```tsx
 // Accessible dialog with zero extra work
-import * as Dialog from "radix-ui"
+import * as Dialog from "radix-ui";
 
 export function Modal({ children, ...props }) {
   return (
     <Dialog.Root {...props}>
-      <Dialog.Content className="modal-content">
-        {children}
-      </Dialog.Content>
+      <Dialog.Content className="modal-content">{children}</Dialog.Content>
     </Dialog.Root>
-  )
+  );
 }
 ```
 
@@ -145,17 +140,17 @@ Over **30+ custom hooks** for real-world application needs:
 
 ```tsx
 // Data fetching and state management
-const { data, loading, error } = useAPI('/api/users')
-const { items, pagination } = usePagination(data, { pageSize: 10 })
+const { data, loading, error } = useAPI("/api/users");
+const { items, pagination } = usePagination(data, { pageSize: 10 });
 
 // UI interactions
-const { copy, copied } = useClipboard()
-const { theme, setTheme } = useTheme()
-const { isOnline } = useNetworkStatus()
+const { copy, copied } = useClipboard();
+const { theme, setTheme } = useTheme();
+const { isOnline } = useNetworkStatus();
 
 // Form handling
-const { register, errors, submit } = useForm(schema)
-const { upload, progress } = useFileUpload()
+const { register, errors, submit } = useForm(schema);
+const { upload, progress } = useFileUpload();
 ```
 
 ## Rich Chart Components
@@ -167,6 +162,7 @@ Built on top of [Recharts](https://recharts.org/) with beautiful, customizable d
 - **Combo Charts** - Multiple data series support
 - **Real-time Charts** - Live data updates
 - **Custom Themes** - Matches your design system
+
 ```bash
 npx axionjs add line-chart
 ```
@@ -195,10 +191,12 @@ Ready-to-use sections that connect to your API routes or server actions:
 
 ```bash
 npx axionjs add hero-app
-````
+```
+
 ```bash
 npx axionjs add pricing-comparison
 ```
+
 ```bash
 npx axionjs add table-complex
 ```
@@ -208,16 +206,19 @@ npx axionjs add table-complex
 Complete solutions for Next.js App Router applications:
 
 ### Authentication System
+
 - **RBAC (Role-Based Access Control)** - User roles and permissions
 - **OAuth Integration** - Google, GitHub, Discord providers
 - **Session Management** - Secure token handling
 
 ### Data Management
+
 - **CRUD Tables** - Create, read, update, delete operations
 - **Media Manager** - File upload, optimization
 - **Newsletter** - Email collection and automation
 
 ### Database Integration
+
 - **[Prisma ORM](https://www.prisma.io/)** - Type-safe database access
 - **[Auth.js](https://authjs.dev/)** - Authentication for Next.js
 - **[PostgreSQL](https://www.postgresql.org/)** - Production database support
@@ -225,8 +226,9 @@ Complete solutions for Next.js App Router applications:
 ```bash
 npx axionjs add rbac-auth
 ```
+
 ```bash
-npx axionjs add crud-table
+npx axionjs add simple-crud-table
 ```
 
 ## Accessibility Excellence
@@ -248,7 +250,6 @@ Transform how you build components with our custom MCP (Model Context Protocol) 
 - **Intelligent Modifications:** AI understands your existing components and suggests improvements
 - **Pattern Recognition:** Learn from your codebase to generate consistent, on-brand components
 - **Minimal Configuration:** Works out of the box with popular AI tools and IDEs
-
 
 ### MCP Server Setup
 

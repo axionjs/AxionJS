@@ -418,6 +418,21 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
+    "input-otp": {
+      name: "input-otp",
+      description: "",
+      type: "registry:ui",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/ui/input-otp.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/ui/input-otp.tsx")),
+      source: "",
+      meta: undefined,
+    },
     "label": {
       name: "label",
       description: "",
@@ -3839,6 +3854,21 @@ export const Index: Record<string, any> = {
       }],
       categories: undefined,
       component: React.lazy(() => import("@/registry/default/ui/input.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "input-otp": {
+      name: "input-otp",
+      description: "",
+      type: "registry:ui",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/ui/input-otp.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/ui/input-otp.tsx")),
       source: "",
       meta: undefined,
     },

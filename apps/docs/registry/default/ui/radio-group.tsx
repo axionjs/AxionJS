@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import { Circle } from "lucide-react";
+import { Circle as CircleIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -13,7 +13,8 @@ const RadioGroup = React.forwardRef<
   return (
     <RadioGroupPrimitive.Root
       ref={ref}
-      className={cn("grid gap-2", className)}
+      data-slot="radio-group"
+      className={cn("grid gap-3", className)}
       {...props}
     />
   );
@@ -27,23 +28,27 @@ const RadioGroupItem = React.forwardRef<
   return (
     <RadioGroupPrimitive.Item
       ref={ref}
+      data-slot="radio-group-item"
       className={cn(
-        "relative aspect-square h-4 w-4 rounded-full border border-primary text-primary ",
+        "relative aspect-square h-4 w-4 rounded-full border border-primary text-primary",
+        "transition-colors duration-200 ease-in-out shadow-xs outline-none",
         "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30",
-        "transition-colors duration-200 ease-in-out",
+        "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20",
+        "dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       {...props}
     >
       <RadioGroupPrimitive.Indicator
+        data-slot="radio-group-indicator"
         className={cn(
-          "flex items-center justify-center",
-          "transition-transform duration-200 transform scale-0 data-[state=checked]:scale-100",
+          "relative flex items-center justify-center transform scale-0",
+          "transition-transform duration-200 data-[state=checked]:scale-100",
         )}
       >
-        <Circle
-          className="h-3.5 w-3.5 fill-primary "
+        <CircleIcon
+          className="fill-primary absolute top-1/2 left-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2"
           aria-hidden="true"
           focusable="false"
         />
