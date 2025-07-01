@@ -1,7 +1,7 @@
 {
   "name": "axionjs-ui",
   "version": "0.0.1",
-  "description": "Add components directly in to your project",
+  "description": "AxionJS CLI for managing AxionJS UI components and configurations.",
   "bin": {
     "axionjs": "src/index.js"
   },

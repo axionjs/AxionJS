@@ -5,6 +5,10 @@ on:
     branches:
       - cli
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -26,6 +30,9 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: npm run release
+          setupGitUser: true
+          createGithubReleases: true
+          commitMode: git-cli
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
