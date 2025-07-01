@@ -58,5 +58,8 @@
     "ts-morph": "^24.0.0",
     "tsconfig-paths": "^4.2.0",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.5"
   }
 }
