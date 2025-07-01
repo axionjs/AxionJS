@@ -1,16 +1,39 @@
 {
   "name": "axionjs-ui",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Add components directly in to your project",
   "bin": {
     "axionjs": "src/index.js"
   },
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axionjs/AxionJS.git",
+    "directory": "packages/cli"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "components",
+    "ui",
+    "tailwind",
+    "radix-ui",
+    "axionjs",
+    "cli",
+    "axionjs-ui",
+    "axionjs-cli"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "axionjs",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@antfu/ni": "^0.23.1",
     "@babel/core": "^7.26.0",
