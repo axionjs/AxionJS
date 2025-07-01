@@ -96,14 +96,12 @@ const FeatureGrid = (props: BottomNavigationProps) => {
         </motion.div>
       </div>
       <div className="mt-4 mx-auto flex justify-center">
-        <div className="relative inline-block p-[1px]  rounded-full bg-gradient-to-r from-purple-800 via-purple-500 to-purple-900 animate-pulse">
-          <Badge
-            variant="primary"
-            className="text-lg bg-white dark:bg-gray-800 rounded-full"
-          >
-            <Link href="/docs">Explore more components</Link>
-          </Badge>
-        </div>
+        <Badge
+          variant="primary"
+          className="text-lg bg-white dark:bg-gray-800 rounded-full"
+        >
+          <Link href="/docs">Explore more components</Link>
+        </Badge>
       </div>
     </div>
   );

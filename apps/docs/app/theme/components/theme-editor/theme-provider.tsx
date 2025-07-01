@@ -1,10 +1,10 @@
 "use client";
 
-import type React from "react";
-import { useThemeStore } from "../../lib/stores/theme-store";
-import { useEffect, useState } from "react";
-import { googleFonts } from "../../lib/fonts";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { googleFonts } from "../../lib/fonts";
+import { useThemeStore } from "../../lib/stores/theme-store";
+import { AnimatedBackground } from "./animated-background";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const { activeThemeData } = useThemeStore();
@@ -131,14 +131,20 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [activeThemeData, isDarkMode]);
 
   return (
-    <div
-      className="font-[var(--font-text)]"
-      style={{
-        fontFamily: `"${activeThemeData.fonts.textFont}", sans-serif`,
-        fontWeight: activeThemeData.fonts.textWeight,
-      }}
-    >
-      {children}
+    <div className="relative min-h-screen bg-background">
+      {/* Animated Background */}
+      <AnimatedBackground />
+      <div className="relative z-10">
+        <div
+          className="font-[var(--font-text)]"
+          style={{
+            fontFamily: `"${activeThemeData.fonts.textFont}", sans-serif`,
+            fontWeight: activeThemeData.fonts.textWeight,
+          }}
+        >
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

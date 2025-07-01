@@ -96,13 +96,13 @@ function ChartsPageContent() {
       {/* Component to sync themes */}
       <ThemeSync />
 
-      <div className="container mx-auto py-10 mt-24 mb-12">
-        <div className="mb-10 flex items-center justify-between">
-          <div>
-            <h1 className=" text-3xl sm:text-4xl font-bold">
+      <div className="container mx-auto  py-10 mt-24 mb-12">
+        <div className="mb-10 flex items-center  justify-center mx-auto">
+          <div className="text-centerr">
+            <h1 className="text-2xl md:text-4xl text-center lg:text-5xl font-bold mb-6 leading-tight">
               Chart Components Gallery
             </h1>
-            <p className="mt-2 text-lg text-muted-foreground">
+            <p className="text-lg md:text-xl text-center text-muted-foreground mb-12 max-w-3xl mx-auto leading-7 [&:not(:first-child)]:mt-6">
               A growing collection of beautiful chart components built with
               React and Recharts
             </p>

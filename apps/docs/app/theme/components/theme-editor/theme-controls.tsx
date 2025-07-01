@@ -716,7 +716,7 @@ function FontCombobox({
 }
 
 // Controls Content Component (extracted for reusability)
-function ThemeControlsContent() {
+function ThemeControlsContent({ isMobile = false }: { isMobile?: boolean }) {
   const {
     activeThemeData,
     updateThemeColor,
@@ -795,7 +795,7 @@ function ThemeControlsContent() {
   );
 
   return (
-    <div className="p-6 space-y-6">
+    <div className={cn("space-y-6", isMobile ? "p-6" : "p-6")}>
       {/* Enhanced Primary Color Picker */}
       <EnhancedColorPicker
         value={activeThemeData.colors.primary || "#3b82f6"}
@@ -1178,9 +1178,19 @@ export default function ThemeControls() {
 
   return (
     <>
-      {/* Desktop Sidebar (md and up) */}
-      <div className="hidden md:block w-0 lg:w-72 border-l border-border">
-        <ThemeControlsContent />
+      {/* Desktop Sidebar (md and up) - Fixed height 100vh */}
+      <div className="hidden md:flex w-0 lg:w-72 border-l border-border h-screen fixed right-0 top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="flex flex-col w-full h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-border shrink-0">
+            <h3 className="text-sm font-semibold">Theme Settings</h3>
+          </div>
+
+          {/* Scrollable Content */}
+          <ScrollArea className="flex-1 overflow-hidden">
+            <ThemeControlsContent />
+          </ScrollArea>
+        </div>
       </div>
 
       {/* Mobile Settings Button (below md) */}
@@ -1209,7 +1219,7 @@ export default function ThemeControls() {
             </div>
           </SheetHeader>
           <ScrollArea className="h-[calc(100vh-80px)]">
-            <ThemeControlsContent />
+            <ThemeControlsContent isMobile={true} />
           </ScrollArea>
         </SheetContent>
       </Sheet>

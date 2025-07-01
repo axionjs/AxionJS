@@ -45,7 +45,7 @@ export const chartComponents = [
     displayName: "Line Chart - Linear",
     category: "Line",
     description: "Simple linear chart showing trend data over time",
-    installCommand: "npx axionjs add line-chart-linear",
+    installCommand: "npx axionjs-ui add line-chart-linear",
   },
   {
     name: "area-chart-stacked",
@@ -53,7 +53,7 @@ export const chartComponents = [
     displayName: "Area Chart - Stacked",
     category: "Area",
     description: "Stacked area chart for comparing multiple data series",
-    installCommand: "npx axionjs add area-chart-stacked",
+    installCommand: "npx axionjs-ui add area-chart-stacked",
   },
   {
     name: "bar-chart-multiple",
@@ -61,7 +61,7 @@ export const chartComponents = [
     displayName: "Bar Chart - Multiple",
     category: "Bar",
     description: "Multiple bar chart for comparing categories",
-    installCommand: "npx axionjs add bar-chart-multiple",
+    installCommand: "npx axionjs-ui add bar-chart-multiple",
   },
   {
     name: "pie-chart-donut",
@@ -69,7 +69,7 @@ export const chartComponents = [
     displayName: "Pie Chart - Donut",
     category: "Pie",
     description: "Donut chart for showing proportional data",
-    installCommand: "npx axionjs add pie-chart-donut",
+    installCommand: "npx axionjs-ui add pie-chart-donut",
   },
   {
     name: "line-chart",
@@ -77,7 +77,7 @@ export const chartComponents = [
     displayName: "Line Chart",
     category: "Line",
     description: "Basic line chart for trend visualization",
-    installCommand: "npx axionjs add line-chart",
+    installCommand: "npx axionjs-ui add line-chart",
   },
   {
     name: "line-chart-dots",
@@ -85,7 +85,7 @@ export const chartComponents = [
     displayName: "Line Chart - Dots",
     category: "Line",
     description: "Line chart with dot markers",
-    installCommand: "npx axionjs add line-chart-dots",
+    installCommand: "npx axionjs-ui add line-chart-dots",
   },
   {
     name: "line-chart-multiple",
@@ -93,7 +93,7 @@ export const chartComponents = [
     displayName: "Line Chart - Multiple",
     category: "Line",
     description: "Line chart with multiple series",
-    installCommand: "npx axionjs add line-chart-multiple",
+    installCommand: "npx axionjs-ui add line-chart-multiple",
   },
   {
     name: "area-chart-step",
@@ -101,7 +101,7 @@ export const chartComponents = [
     displayName: "Area Chart - Step",
     category: "Area",
     description: "Area chart with step interpolation",
-    installCommand: "npx axionjs add area-chart-step",
+    installCommand: "npx axionjs-ui add area-chart-step",
   },
   {
     name: "area-chart-legend",
@@ -109,7 +109,7 @@ export const chartComponents = [
     displayName: "Area Chart - Legend",
     category: "Area",
     description: "Area chart with custom legend",
-    installCommand: "npx axionjs add area-chart-legend",
+    installCommand: "npx axionjs-ui add area-chart-legend",
   },
   {
     name: "bar-chart-horizontal",
@@ -117,7 +117,7 @@ export const chartComponents = [
     displayName: "Bar Chart - Horizontal",
     category: "Bar",
     description: "Horizontal bar chart for category comparison",
-    installCommand: "npx axionjs add bar-chart-horizontal",
+    installCommand: "npx axionjs-ui add bar-chart-horizontal",
   },
   {
     name: "bar-chart-label",
@@ -125,7 +125,7 @@ export const chartComponents = [
     displayName: "Bar Chart - Label",
     category: "Bar",
     description: "Bar chart with custom labels",
-    installCommand: "npx axionjs add bar-chart-label",
+    installCommand: "npx axionjs-ui add bar-chart-label",
   },
   {
     name: "bar-chart-multiple-2",
@@ -133,7 +133,7 @@ export const chartComponents = [
     displayName: "Bar Chart - Multiple 2",
     category: "Bar",
     description: "Alternative multiple bar chart style",
-    installCommand: "npx axionjs add bar-chart-multiple-2",
+    installCommand: "npx axionjs-ui add bar-chart-multiple-2",
   },
   {
     name: "pie-chart-label",
@@ -141,7 +141,7 @@ export const chartComponents = [
     displayName: "Pie Chart - Label",
     category: "Pie",
     description: "Pie chart with custom labels",
-    installCommand: "npx axionjs add pie-chart-label",
+    installCommand: "npx axionjs-ui add pie-chart-label",
   },
   {
     name: "pie-chart-interactive",
@@ -149,7 +149,7 @@ export const chartComponents = [
     displayName: "Pie Chart - Interactive",
     category: "Pie",
     description: "Interactive pie chart with hover effects",
-    installCommand: "npx axionjs add pie-chart-interactive",
+    installCommand: "npx axionjs-ui add pie-chart-interactive",
   },
   {
     name: "radar-chart-grid-filled",
@@ -157,7 +157,7 @@ export const chartComponents = [
     displayName: "Radar Chart - Grid Filled",
     category: "Radar",
     description: "Radar chart with filled grid",
-    installCommand: "npx axionjs add radar-chart-grid-filled",
+    installCommand: "npx axionjs-ui add radar-chart-grid-filled",
   },
   {
     name: "radial-chart-label",
@@ -165,7 +165,7 @@ export const chartComponents = [
     displayName: "Radial Chart - Label",
     category: "Radial",
     description: "Radial chart with custom labels",
-    installCommand: "npx axionjs add radial-chart-label",
+    installCommand: "npx axionjs-ui add radial-chart-label",
   },
   {
     name: "radial-chart-shape",
@@ -173,7 +173,7 @@ export const chartComponents = [
     displayName: "Radial Chart - Shape",
     category: "Radial",
     description: "Radial chart with custom shapes",
-    installCommand: "npx axionjs add radial-chart-shape",
+    installCommand: "npx axionjs-ui add radial-chart-shape",
   },
   {
     name: "tooltip-no-label",
@@ -181,7 +181,7 @@ export const chartComponents = [
     displayName: "Tooltip - No Label",
     category: "Tooltip",
     description: "Chart with tooltip without labels",
-    installCommand: "npx axionjs add tooltip-no-label",
+    installCommand: "npx axionjs-ui add tooltip-no-label",
   },
   {
     name: "heatmap-chart",
@@ -189,7 +189,7 @@ export const chartComponents = [
     displayName: "Heatmap Chart",
     category: "Heatmap",
     description: "Heatmap for displaying density data",
-    installCommand: "npx axionjs add heatmap-chart",
+    installCommand: "npx axionjs-ui add heatmap-chart",
   },
   {
     name: "scatter-chart",
@@ -197,7 +197,7 @@ export const chartComponents = [
     displayName: "Scatter Plot Chart",
     category: "Scatter",
     description: "Scatter plot for correlation data",
-    installCommand: "npx axionjs add scatter-chart",
+    installCommand: "npx axionjs-ui add scatter-chart",
   },
   {
     name: "bubble-chart",
@@ -205,7 +205,7 @@ export const chartComponents = [
     displayName: "Bubble Chart",
     category: "Bubble",
     description: "Bubble chart for multi-dimensional data",
-    installCommand: "npx axionjs add bubble-chart",
+    installCommand: "npx axionjs-ui add bubble-chart",
   },
   {
     name: "funnel-chart",
@@ -213,7 +213,7 @@ export const chartComponents = [
     displayName: "Funnel Chart",
     category: "Funnel",
     description: "Funnel chart for flow visualization",
-    installCommand: "npx axionjs add funnel-chart",
+    installCommand: "npx axionjs-ui add funnel-chart",
   },
   {
     name: "composed-chart",
@@ -221,7 +221,7 @@ export const chartComponents = [
     displayName: "Composed Chart",
     category: "Composed",
     description: "Combined chart with multiple types",
-    installCommand: "npx axionjs add composed-chart",
+    installCommand: "npx axionjs-ui add composed-chart",
   },
   {
     name: "stacked-area-percent",
@@ -229,7 +229,7 @@ export const chartComponents = [
     displayName: "Stacked Area Percent Chart",
     category: "Area",
     description: "Area chart with percentage stacking",
-    installCommand: "npx axionjs add stacked-area-percent",
+    installCommand: "npx axionjs-ui add stacked-area-percent",
   },
   {
     name: "gradient-chart",
@@ -237,7 +237,7 @@ export const chartComponents = [
     displayName: "Gradient Chart",
     category: "Line",
     description: "Line chart with gradient fill",
-    installCommand: "npx axionjs add gradient-chart",
+    installCommand: "npx axionjs-ui add gradient-chart",
   },
   {
     name: "brush-chart",
@@ -245,7 +245,7 @@ export const chartComponents = [
     displayName: "Brush Chart",
     category: "Line",
     description: "Line chart with brush for zooming",
-    installCommand: "npx axionjs add brush-chart",
+    installCommand: "npx axionjs-ui add brush-chart",
   },
   {
     name: "reference-line-chart",
@@ -253,7 +253,7 @@ export const chartComponents = [
     displayName: "Reference Line Chart",
     category: "Line",
     description: "Line chart with reference lines",
-    installCommand: "npx axionjs add reference-line-chart",
+    installCommand: "npx axionjs-ui add reference-line-chart",
   },
   {
     name: "polar-chart",
@@ -261,7 +261,7 @@ export const chartComponents = [
     displayName: "Polar Chart",
     category: "Polar",
     description: "Polar chart for angular data",
-    installCommand: "npx axionjs add polar-chart",
+    installCommand: "npx axionjs-ui add polar-chart",
   },
   {
     name: "multi-radar-chart",
@@ -269,7 +269,7 @@ export const chartComponents = [
     displayName: "Multi Radar Chart",
     category: "Radar",
     description: "Radar chart with multiple datasets",
-    installCommand: "npx axionjs add multi-radar-chart",
+    installCommand: "npx axionjs-ui add multi-radar-chart",
   },
   {
     name: "custom-radial-bar",
@@ -277,7 +277,7 @@ export const chartComponents = [
     displayName: "Custom Radial Bar Chart",
     category: "Radial",
     description: "Customized radial bar chart",
-    installCommand: "npx axionjs add custom-radial-bar",
+    installCommand: "npx axionjs-ui add custom-radial-bar",
   },
   {
     name: "custom-pie-chart",
@@ -285,7 +285,7 @@ export const chartComponents = [
     displayName: "Custom Pie Chart",
     category: "Pie",
     description: "Customized pie chart with animations",
-    installCommand: "npx axionjs add custom-pie-chart",
+    installCommand: "npx axionjs-ui add custom-pie-chart",
   },
   {
     name: "gauge-chart",
@@ -293,7 +293,7 @@ export const chartComponents = [
     displayName: "Gauge Chart",
     category: "Gauge",
     description: "Gauge chart for displaying metrics",
-    installCommand: "npx axionjs add gauge-chart",
+    installCommand: "npx axionjs-ui add gauge-chart",
   },
   {
     name: "bullet-chart",
@@ -301,7 +301,7 @@ export const chartComponents = [
     displayName: "Bullet Chart",
     category: "Bullet",
     description: "Bullet chart for goal comparison",
-    installCommand: "npx axionjs add bullet-chart",
+    installCommand: "npx axionjs-ui add bullet-chart",
   },
   {
     name: "waterfall-chart",
@@ -309,7 +309,7 @@ export const chartComponents = [
     displayName: "Waterfall Chart",
     category: "Waterfall",
     description: "Waterfall chart for financial data",
-    installCommand: "npx axionjs add waterfall-chart",
+    installCommand: "npx axionjs-ui add waterfall-chart",
   },
   {
     name: "timeline-chart",
@@ -317,7 +317,7 @@ export const chartComponents = [
     displayName: "Timeline Chart",
     category: "Timeline",
     description: "Timeline chart for sequential events",
-    installCommand: "npx axionjs add timeline-chart",
+    installCommand: "npx axionjs-ui add timeline-chart",
   },
   {
     name: "sunburst-chart",
@@ -325,7 +325,7 @@ export const chartComponents = [
     displayName: "Sunburst Chart",
     category: "Sunburst",
     description: "Sunburst chart for hierarchical data visualization",
-    installCommand: "npx axionjs add sunburst-chart",
+    installCommand: "npx axionjs-ui add sunburst-chart",
   },
   {
     name: "vertical-line-chart",
@@ -333,7 +333,7 @@ export const chartComponents = [
     displayName: "Vertical Line Chart",
     category: "Line",
     description: "Line chart with vertical layout for better comparison",
-    installCommand: "npx axionjs add vertical-line-chart",
+    installCommand: "npx axionjs-ui add vertical-line-chart",
   },
   {
     name: "composed-area-chart",
@@ -341,6 +341,6 @@ export const chartComponents = [
     displayName: "Composed Area Chart",
     category: "Composed",
     description: "Area chart with range areas and trend lines",
-    installCommand: "npx axionjs add composed-area-chart",
+    installCommand: "npx axionjs-ui add composed-area-chart",
   },
 ];

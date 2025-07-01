@@ -48,7 +48,7 @@ export function AxionTerminalDemo() {
       `}</style>
 
       <Terminal className="w-full">
-        <TypingAnimation>$ npx axionjs add</TypingAnimation>
+        <TypingAnimation>$ npx axionjs-ui add</TypingAnimation>
 
         <AnimatedSpan delay={1500}>
           <span>┌</span>
