@@ -1,0 +1,18 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "animated-group",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "A simple animated group block.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "blocks/animated-group.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { motion, type Variants } from \"motion/react\";\nimport { cn } from \"@/lib/utils\";\n\ntype AnimatedGroupProps = {\n  children: React.ReactNode;\n  className?: string;\n  variants?: {\n    container?: Variants;\n    item?: Variants;\n  };\n  initial?: string;\n  animate?: string;\n  exit?: string;\n  transition?: any;\n  delay?: number;\n  staggerChildren?: number;\n  as?: React.ElementType;\n};\n\nexport default function AnimatedGroup({\n  children,\n  className,\n  variants = {\n    container: {\n      hidden: { opacity: 0 },\n      visible: {\n        opacity: 1,\n        transition: {\n          staggerChildren: 0.1,\n        },\n      },\n    },\n    item: {\n      hidden: { opacity: 0, y: 20 },\n      visible: {\n        opacity: 1,\n        y: 0,\n        transition: {\n          duration: 0.5,\n        },\n      },\n    },\n  },\n  initial = \"hidden\",\n  animate = \"visible\",\n  exit = \"hidden\",\n  transition,\n  delay = 0,\n  staggerChildren = 0.1,\n  as: Component = motion.div,\n}: AnimatedGroupProps) {\n  // Apply delay to container transition if provided\n  const containerVariants = {\n    ...variants.container,\n    visible: {\n      ...variants.container?.visible,\n      transition: {\n        ...(variants.container?.visible as any)?.transition,\n        delayChildren: delay,\n        staggerChildren: staggerChildren,\n      },\n    },\n  };\n\n  return (\n    <Component\n      className={cn(className)}\n      initial={initial}\n      animate={animate}\n      exit={exit}\n      variants={containerVariants}\n      transition={transition}\n    >\n      {React.Children.map(children, (child, index) => {\n        if (React.isValidElement(child)) {\n          return React.cloneElement(child as React.ReactElement, {\n            variants: variants.item,\n            key: `animated-item-${index}`,\n          });\n        }\n        return (\n          <motion.div key={`animated-item-${index}`} variants={variants.item}>\n            {child}\n          </motion.div>\n        );\n      })}\n    </Component>\n  );\n}\n",
+      "type": "registry:component",
+      "target": ""
+    }
+  ]
+}

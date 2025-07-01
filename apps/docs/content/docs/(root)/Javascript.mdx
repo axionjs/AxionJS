@@ -1,0 +1,54 @@
+---
+title: JavaScript
+description: How to use AxionJS with JavaScript
+---
+
+import { Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from 'fumadocs-ui/components/callout'
+
+<Steps>
+
+## Overview
+
+AxionJS components are primarily written in TypeScript. However, you can also opt to use them in JavaScript projects.
+
+<Callout>
+We recommend using TypeScript for better type safety. If you still prefer JavaScript, follow these steps.
+</Callout>
+
+## Configure components.json
+
+Set the `tsx` flag to `false` to generate JavaScript components:
+
+```json {8} title="components.json" showLineNumbers
+{
+  "style": "default",
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "app/globals.css",
+    "baseColor": "default",
+    "cssVariables": true
+  },
+  "rsc": false,
+  "tsx": false,
+  "aliases": {
+    "components": "@/components"
+  }
+}
+```
+
+## Configure jsconfig.json
+
+Set up path aliases for a JavaScript project:
+
+```json {4} title="jsconfig.json" showLineNumbers
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}
+```
+
+</Steps>

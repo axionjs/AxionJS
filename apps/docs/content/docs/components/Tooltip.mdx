@@ -1,0 +1,233 @@
+---
+title: Tooltip
+description: A fully customizable, accessible tooltip component with support for various placements, offsets, and styles.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import {
+  DefaultTooltipPreview,
+  PlacementTooltipPreview,
+  StyledTooltipPreview,
+  InteractiveTooltipPreview,
+} from "@/app/components/docs/TooltipPreview";
+
+## Previews with Code
+
+### Example 1: Default Tooltip Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-8 content-center">
+    <DefaultTooltipPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function DefaultTooltipPreview() {
+      return (
+        <TooltipProvider className="not-prose">
+          <div className="flex items-center justify-center space-x-4">
+            <Tooltip>
+              <TooltipTrigger className="px-4 py-2 bg-gray-100 border rounded-lg">
+                Hover me
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                <span>Default Tooltip</span>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Tooltip Placements
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-72 pb-8 content-center">
+    <PlacementTooltipPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function PlacementTooltipPreview() {
+      const placements = ["top", "bottom", "left", "right"];
+
+      return (
+        <TooltipProvider className="not-prose">
+          <div className="grid grid-cols-2 gap-8">
+            {placements.map((placement) => (
+              <Tooltip key={placement}>
+                <TooltipTrigger className="px-4 py-2 bg-gray-100 border rounded-lg">
+                  Hover {placement}
+                </TooltipTrigger>
+                <TooltipContent side={placement} sideOffset={8}>
+                  <span>{`Tooltip on ${placement}`}</span>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+        </TooltipProvider>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 3: Styled Tooltip Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-8 content-center">
+    <StyledTooltipPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function StyledTooltipPreview() {
+      return (
+        <TooltipProvider className="not-prose">
+          <div className="flex items-center justify-center space-x-4">
+            <Tooltip>
+              <TooltipTrigger className="px-4 py-2 bg-gray-100 border rounded-lg">
+                Styled Tooltip
+              </TooltipTrigger>
+              <TooltipContent className="bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg">
+                <span>Custom styled tooltip</span>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `Tooltip` component provides a simple, accessible, and customizable tooltip solution.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add tooltip
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install @radix-ui/react-tooltip class-variance-authority
+    ```
+
+    ### 2. Add the Component
+
+    Create a `tooltip.tsx` file in your `components/ui` directory:
+    ```tsx
+   "use client";
+
+import * as React from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+
+import { cn } from "@/lib/utils";
+
+const TooltipProvider = TooltipPrimitive.Provider;
+
+const Tooltip = TooltipPrimitive.Root;
+
+const TooltipTrigger = TooltipPrimitive.Trigger;
+
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPrimitive.Portal>
+    <TooltipPrimitive.Content
+      ref={ref}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 overflow-hidden rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className,
+      )}
+      {...props}
+    />
+  </TooltipPrimitive.Portal>
+));
+TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="tooltip.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+The `Tooltip` component comes with the following props for customization:
+
+### TooltipContent Props
+
+<TypeTable
+  type={{
+    sideOffset: {
+      description: "Offset distance from the trigger element.",
+      type: "number",
+      default: "4",
+    },
+    side: {
+      description: "Placement of the tooltip relative to the trigger.",
+      type: `"top" | "bottom" | "left" | "right"`,
+      default: `"top"`,
+    },
+    className: {
+      description: "Additional classes for styling the tooltip.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Customizable Placement**:
+  - Supports `top`, `bottom`, `left`, and `right` placements.
+- **Side Offset**:
+  - Configure the distance between the tooltip and its trigger.
+- **Styled Tooltips**:
+  - Add custom classes to style tooltips for specific use cases.
+- **Interactive Tooltips**:
+  - Tooltips can include interactive elements like buttons.
+
+---
+
+## Accessibility
+
+The `Tooltip` component is built with Radix primitives, ensuring compliance with accessibility standards. Ensure the tooltip content is meaningful for screen readers.
+
+---
+
+## Conclusion
+
+The `Tooltip` component is a highly flexible and accessible solution for creating informative, styled, and interactive tooltips in your application.

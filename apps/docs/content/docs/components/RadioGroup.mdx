@@ -1,0 +1,270 @@
+---
+title: Radio Group
+description: An accessible and customizable radio group component for single-option selection with advanced styling capabilities.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import {
+  SimpleRadioGroupPreview,
+  ColoredRadioGroupPreview,
+  DisabledRadioGroupPreview,
+} from "@/app/components/docs/RadioGroupPreview";
+
+## Introduction
+
+The `RadioGroup` component provides a flexible and accessible way to implement single-option selection in your application. It supports custom styles, labels, and ARIA roles to enhance usability and accessibility.
+
+---
+
+## Default Use Case: Simple Radio Group
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <SimpleRadioGroupPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js 
+    import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+    export function SimpleRadioGroupPreview() {
+      return (
+        <RadioGroup defaultValue="option-1">
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem id="option-1" value="option-1" />
+            <label htmlFor="option-1" className="text-sm">
+              Option 1
+            </label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem id="option-2" value="option-2" />
+            <label htmlFor="option-2" className="text-sm">
+              Option 2
+            </label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem id="option-3" value="option-3" />
+            <label htmlFor="option-3" className="text-sm">
+              Option 3
+            </label>
+          </div>
+        </RadioGroup>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `RadioGroup` component:
+    ```bash
+    npx axionjs add radio-group
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### Step 1: Install Dependencies
+    ```bash
+    npm install @radix-ui/react-radio-group
+    ```
+
+    ### Step 2: Add the Component
+    Create a file `components/ui/radio-group.tsx`:
+    ```tsx ts2js
+    "use client";
+
+import * as React from "react";
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import { Circle as CircleIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+const RadioGroup = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
+>(({ className, ...props }, ref) => {
+  return (
+    <RadioGroupPrimitive.Root
+      ref={ref}
+      data-slot="radio-group"
+      className={cn("grid gap-3", className)}
+      {...props}
+    />
+  );
+});
+RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
+
+const RadioGroupItem = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
+>(({ className, ...props }, ref) => {
+  return (
+    <RadioGroupPrimitive.Item
+      ref={ref}
+      data-slot="radio-group-item"
+      className={cn(
+        "relative aspect-square h-4 w-4 rounded-full border border-primary text-primary",
+        "transition-colors duration-200 ease-in-out shadow-xs outline-none",
+        "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30",
+        "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20",
+        "dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+      {...props}
+    >
+      <RadioGroupPrimitive.Indicator
+        data-slot="radio-group-indicator"
+        className={cn(
+          "relative flex items-center justify-center transform scale-0",
+          "transition-transform duration-200 data-[state=checked]:scale-100"
+        )}
+      >
+        <CircleIcon
+          className="fill-primary absolute top-1/2 left-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2"
+          aria-hidden="true"
+          focusable="false"
+        />
+      </RadioGroupPrimitive.Indicator>
+    </RadioGroupPrimitive.Item>
+  );
+});
+RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
+
+export { RadioGroup, RadioGroupItem };
+
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="radio-group.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Advanced Use Cases
+
+### Colored Radio Group
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <ColoredRadioGroupPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    export function ColoredRadioGroupPreview() {
+      return (
+        <RadioGroup defaultValue="blue">
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem id="blue" value="blue" className="border-blue-500" />
+            <label htmlFor="blue" className="text-sm">
+              Blue
+            </label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem id="green" value="green" className="border-green-500" />
+            <label htmlFor="green" className="text-sm">
+              Green
+            </label>
+          </div>
+        </RadioGroup>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+### Disabled Radio Group
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <DisabledRadioGroupPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    export function DisabledRadioGroupPreview() {
+      return (
+        <RadioGroup defaultValue="disabled" disabled>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem id="disabled" value="disabled" />
+            <label htmlFor="disabled" className="text-sm text-muted-foreground">
+              Disabled Option
+            </label>
+          </div>
+        </RadioGroup>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    value: {
+      description: "The current selected value of the radio group.",
+      type: "string",
+      required: false,
+    },
+    className: {
+      description: "Custom class names for styling the radio group.",
+      type: "string",
+      required: false,
+    },
+    disabled: {
+      description: "Disables all radio options if set to `true`.",
+      type: "boolean",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Customizable**:
+  - Apply custom styles for individual radio items or the group.
+- **Dynamic Validation**:
+  - Easily integrate with form libraries like `react-hook-form`.
+- **Flexible Layout**:
+  - Supports horizontal and vertical arrangements.
+
+---
+
+## Accessibility
+
+- **Keyboard Navigation**:
+  - Navigate using `Tab`, and select with arrow keys.
+- **Screen Reader Support**:
+  - Includes `aria-checked` and other ARIA attributes for assistive technologies.
+- **Error Indicators**:
+  - Clearly indicate validation errors.
+
+---
+
+## Conclusion
+
+The `RadioGroup` component is a versatile and accessible solution for single-option selection, with support for styling, layout flexibility, and advanced use cases.

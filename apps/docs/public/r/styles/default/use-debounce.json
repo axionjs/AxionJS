@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "use-debounce",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-debounce.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\n/**\n * A hook that debounces a value.\n * @param value The value to debounce\n * @param delay The delay in milliseconds\n * @returns The debounced value\n */\nexport function useDebounce<T>(value: T, delay = 500): T {\n  const [debouncedValue, setDebouncedValue] = React.useState<T>(value);\n\n  React.useEffect(() => {\n    const timer = setTimeout(() => setDebouncedValue(value), delay);\n    return () => clearTimeout(timer);\n  }, [value, delay]);\n\n  return debouncedValue;\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

@@ -1,0 +1,806 @@
+---
+title: useWebSocket
+description: A hook for managing WebSocket connections with reconnection logic and message handling.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { UseWebSocketPreview, ChatApplicationPreview } from "@/app/components/docs/UseWebSocketPreview";
+
+# useWebSocket
+
+The `useWebSocket` hook provides a robust way to manage WebSocket connections in React applications. It handles connection management, automatic reconnection, message parsing, and more with support for both text and binary data formats.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <UseWebSocketPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useWebSocket } from "@/hooks/use-web-socket";
+    
+    function WebSocketExample() {
+      const {
+        readyState,
+        isOpen,
+        lastMessage,
+        messages,
+        connect,
+        disconnect,
+        send,
+      } = useWebSocket({
+        url: "wss://echo.websocket.org",
+        autoConnect: true,
+        onMessage: (event) => {
+          console.log("Message received:", event.data);
+        },
+        jsonMode: true, // Auto-parse JSON
+      });
+      
+      const sendMessage = () => {
+        if (isOpen) {
+          send({ type: "message", content: "Hello world!" });
+        }
+      };
+      
+      return (
+        <div>
+          <h2>WebSocket Status: {readyState}</h2>
+          
+          <div>
+            <button 
+              onClick={isOpen ? disconnect : connect}
+            >
+              {isOpen ? "Disconnect" : "Connect"}
+            </button>
+            <button 
+              onClick={sendMessage} 
+              disabled={!isOpen}
+            >
+              Send Message
+            </button>
+          </div>
+          
+          <div>
+            <h3>Last Message:</h3>
+            {lastMessage ? (
+              <pre>{JSON.stringify(lastMessage.data, null, 2)}</pre>
+            ) : (
+              <p>No messages yet</p>
+            )}
+          </div>
+          
+          <div>
+            <h3>Message History:</h3>
+            <ul>
+              {messages.map((msg, index) => (
+                <li key={index}>
+                  {typeof msg.data === "object" 
+                    ? JSON.stringify(msg.data) 
+                    : String(msg.data)}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useWebSocket hook using:
+    ```bash
+    npx axionjs add hook use-web-socket
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-web-socket.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useEffect, useRef, useState, useCallback } from 'react';
+
+    interface WebSocketOptions {
+      /** WebSocket URL to connect to */
+      url: string;
+      /** Protocols string or array of protocol strings */
+      protocols?: string | string[];
+      /** Whether to auto-connect on mount (default: true) */
+      autoConnect?: boolean;
+      /** Whether to auto-reconnect on close/error (default: true) */
+      autoReconnect?: boolean;
+      /** Retry backoff in milliseconds (default: 1000) */
+      reconnectInterval?: number;
+      /** Maximum reconnect attempts (default: Infinity) */
+      maxReconnectAttempt?: number;
+      /** Maximum reconnect interval with exponential backoff (default: 30000) */
+      maxReconnectInterval?: number;
+      /** Whether to use exponential backoff for reconnect (default: true) */
+      exponentialBackoff?: boolean;
+      /** Callback when connection opens */
+      onOpen?: (event: WebSocketEventMap['open']) => void;
+      /** Callback when connection closes */
+      onClose?: (event: WebSocketEventMap['close']) => void;
+      /** Callback when connection errors */
+      onError?: (event: WebSocketEventMap['error']) => void;
+      /** Callback when message is received */
+      onMessage?: (event: WebSocketEventMap['message']) => void;
+      /** WebSocket BinaryType ("blob" | "arraybuffer") */
+      binaryType?: BinaryType;
+      /** Handle automatic JSON parsing/stringifying (default: false) */
+      jsonMode?: boolean;
+    }
+
+    type ReadyState = number;
+
+    interface WebSocketMessage {
+      data: any;
+      timestamp: number;
+      type: string;
+    }
+
+    const ReadyStateStatus = {
+      CONNECTING: 0,
+      OPEN: 1,
+      CLOSING: 2,
+      CLOSED: 3,
+    } as const;
+
+    export function useWebSocket(options: WebSocketOptions) {
+      const {
+        url,
+        protocols,
+        autoConnect = true,
+        autoReconnect = true,
+        reconnectInterval = 1000,
+        maxReconnectAttempt = Infinity,
+        maxReconnectInterval = 30000,
+        exponentialBackoff = true,
+        onOpen,
+        onClose,
+        onError,
+        onMessage,
+        binaryType = 'blob',
+        jsonMode = false,
+      } = options;
+
+      const socket = useRef<WebSocket | null>(null);
+      const reconnectCount = useRef<number>(0);
+      const reconnectTimeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
+      const isMountedRef = useRef<boolean>(true);
+
+      const [readyState, setReadyState] = useState<ReadyState>(ReadyStateStatus.CLOSED);
+      const [lastMessage, setLastMessage] = useState<WebSocketMessage | null>(null);
+      const [messages, setMessages] = useState<WebSocketMessage[]>([]);
+      const [error, setError] = useState<Event | null>(null);
+
+      // Event handler refs to avoid dependency changes
+      const onOpenRef = useRef(onOpen);
+      const onCloseRef = useRef(onClose);
+      const onErrorRef = useRef(onError);
+      const onMessageRef = useRef(onMessage);
+
+      // Update callback refs when they change
+      useEffect(() => {
+        onOpenRef.current = onOpen;
+        onCloseRef.current = onClose;
+        onErrorRef.current = onError;
+        onMessageRef.current = onMessage;
+      }, [onOpen, onClose, onError, onMessage]);
+
+      // Implementation details...
+      
+      // Connect function
+      const connect = useCallback(() => {
+        // Connection logic...
+        
+        socket.current = new WebSocket(url, protocols);
+        socket.current.binaryType = binaryType;
+        
+        socket.current.onopen = (event) => {
+          // Handle connection open...
+        };
+        
+        socket.current.onclose = (event) => {
+          // Handle connection close...
+        };
+        
+        socket.current.onerror = (event) => {
+          // Handle connection error...
+        };
+        
+        socket.current.onmessage = (event) => {
+          // Handle message...
+        };
+      }, [url, protocols, binaryType, autoReconnect, maxReconnectAttempt, jsonMode]);
+
+      // Disconnect function
+      const disconnect = useCallback(() => {
+        // Disconnection logic...
+      }, []);
+
+      // Send function
+      const send = useCallback((data: string | ArrayBufferLike | Blob | ArrayBufferView) => {
+        // Send logic...
+      }, [jsonMode]);
+
+      // Connect on mount if autoConnect is true
+      useEffect(() => {
+        if (autoConnect) {
+          connect();
+        }
+        
+        return () => {
+          disconnect();
+        };
+      }, [connect, disconnect, autoConnect]);
+
+      return {
+        readyState,
+        isConnecting: readyState === ReadyStateStatus.CONNECTING,
+        isOpen: readyState === ReadyStateStatus.OPEN,
+        isClosing: readyState === ReadyStateStatus.CLOSING,
+        isClosed: readyState === ReadyStateStatus.CLOSED,
+        lastMessage,
+        messages,
+        error,
+        connect,
+        disconnect,
+        send,
+        socket: socket.current,
+        READY_STATE: ReadyStateStatus,
+      };
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-web-socket.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    options: {
+      description: "Configuration options for the WebSocket connection",
+      type: "WebSocketOptions",
+      default: "Required",
+      properties: {
+        url: {
+          description: "WebSocket URL to connect to",
+          type: "string",
+          default: "Required",
+        },
+        protocols: {
+          description: "WebSocket protocols",
+          type: "string | string[]",
+          default: "undefined",
+        },
+        autoConnect: {
+          description: "Whether to connect automatically on mount",
+          type: "boolean",
+          default: "true",
+        },
+        autoReconnect: {
+          description: "Whether to reconnect automatically on close/error",
+          type: "boolean",
+          default: "true",
+        },
+        reconnectInterval: {
+          description: "Base reconnect interval in milliseconds",
+          type: "number",
+          default: "1000",
+        },
+        maxReconnectAttempt: {
+          description: "Maximum number of reconnect attempts",
+          type: "number",
+          default: "Infinity",
+        },
+        maxReconnectInterval: {
+          description: "Maximum interval with exponential backoff",
+          type: "number",
+          default: "30000",
+        },
+        exponentialBackoff: {
+          description: "Whether to use exponential backoff for reconnection",
+          type: "boolean",
+          default: "true",
+        },
+        onOpen: {
+          description: "Callback for connection open event",
+          type: "(event: WebSocketEventMap['open']) => void",
+          default: "undefined",
+        },
+        onClose: {
+          description: "Callback for connection close event",
+          type: "(event: WebSocketEventMap['close']) => void",
+          default: "undefined",
+        },
+        onError: {
+          description: "Callback for connection error event",
+          type: "(event: WebSocketEventMap['error']) => void",
+          default: "undefined",
+        },
+        onMessage: {
+          description: "Callback for message received event",
+          type: "(event: WebSocketEventMap['message']) => void",
+          default: "undefined",
+        },
+        binaryType: {
+          description: "Type of binary data ('blob' or 'arraybuffer')",
+          type: "BinaryType",
+          default: "'blob'",
+        },
+        jsonMode: {
+          description: "Automatically parse/stringify JSON data",
+          type: "boolean",
+          default: "false",
+        },
+      },
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    readyState: {
+      description: "Current state of the WebSocket connection (0-3)",
+      type: "number",
+    },
+    isConnecting: {
+      description: "Whether the WebSocket is connecting",
+      type: "boolean",
+    },
+    isOpen: {
+      description: "Whether the WebSocket is open and ready",
+      type: "boolean",
+    },
+    isClosing: {
+      description: "Whether the WebSocket is closing",
+      type: "boolean",
+    },
+    isClosed: {
+      description: "Whether the WebSocket is closed",
+      type: "boolean",
+    },
+    lastMessage: {
+      description: "The most recently received message",
+      type: "WebSocketMessage | null",
+    },
+    messages: {
+      description: "Array of all received messages",
+      type: "WebSocketMessage[]",
+    },
+    error: {
+      description: "Error event if connection fails",
+      type: "Event | null",
+    },
+    connect: {
+      description: "Function to manually connect to the WebSocket",
+      type: "() => void",
+    },
+    disconnect: {
+      description: "Function to manually disconnect from the WebSocket",
+      type: "() => void",
+    },
+    send: {
+      description: "Function to send data through the WebSocket",
+      type: "(data: string | ArrayBufferLike | Blob | ArrayBufferView) => void",
+    },
+    socket: {
+      description: "Raw WebSocket instance",
+      type: "WebSocket | null",
+    },
+    READY_STATE: {
+      description: "Object containing WebSocket ready state constants",
+      type: "{ CONNECTING: 0; OPEN: 1; CLOSING: 2; CLOSED: 3 }",
+    },
+  }}
+/>
+
+## Examples
+
+### Chat Application
+
+A simple chat application using WebSockets for real-time communication.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ChatApplicationPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState, useEffect } from "react";
+    import { useWebSocket } from "@/hooks/use-web-socket";
+    
+    interface Message {
+      id: string;
+      sender: string;
+      content: string;
+      timestamp: number;
+    }
+    
+    interface ChatMessage {
+      type: 'message';
+      payload: Message;
+    }
+    
+    interface UserStatusMessage {
+      type: 'status';
+      payload: {
+        userId: string;
+        status: 'online' | 'offline';
+      };
+    }
+    
+    type WebSocketMessage = ChatMessage | UserStatusMessage;
+    
+    function ChatApp() {
+      const [messages, setMessages] = useState<Message[]>([]);
+      const [users, setUsers] = useState<{ id: string; name: string; status: string }[]>([]);
+      const [messageInput, setMessageInput] = useState('');
+      
+      const {
+        isOpen,
+        lastMessage,
+        send,
+        connect,
+        disconnect,
+      } = useWebSocket({
+        url: 'wss://chat.example.com/socket',
+        autoConnect: true,
+        jsonMode: true,
+      });
+      
+      // Process incoming messages
+      useEffect(() => {
+        if (!lastMessage) return;
+        
+        const wsMessage = lastMessage.data as WebSocketMessage;
+        
+        switch (wsMessage.type) {
+          case 'message':
+            setMessages(prev => [...prev, wsMessage.payload]);
+            break;
+          case 'status':
+            setUsers(prev => 
+              prev.map(user => 
+                user.id === wsMessage.payload.userId 
+                  ? { ...user, status: wsMessage.payload.status }
+                  : user
+              )
+            );
+            break;
+        }
+      }, [lastMessage]);
+      
+      const sendMessage = () => {
+        if (!isOpen || !messageInput.trim()) return;
+        
+        const message: ChatMessage = {
+          type: 'message',
+          payload: {
+            id: Date.now().toString(),
+            sender: 'me',
+            content: messageInput,
+            timestamp: Date.now(),
+          },
+        };
+        
+        send(message);
+        setMessageInput('');
+      };
+      
+      return (
+        <div>
+          <div>
+            <h1>Chat</h1>
+            <button onClick={isOpen ? disconnect : connect}>
+              {isOpen ? 'Disconnect' : 'Connect'}
+            </button>
+          </div>
+          
+          <div>
+            <div>
+              <h2>Online Users</h2>
+              <ul>
+                {users
+                  .filter(user => user.status === 'online')
+                  .map(user => (
+                    <li key={user.id}>{user.name}</li>
+                  ))}
+              </ul>
+            </div>
+            
+            <div>
+              <h2>Messages</h2>
+              <div>
+                {messages.map(msg => (
+                  <div key={msg.id}>
+                    <strong>{msg.sender}: </strong>
+                    <span>{msg.content}</span>
+                    <small>
+                      {new Date(msg.timestamp).toLocaleTimeString()}
+                    </small>
+                  </div>
+                ))}
+              </div>
+              
+              <div>
+                <input
+                  type="text"
+                  value={messageInput}
+                  onChange={e => setMessageInput(e.target.value)}
+                  disabled={!isOpen}
+                  placeholder="Type a message..."
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') sendMessage();
+                  }}
+                />
+                <button 
+                  onClick={sendMessage} 
+                  disabled={!isOpen || !messageInput.trim()}
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Real-time Data Dashboard
+
+```tsx ts2js
+import { useState, useEffect } from "react";
+import { useWebSocket } from "@/hooks/use-web-socket";
+
+interface Metric {
+  name: string;
+  value: number;
+  timestamp: number;
+}
+
+function RealTimeMetricsDashboard() {
+  const [metrics, setMetrics] = useState<Record<string, Metric>>({});
+  const [isConnected, setIsConnected] = useState(false);
+  
+  const { 
+    isOpen, 
+    lastMessage, 
+    connect, 
+    disconnect 
+  } = useWebSocket({
+    url: 'wss://metrics.example.com/socket',
+    jsonMode: true,
+    onOpen: () => {
+      setIsConnected(true);
+      console.log('Dashboard connected to metrics server');
+    },
+    onClose: () => {
+      setIsConnected(false);
+      console.log('Dashboard disconnected from metrics server');
+    },
+  });
+  
+  // Process incoming metric updates
+  useEffect(() => {
+    if (lastMessage?.data) {
+      const metric = lastMessage.data as Metric;
+      setMetrics(prev => ({
+        ...prev,
+        [metric.name]: metric,
+      }));
+    }
+  }, [lastMessage]);
+  
+  return (
+    <div>
+      <div>
+        <h1>Real-time Metrics Dashboard</h1>
+        <button onClick={isConnected ? disconnect : connect}>
+          {isConnected ? 'Disconnect' : 'Connect'}
+        </button>
+        <span>Status: {isConnected ? 'Connected' : 'Disconnected'}</span>
+      </div>
+      
+      <div>
+        {Object.values(metrics).length === 0 ? (
+          <p>No metrics available yet. Connect to start receiving data.</p>
+        ) : (
+          <div>
+            {Object.values(metrics).map(metric => (
+              <div key={metric.name}>
+                <h3>{metric.name}</h3>
+                <div>{metric.value}</div>
+                <div>
+                  Updated: {new Date(metric.timestamp).toLocaleTimeString()}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+### Binary Data Handling
+
+```tsx ts2js
+import { useWebSocket } from "@/hooks/use-web-socket";
+
+function BinaryDataExample() {
+  const { isOpen, lastMessage, send } = useWebSocket({
+    url: 'wss://binary.example.com/socket',
+    binaryType: 'arraybuffer', // Receive binary data as ArrayBuffer
+    autoConnect: true,
+  });
+  
+  // Send a binary message
+  const sendBinaryMessage = () => {
+    if (!isOpen) return;
+    
+    // Create a simple binary message (Uint8Array)
+    const binaryData = new Uint8Array([1, 2, 3, 4, 5]);
+    send(binaryData);
+  };
+  
+  // Process received binary data
+  const processLastMessage = () => {
+    if (!lastMessage || !(lastMessage.data instanceof ArrayBuffer)) {
+      return 'No binary message received';
+    }
+    
+    // Convert ArrayBuffer to readable format
+    const dataView = new DataView(lastMessage.data);
+    const result = [];
+    
+    for (let i = 0; i < dataView.byteLength; i++) {
+      result.push(dataView.getUint8(i));
+    }
+    
+    return 'Received binary data: ' + result.join(', ');
+  };
+  
+  return (
+    <div>
+      <h2>Binary Data WebSocket Example</h2>
+      <div>
+        <button onClick={sendBinaryMessage} disabled={!isOpen}>
+          Send Binary Message
+        </button>
+      </div>
+      <div>
+        <h3>Last Message:</h3>
+        <pre>{processLastMessage()}</pre>
+      </div>
+    </div>
+  );
+}
+```
+
+## Advanced Usage
+
+### Custom Reconnection Strategy
+
+Implementing a custom reconnection strategy with increasing delays and a cap on retry attempts:
+
+```tsx ts2js
+import { useWebSocket } from "@/hooks/use-web-socket";
+
+function CustomReconnectExample() {
+  // Track retry count in user interface
+  const [uiRetryCount, setUiRetryCount] = useState(0);
+  
+  const {
+    isOpen,
+    connect,
+    disconnect,
+    readyState,
+  } = useWebSocket({
+    url: 'wss://example.com/socket',
+    autoReconnect: true,
+    reconnectInterval: 1000, // Start with 1 second
+    maxReconnectInterval: 60000, // Cap at 1 minute
+    maxReconnectAttempt: 10, // Only try 10 times
+    exponentialBackoff: true, // Use exponential backoff
+    onClose: () => {
+      setUiRetryCount(prev => prev + 1);
+    },
+  });
+  
+  // Calculate and display next reconnect time
+  const getNextRetryTime = () => {
+    if (readyState !== 3 || uiRetryCount >= 10) return null;
+    
+    // Calculate exponential backoff: min(reconnectInterval * 2 ^ retryCount, maxReconnectInterval)
+    const nextDelay = Math.min(1000 * Math.pow(2, uiRetryCount), 60000);
+    return `${(nextDelay / 1000).toFixed(1)} seconds`;
+  };
+  
+  return (
+    <div>
+      <h2>Custom Reconnection Strategy</h2>
+      <div>
+        <p>Connection Status: {
+          readyState === 0 ? 'Connecting' :
+          readyState === 1 ? 'Connected' :
+          readyState === 2 ? 'Closing' : 'Disconnected'
+        }</p>
+        <p>Retry Attempts: {uiRetryCount} / 10</p>
+        {getNextRetryTime() && <p>Next retry in: {getNextRetryTime()}</p>}
+      </div>
+      <div>
+        <button onClick={connect} disabled={isOpen}>Connect</button>
+        <button onClick={disconnect} disabled={!isOpen}>Disconnect</button>
+        <button onClick={() => setUiRetryCount(0)}>Reset Counter</button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Chat Applications**: Real-time messaging and presence updates
+- **Live Dashboards**: Displaying real-time metrics and analytics
+- **Collaborative Editing**: Real-time document editing
+- **Gaming**: Multiplayer game state synchronization
+- **Financial Applications**: Real-time market data and trading
+- **IoT Dashboards**: Real-time device monitoring and control
+- **Notifications**: Instant alerts and notifications
+- **Live Comments**: Real-time comment sections and reactions
+
+## Browser Support and Limitations
+
+WebSockets are supported in all modern browsers, but there are some considerations:
+
+- WebSockets require a specific server implementation
+- Some firewalls may block WebSocket connections
+- Proxy servers may not properly handle WebSocket connections
+- Maximum message size limitations vary by browser and server
+- Some networks may terminate idle connections
+
+## Performance Considerations
+
+- **Message Frequency**: High message rates can impact performance
+- **Keep Alive**: Consider implementing heartbeat messages for long-lived connections
+- **Message Size**: Keep message payloads small for better performance
+- **JSON Parsing**: Be cautious with large data structures and deep nesting
+- **Binary Data**: Use binary formats for large datasets when appropriate
+
+## Security Considerations
+
+- Always use secure WebSocket connections (`wss://` protocol)
+- Validate all incoming messages before processing
+- Implement proper authentication and authorization
+- Be careful with sensitive data transmission
+- Protect against cross-site WebSocket hijacking (CSWSH)
+
+## Best Practices
+
+- Always check connection status before sending messages
+- Implement proper error handling and reconnection logic
+- Use appropriate status indicators in the UI
+- Consider fallback mechanisms when WebSockets aren't available
+- Add a clean disconnect when components unmount
+- Use debouncing for high-frequency operations
+- Implement proper error handling for message parsing

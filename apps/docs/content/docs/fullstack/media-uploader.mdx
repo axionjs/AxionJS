@@ -1,0 +1,509 @@
+---
+title: Media Uploader
+description: A full-stack media upload component with drag-and-drop functionality, progress tracking, and cloud storage integration.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { CodeBlock } from 'fumadocs-ui/components/codeblock';
+import { Card, Cards } from 'fumadocs-ui/components/card';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer';
+
+
+# Media Uploader
+
+A full-stack media upload component with drag-and-drop functionality, progress tracking, and cloud storage integration. Built with Next.js server actions and Cloudinary for seamless media management.
+
+![Media Uploader Component](https://res.cloudinary.com/dmfh8lexl/image/upload/v1749988126/Screenshot_2025-06-15_164543_hgzn7l.png)
+
+<div className="my-8">
+    <div   className="border rounded-md overflow-scroll"
+              style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="media-uploader"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+            />
+    </div>
+</div>
+## Installation
+
+<Steps>
+<Step>
+Install the component using the AxionsJS CLI:
+
+```bash
+npx axionjs add media-uploader
+```
+</Step>
+
+<Step>
+Install required dependencies:
+
+```bash
+npm install cloudinary prisma @prisma/client
+```
+</Step>
+
+<Step>
+Configure environment variables in your `.env` file:
+
+```env
+DATABASE_URL="your_database_url"
+CLOUDINARY_CLOUD_NAME="your_cloud_name"
+CLOUDINARY_API_KEY="your_api_key"
+CLOUDINARY_API_SECRET="your_api_secret"
+```
+</Step>
+</Steps>
+
+<Callout type="info">
+Make sure to keep your Cloudinary credentials secure and never expose them in client-side code.
+</Callout>
+
+## Database Schema
+
+The component uses Prisma with the following schema. Add this to your `schema.prisma` file:
+
+```prisma title="schema.prisma"
+model Media {
+  id           String    @id @default(cuid())
+  name         String
+  size         Int
+  url          String
+  publicId     String?
+  thumbnailUrl String?
+  mediaType    MediaType
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+```
+
+<Callout type="warn">
+Run `npx prisma db push` or `npx prisma migrate dev` after adding the schema to apply changes to your database.
+</Callout>
+
+## Usage
+
+<Tabs items={['Basic Usage', 'With Gallery', 'Advanced']}>
+<Tab value="Basic Usage">
+
+Import and use the MediaUploader component:
+
+```tsx ts2js title="app/upload/page.tsx"
+import { MediaUploader } from "@/components/media-uploader";
+
+export default function UploadPage() {
+  return (
+    <div className="container mx-auto py-10">
+      <h1 className="text-3xl font-bold mb-6">Upload Media</h1>
+      <MediaUploader />
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="With Gallery">
+
+Combine with the MediaGallery component for a complete solution:
+
+```tsx ts2js title="app/media/page.tsx"
+import { getMedia } from "@/actions/media-actions";
+import { MediaGallery } from "@/components/media-gallery";
+
+export default async function MediaPage() {
+  const media = await getMedia();
+
+  return (
+    <div className="container mx-auto py-10">
+      <h1 className="text-3xl font-bold mb-6">Media Gallery</h1>
+      <MediaGallery media={media} />
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Advanced">
+
+Advanced usage with custom handling:
+
+```tsx ts2js title="components/custom-media-manager.tsx"
+"use client";
+
+import { useState } from "react";
+import { MediaUploader } from "@/components/media-uploader";
+import { MediaGallery } from "@/components/media-gallery";
+
+export function MediaManager() {
+  const [showUploader, setShowUploader] = useState(false);
+  const [media, setMedia] = useState([]);
+
+  const handleUploadComplete = () => {
+    setShowUploader(false);
+    // Refresh media list
+    fetchMedia();
+  };
+
+  return (
+    <div className="space-y-6">
+      <button 
+        onClick={() => setShowUploader(true)}
+        className="btn btn-primary"
+      >
+        Upload New Media
+      </button>
+      
+      {showUploader && (
+        <MediaUploader onComplete={handleUploadComplete} />
+      )}
+      
+      <MediaGallery media={media} />
+    </div>
+  );
+}
+```
+
+</Tab>
+</Tabs>
+
+## Server Actions
+
+The component includes three main server actions for handling media operations:
+
+<Cards>
+<Card title="Upload Media" href="#upload-media">
+Handles file upload to Cloudinary and database storage
+</Card>
+<Card title="Get Media" href="#get-media">
+Retrieves all media from the database
+</Card>
+<Card title="Delete Media" href="#delete-media">
+Removes media from both Cloudinary and database
+</Card>
+</Cards>
+
+### Upload Media
+
+```typescript title="actions/media-actions.ts"
+export async function uploadToCloudinary({
+  name,
+  type,
+  size,
+  base64,
+  isVideo,
+}: {
+  name: string;
+  type: string;
+  size: number;
+  base64: string;
+  isVideo: boolean;
+}) {
+  const result = await cloudinary.uploader.upload(
+    `data:${type};base64,${base64}`,
+    {
+      public_id: `upload_${Date.now()}_${name}`,
+      folder: isVideo ? "videos" : "images",
+      resource_type: isVideo ? "video" : "image",
+    }
+  );
+
+  const mediaRecord = await db.media.create({
+    data: {
+      name,
+      size,
+      url: result.secure_url,
+      publicId: result.public_id,
+      thumbnailUrl: isVideo ? null : result.secure_url,
+      mediaType: isVideo ? "VIDEO" : "IMAGE",
+    },
+  });
+
+  return mediaRecord;
+}
+```
+
+### Get Media
+
+```typescript title="actions/media-actions.ts"
+export async function getMedia() {
+  const media = await db.media.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return media;
+}
+```
+
+### Delete Media
+
+```typescript title="actions/media-actions.ts"
+export async function deleteMedia(id: string) {
+  const media = await db.media.findUnique({
+    where: { id },
+  });
+
+  if (!media) {
+    throw new Error("Media not found");
+  }
+
+  // Delete from Cloudinary
+  if (media.publicId) {
+    await cloudinary.uploader.destroy(media.publicId, {
+      resource_type: media.mediaType === "VIDEO" ? "video" : "image",
+    });
+  }
+
+  // Delete from database
+  await db.media.delete({
+    where: { id },
+  });
+
+  return { success: true };
+}
+```
+
+## Component Features
+
+<Tabs items={['File Upload', 'Media Display', 'File Types']}>
+<Tab value="File Upload">
+
+The MediaUploader component provides:
+
+- **Drag and Drop Interface**: Intuitive file dropping area
+- **Multiple File Selection**: Upload multiple files simultaneously
+- **Progress Tracking**: Real-time upload progress indicators
+- **Error Handling**: Comprehensive error handling with retry functionality
+- **File Validation**: Client-side file type and size validation
+
+</Tab>
+<Tab value="Media Display">
+
+The MediaGallery component features:
+
+- **Responsive Grid Layout**: Adapts to different screen sizes
+- **Thumbnail Generation**: Automatic thumbnail creation for images
+- **Video Preview**: Video files shown with play icon overlay
+- **File Metadata**: Display of file name, size, and upload date
+- **Action Buttons**: View and delete functionality for each media item
+
+</Tab>
+<Tab value="File Types">
+
+Supported file formats:
+
+**Images**
+- JPEG (.jpg, .jpeg)
+- PNG (.png)
+- GIF (.gif)
+- WebP (.webp)
+
+**Videos**
+- MP4 (.mp4)
+- WebM (.webm)
+
+</Tab>
+</Tabs>
+
+## API Reference
+
+### MediaUploader Props
+
+<TypeTable
+  type={{
+    className: {
+      type: 'string',
+      description: 'Additional CSS classes for styling'
+    },
+    maxFiles: {
+      type: 'number',
+      description: 'Maximum number of files allowed for upload'
+    },
+    maxFileSize: {
+      type: 'number',
+      description: 'Maximum file size in bytes (default: 50MB)'
+    },
+    onComplete: {
+      type: '() => void',
+      description: 'Callback function called after successful upload'
+    }
+  }}
+/>
+
+### MediaGallery Props
+
+<TypeTable
+  type={{
+    media: {
+      type: 'Media[]',
+      description: 'Array of media objects to display',
+      required: true
+    },
+    columns: {
+      type: 'number',
+      description: 'Number of columns in the grid (responsive)'
+    },
+    onDelete: {
+      type: '(id: string) => void',
+      description: 'Callback function for media deletion'
+    }
+  }}
+/>
+
+### Media Object Type
+
+```typescript
+interface Media {
+  id: string;
+  name: string;
+  url: string;
+  thumbnailUrl: string | null;
+  mediaType: "IMAGE" | "VIDEO";
+  size: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+
+
+
+
+
+
+
+
+<Callout type="error">
+Always implement proper error handling for production applications.
+</Callout>
+
+
+
+
+
+
+## Best Practices
+
+<Tabs items={['Security', 'Performance', 'Accessibility', 'Organization']}>
+<Tab value="Security">
+
+**Server-side Validation**
+Always validate files on the server:
+
+```typescript
+const validateFile = (file: UploadData) => {
+  const allowedMimes = ['image/jpeg', 'image/png', 'video/mp4'];
+  const maxSize = 50 * 1024 * 1024; // 50MB
+  
+  if (!allowedMimes.includes(file.type)) {
+    throw new Error('Invalid file type');
+  }
+  
+  if (file.size > maxSize) {
+    throw new Error('File too large');
+  }
+};
+```
+
+**Environment Security**
+- Never expose Cloudinary credentials in client code
+- Use environment variables for all sensitive data
+- Implement proper CORS policies
+
+</Tab>
+<Tab value="Performance">
+
+**Image Optimization**
+Use Next.js Image component with proper sizing:
+
+```tsx ts2js
+<Image
+  src={thumbnailUrl}
+  alt={name}
+  fill
+  className="object-cover"
+  loading="lazy"
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+/>
+```
+
+**Database Indexing**
+Add indexes for better query performance:
+
+```prisma
+model Media {
+  // ... fields
+  
+  @@index([createdAt])
+  @@index([mediaType])
+  @@index([publicId])
+}
+```
+
+</Tab>
+<Tab value="Accessibility">
+
+**Keyboard Navigation**
+Ensure keyboard accessibility:
+
+```tsx ts2js
+<div
+  role="button"
+  tabIndex={0}
+  aria-label="Upload media files"
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleUpload();
+    }
+  }}
+>
+  Upload Area
+</div>
+```
+
+**Screen Reader Support**
+Provide proper ARIA labels and descriptions:
+
+```tsx ts2js
+<input
+  type="file"
+  aria-describedby="file-upload-description"
+  multiple
+  accept="image/*,video/*"
+/>
+<div id="file-upload-description">
+  Select images or videos to upload. Maximum file size: 50MB
+</div>
+```
+
+</Tab>
+<Tab value="Organization">
+
+**File Structure**
+Organize uploads systematically:
+
+```typescript
+const folderPath = `${category}/${year}/${month}`;
+// Results in: "products/2025/06"
+```
+
+
+
+</Tab>
+</Tabs>
+
+
+## Conclusion
+The Media Uploader component is a powerful and flexible solution for `managing media uploads` in full-stack applications. It integrates seamlessly with `Next.js`, `Prisma`, and `Cloudinary`, providing a robust set of features including drag-and-drop uploads, progress tracking, and error handling. The modular design allows for easy customization and extension, making it suitable for a wide range of applications from simple blogs to complex media management systems.

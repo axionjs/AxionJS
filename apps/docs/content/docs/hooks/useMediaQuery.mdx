@@ -1,0 +1,376 @@
+---
+title: useMediaQuery
+description: A hook that detects screen size changes and other media features to help build responsive interfaces.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { ResponsiveLayoutPreview, DeviceDetectionPreview } from "@/app/components/docs/UseMediaQueryPreview";
+
+# useMediaQuery
+
+The `useMediaQuery` hook allows you to easily respond to CSS media queries in your React components. It's essential for building responsive layouts, implementing device-specific features, and respecting user preferences like dark mode or reduced motion.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <DeviceDetectionPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useMediaQuery } from "@/hooks/use-media-query";
+    
+    function DeviceAwareComponent() {
+      const isMobile = useMediaQuery("(max-width: 640px)");
+      const isTablet = useMediaQuery("(min-width: 641px) and (max-width: 1024px)");
+      const isDesktop = useMediaQuery("(min-width: 1025px)");
+      const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+      
+      return (
+        <div>
+          <h1>Current Device</h1>
+          {isMobile && <p>You're on a mobile device</p>}
+          {isTablet && <p>You're on a tablet</p>}
+          {isDesktop && <p>You're on a desktop</p>}
+          
+          {prefersDarkMode ? (
+            <p>Dark mode is enabled</p>
+          ) : (
+            <p>Light mode is enabled</p>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useMediaQuery hook using:
+    ```bash
+    npx axionjs add hook use-media-query
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-media-query.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useEffect, useCallback } from "react";
+
+    export function useMediaQuery(query: string): boolean {
+      // Initialize with the current match state if window is available
+      const getMatches = useCallback((): boolean => {
+        // Check if window is defined (for SSR support)
+        if (typeof window !== "undefined") {
+          return window.matchMedia(query).matches;
+        }
+        return false;
+      }, [query]);
+
+      const [matches, setMatches] = useState<boolean>(getMatches());
+
+      useEffect(() => {
+        // Recheck matches when the query changes
+        const matchMedia = window.matchMedia(query);
+        setMatches(matchMedia.matches);
+        
+        // Create a listener function
+        const handleChange = (e: MediaQueryListEvent): void => {
+          setMatches(e.matches);
+        };
+
+        // Use newer addEventListener syntax if available
+        if (matchMedia.addEventListener) {
+          matchMedia.addEventListener("change", handleChange);
+        } else {
+          // Fallback for older browsers
+          matchMedia.addListener(handleChange);
+        }
+
+        // Clean up the listener
+        return () => {
+          if (matchMedia.removeEventListener) {
+            matchMedia.removeEventListener("change", handleChange);
+          } else {
+            // Fallback for older browsers
+            matchMedia.removeListener(handleChange);
+          }
+        };
+      }, [query, getMatches]);
+
+      return matches;
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-media-query.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    query: {
+      description: "CSS media query string to evaluate",
+      type: "string",
+      default: "Required",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    matches: {
+      description: "Whether the media query currently matches",
+      type: "boolean",
+    },
+  }}
+/>
+
+## Examples
+
+### Responsive Layout
+
+Build a responsive layout that adapts to different screen sizes:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ResponsiveLayoutPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useMediaQuery } from "@/hooks/use-media-query";
+    
+    function ResponsiveLayout() {
+      const isMobile = useMediaQuery("(max-width: 768px)");
+      
+      return (
+        <div className="layout">
+          <header>
+            <h1>My App</h1>
+            
+            {isMobile ? (
+              <button className="menu-toggle">
+                <span>Menu</span>
+              </button>
+            ) : (
+              <nav className="desktop-nav">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+              </nav>
+            )}
+          </header>
+          
+          <main>
+            <div className={isMobile ? "single-column" : "multi-column"}>
+              {/* Content */}
+            </div>
+          </main>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### User Preference Detection
+
+Detect and respond to user preferences such as dark mode, reduced motion, and more:
+
+```tsx ts2js
+function UserPreferences() {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const prefersReducedData = useMediaQuery("(prefers-reduced-data: reduce)");
+  const prefersContrast = useMediaQuery("(prefers-contrast: more)");
+  
+  // Automatic dark mode
+  React.useEffect(() => {
+    if (prefersDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [prefersDarkMode]);
+  
+  // Adjust animations based on motion preference
+  const animationStyle = prefersReducedMotion
+    ? { transition: "none" }
+    : { transition: "all 0.3s ease" };
+  
+  // Optimize images based on data preference
+  const imageQuality = prefersReducedData ? "low" : "high";
+  
+  return (
+    <div style={animationStyle}>
+      <h1>User Preferences</h1>
+      <ul>
+        <li>Dark Mode: {prefersDarkMode ? "Enabled" : "Disabled"}</li>
+        <li>Reduced Motion: {prefersReducedMotion ? "Enabled" : "Disabled"}</li>
+        <li>Reduced Data: {prefersReducedData ? "Enabled" : "Disabled"}</li>
+        <li>High Contrast: {prefersContrast ? "Enabled" : "Disabled"}</li>
+      </ul>
+      <img src={`/image-${imageQuality}.jpg`} alt="Adaptive image" />
+    </div>
+  );
+}
+```
+
+### Feature Detection
+
+Use media queries for feature detection to enhance progressive enhancement:
+
+```tsx ts2js
+function DeviceFeatures() {
+  const hasHover = useMediaQuery("(hover: hover)");
+  const hasPointer = useMediaQuery("(pointer: fine)");
+  const supportsTouch = useMediaQuery("(pointer: coarse)");
+  
+  return (
+    <div>
+      <h1>Your Device Features</h1>
+      
+      {hasHover ? (
+        <div className="card with-hover-effects">
+          <p>Hover effects enabled</p>
+        </div>
+      ) : (
+        <div className="card touch-optimized">
+          <p>Touch optimized interface</p>
+        </div>
+      )}
+      
+      {hasPointer && (
+        <div className="precise-controls">
+          <p>Precise pointer detected (mouse)</p>
+          <input type="range" min="0" max="100" step="1" />
+        </div>
+      )}
+      
+      {supportsTouch && (
+        <div className="touch-targets">
+          <p>Touch input detected</p>
+          <button className="large-touch-target">Large Button</button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Common Media Queries
+
+Here are some common media queries you might use with this hook:
+
+### Screen Sizes
+
+```tsx ts2js
+// Mobile
+const isMobile = useMediaQuery("(max-width: 640px)");
+
+// Tablet
+const isTablet = useMediaQuery("(min-width: 641px) and (max-width: 1024px)");
+
+// Laptop
+const isLaptop = useMediaQuery("(min-width: 1025px) and (max-width: 1440px)");
+
+// Desktop
+const isDesktop = useMediaQuery("(min-width: 1441px)");
+```
+
+### Orientation
+
+```tsx ts2js
+const isPortrait = useMediaQuery("(orientation: portrait)");
+const isLandscape = useMediaQuery("(orientation: landscape)");
+```
+
+### User Preferences
+
+```tsx ts2js
+const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+const prefersLightMode = useMediaQuery("(prefers-color-scheme: light)");
+const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+const prefersReducedData = useMediaQuery("(prefers-reduced-data: reduce)");
+const prefersHighContrast = useMediaQuery("(prefers-contrast: more)");
+```
+
+### Display Features
+
+```tsx ts2js
+const hasHover = useMediaQuery("(hover: hover)");
+const hasNoHover = useMediaQuery("(hover: none)");
+const hasFinePointer = useMediaQuery("(pointer: fine)"); // mouse
+const hasCoarsePointer = useMediaQuery("(pointer: coarse)"); // touch
+```
+
+## Use Cases
+
+- **Responsive Layouts**: Adapt layouts based on screen size
+- **Conditional Rendering**: Show or hide elements based on screen size
+- **Adaptive UX**: Modify user experience based on device capabilities
+- **Accessibility**: Respect user preferences like reduced motion
+- **Dark Mode**: Implement automatic dark mode based on system preference
+- **Device-Specific Features**: Enable/disable features based on device type
+- **Performance Optimization**: Load different assets based on screen size
+
+## Accessibility
+
+This hook can significantly improve accessibility by allowing you to:
+
+- Respond to `prefers-reduced-motion` for users with vestibular disorders
+- Adapt to `prefers-contrast` for users with visual impairments
+- Support `prefers-color-scheme` for users who need specific color modes
+- Optimize touch targets when `pointer: coarse` is detected
+- Provide keyboard-focused UI when `hover: none` is detected
+
+## Server-Side Rendering
+
+This hook includes safeguards for server-side rendering (SSR) by checking if `window` is defined before accessing browser APIs. When rendering on the server, it returns `false` by default.
+
+For proper hydration with Next.js or similar frameworks, you can use this pattern:
+
+```tsx ts2js
+function MyComponent() {
+  // Start with false and update after hydration
+  const [isMounted, setIsMounted] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  // During SSR and first render, return a placeholder layout
+  if (!isMounted) {
+    return <div>Loading...</div>;
+  }
+  
+  // Once mounted in browser, render responsive layout
+  return (
+    <div className={isMobile ? "mobile-layout" : "desktop-layout"}>
+      {/* Actual content */}
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+- Use semantic breakpoints that match your design system
+- Limit the number of media queries to avoid performance issues
+- Extract common screen size queries into reusable constants or custom hooks
+- Consider throttling or debouncing the state updates for rapid changes (like window resizing)
+- Use with CSS-in-JS libraries to share the same breakpoint definitions
+- Prefer `min-width` media queries for mobile-first design
+- Test thoroughly on various devices and browsers

@@ -1,0 +1,351 @@
+---
+title: Separator
+description: A flexible, customizable, and accessible separator component for dividing content.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import {
+  HorizontalSeparatorPreview,
+  VerticalSeparatorPreview,
+  CustomSeparatorPreview,SeparatorDemo
+} from "@/app/components/docs/SeparatorPreview";
+
+## Introduction
+
+The `Separator` component is a versatile utility for dividing content. It supports horizontal and vertical orientations, optional labels, dashed styles, and accessibility features.
+
+---
+
+## Separator Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-72 pb-8 content-center items-center">
+    <SeparatorDemo />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+  export function SeparatorDemo() {
+  return (
+    <div>
+      <div className="space-y-1">
+        <h4 className="text-sm font-medium leading-none">Radix Primitives</h4>
+        <p className="text-sm text-muted-foreground">
+          An open-source UI component library.
+        </p>
+      </div>
+      <Separator className="my-4" />
+      <div className="flex h-5 items-center space-x-4 text-sm">
+        <div>Blog</div>
+        <Separator orientation="vertical" />
+        <div>Docs</div>
+        <Separator orientation="vertical" />
+        <div>Source</div>
+      </div>
+    </div>
+  )
+}
+    ```
+  </Tab>
+</Tabs>
+
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `separator` component:
+    ```bash
+    npx axionjs add separator
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### Step 1: Install Dependencies
+    ```bash
+npm install @radix-ui/react-separator    
+```
+
+    ### Step 2: Add the Component
+    Create a file `components/ui/separator.tsx`:
+    ```tsx ts2js
+ "use client";
+
+import * as React from "react";
+import * as SeparatorPrimitive from "@radix-ui/react-separator";
+
+import { cn } from "@/lib/utils";
+
+export interface SeparatorProps
+  extends React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> {
+  orientation?: "horizontal" | "vertical";
+
+  decorative?: boolean;
+
+  dashed?: boolean;
+
+  label?: React.ReactNode;
+
+  labelPosition?: "start" | "center" | "end";
+}
+
+export const Separator = React.forwardRef<
+  React.ElementRef<typeof SeparatorPrimitive.Root>,
+  SeparatorProps
+>(
+  (
+    {
+      orientation = "horizontal",
+      dashed = false,
+      label,
+      labelPosition = "center",
+      decorative = !label,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
+    const hasLabel = !!label;
+
+    if (orientation === "vertical") {
+      return (
+        <SeparatorPrimitive.Root
+          ref={ref}
+          orientation="vertical"
+          decorative={decorative}
+          className={cn(
+            "relative shrink-0 w-px bg-border",
+            dashed && "bg-dashed-border",
+            className,
+          )}
+          {...props}
+        >
+          {hasLabel && (
+            <div
+              className={cn(
+                "absolute left-1/2 flex -translate-x-1/2 -translate-y-1/2 rotate-90 whitespace-nowrap px-2 text-sm text-foreground",
+              )}
+            >
+              {label}
+            </div>
+          )}
+        </SeparatorPrimitive.Root>
+      );
+    }
+
+    // Horizontal divider
+    return (
+      <div className={cn("relative flex items-center", className)}>
+        <SeparatorPrimitive.Root
+          ref={ref}
+          orientation="horizontal"
+          decorative={decorative}
+          className={cn(
+            "h-[1px] w-full shrink-0 bg-border",
+            dashed && "bg-dashed-border",
+            hasLabel && labelPosition !== "start" ? "mr-2" : "",
+          )}
+          {...props}
+        />
+        {hasLabel && (
+          <span
+            className={cn(
+              "text-sm text-foreground",
+              labelPosition === "start" && "order-first mr-2",
+              labelPosition === "center" &&
+                "absolute left-1/2 -translate-x-1/2 bg-background px-2",
+              labelPosition === "end" && "ml-2",
+            )}
+          >
+            {label}
+          </span>
+        )}
+        {hasLabel && labelPosition !== "end" && (
+          <SeparatorPrimitive.Root
+            orientation="horizontal"
+            decorative={decorative}
+            className={cn(
+              "h-[1px] w-full shrink-0 bg-border",
+              dashed && "bg-dashed-border",
+              labelPosition === "center" && "ml-2",
+            )}
+          />
+        )}
+      </div>
+    );
+  },
+);
+Separator.displayName = "Separator";
+
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Horizontal Separator Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-4 h-72 pb-8 content-center items-center">
+    <HorizontalSeparatorPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { Separator } from "@/components/ui/separator";
+
+    export function HorizontalSeparatorPreview() {
+      return (
+        <div className="space-y-4">
+          <Separator />
+          <Separator dashed />
+          <Separator label="Section Divider" />
+          <Separator label="Aligned Start" labelPosition="start" />
+          <Separator label="Aligned End" labelPosition="end" />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Vertical Separator Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-12 h-72 pb-8 content-center items-center">
+    <VerticalSeparatorPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { Separator } from "@/components/ui/separator";
+
+    export function VerticalSeparatorPreview() {
+      return (
+        <div className="flex space-x-4">
+          <div className="h-32 flex items-center">
+            <Separator orientation="vertical" />
+          </div>
+          <div className="h-32 flex items-center">
+            <Separator orientation="vertical" label="Divider" />
+          </div>
+          <div className="h-32 flex items-center">
+            <Separator orientation="vertical" dashed label="Dashed" />
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Custom Separator Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-12 h-72 pb-8 content-center items-center">
+    <CustomSeparatorPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import { Separator } from "@/components/ui/separator";
+
+    export function CustomSeparatorPreview() {
+      return (
+        <div className="space-y-6">
+          <Separator label="Custom Styled Separator" dashed />
+          <Separator orientation="vertical" label="Vertical Example" />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="separator.tsx" />
+      </Folder>
+     
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    orientation: {
+      description: "The direction of the separator.",
+      type: `"horizontal" | "vertical"`,
+      required: false,
+      default: `"horizontal"`,
+    },
+    decorative: {
+      description:
+        "Whether the separator is purely decorative and does not convey semantic meaning.",
+      type: "boolean",
+      required: false,
+      default: "true",
+    },
+    dashed: {
+      description: "Whether the separator has a dashed style.",
+      type: "boolean",
+      required: false,
+      default: "false",
+    },
+    label: {
+      description: "Optional label text displayed with the separator.",
+      type: "ReactNode",
+      required: false,
+    },
+    labelPosition: {
+      description:
+        "The position of the label when the separator is horizontal.",
+      type: `"start" | "center" | "end"`,
+      required: false,
+      default: `"center"`,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Customizable Orientation**:
+  - Supports both horizontal and vertical dividers.
+- **Optional Labels**:
+  - Add labels to horizontal and vertical separators for clarity.
+- **Dashed Style**:
+  - Apply dashed styling to the separator line.
+- **Accessibility**:
+  - Mark decorative separators for assistive technologies.
+
+---
+
+## Accessibility
+
+- **Keyboard and Assistive Tech**:
+  - Decorative separators are marked with `aria-hidden="true"` by default.
+  - Labeled separators are semantically meaningful for screen readers.
+- **Semantic Markup**:
+  - Uses appropriate ARIA roles for vertical and horizontal lines.
+
+---
+
+## Conclusion
+
+The `Separator` component is a simple yet versatile utility for visually and semantically dividing content in your application. It’s customizable and supports various use cases.

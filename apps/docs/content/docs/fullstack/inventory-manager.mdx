@@ -1,0 +1,541 @@
+---
+title: Inventory Manager
+description: A comprehensive inventory management system with real-time stock tracking, advanced filtering, and seamless CRUD operations built with Next.js and AxionsJS.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Steps, Step } from 'fumadocs-ui/components/steps';
+import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+import { Card, Cards } from 'fumadocs-ui/components/card';
+import { CodeBlock } from 'fumadocs-ui/components/codeblock';
+import Image from 'next/image';
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer';
+
+# Inventory Manager
+
+A powerful, full-stack inventory management system built with Next.js Server Actions and AxionsJS components. Features real-time stock tracking, advanced filtering, sorting, pagination, and comprehensive CRUD operations with a modern, responsive interface.
+
+<div className="my-8">
+  <Image
+    src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1750017120/Screenshot_2025-06-16_005047_fslb25.png"
+    alt="AxionsJS Inventory Manager - Complete inventory management interface showing data table with filtering, sorting, and CRUD operations"
+    width={1200}
+    height={800}
+    className="rounded-lg border shadow-lg"
+    priority
+  />
+</div>
+
+<div className="my-8">
+    <div   className="border rounded-md overflow-scroll"
+              style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="inventory-manager"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+            />
+    </div>
+</div>
+
+<Callout type="info">
+This component leverages Next.js App Router with Server Actions for optimal performance and real-time data synchronization.
+</Callout>
+
+
+## Installation
+
+<Steps>
+<Step>
+### Install the Component
+
+```bash title="Terminal"
+npx axionjs add inventory-manager
+```
+
+This will install all necessary dependencies and create the required files in your project.
+</Step>
+
+<Step>
+### Database Setup
+
+Ensure you have a PostgreSQL database configured. The component uses Prisma with the following schema:
+
+```prisma title="schema.prisma"
+model InventoryItem {
+  id        String   @id @default(cuid())
+  name      String
+  category  String
+  price     Float
+  stock     Int
+  sku       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([category])
+  @@index([sku])
+}
+```
+</Step>
+
+<Step>
+### Environment Configuration
+
+Add your database URL to your `.env` file:
+
+```env title=".env"
+DATABASE_URL="your_postgresql_connection_string"
+```
+</Step>
+
+<Step>
+### Run Database Migration
+
+```bash title="Terminal"
+npx prisma db push
+```
+</Step>
+</Steps>
+## Features
+
+<Cards>
+  <Card title="Complete CRUD Operations">
+    Create, read, update, and delete inventory items seamlessly.
+  </Card>
+  <Card title="Real-time Stock Tracking">
+    Monitor stock levels with automatic low-stock alerts.
+  </Card>
+  <Card title="Advanced Data Table">
+    Sortable columns, pagination, and dynamic filtering for efficient data handling.
+  </Card>
+  <Card title="URL State Management">
+    Shareable URLs preserve filter and sort states for collaborative work.
+  </Card>
+</Cards>
+
+### Core Functionality
+- **SKU Management** - Unique SKU validation and tracking
+- **Category Organization** - Organize items by predefined categories
+
+### Data Management
+- **Server-Side Pagination** - Efficient handling of large datasets
+- **Advanced Filtering** - Filter by name, category, and stock levels
+- **Multi-column Sorting** - Sort by any column with visual indicators
+- **Optimistic Updates** - Smooth UI interactions with server validation
+
+### User Experience
+- **Responsive Design** - Works seamlessly across all device sizes
+- **Loading States** - Skeleton loaders and progress indicators
+- **Toast Notifications** - User feedback for all operations
+- **Modal Dialogs** - Intuitive forms for creating and editing items
+- **Low Stock Alerts** - Visual warnings for items running low
+
+### Data Integrity
+- **Form Validation** - Comprehensive client and server-side validation
+- **Duplicate Prevention** - SKU uniqueness enforcement
+- **Error Handling** - Graceful error management and user feedback
+- **Data Consistency** - Automatic revalidation after mutations
+
+## Usage
+
+### Basic Implementation
+
+```tsx title="app/inventory/page.tsx"
+import { InventoryDataTable } from "@/components/inventory-data-table";
+import { CreateInventoryItem } from "@/components/inventory-form";
+
+export default function InventoryPage() {
+  return (
+    <div className="container mx-auto p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Inventory Management</h1>
+        <CreateInventoryItem />
+      </div>
+      <InventoryDataTable />
+    </div>
+  );
+}
+```
+
+### Advanced Configuration
+
+<Tabs items={['Custom Filters', 'Pagination Settings', 'Stock Thresholds']}>
+<Tab value="Custom Filters">
+```tsx title="components/custom-filters.tsx"
+// Custom category filters
+const categories = [
+  "Electronics",
+  "Clothing", 
+  "Food",
+  "Books",
+  "Sports",
+  "Other"
+];
+
+// Implement in your select component
+<Select onValueChange={handleCategoryChange}>
+  <SelectTrigger>
+    <SelectValue placeholder="Select category" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="all">All Categories</SelectItem>
+    {categories.map(category => (
+      <SelectItem key={category} value={category}>
+        {category}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
+```
+</Tab>
+
+<Tab value="Pagination Settings">
+```tsx title="hooks/use-inventory-settings.ts"
+// Default pagination configuration
+const paginationConfig = {
+  defaultPageSize: 10,
+  pageSizeOptions: [5, 10, 20, 30, 40, 50],
+  showPageInfo: true,
+  showRefreshButton: true
+};
+
+// Custom implementation
+const { data, pageCount, totalItems } = useInventoryDataTable({
+  initialPageSize: 20,
+  initialSortBy: "name",
+  initialSortOrder: "asc"
+});
+```
+</Tab>
+
+<Tab value="Stock Thresholds">
+```tsx title="utils/stock-logic.ts"
+// Configure low stock threshold
+const LOW_STOCK_THRESHOLD = 10;
+
+// Custom stock status logic
+const getStockStatus = (stock: number) => {
+  if (stock === 0) return "out-of-stock";
+  if (stock < LOW_STOCK_THRESHOLD) return "low-stock";
+  return "in-stock";
+};
+
+// Usage in components
+{stock < LOW_STOCK_THRESHOLD && (
+  <div className="text-red-600 text-sm font-medium">
+    ⚠️ Low Stock
+  </div>
+)}
+```
+</Tab>
+</Tabs>
+
+## API Reference
+
+### Server Actions
+
+<TypeTable
+  type={{
+    getInventoryItems: {
+      description: "Fetch paginated inventory items with filtering and sorting",
+      type: "function",
+      parameters: "GetInventoryItemsParams"
+    },
+    createInventoryItem: {
+      description: "Create a new inventory item",
+      type: "function", 
+      parameters: "InventoryFormData"
+    },
+    updateInventoryItem: {
+      description: "Update an existing inventory item",
+      type: "function",
+      parameters: "id: string, data: InventoryFormData"
+    },
+    deleteInventoryItem: {
+      description: "Delete an inventory item",
+      type: "function",
+      parameters: "id: string"
+    }
+  }}
+/>
+
+### Hook Parameters (`useInventoryDataTable`)
+
+```tsx title="hooks/use-inventory-data-table.ts"
+interface UseInventoryDataTableOptions {
+  initialPageSize?: number;
+  initialSortBy?: string;
+  initialSortOrder?: "asc" | "desc";
+  initialFilters?: {
+    name?: string;
+    category?: string;
+    lowStockOnly?: boolean;
+  };
+}
+```
+
+### Form Schema (`Zod`)
+
+```tsx title="lib/validations/inventory.ts"
+const inventoryFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  category: z.string().min(1, "Please select a category"),
+  price: z.number().positive("Price must be positive"),
+  stock: z.number().int().nonnegative("Stock must be non-negative"),
+  sku: z.string().min(3, "SKU must be at least 3 characters")
+});
+```
+
+## Component Features
+
+### Smart Data Table
+
+The inventory data table provides enterprise-grade functionality:
+
+- **Dynamic Sorting**: Click any column header to sort data
+- **Advanced Filtering**: Filter by name, category, or stock status
+- **Pagination Controls**: Navigate through large datasets efficiently
+- **Bulk Operations**: Select multiple items for batch operations
+- **Export Capabilities**: Download data in various formats
+- **Responsive Design**: Adapts to different screen sizes
+
+### Intelligent Stock Management
+
+<Callout type="warning">
+Items with stock levels below 10 units will automatically trigger low-stock alerts. This threshold is customizable.
+</Callout>
+
+- **Real-time Monitoring**: Stock levels update immediately after transactions
+- **Visual Indicators**: Color-coded stock status (green: good, yellow: low, red: critical)
+- **Alert System**: Prominent notifications for low-stock items
+- **Quick Actions**: One-click access to restock or edit items
+- **Stock History**: Track stock level changes over time
+
+### Seamless Form Experience
+
+- **Smart Validation**: Real-time form validation with helpful error messages
+- **Auto-completion**: Intelligent suggestions for categories and SKUs
+- **Duplicate Detection**: Prevents duplicate SKU entries
+- **Modal Interface**: Clean, focused editing experience
+- **Keyboard Navigation**: Full keyboard accessibility support
+
+## Customization
+
+<Tabs items={['Styling', 'Categories', 'Stock Thresholds']}>
+  <Tab value="Styling">
+    The component uses Tailwind CSS and can be easily customized by overriding default styles or extending the theme.
+    ```tsx title="tailwind.config.js or global.css"
+// Custom theme configuration
+const customTheme = {
+  colors: {
+    primary: "hsl(222, 84%, 5%)",
+    secondary: "hsl(210, 40%, 94%)",
+    accent: "hsl(210, 40%, 94%)",
+    muted: "hsl(210, 40%, 94%)"
+  }
+};
+    ```
+  </Tab>
+  <Tab value="Categories">
+    Modify the available categories by updating the select options or a central configuration file.
+    ```tsx title="config/inventory.ts"
+const INVENTORY_CATEGORIES = [
+  "Electronics",
+  "Clothing",
+  "Food & Beverages", 
+  "Books & Media",
+  "Sports & Recreation",
+  "Home & Garden",
+  "Other"
+];
+    ```
+  </Tab>
+  <Tab value="Stock Thresholds">
+    Customize low-stock thresholds globally or per category.
+    ```tsx title="config/inventory.ts"
+const STOCK_THRESHOLDS = {
+  "Electronics": 5,
+  "Clothing": 10,
+  "Food & Beverages": 20,
+  "default": 10
+};
+    ```
+  </Tab>
+</Tabs>
+
+## Performance Optimization
+
+### Server-Side Features
+
+- **Pagination**: Only loads necessary data chunks
+- **Indexing**: Database indexes on searchable fields
+- **Caching**: Intelligent caching with revalidation
+- **Optimistic Updates**: Immediate UI feedback
+
+### Client-Side Optimizations
+
+- **Virtual Scrolling**: Handles large datasets efficiently
+- **Debounced Search**: Reduces API calls during typing
+- **Memoization**: Prevents unnecessary re-renders
+- **Code Splitting**: Lazy loads components when needed
+
+## Best Practices
+
+### Data Management
+
+<Callout type="info">
+Always validate data on both client and server sides for maximum security and user experience.
+</Callout>
+
+1. **Unique SKUs**: Ensure every item has a unique SKU
+2. **Consistent Categories**: Use predefined categories for better organization
+3. **Regular Audits**: Periodically review and clean up inventory data
+4. **Backup Strategy**: Implement regular database backups
+
+### User Experience
+
+1. **Clear Navigation**: Provide intuitive navigation between views
+2. **Helpful Feedback**: Show loading states and success/error messages
+3. **Keyboard Shortcuts**: Implement common keyboard shortcuts
+4. **Mobile First**: Design for mobile devices first
+
+### Performance
+
+1. **Pagination**: Always use pagination for large datasets
+2. **Indexing**: Add database indexes on frequently queried fields
+3. **Caching**: Implement appropriate caching strategies
+4. **Error Boundaries**: Use React error boundaries for graceful degradation
+
+## Troubleshooting
+
+<Tabs items={['Database Errors', 'TypeScript Errors', 'Dependency Issues', 'Performance']}>
+  <Tab value="Database Errors">
+    **Database Connection Errors**
+    ```bash title="Terminal"
+    # Check your database URL
+    echo $DATABASE_URL
+
+    # Test connection
+    npx prisma db pull
+    ```
+  </Tab>
+  <Tab value="TypeScript Errors">
+    **TypeScript Errors**
+    ```bash title="Terminal"
+    # Regenerate Prisma client
+    npx prisma generate
+
+    # Check types
+    npm run type-check
+    ```
+  </Tab>
+  <Tab value="Dependency Issues">
+    **Missing Dependencies**
+    ```bash title="Terminal"
+    # Install peer dependencies
+    npm install @tanstack/react-table lucide-react
+
+    # Verify installation
+    npm list @tanstack/react-table
+    ```
+  </Tab>
+  <Tab value="Performance">
+    **Performance Issues**
+    - **Slow Queries**: Add appropriate database indexes.
+    - **Large Datasets**: Implement virtual scrolling or ensure server-side pagination is effective.
+    - **Memory Leaks**: Ensure proper cleanup of event listeners and subscriptions in custom hooks or components.
+  </Tab>
+</Tabs>
+
+## Examples
+
+<Tabs items={['Basic Page', 'Custom Hook']}>
+  <Tab value="Basic Page">
+    ### Basic Inventory Page
+    ```tsx title="app/inventory/page.tsx"
+import { Suspense } from "react";
+import { InventoryDataTable } from "@/components/inventory-data-table";
+import { CreateInventoryItem } from "@/components/inventory-form";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export default function InventoryPage() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-bold">Inventory Management</h1>
+          <p className="text-muted-foreground">
+            Manage your inventory items and stock levels
+          </p>
+        </div>
+        <CreateInventoryItem />
+      </div>
+      
+      <Suspense fallback={<InventoryTableSkeleton />}>
+        <InventoryDataTable />
+      </Suspense>
+    </div>
+  );
+}
+
+function InventoryTableSkeleton() {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-12 w-full" />
+      {Array.from({ length: 8 }).map((_, i) => (
+        <Skeleton key={i} className="h-16 w-full" />
+      ))}
+    </div>
+  );
+}
+    ```
+  </Tab>
+  <Tab value="Custom Hook">
+    ### Custom Hook Usage
+    ```tsx title="components/custom-inventory-view.tsx"
+import { useInventoryDataTable } from "@/hooks/use-inventory-data-table";
+
+export function CustomInventoryView() {
+  const {
+    data,
+    isLoading,
+    totalItems,
+    lowStockCount,
+    refreshData
+  } = useInventoryDataTable({
+    initialPageSize: 25,
+    initialSortBy: "name",
+    initialSortOrder: "asc"
+  });
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h2>Inventory Items ({totalItems})</h2>
+        {lowStockCount > 0 && (
+          <Badge variant="destructive">
+            {lowStockCount} Low Stock Items
+          </Badge>
+        )}
+      </div>
+      
+      {/* Custom table implementation */}
+      <CustomDataTable data={data} isLoading={isLoading} />
+    </div>
+  );
+}
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+<Callout type="success">
+The AxionsJS Inventory Manager provides a complete, production-ready solution for inventory management with modern React patterns and Next.js optimization.
+</Callout>
+
+## Conclusion
+The AxionsJS Inventory Manager is a robust, full-stack solution for managing inventory with real-time data handling and a user-friendly interface. It leverages the power of Next.js Server Actions and AxionsJS components to deliver a seamless experience for both developers and end-users.

@@ -1,0 +1,404 @@
+---
+title: Badge
+description: A flexible badge component for tagging, categorization, and status indication, supporting multiple variants and customizations.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { BadgePreview, StatusBadges, BadgeSizes, BadgeCounters, CustomBadges, TagBadges, CustomizeBadgePreview } from "@/app/components/docs/BadgePreview";
+import { Badge } from "@/registry/new-york/ui/badge";
+import { Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-8 content-center">
+    <BadgePreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    import { Badge } from "@/app/components/ui/badge";
+
+    export default function App() {
+      return (
+        <div className="flex flex-wrap gap-2">
+          <Badge>Default</Badge>
+          <Badge variant="secondary">Secondary</Badge>
+          <Badge variant="destructive">Destructive</Badge>
+          <Badge variant="outline">Outline</Badge>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<CustomizeBadgePreview />
+
+## Introduction
+
+The Badge component provides a simple way to highlight and categorize content within your application. Use it for displaying statuses, counts, tags, or any other concise metadata.
+
+<Callout type="info">
+  Badges are designed to be lightweight and unobtrusive, making them perfect for supplementary information.
+</Callout>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the badge component using:
+    ```bash
+    npx axionjs add badge
+    ```
+  </Tab>
+  <Tab value="Manual">
+    <Steps>
+      ### Install Dependencies
+      
+      Ensure the following dependencies are installed:
+      ```bash
+      npm install class-variance-authority tailwindcss
+      ```
+
+      ### Add the Badge Component
+      
+      Create the `badge.tsx` file in your `components/ui` directory:
+      ```tsx ts2js
+      import * as React from "react";
+      import { cva, type VariantProps } from "class-variance-authority";
+      import { cn } from "@/lib/utils";
+
+      const badgeVariants = cva(
+        "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+        {
+          variants: {
+            variant: {
+              default:
+                "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+              secondary:
+                "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+              destructive:
+                "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
+              outline: "text-foreground",
+            },
+          },
+          defaultVariants: {
+            variant: "default",
+          },
+        }
+      );
+
+      export interface BadgeProps
+        extends React.HTMLAttributes<HTMLDivElement>,
+          VariantProps<typeof badgeVariants> {}
+
+      const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
+        ({ className, variant, ...props }, ref) => (
+          <div
+            ref={ref}
+            className={cn(badgeVariants({ variant }), className)}
+            {...props}
+          />
+        )
+      );
+      Badge.displayName = "Badge";
+
+      export { Badge, badgeVariants };
+      ```
+    </Steps>
+  </Tab>
+</Tabs>
+
+## File Structure
+
+Here's the file structure for the Badge component:
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <Folder name="ui" defaultOpen>
+      <File name="badge.tsx" />
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Variants
+
+### Default
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <Badge>Default Badge</Badge>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge>Default Badge</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Secondary
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <Badge variant="secondary">Secondary Badge</Badge>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge variant="secondary">Secondary Badge</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Destructive
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <Badge variant="destructive">Error Badge</Badge>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge variant="destructive">Error Badge</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Outline
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <Badge variant="outline">Outline Badge</Badge>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge variant="outline">Outline Badge</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+## Examples
+
+### Status Indicators
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <StatusBadges />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge variant="outline" className="gap-1.5">
+      <span
+        className="size-1.5 rounded-full bg-emerald-500"
+        aria-hidden="true"
+      ></span>
+      Online
+    </Badge>
+    
+    <Badge variant="outline" className="gap-1.5">
+      <span
+        className="size-1.5 rounded-full bg-yellow-500"
+        aria-hidden="true"
+      ></span>
+      Away
+    </Badge>
+    
+    <Badge variant="outline" className="gap-1.5">
+      <span
+        className="size-1.5 rounded-full bg-red-500"
+        aria-hidden="true"
+      ></span>
+      Offline
+    </Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Different Sizes
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <BadgeSizes />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge className="text-[10px] px-2 py-0.25">Small</Badge>
+    <Badge>Regular</Badge>
+    <Badge className="text-sm px-3 py-1">Large</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### With Counters
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <BadgeCounters />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge variant="secondary" className="gap-1.5">
+      Notifications
+      <span className="inline-flex items-center justify-center w-4 h-4 ml-1 text-[10px] font-bold text-white bg-primary rounded-full">
+        3
+      </span>
+    </Badge>
+    
+    <Badge variant="outline" className="gap-1.5">
+      Messages
+      <span className="inline-flex items-center justify-center w-4 h-4 ml-1 text-[10px] font-bold text-white bg-blue-500 rounded-full">
+        7
+      </span>
+    </Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Custom Colors
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <CustomBadges />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge className="bg-purple-500 text-white hover:bg-purple-600 border-transparent">
+      Custom Purple
+    </Badge>
+    
+    <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white border-transparent">
+      Gradient
+    </Badge>
+    
+    <Badge className="bg-amber-500 text-black border-transparent">
+      Warning
+    </Badge>
+    ```
+  </Tab>
+</Tabs>
+
+### Tags & Categories
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-4 content-center">
+    <TagBadges />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    <Badge variant="outline">React</Badge>
+    <Badge variant="outline">Next.js</Badge>
+    <Badge variant="outline">TypeScript</Badge>
+    <Badge variant="secondary" className="text-[10px]">NEW</Badge>
+    <Badge variant="destructive" className="text-[10px]">DEPRECATED</Badge>
+    ```
+  </Tab>
+</Tabs>
+
+## Props
+
+The `Badge` component comes with the following customizable props:
+
+<TypeTable
+  type={{
+    variant: {
+      description: "Defines the visual style of the badge.",
+      type: '"default" | "secondary" | "destructive" | "outline"',
+      default: '"default"',
+    },
+    className: {
+      description: "Additional classes for styling.",
+      type: "string",
+    },
+    children: {
+      description: "The content inside the badge.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+## Customization
+
+The Badge component can be customized further by:
+
+<Tabs items={["Additional Variants", "Custom Colors"]}>
+  <Tab value="Additional Variants">
+    ```tsx
+    // In your badge.tsx file
+    const badgeVariants = cva(
+      "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+      {
+        variants: {
+          variant: {
+            default:
+              "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+            secondary:
+              "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+            destructive:
+              "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
+            outline: "text-foreground",
+            // Add new variants
+            success: "border-transparent bg-green-500 text-white shadow hover:bg-green-600",
+            warning: "border-transparent bg-yellow-500 text-black shadow hover:bg-yellow-600",
+            info: "border-transparent bg-blue-500 text-white shadow hover:bg-blue-600",
+          },
+        },
+        defaultVariants: {
+          variant: "default",
+        },
+      }
+    );
+    ```
+  </Tab>
+  <Tab value="Custom Colors">
+    ```tsx
+    // Usage with custom colors
+    <Badge className="bg-purple-500 text-white hover:bg-purple-600">
+      Custom Purple
+    </Badge>
+    
+    <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white">
+      Gradient
+    </Badge>
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+The **Badge** component is perfect for:
+
+- **Status Indicators**: Highlight statuses like "Active," "Inactive," or "Pending."
+- **Tags & Categories**: Label content, filters, or metadata for easy identification.
+- **Counters**: Display notification counts or other numerical values.
+- **Labels**: Add contextual information to UI elements.
+- **Feature Flags**: Indicate new, beta, or deprecated features.
+
+## Accessibility
+
+The Badge component follows these accessibility best practices:
+
+- **Color Contrast**: All variants maintain proper color contrast ratios for readability.
+- **Screen Reader Support**: Uses meaningful content that provides context to assistive technologies.
+- **Keyboard Navigation**: Fully navigable when used with interactive elements.
+- **Focus Indicators**: Includes visible focus rings when the badge is interactive.
+
+<Callout type="warning">
+  When using badges to convey important information, ensure the meaning is not conveyed by color alone. Use text or additional indicators for users with color vision deficiencies.
+</Callout>
+
+## Features
+
+The `Badge` component provides the following features:
+
+- **Multiple Variants**: Choose from default, secondary, destructive, and outline styles to match your design needs.
+- **Flexible Styling**: Easily customize with additional classes or inline styles.
+- **Status Indicators**: Combine with colored dots for status representation.
+- **Counters**: Display numerical values alongside labels.
+- **Responsive**: Works well at any screen size.
+- **Accessibility**: Built with screen readers and keyboard navigation in mind.
+
+## Conclusion
+
+The **Badge** component is a versatile, accessible, and lightweight solution for adding visual indicators to your application. Its flexibility through variants and customization options makes it adaptable to a wide range of use cases while maintaining a consistent design language across your Next.js application.

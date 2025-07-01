@@ -1,0 +1,18 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "stats-cards",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "A stats cards component.",
+  "registryDependencies": [
+    "card"
+  ],
+  "files": [
+    {
+      "path": "blocks/stats-cards.tsx",
+      "content": "import { Card, CardContent } from \"@/registry/new-york/ui/card\";\nimport { ArrowUpRight, Users, Code, Star, Download } from \"lucide-react\";\n\nexport default function StatsCards() {\n  const stats = [\n    {\n      title: \"Active Users\",\n      value: \"2.4M+\",\n      change: \"+24.3%\",\n      icon: <Users className=\"h-4 w-4\" />,\n      description: \"Monthly active users across all platforms\",\n    },\n    {\n      title: \"registry/new-york\",\n      value: \"150+\",\n      change: \"+12 this month\",\n      icon: <Code className=\"h-4 w-4\" />,\n      description: \"Ready-to-use UI registry/new-york\",\n    },\n    {\n      title: \"GitHub Stars\",\n      value: \"15.2K\",\n      change: \"+1.2K\",\n      icon: <Star className=\"h-4 w-4\" />,\n      description: \"Open source community support\",\n    },\n    {\n      title: \"Downloads\",\n      value: \"3.8M\",\n      change: \"+32.7%\",\n      icon: <Download className=\"h-4 w-4\" />,\n      description: \"Package downloads in the last month\",\n    },\n  ];\n\n  return (\n    <section className=\"py-12 md:py-24\">\n      <div className=\"container px-4 md:px-6\">\n        <div className=\"mx-auto max-w-xl text-center\">\n          <h2 className=\"text-3xl font-bold tracking-tight md:text-4xl\">\n            Our Growth in Numbers\n          </h2>\n          <p className=\"mt-4 text-muted-foreground\">\n            Metrics that showcase the impact and adoption of our component\n            library.\n          </p>\n        </div>\n\n        <div className=\"mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-4\">\n          {stats.map((stat, index) => (\n            <Card key={index} className=\"overflow-hidden\">\n              <CardContent className=\"p-6\">\n                <div className=\"flex items-center justify-between\">\n                  <span className=\"flex h-8 w-8 items-center justify-center rounded-full bg-primary/10\">\n                    {stat.icon}\n                  </span>\n                  <div className=\"flex items-center text-sm font-medium text-green-500\">\n                    {stat.change}\n                    <ArrowUpRight className=\"ml-1 h-3 w-3\" />\n                  </div>\n                </div>\n                <div className=\"mt-4\">\n                  <h3 className=\"text-sm font-medium text-muted-foreground\">\n                    {stat.title}\n                  </h3>\n                  <p className=\"mt-2 text-3xl font-bold\">{stat.value}</p>\n                  <p className=\"mt-1 text-xs text-muted-foreground\">\n                    {stat.description}\n                  </p>\n                </div>\n              </CardContent>\n            </Card>\n          ))}\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+      "type": "registry:component",
+      "target": ""
+    }
+  ]
+}

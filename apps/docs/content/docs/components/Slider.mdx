@@ -1,0 +1,174 @@
+---
+title: Slider
+description: A customizable and accessible slider component for selecting values.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import {
+  SimpleSliderPreview,
+  ColoredSliderPreview,
+} from "@/app/components/docs/SliderPreview";
+
+## Introduction
+
+The `Slider` component is a customizable range selector built with Radix Slider. It allows users to pick a single or range of values using an intuitive sliding handle.
+
+---
+
+## Example: Simple Slider
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="px-12 h-72 pb-8 content-center items-center">
+    <SimpleSliderPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { Slider } from "@/components/ui/slider";
+
+    export function SimpleSliderPreview() {
+      return (
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-foreground">
+              Simple Slider
+            </label>
+            <Slider defaultValue={[50]} max={100} step={1} className="mt-2" />
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `slider` component:
+    ```bash
+    npx axionjs add slider
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### Step 1: Install Dependencies
+    ```bash
+npm install @radix-ui/react-slider
+    ```
+
+    ### Step 2: Add the Component
+    Create a file `components/ui/slider.tsx`:
+    ```tsx ts2js
+ "use client";
+
+import * as React from "react";
+import * as SliderPrimitive from "@radix-ui/react-slider";
+
+import { cn } from "@/lib/utils";
+
+const Slider = React.forwardRef<
+  React.ElementRef<typeof SliderPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <SliderPrimitive.Root
+    ref={ref}
+    className={cn(
+      "relative flex w-full touch-none select-none items-center",
+      className,
+    )}
+    {...props}
+  >
+    <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-primary/20">
+      <SliderPrimitive.Range className="absolute h-full bg-primary" />
+    </SliderPrimitive.Track>
+    <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-primary/50 bg-background shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50" />
+  </SliderPrimitive.Root>
+));
+Slider.displayName = SliderPrimitive.Root.displayName;
+
+export { Slider };
+
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="slider.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    defaultValue: {
+      description: "The default value(s) of the slider.",
+      type: "number[]",
+      required: false,
+    },
+    max: {
+      description: "The maximum value for the slider.",
+      type: "number",
+      required: true,
+    },
+    step: {
+      description: "The step value for the slider.",
+      type: "number",
+      required: false,
+    },
+    className: {
+      description: "Additional CSS classes for styling the slider.",
+      type: "string",
+      required: false,
+    },
+    otherProps: {
+      description: "Additional HTML attributes for the slider.",
+      type: "React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Customizable Styles**:
+  - Easily style the slider using utility classes.
+- **Single or Range Values**:
+  - Configure the slider for single or multiple value selection.
+- **Keyboard Accessibility**:
+  - Fully navigable via keyboard controls for inclusive user experiences.
+
+---
+
+## Accessibility
+
+- **Keyboard Support**:
+  - Navigate and select values using arrow keys.
+- **ARIA Attributes**:
+  - Properly labeled for assistive technologies.
+- **Screen Reader Support**:
+  - Compatible with screen readers for accessibility compliance.
+
+---
+
+## Conclusion
+
+The `Slider` component is a powerful and flexible tool for implementing range selectors in your application. Its customizable and accessible design ensures a seamless experience for all users.

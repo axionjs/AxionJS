@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "container",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "ui/container.tsx",
+      "content": "import * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { cn } from \"@/lib/utils\"; // your shadcn-style utility for merging classes\n\nconst containerVariants = cva(\"mx-auto w-full\", {\n  variants: {\n    variant: {\n      default: \"max-w-7xl px-4 sm:px-6 lg:px-8\",\n      sm: \"max-w-sm px-4 sm:px-6\",\n      md: \"max-w-md px-4 sm:px-6\",\n      lg: \"max-w-lg px-4 sm:px-6\",\n      xl: \"max-w-xl px-4 sm:px-6\",\n      \"2xl\": \"max-w-2xl px-4 sm:px-6\",\n      \"3xl\": \"max-w-3xl px-4 sm:px-6\",\n      \"4xl\": \"max-w-4xl px-4 sm:px-6\",\n      \"5xl\": \"max-w-5xl px-4 sm:px-6\",\n      \"6xl\": \"max-w-6xl px-4 sm:px-6\",\n      \"7xl\": \"max-w-7xl px-4 sm:px-6\",\n    },\n  },\n  defaultVariants: {\n    variant: \"default\",\n  },\n});\n\nexport interface ContainerProps\n  extends React.HTMLAttributes<HTMLDivElement>,\n    VariantProps<typeof containerVariants> {}\n\nexport const Container = React.forwardRef<HTMLDivElement, ContainerProps>(\n  ({ className, variant, ...props }, ref) => {\n    return (\n      <div\n        ref={ref}\n        className={cn(containerVariants({ variant }), className)}\n        {...props}\n      />\n    );\n  },\n);\n\nContainer.displayName = \"Container\";\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

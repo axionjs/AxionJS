@@ -1,0 +1,389 @@
+---
+title: useIdleTimeout
+description: A hook that detects user inactivity and triggers callbacks for idle and active states.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { IdleTimeoutPreview, SessionTimeoutPreview } from "@/app/components/docs/UseIdleTimeoutPreview";
+
+# useIdleTimeout
+
+The `useIdleTimeout` hook detects when a user has been inactive for a specified period and provides callbacks for both idle and active states. It's useful for implementing features like automatic logout, session timeouts, screensavers, or any functionality that should trigger after a period of inactivity.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <IdleTimeoutPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useIdleTimeout } from "@/hooks/use-idle-timeout";
+    
+    function UserIdleDetection() {
+      const [lastActive, setLastActive] = useState(new Date());
+      const [showModal, setShowModal] = useState(false);
+      
+      const handleIdle = useCallback(() => {
+        setShowModal(true);
+      }, []);
+      
+      const handleActive = useCallback(() => {
+        setLastActive(new Date());
+        setShowModal(false);
+      }, []);
+      
+      const isIdle = useIdleTimeout({
+        timeout: 60000, // 1 minute
+        onIdle: handleIdle,
+        onActive: handleActive,
+      });
+      
+      return (
+        <div>
+          <div className="status-indicator">
+            You are currently {isIdle ? "idle" : "active"}
+          </div>
+          
+          <div>Last activity: {lastActive.toLocaleTimeString()}</div>
+          
+          {showModal && (
+            <div className="inactivity-modal">
+              <h2>Are you still there?</h2>
+              <p>You've been inactive for a while.</p>
+              <button onClick={handleActive}>
+                I'm still here
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useIdleTimeout hook using:
+    ```bash
+    npx axionjs add hook use-idle-timeout
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-idle-timeout.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    // Follow the implementation from the previous hook files
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-idle-timeout.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    timeout: {
+      description: "Idle timeout duration in milliseconds",
+      type: "number",
+      default: "Required",
+    },
+    onIdle: {
+      description: "Callback function to run when the user becomes idle",
+      type: "() => void",
+      default: "() => {}",
+    },
+    onActive: {
+      description: "Callback function to run when the user becomes active again",
+      type: "() => void",
+      default: "() => {}",
+    },
+    events: {
+      description: "List of events to listen for to detect user activity",
+      type: "string[]",
+      default: "['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart']",
+    },
+    initialState: {
+      description: "Initial idle state",
+      type: "boolean",
+      default: "false",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    isIdle: {
+      description: "Whether the user is currently idle",
+      type: "boolean",
+    },
+  }}
+/>
+
+## Examples
+
+### Session Timeout Warning
+
+Implement a session timeout warning with a countdown:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <SessionTimeoutPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState, useEffect, useCallback } from "react";
+    import { useIdleTimeout } from "@/hooks/use-idle-timeout";
+    
+    function SessionTimeoutWarning() {
+      const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
+      const [isCountingDown, setIsCountingDown] = useState(false);
+      
+      // Handle when user becomes idle
+      const handleIdle = useCallback(() => {
+        setIsCountingDown(true);
+        
+        // Start the countdown
+        const interval = setInterval(() => {
+          setTimeLeft(prev => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              // Log the user out
+              logout();
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+        
+        // Cleanup
+        return () => clearInterval(interval);
+      }, []);
+      
+      // Handle when user becomes active again
+      const handleActive = useCallback(() => {
+        if (isCountingDown) {
+          setIsCountingDown(false);
+          setTimeLeft(300); // Reset timer to 5 minutes
+        }
+      }, [isCountingDown]);
+      
+      // Use the idle timeout hook
+      const isIdle = useIdleTimeout({
+        timeout: 600000, // 10 minutes
+        onIdle: handleIdle,
+        onActive: handleActive,
+      });
+      
+      // Format the time remaining
+      const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+      };
+      
+      // Logout function
+      const logout = () => {
+        // Clear user session
+        localStorage.removeItem('userToken');
+        // Redirect to login page
+        window.location.href = '/login';
+      };
+      
+      return (
+        <div>
+          {isCountingDown && (
+            <div className="timeout-warning">
+              <h2>Session Timeout Warning</h2>
+              <p>
+                Your session will expire in {formatTime(timeLeft)} due to inactivity.
+              </p>
+              <p>Move your cursor or press a key to continue your session.</p>
+              <button onClick={logout}>Logout Now</button>
+            </div>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Auto-Save Draft
+
+Automatically save draft content when the user is idle:
+
+```tsx ts2js
+function AutoSavingEditor() {
+  const [content, setContent] = useState('');
+  const [lastSaved, setLastSaved] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+  
+  // Save the draft content
+  const saveDraft = useCallback(async () => {
+    if (!content) return;
+    
+    setIsSaving(true);
+    
+    try {
+      // Simulate API call
+      await new Promise(r => setTimeout(r, 500));
+      // await api.saveDraft(content);
+      
+      setLastSaved(new Date());
+    } catch (error) {
+      console.error('Failed to save draft:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  }, [content]);
+  
+  // Use the idle timeout to trigger auto-save
+  useIdleTimeout({
+    timeout: 3000, // 3 seconds - shorter for demonstration
+    onIdle: saveDraft,
+  });
+  
+  return (
+    <div className="editor-container">
+      <div className="editor-header">
+        <h2>Draft Editor</h2>
+        {lastSaved && (
+          <span className="save-indicator">
+            Last saved: {lastSaved.toLocaleTimeString()}
+          </span>
+        )}
+        {isSaving && <span className="save-indicator">Saving...</span>}
+      </div>
+      
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="Start typing your draft..."
+        rows={10}
+      />
+      
+      <div className="editor-footer">
+        <button onClick={saveDraft} disabled={isSaving}>
+          Save Manually
+        </button>
+        <p className="auto-save-note">
+          Note: Your draft will be automatically saved after 3 seconds of inactivity.
+        </p>
+      </div>
+    </div>
+  );
+}
+```
+
+### Screensaver or Idle State UI
+
+Show a screensaver or change the UI when the user is idle:
+
+```tsx ts2js
+function IdleUI() {
+  const [lastActiveTime, setLastActiveTime] = useState(new Date());
+  
+  const handleActive = useCallback(() => {
+    setLastActiveTime(new Date());
+  }, []);
+  
+  const isIdle = useIdleTimeout({
+    timeout: 30000, // 30 seconds
+    onActive: handleActive,
+  });
+  
+  return (
+    <div className={`app-container ${isIdle ? 'idle-mode' : ''}`}>
+      {isIdle ? (
+        <div className="screensaver">
+          <div className="floating-logo" />
+          <p className="screensaver-text">Click anywhere to continue</p>
+        </div>
+      ) : (
+        <div className="app-content">
+          <h1>My Application</h1>
+          <p>Last active: {lastActiveTime.toLocaleTimeString()}</p>
+          <div className="app-dashboard">
+            {/* Your app content here */}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Session Management**: Warn users before their session expires
+- **Auto-Logout**: Automatically log out inactive users for security
+- **Auto-Save**: Save drafts or progress when the user is idle
+- **Screensavers**: Display different content when the user is inactive
+- **Resource Conservation**: Pause resource-intensive operations during inactivity
+- **Chat Applications**: Set user status to away after inactivity
+- **Analytics**: Track user engagement and active session time
+- **Presentations**: Pause slideshows during inactivity
+- **Media Playback**: Pause videos/music when the user is idle
+- **Security Features**: Lock sensitive information after inactivity
+
+## Activity Detection
+
+The hook monitors user activity through various browser events:
+
+- **Mouse Events**: `mousedown`, `mousemove`
+- **Keyboard Events**: `keypress`, `keydown`
+- **Touch Events**: `touchstart`, `touchmove`
+- **Window Events**: `scroll`, `resize`
+
+You can customize this list based on your application's needs:
+
+```tsx ts2js
+useIdleTimeout({
+  timeout: 60000,
+  // Only track mouse and keyboard, ignore scrolling
+  events: ['mousedown', 'mousemove', 'keypress', 'keydown'],
+  onIdle: handleIdle,
+});
+```
+
+## Performance Considerations
+
+- The hook uses event throttling to minimize performance impact during rapid user activity
+- Consider the impact of frequent callback executions in `onActive`
+- For very short timeout values (< 1 second), be aware of potential performance implications
+
+## Accessibility
+
+When implementing idle detection features:
+
+- Ensure time-based redirects or session expirations provide ample warning
+- Make activity detection inclusive of keyboard-only users
+- Consider users with motor disabilities who may have limited cursor movement
+- Provide clear visual and textual feedback about timeout/idle status
+- Avoid triggering disruptive idle state changes during form completion
+
+## Browser Compatibility
+
+The hook uses standard event listeners that work across all modern browsers. There are no specific browser compatibility concerns.
+
+## Best Practices
+
+- Choose an appropriate timeout duration for your use case
+- Provide clear feedback when a timeout is approaching
+- Allow users to easily extend their session
+- Use idle detection for non-critical enhancement features rather than core functionality
+- Consider user preferences when implementing auto-save features
+- Test with keyboard-only navigation
+- Ensure mobile compatibility by including touch events

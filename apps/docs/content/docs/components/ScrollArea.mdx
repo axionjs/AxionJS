@@ -1,0 +1,295 @@
+---
+title: Scroll Area
+description: A customizable and accessible scrollable container with optional scrollbars.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import {
+  DefaultScrollAreaPreview,
+  HorizontalScrollAreaPreview,
+  StyledScrollAreaPreview,
+  ScrollAreaWithCustomBarPreview,
+  LargeContentScrollAreaPreview,
+} from "@/app/components/docs/ScrollAreaPreview";
+
+## Introduction
+
+The `ScrollArea` component provides a scrollable container with customizable scrollbars. It's built on top of Radix's `ScrollArea` for accessibility and smooth interactions.
+
+---
+
+## Default Use Case: Scrollable Container
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="mx-auto h-72 pb-8 content-center items-center">
+    <DefaultScrollAreaPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import { ScrollArea } from "@/components/ui/scroll-area";
+
+    export function DefaultScrollAreaPreview() {
+      return (
+        <ScrollArea className="h-40 w-60 border rounded">
+          <div className="p-4">
+            <p>This is a scrollable container.</p>
+            <p>Use the scrollbar to view the overflowing content.</p>
+            {[...Array(10)].map((_, i) => (
+              <p key={i}>Content line {i + 1}</p>
+            ))}
+          </div>
+        </ScrollArea>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `scroll-area` component:
+    ```bash
+    npx axionjs add scroll-area
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### Step 1: Install Dependencies
+    ```bash
+npm install @radix-ui/react-scroll-area
+    ```
+
+    ### Step 2: Add the Component
+    Create a file `components/ui/scroll-area.tsx`:
+    ```tsx ts2js
+ "use client";
+
+import * as React from "react";
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
+
+import { cn } from "@/lib/utils";
+
+const ScrollArea = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
+>(({ className, children, ...props }, ref) => (
+  <ScrollAreaPrimitive.Root
+    ref={ref}
+    className={cn("relative overflow-hidden", className)}
+    {...props}
+  >
+    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+      {children}
+    </ScrollAreaPrimitive.Viewport>
+    <ScrollBar />
+    <ScrollAreaPrimitive.Corner />
+  </ScrollAreaPrimitive.Root>
+));
+ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
+
+const ScrollBar = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
+>(({ className, orientation = "vertical", ...props }, ref) => (
+  <ScrollAreaPrimitive.ScrollAreaScrollbar
+    ref={ref}
+    orientation={orientation}
+    className={cn(
+      "flex touch-none select-none transition-colors",
+      orientation === "vertical" &&
+        "h-full w-2.5 border-l border-l-transparent p-[1px]",
+      orientation === "horizontal" &&
+        "h-2.5 flex-col border-t border-t-transparent p-[1px]",
+      className,
+    )}
+    {...props}
+  >
+    <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-border" />
+  </ScrollAreaPrimitive.ScrollAreaScrollbar>
+));
+ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName;
+
+export { ScrollArea, ScrollBar };
+
+    ```
+  </Tab>
+</Tabs>
+
+## Horizontal Scrolling
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="mx-auto h-72 pb-8 content-center items-center">
+    <HorizontalScrollAreaPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+  
+export function HorizontalScrollAreaPreview() {
+  return (
+    <ScrollArea className="w-96 whitespace-nowrap rounded-md border">
+      <div className="flex space-x-4 p-4">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="flex-none h-16 w-16 bg-gray-200 rounded text-center flex items-center justify-center"
+          >
+            Item {i + 1}
+          </div>
+        ))}
+      </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
+  );
+}
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Styled Scroll Area
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="mx-auto h-72 pb-8 content-center items-center">
+    <StyledScrollAreaPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    export function StyledScrollAreaPreview() {
+      return (
+        <ScrollArea className="h-40 w-60 border rounded bg-gray-50">
+          <div className="p-4">
+            <p>Styled scrollable container.</p>
+            {[...Array(15)].map((_, i) => (
+              <p key={i} className="text-sm text-gray-700">
+                Content line {i + 1}
+              </p>
+            ))}
+          </div>
+        </ScrollArea>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Custom Scrollbar Styles
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="mx-auto h-72 pb-8 content-center items-center">
+    <ScrollAreaWithCustomBarPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    export function ScrollAreaWithCustomBarPreview() {
+      return (
+        <ScrollArea className="h-40 w-60 border rounded">
+          <div className="p-4">
+            <p>Custom scrollbar styles are applied here.</p>
+            {[...Array(10)].map((_, i) => (
+              <p key={i}>Content line {i + 1}</p>
+            ))}
+          </div>
+        </ScrollArea>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Large Content Scroll Area
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="mx-auto h-72 pb-8 content-center items-center">
+    <LargeContentScrollAreaPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+export function LargeContentScrollAreaPreview() {
+  return (
+    <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
+      Jokester began sneaking into the castle in the middle of the night and
+      leaving jokes all over the place: under the king's pillow, in his soup,
+      even in the royal toilet. The king was furious, but he couldn't seem to
+      stop Jokester. And then, one day, the people of the kingdom discovered
+      that the jokes left by Jokester were so funny that they couldn't help but
+      laugh. And once they started laughing, they couldn't stop.
+    </ScrollArea>
+  );
+}
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="scroll-area.tsx" />
+      </Folder>
+  
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    className: {
+      description: "Additional CSS classes for styling.",
+      type: "string",
+      required: false,
+    },
+    orientation: {
+      description: "Orientation of the scrollbar (vertical or horizontal).",
+      type: `"vertical" | "horizontal"`,
+      required: false,
+      default: `"vertical"`,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Customizable Styles**:
+  - Tailor the scrollbars and container to match your design.
+- **Horizontal and Vertical Scrolling**:
+  - Flexibly handle overflow in both directions.
+- **Keyboard Navigation**:
+  - Fully accessible with keyboard controls.
+
+---
+
+## Accessibility
+
+- **Keyboard Support**:
+  - Use `Tab` and arrow keys to navigate the scrollbars.
+- **ARIA Attributes**:
+  - Implements proper `aria-label` and roles for screen readers.
+- **Screen Reader Support**:
+  - Compatible with assistive technologies.
+
+---
+
+## Conclusion
+
+The `ScrollArea` component is a powerful solution for managing scrollable content with customizable styles and built-in accessibility.

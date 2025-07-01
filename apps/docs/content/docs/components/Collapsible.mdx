@@ -1,0 +1,169 @@
+---
+title: Collapsible
+description: A simple and accessible collapsible component that allows toggling the visibility of its content.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { SimpleCollapsiblePreview } from "@/app/components/docs/CollapsiblePreview.tsx";
+
+## Introduction
+
+The `Collapsible` component is a versatile and accessible solution for toggling the visibility of content. It is perfect for FAQs, expandable lists, and more.
+
+---
+
+## Default Use Case: Collapsible Content Section
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <SimpleCollapsiblePreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx
+"use client"
+import * as React from "react"
+import { ChevronsUpDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+export function SimpleCollapsiblePreview() {
+  return (
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="flex w-[350px] flex-col gap-2"
+    >
+      <div className="flex items-center justify-between gap-4 px-4">
+        <h4 className="text-sm font-semibold">
+          @peduarte starred 3 repositories
+        </h4>
+        <CollapsibleTrigger asChild>
+          <Button variant="ghost" size="icon" className="size-8">
+            <ChevronsUpDown />
+            <span className="sr-only">Toggle</span>
+          </Button>
+        </CollapsibleTrigger>
+      </div>
+      <div className="rounded-md border px-4 py-2 font-mono text-sm">
+        @radix-ui/primitives
+      </div>
+      <CollapsibleContent className="flex flex-col gap-2">
+        <div className="rounded-md border px-4 py-2 font-mono text-sm">
+          @radix-ui/colors
+        </div>
+        <div className="rounded-md border px-4 py-2 font-mono text-sm">
+          @stitches/react
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+
+
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Collapsible` component 
+
+   ```bash
+    npx axionjs add collapsible
+    ```
+    
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Create the Collapsible Component
+    Install following dependencies for `Collapsible` component:
+
+    ```bash
+    npm install @radix-ui/react-collapsible
+    ```
+    Add the following code to `components/ui/collapsible.tsx`:
+
+    ```tsx ts2js
+    "use client";
+
+    import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
+
+    const Collapsible = CollapsiblePrimitive.Root;
+    const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
+    const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent;
+
+    export { Collapsible, CollapsibleTrigger, CollapsibleContent };
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="collapsible.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    open: {
+      description: "Whether the collapsible is open or not.",
+      type: "boolean",
+      required: false,
+      default: "false",
+    },
+    onOpenChange: {
+      description: "Callback when the collapsible's open state changes.",
+      type: "(isOpen: boolean) => void",
+      required: false,
+    },
+    disabled: {
+      description: "Disables the collapsible if set to `true`.",
+      type: "boolean",
+      required: false,
+      default: "false",
+    },
+    children: {
+      description: "The content of the collapsible component.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Expandable and Collapsible**:
+  - Show or hide content dynamically with a toggle button.
+- **Built-In Accessibility**:
+  - Fully compliant with ARIA roles and attributes.
+- **Customizable**:
+  - Works seamlessly with any content or custom components.
+
+---
+
+## Conclusion
+
+The `Collapsible` component is an accessible and versatile solution for creating expandable sections in your UI. It simplifies content toggling and ensures a user-friendly experience.

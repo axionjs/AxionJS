@@ -1,0 +1,518 @@
+---
+title: Auth Social (OAuth)
+description: A secure, full-stack OAuth authentication component with GitHub integration, server actions, and seamless user management for Next.js applications.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from 'fumadocs-ui/components/callout'
+import { CodeBlock } from 'fumadocs-ui/components/codeblock'
+import { Card, Cards } from 'fumadocs-ui/components/card'
+import { TypeTable } from 'fumadocs-ui/components/type-table'
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer'
+
+import Image from 'next/image'
+
+# Social OAuth Authentication
+
+A comprehensive OAuth authentication component that provides secure GitHub integration with beautiful UI, automatic user management, and seamless Next.js server actions integration. Features real-time feedback, secure token handling, and production-ready OAuth flow implementation.
+
+<Image
+  src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1750096950/38107575-0d24-43f5-b507-e6dab5764194.png"
+  alt="Social OAuth Authentication Component"
+  width={1200}
+  height={600}
+  className="rounded-lg"
+/>
+
+<div className="my-8">
+    <div className="border rounded-md overflow-scroll" style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="social-auth"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+        />
+    </div>
+</div>
+
+## Installation
+
+<Steps>
+<Step>
+Install the component using the AxionsJS CLI:
+
+```bash
+npx axionjs add social-auth
+```
+</Step>
+
+<Step>
+Configure your environment variables in `.env`:
+
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+
+# OAuth Configuration
+GITHUB_CLIENT_ID="your-github-client-id"
+GITHUB_CLIENT_SECRET="your-github-client-secret"
+
+# Authentication
+AUTH_SECRET="your-auth-secret"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+
+# Email (Optional)
+EMAIL_SERVER_HOST="smtp.gmail.com"
+EMAIL_SERVER_PORT="587"
+EMAIL_SERVER_USER="your-email@gmail.com"
+EMAIL_SERVER_PASSWORD="your-app-password"
+EMAIL_FROM="Your App <your-email@gmail.com>"
+```
+</Step>
+
+<Step>
+Set up GitHub OAuth App in your GitHub Settings:
+- Go to Settings → Developer settings → OAuth Apps
+- Create new OAuth App
+- Set Authorization callback URL to: `http://localhost:3000/api/auth/callback/github`
+</Step>
+
+<Step>
+Set up Prisma schema and push to database:
+
+```bash
+npx prisma db push
+```
+</Step>
+</Steps>
+
+<Callout type="info">
+The component includes complete database models for users and OAuth accounts. Server actions and OAuth utilities are pre-configured and ready to use.
+</Callout>
+
+## Database Schema
+
+Add the following models to your `schema.prisma` file:
+
+```prisma title="schema.prisma"
+model User {
+  id                    String                 @id @unique @default(cuid())
+  name                  String?
+  email                 String?                @unique
+  image                 String?
+  password              String?
+  isTwoFactorEnabled    Boolean                @default(false)
+  emailVerified         DateTime?
+  twoFactorConfirmation TwoFactorConfirmation?
+  accounts              Account[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+```
+
+<Callout type="warn">
+Run `npx prisma db push` after adding the schema to apply changes to your database.
+</Callout>
+
+## Usage
+
+<Tabs items={['Basic Usage', 'Custom Integration', 'OAuth Flow']}>
+<Tab value="Basic Usage">
+
+Import and use the OAuthLogin component:
+
+```tsx ts2js title="app/auth/login/page.tsx"
+"use client";
+import { OAuthLogin } from "@/components/oauth-login";
+
+export default function LoginPage() {
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="mx-auto max-w-xl px-4">
+        <OAuthLogin
+          onSuccess={(provider, user) => {
+            console.log("OAuth Success:", { provider, user });
+            // Redirect to dashboard or handle success
+          }}
+          onError={(error) => {
+            console.error("OAuth Error:", error);
+            // Handle error state
+          }}
+          providers={["github"]}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Custom Integration">
+
+Integrate with your authentication system:
+
+```tsx ts2js title="app/auth/social/page.tsx"
+"use client";
+import { OAuthLogin } from "@/components/oauth-login";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+export default function SocialPage() {
+  const router = useRouter();
+
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <OAuthLogin
+        title="Welcome Back"
+        description="Sign in to your account using your preferred social provider"
+        onSuccess={(provider, user) => {
+          toast.success(`Successfully signed in with ${provider}!`);
+          router.push("/dashboard");
+        }}
+        onError={(error) => {
+          toast.error(error);
+        }}
+        className="w-full max-w-md"
+        providers={["github"]}
+      />
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="OAuth Flow">
+
+Complete OAuth callback handling:
+
+```tsx ts2js title="app/api/auth/callback/github/route.ts"
+import { NextRequest, NextResponse } from "next/server";
+import { handleOAuthCallback } from "@/actions/oauth-actions";
+
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const code = searchParams.get("code");
+  const state = searchParams.get("state");
+
+  if (!code) {
+    return NextResponse.redirect(
+      new URL("/auth/login?error=missing_code", request.url)
+    );
+  }
+
+  const result = await handleOAuthCallback("github", code, state);
+
+  if (result.error) {
+    return NextResponse.redirect(
+      new URL(`/auth/login?error=${result.error}`, request.url)
+    );
+  }
+
+  // Successful authentication - redirect to dashboard
+  return NextResponse.redirect(new URL("/dashboard", request.url));
+}
+```
+
+</Tab>
+</Tabs>
+
+## Component Props
+
+<TypeTable
+  type={{
+    onSuccess: {
+      type: '(provider: string, user: any) => void',
+      description: 'Callback function called when OAuth authentication is successful',
+      default: 'undefined'
+    },
+    onError: {
+      type: '(error: string) => void', 
+      description: 'Callback function called when an error occurs',
+      default: 'undefined'
+    },
+    title: {
+      type: 'string',
+      description: 'Custom title for the authentication form',
+      default: '"Welcome"'
+    },
+    description: {
+      type: 'string',
+      description: 'Custom description text',
+      default: '"Sign in to your account to continue"'
+    },
+    className: {
+      type: 'string',
+      description: 'Additional CSS classes for styling',
+      default: '""'
+    },
+    redirectUrl: {
+      type: 'string',
+      description: 'Custom redirect URL after OAuth completion',
+      default: 'undefined'
+    },
+    providers: {
+      type: '"github"[]',
+      description: 'Array of OAuth providers to display',
+      default: '["github"]'
+    }
+  }}
+/>
+
+## Server Actions
+
+The component utilizes Next.js server actions for secure OAuth operations:
+
+<Tabs items={['OAuth Initiation', 'Callback Handling', 'User Management']}>
+<Tab value="OAuth Initiation">
+
+```tsx ts2js title="actions/oauth-actions.ts"
+export const initiateOAuthLogin = async (
+  provider: "github",
+  redirectUrl?: string,
+): Promise<OAuthActionResult> => {
+  try {
+    if (!["github"].includes(provider)) {
+      return { error: "Unsupported OAuth provider" };
+    }
+
+    const clientId = process.env[`${provider.toUpperCase()}_CLIENT_ID`];
+    if (!clientId) {
+      return { error: `${provider} OAuth is not configured` };
+    }
+
+    const authUrl = generateOAuthUrl(provider, redirectUrl);
+
+    return {
+      success: "Redirecting to OAuth provider",
+      redirectUrl: authUrl,
+    };
+  } catch (error) {
+    console.error("OAuth initiation error:", error);
+    return { error: "Failed to initiate OAuth login" };
+  }
+};
+```
+
+**Features:**
+- Provider validation and configuration checking
+- Secure URL generation with CSRF protection
+- Comprehensive error handling
+- Environment variable validation
+
+</Tab>
+<Tab value="Callback Handling">
+
+```tsx ts2js title="actions/oauth-actions.ts"
+export const handleOAuthCallback = async (
+  provider: string,
+  code: string,
+  state?: string,
+): Promise<OAuthActionResult> => {
+  try {
+    let userData;
+
+    if (provider === "github") {
+      userData = await exchangeGitHubCode(code);
+    } else {
+      return { error: "Unsupported provider" };
+    }
+
+    if (!userData) {
+      return { error: "Failed to get user data from OAuth provider" };
+    }
+
+    const user = await createOrUpdateOAuthUser(provider, userData.id, {
+      email: userData.email,
+      name: userData.name,
+      image: userData.image,
+    });
+
+    return {
+      success: "OAuth login successful",
+      user,
+    };
+  } catch (error) {
+    console.error("OAuth callback error:", error);
+    return { error: "OAuth authentication failed" };
+  }
+};
+```
+
+**Features:**
+- Secure token exchange with GitHub API
+- Automatic user creation and updates
+- Account linking for existing users
+- Comprehensive error handling and logging
+
+</Tab>
+<Tab value="User Management">
+
+```tsx ts2js title="actions/oauth-actions.ts"
+export const createOrUpdateOAuthUser = async (
+  provider: string,
+  providerAccountId: string,
+  userData: {
+    email: string;
+    name?: string;
+    image?: string;
+  },
+) => {
+  try {
+    // Check if user exists with this email
+    const existingUser = await db.user.findUnique({
+      where: { email: userData.email },
+    });
+
+    let user;
+
+    if (!existingUser) {
+      // Create new user
+      user = await db.user.create({
+        data: {
+          email: userData.email,
+          name: userData.name,
+          image: userData.image,
+          emailVerified: new Date(),
+        },
+      });
+    } else {
+      user = existingUser;
+    }
+
+    // Link OAuth account if not already linked
+    const existingAccount = await db.account.findUnique({
+      where: {
+        provider_providerAccountId: {
+          provider,
+          providerAccountId,
+        },
+      },
+    });
+
+    if (!existingAccount) {
+      await db.account.create({
+        data: {
+          userId: user.id,
+          type: "oauth",
+          provider,
+          providerAccountId,
+        },
+      });
+    }
+
+    return user;
+  } catch (error) {
+    console.error("OAuth user operation failed:", error);
+    throw new Error("Failed to create or update user");
+  }
+};
+```
+
+**Features:**
+- Intelligent user creation and account linking
+- Email verification for OAuth accounts
+- Duplicate account prevention
+- Type-safe database operations with Prisma
+
+</Tab>
+</Tabs>
+
+## Key Features
+
+<Cards>
+<Card title="GitHub Integration" href="#github-integration">
+Complete GitHub OAuth flow with user profile and email access
+</Card>
+<Card title="User Management" href="#user-management">
+Automatic user creation, account linking, and profile updates
+</Card>
+<Card title="Security First" href="#security">
+CSRF protection, secure token handling, and environment validation
+</Card>
+<Card title="Error Handling" href="#error-handling">
+Comprehensive error states with user-friendly messaging
+</Card>
+<Card title="Loading States" href="#loading-states">
+Beautiful loading indicators and transition states
+</Card>
+<Card title="Type Safety" href="#type-safety">
+Full TypeScript support with proper type definitions
+</Card>
+</Cards>
+
+## OAuth Utilities
+
+The component includes utility functions for OAuth URL generation:
+
+```tsx ts2js title="oauth-utils.ts"
+export const generateOAuthUrl = (
+  provider: string,
+  redirectUrl?: string,
+): string => {
+  const baseUrls = {
+    github: "https://github.com/login/oauth/authorize",
+  };
+
+  const params = new URLSearchParams({
+    client_id: process.env[`${provider.toUpperCase()}_CLIENT_ID`] || "",
+    redirect_uri:
+      redirectUrl ||
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/${provider}`,
+    scope: "user:email",
+    response_type: "code",
+    state: crypto.randomUUID(), // CSRF protection
+  });
+
+  return `${baseUrls[provider as keyof typeof baseUrls]}?${params.toString()}`;
+};
+```
+
+**Utility Features:**
+- Secure URL generation with proper encoding
+- CSRF protection with random state parameter
+- Configurable redirect URLs
+- Environment-based configuration
+
+<Callout type="info">
+The OAuth utilities automatically handle scope configuration and security parameters for each provider.
+</Callout>
+
+## Security Features
+
+The Social Auth component implements multiple security layers:
+
+- **CSRF Protection**: Random state parameter prevents cross-site request forgery
+- **Environment Validation**: Checks for required OAuth credentials
+- **Secure Token Exchange**: Direct server-to-server communication with OAuth providers
+- **Account Linking**: Prevents duplicate accounts and manages user relationships
+- **Input Validation**: Validates all OAuth responses and user data
+- **Error Handling**: Secure error messages that don't leak sensitive information
+
+<Callout type="warn">
+Always use HTTPS in production and keep your OAuth client secrets secure. Never expose client secrets in client-side code.
+</Callout>
+
+## Conclusion
+
+The Social Auth component provides a complete, production-ready solution for adding OAuth authentication to your Next.js applications. With GitHub integration, comprehensive security features, and seamless server actions integration, it delivers both excellent user experience and robust authentication capabilities.

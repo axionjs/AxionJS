@@ -1,0 +1,682 @@
+---
+title: Quiz System
+description: A comprehensive, interactive quiz system with builder, management, and results components for creating engaging educational quizzes with multiple question types and real-time scoring.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from 'fumadocs-ui/components/callout'
+import { CodeBlock } from 'fumadocs-ui/components/codeblock'
+import { Card, Cards } from 'fumadocs-ui/components/card'
+import { TypeTable } from 'fumadocs-ui/components/type-table'
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer'
+
+import Image from 'next/image'
+
+# Quiz System
+
+A comprehensive, interactive quiz system that provides complete quiz creation, management, and taking capabilities. Features a powerful quiz builder with multiple question types, real-time scoring, progress tracking, and beautiful responsive UI components.
+
+<Image
+  src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1750099577/e1635b41-cfc2-4cab-b420-678225d17f95.png"
+  alt="Quiz System Components"
+  width={1200}
+  height={600}
+  className="rounded-lg"
+/>
+
+<div className="my-8">
+    <div className="border rounded-md overflow-scroll" style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="quiz"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+        />
+    </div>
+</div>
+
+## Installation
+
+<Steps>
+<Step>
+Install the component using the AxionsJS CLI:
+
+```bash
+npx axionjs add quiz
+```
+</Step>
+
+<Step>
+Configure your environment variables in `.env`:
+
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+
+# Authentication (if using auth)
+AUTH_SECRET="your-auth-secret"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+```
+</Step>
+
+<Step>
+Set up Prisma schema and push to database:
+
+```bash
+npx prisma db push
+```
+</Step>
+</Steps>
+
+<Callout type="info">
+The component includes complete database models for quizzes, questions, options, and submissions. All CRUD operations and scoring logic are pre-configured and ready to use.
+</Callout>
+
+## Database Schema
+
+Add the following models to your `schema.prisma` file:
+
+```prisma title="schema.prisma"
+model UserProfile {
+  id                  String   @id @default(cuid())
+  email               String   @unique
+  name                String?
+  bio                 String?  @db.Text
+  avatarUrl           String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  preferences         Json?
+  completedOnboarding Boolean  @default(false)
+
+  // Relations
+  quizzes         Quiz[]
+  quizSubmissions QuizSubmission[]
+
+  @@map("user_profiles")
+}
+
+model Quiz {
+  id                  String   @id @default(cuid())
+  title               String
+  description         String?  @db.Text
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  createdById         String?
+  isPublished         Boolean  @default(false)
+  timeLimit           Int?     // in minutes
+  allowRetakes        Boolean  @default(true)
+
+  // Relations
+  createdBy   UserProfile?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  questions   Question[]
+  submissions QuizSubmission[]
+
+  @@map("quizzes")
+}
+
+model Question {
+  id     String @id @default(cuid())
+  text   String @db.Text
+  type   String // "multiple-choice", "single-choice", "true-false"
+  points Int    @default(1)
+  order  Int    @default(0)
+  quizId String
+
+  // Relations
+  quiz    Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options QuestionOption[]
+  answers Answer[]
+
+  @@map("questions")
+}
+
+model QuestionOption {
+  id         String  @id @default(cuid())
+  text       String  @db.Text
+  isCorrect  Boolean @default(false)
+  order      Int     @default(0)
+  questionId String
+
+  // Relations
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers  Answer[]
+
+  @@map("question_options")
+}
+
+model QuizSubmission {
+  id        String   @id @default(cuid())
+  quizId    String
+  userId    String
+  score     Int?
+  maxScore  Int?
+  completed Boolean  @default(false)
+  startedAt DateTime @default(now())
+  completedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  quiz    Quiz        @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  user    UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers Answer[]
+
+  @@unique([quizId, userId])
+  @@map("quiz_submissions")
+}
+
+model Answer {
+  id           String  @id @default(cuid())
+  questionId   String
+  optionId     String?
+  submissionId String
+  isCorrect    Boolean @default(false)
+
+  // Relations
+  question       Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOption QuestionOption? @relation(fields: [optionId], references: [id], onDelete: SetNull)
+  submission     QuizSubmission  @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@map("answers")
+}
+```
+
+<Callout type="warn">
+Run `npx prisma db push` after adding the schema to apply changes to your database.
+</Callout>
+
+## Usage
+
+<Tabs items={['Quiz Builder', 'Quiz Taking', 'Quiz Management', 'Results Display']}>
+<Tab value="Quiz Builder">
+
+Create and edit quizzes with the powerful quiz builder:
+
+```tsx ts2js title="app/quiz/create/page.tsx"
+"use client";
+import { QuizBuilder } from "@/components/quiz-builder";
+
+export default function CreateQuizPage() {
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="mx-auto max-w-4xl px-4">
+        <QuizBuilder
+          onSuccess={(quiz) => {
+            console.log("Quiz created:", quiz);
+            // Redirect to quiz list or management
+          }}
+          onError={(error) => {
+            console.error("Quiz creation error:", error);
+            // Handle error state
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Quiz Taking">
+
+Allow users to take quizzes with the quiz component:
+
+```tsx ts2js title="app/quiz/[id]/take/page.tsx"
+"use client";
+import { QuizTaker } from "@/components/quiz-taker";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+interface QuizTakePageProps {
+  params: { id: string };
+}
+
+export default function QuizTakePage({ params }: QuizTakePageProps) {
+  const router = useRouter();
+
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <QuizTaker
+        quizId={params.id}
+        onComplete={(submission) => {
+          toast.success("Quiz completed!");
+          router.push(`/quiz/results/${submission.id}`);
+        }}
+        onError={(error) => {
+          toast.error(error);
+        }}
+        className="w-full max-w-2xl"
+      />
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Quiz Management">
+
+Manage your quizzes with the quiz list component:
+
+```tsx ts2js title="app/quiz/manage/page.tsx"
+"use client";
+import { QuizList } from "@/components/quiz-list";
+import { useRouter } from "next/navigation";
+
+export default function QuizManagePage() {
+  const router = useRouter();
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <QuizList
+        onEdit={(quiz) => {
+          router.push(`/quiz/edit/${quiz.id}`);
+        }}
+        onDelete={(quizId) => {
+          // Handle quiz deletion
+          console.log("Deleting quiz:", quizId);
+        }}
+        onViewResults={(quiz) => {
+          router.push(`/quiz/${quiz.id}/analytics`);
+        }}
+      />
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Results Display">
+
+Display comprehensive quiz results and analytics:
+
+```tsx ts2js title="app/quiz/results/[id]/page.tsx"
+"use client";
+import { QuizResults } from "@/components/quiz-results";
+import { useRouter } from "next/navigation";
+
+interface QuizResultsPageProps {
+  params: { id: string };
+}
+
+export default function QuizResultsPage({ params }: QuizResultsPageProps) {
+  const router = useRouter();
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="mx-auto max-w-4xl px-4">
+        <QuizResults
+          submissionId={params.id}
+          onRetake={(quizId) => {
+            router.push(`/quiz/${quizId}/take`);
+          }}
+          onViewLeaderboard={(quizId) => {
+            router.push(`/quiz/${quizId}/leaderboard`);
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+</Tab>
+</Tabs>
+
+## Key Features
+
+<Cards>
+<Card title="Multiple Question Types" href="#question-types">
+Support for single choice, multiple choice, and true/false questions
+</Card>
+<Card title="Real-time Scoring" href="#scoring">
+Automatic scoring with customizable points per question
+</Card>
+<Card title="Progress Tracking" href="#progress">
+Visual progress indicators and time tracking
+</Card>
+<Card title="Quiz Analytics" href="#analytics">
+Comprehensive results analysis and performance metrics
+</Card>
+<Card title="Flexible Management" href="#management">
+Easy quiz creation, editing, and publishing workflow
+</Card>
+<Card title="Responsive Design" href="#responsive">
+Beautiful UI that works perfectly on all devices
+</Card>
+</Cards>
+
+## Component Props
+
+<TypeTable
+  type={{
+    QuizBuilder: {
+      type: 'object',
+      description: 'Quiz builder component props',
+      properties: {
+        quiz: {
+          type: 'Quiz | undefined',
+          description: 'Existing quiz data for editing mode',
+          default: 'undefined'
+        },
+        isEditing: {
+          type: 'boolean',
+          description: 'Whether the component is in edit mode',
+          default: 'false'
+        },
+        onSuccess: {
+          type: '(quiz: Quiz) => void',
+          description: 'Callback when quiz is successfully created/updated',
+          default: 'undefined'
+        },
+        onError: {
+          type: '(error: string) => void',
+          description: 'Callback when an error occurs',
+          default: 'undefined'
+        }
+      }
+    },
+    QuizTaker: {
+      type: 'object',
+      description: 'Quiz taking component props',
+      properties: {
+        quizId: {
+          type: 'string',
+          description: 'ID of the quiz to take',
+          default: 'required'
+        },
+        onComplete: {
+          type: '(submission: QuizSubmission) => void',
+          description: 'Callback when quiz is completed',
+          default: 'undefined'
+        },
+        onError: {
+          type: '(error: string) => void',
+          description: 'Callback when an error occurs',
+          default: 'undefined'
+        },
+        className: {
+          type: 'string',
+          description: 'Additional CSS classes',
+          default: '""'
+        }
+      }
+    },
+    QuizResults: {
+      type: 'object',
+      description: 'Quiz results component props',
+      properties: {
+        submissionId: {
+          type: 'string',
+          description: 'ID of the quiz submission to display',
+          default: 'required'
+        },
+        onRetake: {
+          type: '(quizId: string) => void',
+          description: 'Callback for retaking the quiz',
+          default: 'undefined'
+        },
+        onViewLeaderboard: {
+          type: '(quizId: string) => void',
+          description: 'Callback for viewing leaderboard',
+          default: 'undefined'
+        }
+      }
+    }
+  }}
+/>
+
+## Server Actions
+
+The component utilizes Next.js server actions for all quiz operations:
+
+<Tabs items={['Quiz Management', 'Question Operations', 'Submission Handling']}>
+<Tab value="Quiz Management">
+
+```tsx ts2js title="actions/quiz-actions.ts"
+export const createQuiz = async (
+  values: QuizFormData
+): Promise<QuizActionResult> => {
+  const validatedFields = QuizSchema.safeParse(values);
+  
+  if (!validatedFields.success) {
+    return { error: "Invalid quiz data" };
+  }
+
+  const { title, description, questions } = validatedFields.data;
+  
+  try {
+    const quiz = await db.quiz.create({
+      data: {
+        title,
+        description,
+        createdById: userId, // from auth
+        questions: {
+          create: questions.map((q, index) => ({
+            text: q.text,
+            type: q.type,
+            points: q.points,
+            order: index,
+            options: {
+              create: q.options.map((opt, optIndex) => ({
+                text: opt.text,
+                isCorrect: opt.isCorrect,
+                order: optIndex,
+              })),
+            },
+          })),
+        },
+      },
+      include: { questions: { include: { options: true } } },
+    });
+
+    return { success: "Quiz created successfully", quiz };
+  } catch (error) {
+    return { error: "Failed to create quiz" };
+  }
+};
+```
+
+**Features:**
+- Comprehensive validation with Zod schemas
+- Nested creation of questions and options
+- Automatic ordering of questions and options
+- Full relationship management
+
+</Tab>
+<Tab value="Question Operations">
+
+```tsx ts2js title="actions/quiz-actions.ts"
+export const updateQuizQuestions = async (
+  quizId: string,
+  questions: QuestionFormData[]
+): Promise<QuizActionResult> => {
+  try {
+    // Delete existing questions and create new ones
+    await db.question.deleteMany({ where: { quizId } });
+    
+    const updatedQuiz = await db.quiz.update({
+      where: { id: quizId },
+      data: {
+        questions: {
+          create: questions.map((q, index) => ({
+            text: q.text,
+            type: q.type,
+            points: q.points,
+            order: index,
+            options: {
+              create: q.options.map((opt, optIndex) => ({
+                text: opt.text,
+                isCorrect: opt.isCorrect,
+                order: optIndex,
+              })),
+            },
+          })),
+        },
+      },
+      include: { questions: { include: { options: true } } },
+    });
+
+    return { success: "Questions updated successfully", quiz: updatedQuiz };
+  } catch (error) {
+    return { error: "Failed to update questions" };
+  }
+};
+```
+
+**Features:**
+- Atomic question updates
+- Maintains question order
+- Handles option relationships
+- Validates question types and data
+
+</Tab>
+<Tab value="Submission Handling">
+
+```tsx ts2js title="actions/quiz-actions.ts"
+export const submitQuizAnswers = async (
+  submissionId: string,
+  answers: AnswerFormData[]
+): Promise<QuizActionResult> => {
+  try {
+    const submission = await db.quizSubmission.findUnique({
+      where: { id: submissionId },
+      include: { quiz: { include: { questions: { include: { options: true } } } } },
+    });
+
+    if (!submission) {
+      return { error: "Submission not found" };
+    }
+
+    // Calculate score
+    let score = 0;
+    let maxScore = 0;
+
+    const answerData = answers.map((answer) => {
+      const question = submission.quiz.questions.find(q => q.id === answer.questionId);
+      if (!question) return null;
+
+      maxScore += question.points;
+      const selectedOption = question.options.find(opt => opt.id === answer.optionId);
+      const isCorrect = selectedOption?.isCorrect || false;
+      
+      if (isCorrect) {
+        score += question.points;
+      }
+
+      return {
+        questionId: answer.questionId,
+        optionId: answer.optionId,
+        submissionId,
+        isCorrect,
+      };
+    }).filter(Boolean);
+
+    // Update submission with answers and score
+    const updatedSubmission = await db.quizSubmission.update({
+      where: { id: submissionId },
+      data: {
+        score,
+        maxScore,
+        completed: true,
+        completedAt: new Date(),
+        answers: { create: answerData },
+      },
+      include: {
+        quiz: true,
+        answers: { include: { question: true, selectedOption: true } },
+      },
+    });
+
+    return { success: "Quiz submitted successfully", submission: updatedSubmission };
+  } catch (error) {
+    return { error: "Failed to submit quiz" };
+  }
+};
+```
+
+**Features:**
+- Automatic scoring calculation
+- Answer validation and tracking
+- Performance metrics collection
+- Atomic submission updates
+
+</Tab>
+</Tabs>
+
+## Question Types
+
+The quiz system supports multiple question formats:
+
+```tsx ts2js title="components/question-types.tsx"
+export const QuestionTypes = {
+  SINGLE_CHOICE: "single-choice",
+  MULTIPLE_CHOICE: "multiple-choice", 
+  TRUE_FALSE: "true-false",
+} as const;
+
+export const QuestionTypeConfig = {
+  [QuestionTypes.SINGLE_CHOICE]: {
+    label: "Single Choice",
+    description: "Select one correct answer",
+    icon: "radio-button",
+    maxOptions: 6,
+    minOptions: 2,
+  },
+  [QuestionTypes.MULTIPLE_CHOICE]: {
+    label: "Multiple Choice", 
+    description: "Select multiple correct answers",
+    icon: "check-square",
+    maxOptions: 8,
+    minOptions: 2,
+  },
+  [QuestionTypes.TRUE_FALSE]: {
+    label: "True/False",
+    description: "True or false question",
+    icon: "toggle",
+    maxOptions: 2,
+    minOptions: 2,
+  },
+};
+```
+
+**Question Type Features:**
+- **Single Choice**: Radio button selection with one correct answer
+- **Multiple Choice**: Checkbox selection with multiple correct answers
+- **True/False**: Simple binary choice questions
+- **Custom Points**: Configurable scoring per question
+- **Rich Text**: Support for formatted question text
+- **Media Support**: Images and videos in questions (coming soon)
+
+## Analytics & Reporting
+
+The quiz system provides comprehensive analytics:
+
+- **Performance Metrics**: Success rates, average scores, completion times
+- **Question Analysis**: Difficulty assessment, answer distribution
+- **User Progress**: Individual and group performance tracking  
+- **Export Capabilities**: CSV/PDF reports for detailed analysis
+- **Real-time Updates**: Live leaderboards and progress tracking
+
+<Callout type="info">
+Analytics data is automatically collected and can be viewed through the QuizAnalytics component.
+</Callout>
+
+## Security Features
+
+The Quiz System implements multiple security layers:
+
+- **Input Validation**: Comprehensive validation with Zod schemas
+- **SQL Injection Protection**: Prisma provides built-in protection
+- **Access Control**: User-based quiz ownership and permissions
+- **Answer Verification**: Server-side scoring prevents cheating
+- **Time Limits**: Configurable quiz time restrictions
+- **Attempt Tracking**: Monitors quiz retakes and submission integrity
+
+<Callout type="warn">
+Always validate quiz submissions on the server side and implement proper user authentication to prevent unauthorized access.
+</Callout>
+
+## Conclusion
+
+The Quiz System provides a complete, production-ready solution for creating and managing interactive quizzes in your Next.js applications. With its comprehensive question types, real-time scoring, detailed analytics, and beautiful responsive design, it delivers both excellent user experience and powerful educational capabilities for any learning platform or assessment tool.

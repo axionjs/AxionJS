@@ -1,0 +1,249 @@
+---
+title: Input OTP
+description: Accessible one-time password component with copy paste functionality.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { InputOTPDemo, InputOTPWithSeparator, InputOTPControlled } from "@/app/components/docs/InputOTPPreview";
+
+## Previews with Code
+
+### Example 1: Input OTP Usage
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-8 content-center">
+    <InputOTPDemo />
+   </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+   import * as React from "react";
+   import {
+     InputOTP,
+     InputOTPGroup,
+     InputOTPSeparator,
+     InputOTPSlot,
+   } from "@/components/ui/input-otp";
+   
+   export function InputOTPDemo() {
+     return (
+       <InputOTP maxLength={6} >
+         <InputOTPGroup>
+           <InputOTPSlot index={0} />
+           <InputOTPSlot index={1} />
+           <InputOTPSlot index={2} />
+         </InputOTPGroup>
+         <InputOTPSeparator />
+         <InputOTPGroup>
+           <InputOTPSlot index={3} />
+           <InputOTPSlot index={4} />
+           <InputOTPSlot index={5} />
+         </InputOTPGroup>
+       </InputOTP>
+     );
+   }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    ```bash
+    npx axionjs add input-otp
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+    ```bash
+    npm install input-otp
+    ```
+
+    ### 2. Add the Component
+    Copy the component code into your project:
+    
+    ```tsx ts2js
+    "use client";
+
+import * as React from "react";
+import { OTPInput, OTPInputContext } from "input-otp";
+import { MinusIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+function InputOTP({
+  className,
+  containerClassName,
+  ...props
+}: React.ComponentProps<typeof OTPInput> & {
+  containerClassName?: string;
+}) {
+  return (
+    <OTPInput
+      data-slot="input-otp"
+      containerClassName={cn(
+        "flex items-center gap-2 has-disabled:opacity-50",
+        containerClassName
+      )}
+      className={cn("disabled:cursor-not-allowed", className)}
+      {...props}
+    />
+  );
+}
+
+function InputOTPGroup({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="input-otp-group"
+      className={cn("flex items-center", className)}
+      {...props}
+    />
+  );
+}
+
+function InputOTPSlot({
+  index,
+  className,
+  ...props
+}: React.ComponentProps<"div"> & {
+  index: number;
+}) {
+  const inputOTPContext = React.useContext(OTPInputContext);
+  const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {};
+
+  return (
+    <div
+      data-slot="input-otp-slot"
+      data-active={isActive}
+      className={cn(
+        "data-[active=true]:border-ring data-[active=true]:ring-ring/50 data-[active=true]:aria-invalid:ring-destructive/20 dark:data-[active=true]:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[active=true]:aria-invalid:border-destructive dark:bg-input/30 border-input relative flex h-9 w-9 items-center justify-center border-y border-r text-sm shadow-xs transition-all outline-none first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-[3px]",
+        className
+      )}
+      {...props}
+    >
+      {char}
+      {hasFakeCaret && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="animate-caret-blink bg-foreground h-4 w-px duration-1000" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
+  return (
+    <div data-slot="input-otp-separator" role="separator" {...props}>
+      <MinusIcon />
+    </div>
+  );
+}
+
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator };
+
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+### Example 2: Input OTP with Separator
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-8 content-center">
+    <InputOTPWithSeparator />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+"use client";
+import {
+      InputOTP,
+      InputOTPGroup,
+      InputOTPSlot,
+      InputOTPSeparator,
+    } from "@/components/ui/input-otp";
+  export function InputOTPWithSeparator() {
+    return (
+      <InputOTP maxLength={6}>
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+          <InputOTPSlot index={1} />
+        </InputOTPGroup>
+        <InputOTPSeparator />
+        <InputOTPGroup>
+          <InputOTPSlot index={2} />
+          <InputOTPSlot index={3} />
+        </InputOTPGroup>
+        <InputOTPSeparator />
+        <InputOTPGroup>
+          <InputOTPSlot index={4} />
+          <InputOTPSlot index={5} />
+        </InputOTPGroup>
+      </InputOTP>
+    );
+  }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 3: Input OTP Controlled
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-48 pb-8 content-center">
+    <InputOTPControlled />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+import React, { useState } from "react";
+import {    
+      InputOTP,
+      InputOTPGroup,
+      InputOTPSlot,
+    } from "@/components/ui/input-otp";
+    export function InputOTPControlled() {
+  const [value, setValue] = useState("");
+
+  return (
+    <div className="space-y-2" >
+      <InputOTP maxLength={6} value={value} onChange={(val) => setValue(val)}>
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+          <InputOTPSlot index={1} />
+          <InputOTPSlot index={2} />
+          <InputOTPSlot index={3} />
+          <InputOTPSlot index={4} />
+          <InputOTPSlot index={5} />
+        </InputOTPGroup>
+      </InputOTP>
+      <div className="text-center text-sm">
+        {value === "" ? (
+          <>Enter your one-time password.</>
+        ) : (
+          <>You entered: {value}</>
+        )}
+      </div>
+    </div>
+  );
+}
+    ```
+  </Tab>
+</Tabs>
+
+
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="input-otp.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>

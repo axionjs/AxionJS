@@ -1,0 +1,353 @@
+---
+title: useInfiniteScroll
+description: A hook that enables infinite scrolling by detecting when a sentinel element enters the viewport.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { InfiniteScrollPreview, SimpleInfiniteScrollPreview } from "@/app/components/docs/UseInfiniteScrollPreview";
+
+# useInfiniteScroll
+
+The `useInfiniteScroll` hook enables infinite scrolling functionality by detecting when a "sentinel" element (typically placed at the end of your list) becomes visible in the viewport. When this happens, a callback function is triggered that can be used to load more content.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <SimpleInfiniteScrollPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js ts2js
+    import { useState, useCallback, useEffect } from "react";
+    import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
+    
+    function InfiniteList() {
+      const [items, setItems] = useState([1, 2, 3, 4, 5]);
+      const [isLoading, setIsLoading] = useState(false);
+      const [hasMore, setHasMore] = useState(true);
+      
+      const loadMore = useCallback(() => {
+        if (isLoading || !hasMore) return;
+        
+        setIsLoading(true);
+        
+        // Fetch more data (simulated with setTimeout)
+        setTimeout(() => {
+          const lastItem = items[items.length - 1] || 0;
+          const newItems = Array.from(
+            { length: 5 }, 
+            (_, i) => lastItem + i + 1
+          );
+          
+          setItems((prev) => [...prev, ...newItems]);
+          setIsLoading(false);
+          
+          // Example: stop after 25 items
+          if (items.length + newItems.length >= 25) {
+            setHasMore(false);
+          }
+        }, 800);
+      }, [isLoading, items, hasMore]);
+      
+      // Get the ref for the sentinel element
+      const sentinelRef = useInfiniteScroll(loadMore);
+      
+      return (
+        <div className="overflow-auto">
+          {/* List items */}
+          {items.map((item) => (
+            <div key={item}>Item {item}</div>
+          ))}
+          
+          {/* Loading indicator */}
+          {isLoading && <div>Loading more...</div>}
+          
+          {/* Sentinel element */}
+          {hasMore && <div ref={sentinelRef} />}
+          
+          {/* End message */}
+          {!hasMore && <div>No more items</div>}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useInfiniteScroll hook using:
+    ```bash
+    npx axionjs add hook use-infinite-scroll
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-infinite-scroll.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useRef, useEffect, useCallback } from "react";
+
+    export function useInfiniteScroll<T extends HTMLElement = HTMLDivElement>(
+      callback: () => void,
+      options: IntersectionObserverInit = { threshold: 0, rootMargin: "100px" }
+    ): React.RefObject<T> {
+      const sentinelRef = useRef<T>(null);
+      
+      const handleObserver = useCallback(
+        (entries: IntersectionObserverEntry[]) => {
+          const [entry] = entries;
+          if (entry.isIntersecting) {
+            callback();
+          }
+        },
+        [callback]
+      );
+
+      useEffect(() => {
+        const observer = new IntersectionObserver(handleObserver, options);
+        const currentSentinel = sentinelRef.current;
+
+        if (currentSentinel) {
+          observer.observe(currentSentinel);
+        }
+
+        return () => {
+          if (currentSentinel) {
+            observer.unobserve(currentSentinel);
+          }
+        };
+      }, [handleObserver, options]);
+
+      return sentinelRef;
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-infinite-scroll.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    callback: {
+      description: "Function called when the sentinel element enters the viewport",
+      type: "() => void",
+      default: "Required",
+    },
+    options: {
+      description: "IntersectionObserver configuration options",
+      type: "IntersectionObserverInit",
+      default: "{ threshold: 0, rootMargin: '100px' }",
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    sentinelRef: {
+      description: "React ref to attach to the sentinel element that triggers the callback when visible",
+      type: "React.RefObject<T>",
+    },
+  }}
+/>
+
+## Examples
+
+### Advanced Infinite Scroll with Loading States
+
+A more complete implementation with loading states, error handling, and end of list detection.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <InfiniteScrollPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState, useCallback, useEffect } from "react";
+    import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
+    
+    interface Item {
+      id: number;
+      title: string;
+      description: string;
+    }
+    
+    function AdvancedInfiniteScroll() {
+      const [items, setItems] = useState<Item[]>([]);
+      const [isLoading, setIsLoading] = useState(false);
+      const [error, setError] = useState<string | null>(null);
+      const [page, setPage] = useState(1);
+      const [hasMore, setHasMore] = useState(true);
+      
+      const fetchItems = useCallback(async () => {
+        if (isLoading || !hasMore) return;
+        
+        setIsLoading(true);
+        setError(null);
+        
+        try {
+          // Replace with your actual API call
+          const response = await fetch(`/api/items?page=${page}`);
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch items');
+          }
+          
+          const newItems = await response.json();
+          
+          setItems((prev) => [...prev, ...newItems]);
+          setPage((prev) => prev + 1);
+          
+          // If the API returned fewer items than expected, we've reached the end
+          if (newItems.length < 10) {
+            setHasMore(false);
+          }
+        } catch (err) {
+          setError(err.message || 'An error occurred');
+        } finally {
+          setIsLoading(false);
+        }
+      }, [isLoading, page, hasMore]);
+      
+      // Load initial items
+      useEffect(() => {
+        fetchItems();
+      }, []); // eslint-disable-line react-hooks/exhaustive-deps
+      
+      // Ref for the sentinel element
+      const sentinelRef = useInfiniteScroll(fetchItems);
+      
+      return (
+        <div className="overflow-auto">
+          {/* List items */}
+          {items.map((item) => (
+            <div key={item.id}>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
+          ))}
+          
+          {/* Error message */}
+          {error && <div className="text-red-500">{error}</div>}
+          
+          {/* Loading indicator */}
+          {isLoading && <div>Loading more items...</div>}
+          
+          {/* Sentinel element */}
+          {hasMore && !error && <div ref={sentinelRef} />}
+          
+          {/* End message */}
+          {!hasMore && <div>No more items to load</div>}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Horizontal Infinite Scroll
+
+The useInfiniteScroll hook also works for horizontal scrolling:
+
+```tsx ts2js
+function HorizontalInfiniteScroll() {
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const loadMoreImages = useCallback(() => {
+    if (isLoading || !hasMore) return;
+    
+    setIsLoading(true);
+    
+    // Fetch more images
+    fetchImages(page)
+      .then(newImages => {
+        setImages(prev => [...prev, ...newImages]);
+        setPage(prev => prev + 1);
+        
+        if (newImages.length < 20) {
+          setHasMore(false);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [isLoading, page, hasMore]);
+  
+  // Use the hook with a custom root
+  const containerRef = useRef(null);
+  const sentinelRef = useInfiniteScroll(loadMoreImages, {
+    root: containerRef.current,
+    threshold: 0.1,
+    rootMargin: "0px 100px 0px 0px" // Right margin for horizontal scrolling
+  });
+  
+  return (
+    <div 
+      ref={containerRef}
+      className="flex overflow-x-auto"
+    >
+      <div className="flex gap-4">
+        {images.map(image => (
+          <div key={image.id} className="min-w-[200px]">
+            <img src={image.url} alt={image.alt} />
+          </div>
+        ))}
+        
+        {isLoading && <div className="min-w-[200px]">Loading...</div>}
+        
+        {hasMore && <div ref={sentinelRef} className="min-w-[1px]" />}
+      </div>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **Content Feeds**: Social media feeds, news articles, blog posts
+- **Product Listings**: E-commerce product browsing, search results
+- **Media Galleries**: Image galleries, video playlists
+- **Comments/Reviews**: Loading additional comments or reviews
+- **Long Documents**: Breaking up long-form content into chunks
+- **Chat Messages**: Loading previous messages in a chat interface
+- **Timeline Views**: Loading more historical data as users scroll back in time
+
+## Accessibility
+
+To ensure accessible infinite scroll implementations:
+
+- Add appropriate ARIA live regions for screen readers to announce when new content loads
+- Include a "Load more" button as an alternative to automatic loading
+- Maintain keyboard focus correctly when new content loads
+- Consider adding a "Back to top" button for long feeds
+- Set `aria-busy="true"` on the container during loading phases
+
+## Performance Considerations
+
+- **Use Virtualization**: For very large lists, consider pairing with virtualization (like `react-virtualized` or `react-window`)
+- **Optimize Image Loading**: Lazy load and optimize images within infinite scroll lists
+- **Request Throttling**: Ensure your callback throttles API requests appropriately
+- **Cleanup**: Always clean up observers when components unmount
+- **DOM Size**: Too many DOM elements can cause performance issues; consider removing old items when the list gets very long
+
+## Best Practices
+
+- Set appropriate `rootMargin` to trigger loading before the user reaches the end
+- Include visual loading indicators to provide feedback to users
+- Maintain scroll position when adding new items to the top of a list
+- Consider removing old items that are far off-screen to improve performance
+- Implement error handling and retry logic for failed data fetches
+- Track loading state to prevent duplicate requests

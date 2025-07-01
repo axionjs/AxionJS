@@ -1,0 +1,510 @@
+---
+title: Dialog
+description: A customizable and accessible dialog component for displaying modal content.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import DialogPreview from "@/app/components/docs/DialogPreview.tsx";
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <DialogPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+"use client";
+
+import React from "react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/app/components/ui/dialog";
+
+export default function DialogPreview() {
+  return (
+    <div className="space-y-6 max-w-md mx-auto">
+      {/* Example 1: Basic Dialog */}
+      <div>
+        <h3 className="text-lg font-medium">Basic Dialog</h3>
+        <Dialog>
+          <DialogTrigger className="px-4 py-2 text-white bg-blue-600 rounded-md">
+            Open Dialog
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Basic Dialog</DialogTitle>
+              <DialogDescription>
+                This is a basic dialog with a title, description, and footer
+                actions.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose className="px-4 py-2 text-white bg-red-600 rounded-md">
+                Close
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Example 2: Dialog with Custom Actions */}
+      <div>
+        <h3 className="text-lg font-medium">Dialog with Custom Actions</h3>
+        <Dialog>
+          <DialogTrigger className="px-4 py-2 text-white bg-green-600 rounded-md">
+            Confirm Action
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirm Deletion</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this item? This action cannot be
+                undone.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose className="px-4 py-2 text-white bg-gray-600 rounded-md">
+                Cancel
+              </DialogClose>
+              <button className="px-4 py-2 text-white bg-red-600 rounded-md">
+                Delete
+              </button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
+  );
+"use client";
+
+import React from "react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/app/components/ui/dialog";
+
+export default function DialogPreview() {
+  return (
+    <div className="space-y-6 max-w-md mx-auto">
+      {/* Example 1: Basic Dialog */}
+      <div>
+        <h3 className="text-lg font-medium">Basic Dialog</h3>
+        <Dialog>
+          <DialogTrigger className="px-4 py-2 text-white bg-primary w-full rounded-md">
+            Open Dialog
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Basic Dialog</DialogTitle>
+              <DialogDescription>
+                This is a basic dialog with a title, description, and footer
+                actions.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose className="px-4 py-2 text-white bg-primary  rounded-md">
+                Close
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Example 2: Dialog with Custom Actions */}
+      <div>
+        <h3 className="text-lg font-medium">Dialog with Custom Actions</h3>
+        <Dialog>
+          <DialogTrigger className="px-4 py-2 text-white bg-green-600 rounded-md w-full">
+            Confirm Action
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirm Deletion</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this item? This action cannot be
+                undone.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose className="px-4 py-2 text-white bg-gray-600 rounded-md">
+                Cancel
+              </DialogClose>
+              <button className="px-4 py-2 text-white bg-red-600 rounded-md">
+                Delete
+              </button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
+  );
+}
+
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+The `Dialog` component is a versatile and accessible modal dialog for displaying alerts, confirmations, or custom modal content.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add dialog
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure the following dependencies are installed:
+    ```bash
+    npm install @radix-ui/react-dialog lucide-react tailwindcss
+    ```
+
+    ### 2. Add the Component
+
+    Create a `dialog.tsx` file in your `components/ui` directory:
+    ```tsx ts2js
+"use client";
+
+import * as React from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+/* -----------------------------------------------------------------------------
+ *  1. Dialog (Root)
+ * -----------------------------------------------------------------------------
+ *  The main Dialog wrapper. By default, Radix sets up role="dialog" or
+ *  role="alertdialog" if it's set to `modal`. You can pass additional props
+ *  like `aria-label`, `aria-describedby`, etc. here if needed.
+ */
+const Dialog = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>
+>(({ children, ...props }, ref) => (
+  <DialogPrimitive.Root ref={ref} {...props}>
+    {children}
+  </DialogPrimitive.Root>
+));
+Dialog.displayName = "Dialog";
+
+/* -----------------------------------------------------------------------------
+ *  2. DialogTrigger
+ * -----------------------------------------------------------------------------
+ *  The button/element that opens the dialog.
+ *  You can pass `aria-label` or other attributes if your trigger is not textual.
+ */
+const DialogTrigger = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Trigger>
+>(({ children, ...props }, ref) => (
+  <DialogPrimitive.Trigger ref={ref} {...props}>
+    {children}
+  </DialogPrimitive.Trigger>
+));
+DialogTrigger.displayName = "DialogTrigger";
+
+/* -----------------------------------------------------------------------------
+ *  3. DialogPortal
+ * -----------------------------------------------------------------------------
+ *  Renders the dialog outside the DOM hierarchy of the parent (e.g., a portal).
+ */
+const DialogPortal = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Portal>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Portal>
+>(({ children, ...props }, ref) => (
+  <DialogPrimitive.Portal ref={ref} {...props}>
+    {children}
+  </DialogPrimitive.Portal>
+));
+DialogPortal.displayName = "DialogPortal";
+
+/* -----------------------------------------------------------------------------
+ *  4. DialogOverlay
+ * -----------------------------------------------------------------------------
+ *  The dimmed overlay behind the dialog. Radix sets aria-hidden automatically.
+ */
+const DialogOverlay = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Overlay
+    ref={ref}
+    className={cn(
+      "fixed inset-0 z-50 bg-black/80",
+      "data-[state=open]:animate-in data-[state=closed]:animate-out",
+      "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className,
+    )}
+    {...props}
+  />
+));
+DialogOverlay.displayName = "DialogOverlay";
+
+/* -----------------------------------------------------------------------------
+ *  5. DialogClose
+ * -----------------------------------------------------------------------------
+ *  A button that closes the dialog. Often used inside DialogContent.
+ */
+const DialogClose = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Close>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Close>
+>(({ children, ...props }, ref) => (
+  <DialogPrimitive.Close ref={ref} {...props}>
+    {children}
+  </DialogPrimitive.Close>
+));
+DialogClose.displayName = "DialogClose";
+
+/* -----------------------------------------------------------------------------
+ *  6. DialogContent
+ * -----------------------------------------------------------------------------
+ *  The dialog itself. Radix automatically applies role="dialog",
+ *  aria-modal="true", and focuses it when opened.
+ */
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg",
+        "translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg",
+        // Radix animations
+        "duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out",
+        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+        "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
+        "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
+        "sm:rounded-lg",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+      <DialogPrimitive.Close
+        className={cn(
+          "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background",
+          "transition-opacity hover:opacity-100 focus:outline-none focus:ring-2",
+          "focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none",
+          "data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
+        )}
+      >
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
+  </DialogPortal>
+));
+DialogContent.displayName = "DialogContent";
+
+/* -----------------------------------------------------------------------------
+ *  7. DialogHeader
+ * -----------------------------------------------------------------------------
+ *  Optional container for your dialog header. Typically holds <DialogTitle>.
+ */
+const DialogHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "flex flex-col space-y-1.5 text-center sm:text-left",
+      className,
+    )}
+    {...props}
+  />
+));
+DialogHeader.displayName = "DialogHeader";
+
+/* -----------------------------------------------------------------------------
+ *  8. DialogFooter
+ * -----------------------------------------------------------------------------
+ *  Optional container for your dialog footer (actions, buttons, etc.).
+ */
+const DialogFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className,
+    )}
+    {...props}
+  />
+));
+DialogFooter.displayName = "DialogFooter";
+
+/* -----------------------------------------------------------------------------
+ *  9. DialogTitle
+ * -----------------------------------------------------------------------------
+ *  The main title of your dialog. Radix automatically wires this up
+ *  with the dialog for screen readers via `aria-labelledby`.
+ */
+const DialogTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Title
+    ref={ref}
+    className={cn(
+      "text-lg font-semibold leading-none tracking-tight",
+      className,
+    )}
+    {...props}
+  />
+));
+DialogTitle.displayName = "DialogTitle";
+
+/* -----------------------------------------------------------------------------
+ *  10. DialogDescription
+ * -----------------------------------------------------------------------------
+ *  Additional descriptive text for your dialog. Radix connects this
+ *  to the dialog for screen readers via `aria-describedby`.
+ */
+const DialogDescription = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+));
+DialogDescription.displayName = "DialogDescription";
+
+/* -----------------------------------------------------------------------------
+ *  Exports
+ * -----------------------------------------------------------------------------
+ *  Exporting all sub-components to be used together in a cohesive dialog.
+ */
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogTrigger,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+};
+    ```
+
+   
+  </Tab>
+</Tabs>
+
+## Props
+
+The `Dialog` component and its subcomponents (`DialogTrigger`, `DialogContent`, `DialogHeader`, etc.) are designed for flexibility. Here’s a breakdown of their props:
+
+### Dialog Props
+
+<TypeTable
+  type={{
+    children: {
+      description: "The content of the dialog, including trigger, header, and footer.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+### Dialog Subcomponent Props
+
+<TypeTable
+  type={{
+    DialogTrigger: {
+      description: "The button or element that opens the dialog.",
+      type: "React.ReactNode",
+      required: true,
+    },
+    DialogContent: {
+      description: "The main content of the dialog.",
+      type: "React.ReactNode",
+      required: true,
+    },
+    DialogHeader: {
+      description: "Wraps the dialog's title and description.",
+      type: "React.ReactNode",
+    },
+    DialogFooter: {
+      description: "Wraps the dialog's action buttons (e.g., Close, Confirm).",
+      type: "React.ReactNode",
+    },
+    DialogTitle: {
+      description: "The title of the dialog.",
+      type: "string | React.ReactNode",
+    },
+    DialogDescription: {
+      description: "Descriptive text for the dialog.",
+      type: "string | React.ReactNode",
+    },
+  }}
+/>
+
+## Features
+
+The `Dialog` component provides the following features:
+
+- **Customizable Layout**:
+  - Combine triggers, headers, descriptions, and footers to create unique dialogs.
+- **Built-In Accessibility**:
+  - Fully ARIA-compliant with roles, labels, and focus management.
+- **Lightweight and Performant**:
+  - Built with Radix Primitives for minimal overhead and responsive design.
+- **Animations**:
+  - Includes smooth open/close animations for a polished user experience.
+
+## Use Cases
+
+The `Dialog` component is ideal for:
+
+- **Alerts**:
+  - Display important information that requires user acknowledgment.
+- **Confirmations**:
+  - Ask users to confirm critical actions like deletions.
+- **Custom Modals**:
+  - Create complex modals for forms, walkthroughs, or interactive content.
+
+## Accessibility
+
+The `Dialog` component is built with accessibility as a priority:
+
+- **Focus Management**:
+  - Automatically focuses the dialog content when opened and restores focus when closed.
+- **ARIA Attributes**:
+  - Uses `role="dialog"` and connects the title and description via `aria-labelledby` and `aria-describedby`.
+- **Keyboard Navigation**:
+  - Fully keyboard navigable with `Tab` and `Escape` support.
+
+
+
+## Conclusion
+The `Dialog` component is a powerful tool for creating accessible and customizable modals in modern web applications. With built-in animations, focus management, and flexible styling, it’s an essential component for any UI.

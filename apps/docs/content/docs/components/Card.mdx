@@ -1,0 +1,254 @@
+---
+title: Card
+description: A flexible Card component to structure content with sections like headers, footers, and content areas.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { LoginCardExample } from "@/app/components/docs/CardPreview";
+
+## Introduction
+
+The `Card` component is a versatile container for structuring content into logical sections. With predefined subcomponents like `CardHeader`, `CardFooter`, and `CardContent`, it’s easy to create visually consistent layouts for forms, informational content, and more.
+
+---
+
+## Default Use Case
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <LoginCardExample />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+   "use client";
+
+import React from "react";
+import {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/app/components/ui/card";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/app/components/ui/button";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/app/components/ui/form";
+import { Input } from "@/app/components/ui/input";
+
+const formSchema = z.object({
+  email: z
+    .string()
+    .nonempty("Email is required.")
+    .email("Please enter a valid email address."),
+  password: z.string().nonempty("Password is required."),
+});
+export function LoginCardExample() {
+  const formMethods = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+  const { handleSubmit, control, formState } = formMethods;
+  const { errors } = formState;
+
+  const onSubmit = (data: FormData) => {
+    console.log("Form submitted:", data);
+    alert("Form submitted successfully!");
+  };
+  return (
+    <Card className="w-96">
+      <CardHeader>
+        <CardTitle>Login</CardTitle>
+        <CardDescription>Access your account</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...formMethods}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-3 p-4 max-w-lg"
+            aria-labelledby="Simple-form"
+          >
+            {/* Email Field */}
+            <FormField
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} id="email" required type="email" />
+                  </FormControl>
+                  <FormMessage>{errors.email?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+
+            {/* Password Field */}
+            <FormField
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <FormControl>
+                    <Input {...field} id="password" required type="password" />
+                  </FormControl>
+                  <FormMessage>{errors.password?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+
+            {/* Submit Button */}
+            <div className="text-right">
+              <Button type="submit" className="w-full">
+                Submit
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter>
+        <Button variant="ghost" size="sm" className="text-sm">
+          Forgot password?
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Card` component using the following command:
+    ```bash
+    npx axionjs add card
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Create the Card Component
+
+    Add the following code to `components/ui/card.tsx`:
+    ```tsx ts2js
+    import * as React from "react";
+    import { cn } from "@/lib/utils";
+
+    const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+      ({ className, ...props }, ref) => (
+        <div ref={ref} className={cn("rounded-xl border bg-card text-card-foreground shadow", className)} {...props} />
+      )
+    );
+    Card.displayName = "Card";
+
+    const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+      ({ className, ...props }, ref) => (
+        <div ref={ref} className={cn("flex flex-col space-y-1.5 p-6", className)} {...props} />
+      )
+    );
+    CardHeader.displayName = "CardHeader";
+
+    const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+      ({ className, ...props }, ref) => (
+        <div ref={ref} className={cn("font-semibold leading-none tracking-tight", className)} {...props} />
+      )
+    );
+    CardTitle.displayName = "CardTitle";
+
+    const CardDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+      ({ className, ...props }, ref) => (
+        <div ref={ref} className={cn("text-sm text-muted-foreground", className)} {...props} />
+      )
+    );
+    CardDescription.displayName = "CardDescription";
+
+    const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+      ({ className, ...props }, ref) => <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+    );
+    CardContent.displayName = "CardContent";
+
+    const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+      ({ className, ...props }, ref) => (
+        <div ref={ref} className={cn("flex items-center p-6 pt-0", className)} {...props} />
+      )
+    );
+    CardFooter.displayName = "CardFooter";
+
+    export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <File name="card.tsx" />
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+<TypeTable
+  type={{
+    className: {
+      description: "Optional class names for additional styling.",
+      type: "string",
+      required: false,
+    },
+    children: {
+      description: "The content to render inside the card.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+The `Card` component provides the following features:
+
+- **Flexible Structure**: Use subcomponents like `CardHeader`, `CardContent`, and `CardFooter` for organized layouts.
+- **Customizable Styles**: Apply additional class names for unique designs.
+- **Seamless Integration**: Works perfectly with forms, images, and custom content.
+
+---
+
+## Accessibility
+
+The `Card` component ensures accessibility by:
+
+- Using semantic elements (`div` or `section`) for better screen reader compatibility.
+- Allowing focusable elements (e.g., buttons or inputs) inside its content areas.
+
+---
+
+## Conclusion
+
+The `Card` component is a flexible and essential tool for structuring UI content. With its customizable structure and accessibility-first design, it helps create professional and user-friendly layouts for any application.

@@ -1,0 +1,135 @@
+---
+title: components.json
+description: Configuration file for your AxionJS project.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+The `components.json` file holds configuration for your project. 
+It's created automatically when you run `npx axionjs init`.
+
+<Callout>
+You can use the `components.json` file to customize the import paths, component library, and styling for your project.
+</Callout>
+
+## Schema
+
+Here's the structure of the `components.json` file:
+
+```json title="components.json"
+{
+  "$schema": "http://axionjs.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "app/globals.css",
+    "baseColor": "default",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks",
+    "auth": "@/auth",
+    "actions": "@/actions",
+    "middleware": "@/middleware",
+    "schemas": "@/schemas",
+    "auth_comp": "@/components/auth",
+    "api": "@/app/api",
+    "email": "@/emails"
+  },
+  "iconLibrary": "lucide"
+}
+```
+
+## Configuration Options
+
+### style
+
+The style for your components. Currently, we have two styles available: `default` and `new-york`.
+
+```json
+{
+  "style": "new-york"
+}
+```
+
+### rsc
+
+Whether to use React Server Components.
+
+```json
+{
+  "rsc": true
+}
+```
+
+### tsx
+
+Whether to use TypeScript for components.
+
+```json
+{
+  "tsx": true
+}
+```
+
+### tailwind
+
+Configuration for Tailwind CSS.
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `config` | string | Path to the tailwind config file |
+| `css` | string | Path to the CSS file |
+| `baseColor` | string | Base color for your project |
+| `cssVariables` | boolean | Whether to use CSS variables |
+| `prefix` | string | Prefix to use for utility classes |
+
+### aliases
+
+Import aliases for your project. These are used to generate the import statements for the components.
+
+```json
+{
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui"
+  }
+}
+```
+
+### iconLibrary
+
+The icon library to use for components that require icons.
+
+```json
+{
+  "iconLibrary": "lucide"
+}
+```
+
+## Customization
+
+You can customize the configuration to match your project structure. For example, if you're using a different folder structure, you can update the `aliases` object:
+
+```json
+{
+  "aliases": {
+    "components": "~/components",
+    "utils": "~/lib/utils",
+    "ui": "~/components/ui"
+  }
+}
+```
+
+<Callout type="warn">
+Always restart your development server after making changes to `components.json`.
+</Callout>
+

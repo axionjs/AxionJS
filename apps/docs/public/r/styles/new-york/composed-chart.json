@@ -1,0 +1,22 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "composed-chart",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "registryDependencies": [
+    "card",
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "charts/composed-chart.tsx",
+      "content": "\"use client\";\n\nimport { TrendingUp } from \"lucide-react\";\nimport {\n  Area,\n  Bar,\n  CartesianGrid,\n  ComposedChart,\n  Line,\n  XAxis,\n  YAxis,\n} from \"recharts\";\n\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n} from \"@/registry/new-york/ui/card\";\nimport {\n  type ChartConfig,\n  ChartContainer,\n  ChartLegend,\n  ChartLegendContent,\n  ChartTooltip,\n  ChartTooltipContent,\n} from \"@/registry/new-york/ui/chart\";\n\nconst chartData = [\n  { month: \"Jan\", revenue: 4000, profit: 1400, expenses: 2600, growth: 0 },\n  { month: \"Feb\", revenue: 5000, profit: 1800, expenses: 3200, growth: 5 },\n  { month: \"Mar\", revenue: 4500, profit: 1600, expenses: 2900, growth: 10 },\n  { month: \"Apr\", revenue: 6000, profit: 2400, expenses: 3600, growth: 15 },\n  { month: \"May\", revenue: 7000, profit: 3000, expenses: 4000, growth: 20 },\n  { month: \"Jun\", revenue: 8000, profit: 3600, expenses: 4400, growth: 25 },\n];\n\nconst chartConfig = {\n  revenue: {\n    label: \"Revenue\",\n    color: \"hsl(var(--chart-1))\",\n  },\n  profit: {\n    label: \"Profit\",\n    color: \"hsl(var(--chart-2))\",\n  },\n  expenses: {\n    label: \"Expenses\",\n    color: \"hsl(var(--chart-3))\",\n  },\n  growth: {\n    label: \"Growth\",\n    color: \"hsl(var(--chart-4))\",\n  },\n} satisfies ChartConfig;\n\nexport function ComposedChartComponent() {\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle>Composed Chart</CardTitle>\n        <CardDescription>Financial performance metrics</CardDescription>\n      </CardHeader>\n      <CardContent>\n        <ChartContainer config={chartConfig}>\n          <ComposedChart\n            accessibilityLayer\n            data={chartData}\n            margin={{ top: 20, right: 20, bottom: 20, left: 20 }}\n          >\n            <CartesianGrid strokeDasharray=\"3 3\" />\n            <XAxis dataKey=\"month\" tickLine={false} axisLine={false} />\n            <YAxis\n              yAxisId=\"left\"\n              tickLine={false}\n              axisLine={false}\n              label={{\n                value: \"Amount ($)\",\n                angle: -90,\n                position: \"insideLeft\",\n              }}\n            />\n            <YAxis\n              yAxisId=\"right\"\n              orientation=\"right\"\n              tickLine={false}\n              axisLine={false}\n              label={{\n                value: \"Growth (%)\",\n                angle: 90,\n                position: \"insideRight\",\n              }}\n            />\n            <ChartTooltip content={<ChartTooltipContent />} />\n            <Area\n              yAxisId=\"left\"\n              type=\"monotone\"\n              dataKey=\"revenue\"\n              fill=\"var(--color-revenue)\"\n              stroke=\"var(--color-revenue)\"\n              fillOpacity={0.3}\n            />\n            <Bar\n              yAxisId=\"left\"\n              dataKey=\"profit\"\n              fill=\"var(--color-profit)\"\n              barSize={20}\n            />\n            <Bar\n              yAxisId=\"left\"\n              dataKey=\"expenses\"\n              fill=\"var(--color-expenses)\"\n              barSize={20}\n            />\n            <Line\n              yAxisId=\"right\"\n              type=\"monotone\"\n              dataKey=\"growth\"\n              stroke=\"var(--color-growth)\"\n              strokeWidth={2}\n              dot={{ fill: \"var(--color-growth)\", r: 4 }}\n            />\n            <ChartLegend content={<ChartLegendContent />} />\n          </ComposedChart>\n        </ChartContainer>\n      </CardContent>\n      <CardFooter className=\"flex-col items-start gap-2 text-sm\">\n        <div className=\"flex gap-2 font-medium leading-none\">\n          Revenue and profit trending upward <TrendingUp className=\"h-4 w-4\" />\n        </div>\n        <div className=\"leading-none text-muted-foreground\">\n          First half of 2024 financial data\n        </div>\n      </CardFooter>\n    </Card>\n  );\n}\n",
+      "type": "registry:block",
+      "target": ""
+    }
+  ],
+  "categories": [
+    "charts",
+    "charts-composed"
+  ]
+}

@@ -1,0 +1,143 @@
+---
+title: Sonner Toaster
+description: A customizable and accessible notification system for displaying toasts.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import {
+  SuccessToastPreview,
+  
+} from "@/app/components/docs/SonnerPreview";
+
+## Introduction
+
+The `Sonner Toaster` is an accessible notification component built with the `sonner` library. It provides customizable toast styles and themes, and it integrates seamlessly with `next-themes`.
+
+---
+
+
+## Example: Success Toast
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="mx-auto h-72 pb-8 content-center items-center">
+    <SuccessToastPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import React from "react";
+    import { toast } from "sonner";
+    import { Toaster } from "@/components/ui/toaster";
+
+    export function SuccessToastPreview() {
+      return (
+        <>
+          <Toaster />
+          <Button
+            className="btn btn-success"
+            onClick={() =>
+              toast("This is a success toast", {
+                description: "Operation completed successfully!",
+                data: { variant: "success" },
+              })
+            }
+          >
+            Show Success Toast
+          </Button>
+        </>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `sonner` component:
+    ```bash
+    npx axionjs add sonner
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### Step 1: Install Dependencies
+    ```bash
+npm install sonner next-themes
+    ```
+
+    ### Step 2: Add the Component
+    Create a file `components/ui/sonner.tsx`:
+    ```tsx ts2js
+"use client";
+
+import { useTheme } from "next-themes";
+import { Toaster as Sonner } from "sonner";
+
+type ToasterProps = React.ComponentProps<typeof Sonner>;
+
+const Toaster = ({ ...props }: ToasterProps) => {
+  const { theme = "system" } = useTheme();
+
+  return (
+    <Sonner
+      theme={theme as ToasterProps["theme"]}
+      className="toaster group"
+      toastOptions={{
+        classNames: {
+          toast:
+            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
+          description: "group-[.toast]:text-muted-foreground",
+          actionButton:
+            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
+          cancelButton:
+            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+        },
+      }}
+      {...props}
+    />
+  );
+};
+
+export { Toaster };
+
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="toaster.tsx" />
+      </Folder>
+     
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Features
+
+- **Custom Variants**:
+  - Includes `default`, `success`, `warning`, `destructive`, and `info`.
+- **Dark and Light Themes**:
+  - Integrates with `next-themes` to automatically adjust theme.
+- **Custom Styling**:
+  - Flexible customization using Tailwind utilities.
+
+---
+
+## Conclusion
+
+The `Sonner Toaster` component offers a flexible, accessible, and easy-to-use notification system. Its integration with `next-themes` and support for multiple variants make it a robust choice for React applications.

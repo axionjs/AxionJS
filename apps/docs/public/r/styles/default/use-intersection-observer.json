@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "use-intersection-observer",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-intersection-observer.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\ninterface UseIntersectionObserverProps {\n  root?: Element | null;\n  rootMargin?: string;\n  threshold?: number | number[];\n  onIntersect?: () => void;\n  enabled?: boolean;\n}\n\n/**\n * A hook that observes when an element intersects with the viewport\n * @param options The IntersectionObserver options\n * @returns A ref to attach to the element and whether it's intersecting\n */\nexport function useIntersectionObserver({\n  root = null,\n  rootMargin = \"0px\",\n  threshold = 0,\n  onIntersect,\n  enabled = true,\n}: UseIntersectionObserverProps = {}) {\n  const [isIntersecting, setIsIntersecting] = React.useState(false);\n  const ref = React.useRef<Element | null>(null);\n\n  React.useEffect(() => {\n    if (!enabled || typeof window === \"undefined\") return;\n\n    const observer = new IntersectionObserver(\n      ([entry]) => {\n        setIsIntersecting(entry.isIntersecting);\n\n        if (entry.isIntersecting && onIntersect) {\n          onIntersect();\n        }\n      },\n      { root, rootMargin, threshold },\n    );\n\n    if (ref.current) {\n      observer.observe(ref.current);\n    }\n\n    return () => {\n      if (ref.current) {\n        observer.unobserve(ref.current);\n      }\n    };\n  }, [enabled, root, rootMargin, threshold, onIntersect]);\n\n  return { ref, isIntersecting };\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

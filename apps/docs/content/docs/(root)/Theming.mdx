@@ -1,0 +1,202 @@
+---
+title: Theming
+description: Create beautiful, customized themes with our comprehensive theming system. Choose from pre-built themes, customize fonts and animations, or generate unique themes with AI.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Callout } from 'fumadocs-ui/components/callout'
+import { Card, Cards } from 'fumadocs-ui/components/card'
+import { Steps, Step } from 'fumadocs-ui/components/steps'
+import Link from 'next/link'
+
+
+Transform your application's appearance with our powerful theming system. Create stunning, professional interfaces with pre-built themes, custom color palettes, typography options, and AI-generated designs.
+
+<Callout type="info">
+Our theming system supports both Tailwind CSS v3 and v4, with HSL and OKLCH color formats for maximum compatibility and modern color science.
+</Callout>
+
+## Quick Start with the CLI
+
+Integrating a theme into your project is handled seamlessly during the initialization process. The `init` command is all you need.
+
+<Steps>
+  <Step>
+    #### 1. Run the init command
+    Start by running the `init` command in your project's root directory. This will check your project structure and prepare for setup.
+    ```bash
+    npx axionjs init
+    ```
+  </Step>
+  <Step>
+    #### 2. Select a Theme
+    After initialization, the CLI will prompt you to choose from a list of pre-built themes. Use the arrow keys to navigate and press Enter to select your desired theme.
+  </Step>
+  <Step>
+    #### 3. Automatic Configuration
+    That's it! The CLI will automatically configure everything for you by updating `components.json`, injecting CSS variables, and setting up your `tailwind.config.js` file if available.
+  </Step>
+</Steps>
+
+## Available Themes
+
+Choose from our curated collection of professionally designed themes. They are grouped by style to help you find the perfect match.
+
+<Cards>
+  <Card href="#modern-themes" title="Modern Themes" description="Contemporary designs with clean lines and gradients.">
+    • Modern Gradient • Modern Glass • Modern Neon • Modern Aurora
+  </Card>
+  <Card href="#elegant-themes" title="Elegant Themes" description="Sophisticated color palettes for professional applications.">
+    • Elegant Gold • Elegant Navy • Elegant Burgundy • Elegant Emerald
+  </Card>
+  <Card href="#vibrant-themes" title="Vibrant Themes" description="Bold, energetic colors for dynamic interfaces.">
+    • Neon Pink • Neon Lime • Electric Blue • Tropical Cyan
+  </Card>
+  <Card href="#nature-themes" title="Nature Inspired" description="Organic color schemes inspired by the natural world.">
+    • Forest Green • Ocean Blue • Sage Green • Mint Fresh
+  </Card>
+</Cards>
+
+{/* navigation to customization page */}
+<div className="mt-6">
+  <Link
+    href="/theme"
+    className="mt-6 no-underline" size="sm"
+  >
+    Explore Theme Customization
+  </Link>
+</div>
+
+## AI Theme Generator
+
+Harness the power of generative AI to create a one-of-a-kind theme. Our AI theme generator, powered by Google's Gemini LLM, can create a complete color palette from a simple text prompt.
+
+<Steps>
+  <Step>
+    #### 1. Write a Prompt
+    Describe the aesthetic you're aiming for. For example:
+    > "A dark, moody theme for a code editor, with deep blues and subtle purple highlights. It should feel professional and focused."
+  </Step>
+  <Step>
+    #### 2. Generate & Preview
+    The AI will generate the theme, which you can preview instantly on the theme customization page.
+  </Step>
+  <Step>
+    #### 3. Copy & Use
+    If you like the result, simply copy the generated CSS and paste it into your project's stylesheet.
+    ```css
+    /* AI Generated CSS (Example) */
+.theme-ai-deep-focus {
+  --background: 220 25% 10%;
+  --foreground: 220 15% 88%;
+  --card: 220 25% 12%;
+  --card-foreground: 220 15% 88%;
+  --primary: 250 70% 75%;
+  --primary-foreground: 220 25% 10%;
+  --secondary: 220 15% 25%;
+  --secondary-foreground: 220 15% 88%;
+  --destructive: 0 62.8% 30.6%;
+  --border: 220 15% 20%;
+  --ring: 250 70% 75%;
+  --radius: 0.5rem;
+}
+    ```
+  </Step>
+</Steps>
+
+## Full Customization
+
+For those who want to fine-tune every detail, our system is fully customizable.
+
+### Color System & Formats
+
+All themes are built with CSS variables for easy overriding. We support both HSL for broad compatibility and OKLCH for modern, perceptually uniform colors.
+
+<Tabs items={['HSL Colors', 'OKLCH Colors', 'Tailwind v3 Config', 'Tailwind v4 Config']}>
+  <Tab value="HSL Colors">
+    ```css
+    /* globals.css (HSL) */
+:root {
+  --primary: 221 79% 48%;
+  --secondary: 204 45% 98%;
+  --accent: 214 95% 93%;
+  /* ... other variables */
+}
+    ```
+  </Tab>
+  <Tab value="OKLCH Colors">
+    ```css
+    /* globals.css (OKLCH) */
+:root {
+  --primary: oklch(0.6 0.15 240);
+  --secondary: oklch(0.98 0.02 240);
+  --accent: oklch(0.93 0.05 240);
+  /* ... other variables */
+}
+    ```
+  </Tab>
+  <Tab value="Tailwind v3 Config">
+    ```js
+    // tailwind.config.js (v3)
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: 'hsl(var(--primary))',
+        secondary: 'hsl(var(--secondary))',
+      }
+    }
+  }
+}
+    ```
+  </Tab>
+  <Tab value="Tailwind v4 Config">
+    ```css
+    /* globals.css (@theme) */
+@theme {
+  --color-primary: oklch(var(--primary));
+  --color-secondary: oklch(var(--secondary));
+}
+    ```
+  </Tab>
+</Tabs>
+
+### Font Customization
+
+Easily swap out fonts to match your brand identity. We recommend using a variable-based approach for consistency.
+
+```css
+/* In your main CSS file */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono&display=swap');
+
+:root {
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+}
+```
+
+### Animation Controls
+
+Fine-tune animations to create the desired user experience, from snappy and responsive to smooth and deliberate.
+
+<Tabs items={['Duration', 'Easing']}>
+  <Tab value="Duration">
+    ```css
+:root {
+  --animation-duration-fast: 150ms;
+  --animation-duration-normal: 300ms;
+  --animation-duration-slow: 500ms;
+}
+    ```
+  </Tab>
+  <Tab value="Easing">
+    ```css
+:root {
+  --animation-ease-linear: cubic-bezier(0, 0, 1, 1);
+  --animation-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --animation-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --animation-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+    ```
+  </Tab>
+</Tabs>

@@ -1,0 +1,18 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "logo-cloud-grid",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "A logo cloud grid component.",
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "blocks/logo-cloud-grid.tsx",
+      "content": "import { Button } from \"@/registry/new-york/ui/button\";\nimport { ChevronRight } from \"lucide-react\";\nimport Link from \"next/link\";\n\nexport default function LogoCloudGrid() {\n  const logos = [\n    {\n      src: \"https://html.tailus.io/blocks/customers/nvidia.svg\",\n      alt: \"Nvidia Logo\",\n      className: \"h-5\",\n    },\n    {\n      src: \"https://html.tailus.io/blocks/customers/column.svg\",\n      alt: \"Column Logo\",\n      className: \"h-4\",\n    },\n    {\n      src: \"https://html.tailus.io/blocks/customers/github.svg\",\n      alt: \"GitHub Logo\",\n      className: \"h-4\",\n    },\n    {\n      src: \"https://html.tailus.io/blocks/customers/nike.svg\",\n      alt: \"Nike Logo\",\n      className: \"h-5\",\n    },\n    {\n      src: \"https://html.tailus.io/blocks/customers/lemonsqueezy.svg\",\n      alt: \"Lemon Squeezy Logo\",\n      className: \"h-5\",\n    },\n    {\n      src: \"https://html.tailus.io/blocks/customers/laravel.svg\",\n      alt: \"Laravel Logo\",\n      className: \"h-4\",\n    },\n    {\n      src: \"https://html.tailus.io/blocks/customers/lilly.svg\",\n      alt: \"Lilly Logo\",\n      className: \"h-7\",\n    },\n    {\n      src: \"https://html.tailus.io/blocks/customers/openai.svg\",\n      alt: \"OpenAI Logo\",\n      className: \"h-6\",\n    },\n  ];\n\n  return (\n    <section className=\"py-12 md:py-20\">\n      <div className=\"container px-4 md:px-6\">\n        <div className=\"flex flex-col items-center justify-between gap-4 text-center md:flex-row md:text-left\">\n          <div className=\"space-y-2\">\n            <h2 className=\"text-2xl font-bold tracking-tight md:text-3xl\">\n              Trusted by industry leaders\n            </h2>\n            <p className=\"text-muted-foreground\">\n              Join thousands of companies using our library\n            </p>\n          </div>\n          <Button asChild variant=\"ghost\" size=\"sm\" className=\"gap-1\">\n            <Link href=\"#case-studies\">\n              View case studies\n              <ChevronRight className=\"h-4 w-4\" />\n            </Link>\n          </Button>\n        </div>\n\n        <div className=\"mt-8 grid grid-cols-2 gap-8 md:grid-cols-4 lg:mt-12\">\n          {logos.map((logo, index) => (\n            <div key={index} className=\"flex items-center justify-center\">\n              <div className=\"flex h-16 w-full items-center justify-center rounded-lg border bg-background p-4 transition-all duration-200 hover:scale-105 hover:shadow-md\">\n                <img\n                  className={`w-auto dark:invert ${logo.className}`}\n                  src={logo.src || \"/placeholder.svg\"}\n                  alt={logo.alt}\n                  width=\"auto\"\n                  height={logo.className.replace(\"h-\", \"\")}\n                />\n              </div>\n            </div>\n          ))}\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+      "type": "registry:component",
+      "target": ""
+    }
+  ]
+}

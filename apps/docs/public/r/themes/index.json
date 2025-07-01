@@ -1,0 +1,395 @@
+{
+  "themes": [
+    {
+      "name": "creativePurple",
+      "label": "Creative Purple",
+      "activeColor": {
+        "light": "258 90% 66%",
+        "dark": "258 90% 90%"
+      }
+    },
+    {
+      "name": "default",
+      "label": "Default",
+      "activeColor": {
+        "light": "222 47% 11%",
+        "dark": "0 0% 98%"
+      }
+    },
+    {
+      "name": "businessBlue",
+      "label": "Business Blue",
+      "activeColor": {
+        "light": "221 79% 48%",
+        "dark": "221 79% 88%"
+      }
+    },
+    {
+      "name": "modernTech",
+      "label": "Modern Tech",
+      "activeColor": {
+        "light": "199 89% 48%",
+        "dark": "199 89% 88%"
+      }
+    },
+    {
+      "name": "rosePink",
+      "label": "Rose Pink",
+      "activeColor": {
+        "light": "330 81% 60%",
+        "dark": "330 81% 90%"
+      }
+    },
+    {
+      "name": "oceanBlue",
+      "label": "Ocean Blue",
+      "activeColor": {
+        "light": "199 89% 48%",
+        "dark": "199 89% 88%"
+      }
+    },
+    {
+      "name": "forestGreen",
+      "label": "Forest Green",
+      "activeColor": {
+        "light": "142 76% 36%",
+        "dark": "142 76% 76%"
+      }
+    },
+    {
+      "name": "sunsetOrange",
+      "label": "Sunset Orange",
+      "activeColor": {
+        "light": "25 95% 53%",
+        "dark": "25 95% 90%"
+      }
+    },
+    {
+      "name": "goldenYellow",
+      "label": "Golden Yellow",
+      "activeColor": {
+        "light": "45 93% 47%",
+        "dark": "45 93% 87%"
+      }
+    },
+    {
+      "name": "tealMint",
+      "label": "Teal Mint",
+      "activeColor": {
+        "light": "173 80% 40%",
+        "dark": "173 80% 80%"
+      }
+    },
+    {
+      "name": "indigoDeep",
+      "activeColor": {
+        "light": "239 84% 67%",
+        "dark": "239 84% 90%"
+      }
+    },
+    {
+      "name": "coralRed",
+      "label": "Coral Red",
+      "activeColor": {
+        "light": "0 84% 60%",
+        "dark": "0 84% 90%"
+      }
+    },
+    {
+      "name": "slateGray",
+      "label": "Slate Gray",
+      "activeColor": {
+        "light": "215 16% 47%",
+        "dark": "215 16% 87%"
+      }
+    },
+    {
+      "name": "emeraldFresh",
+      "label": "Emerald Fresh",
+      "activeColor": {
+        "light": "160 84% 39%",
+        "dark": "160 84% 79%"
+      }
+    },
+    {
+      "name": "violetDream",
+      "label": "Violet Dream",
+      "activeColor": {
+        "light": "262 83% 58%",
+        "dark": "262 83% 90%"
+      }
+    },
+    {
+      "name": "amberWarm",
+      "label": "Amber Warm",
+      "activeColor": {
+        "light": "38 92% 50%",
+        "dark": "38 92% 90%"
+      }
+    },
+    {
+      "name": "cyberNeon",
+      "label": "Cyber Neon",
+      "activeColor": {
+        "light": "152 100% 50%",
+        "dark": "152 100% 90%"
+      }
+    },
+    {
+      "name": "royalPurple",
+      "label": "Royal Purple",
+      "activeColor": {
+        "light": "271 81% 56%",
+        "dark": "271 81% 90%"
+      }
+    },
+    {
+      "name": "mintFresh",
+      "label": "Mint Fresh",
+      "activeColor": {
+        "light": "164 95% 43%",
+        "dark": "164 95% 83%"
+      }
+    },
+    {
+      "name": "crimsonFire",
+      "label": "Crimson Fire",
+      "activeColor": {
+        "light": "348 83% 47%",
+        "dark": "348 83% 87%"
+      }
+    },
+    {
+      "name": "sapphireBlue",
+      "label": "Sapphire Blue",
+      "activeColor": {
+        "light": "216 85% 39%",
+        "dark": "216 85% 79%"
+      }
+    },
+    {
+      "name": "midnightBlue",
+      "label": "Midnight Blue",
+      "activeColor": {
+        "light": "224 64% 33%",
+        "dark": "224 64% 73%"
+      }
+    },
+    {
+      "name": "cherryBlossom",
+      "label": "Cherry Blossom",
+      "activeColor": {
+        "light": "329 86% 70%",
+        "dark": "329 86% 90%"
+      }
+    },
+    {
+      "name": "arcticFrost",
+      "label": "Arctic Frost",
+      "activeColor": {
+        "light": "215 19% 35%",
+        "dark": "215 19% 75%"
+      }
+    },
+    {
+      "name": "neonLime",
+      "label": "Neon Lime",
+      "activeColor": {
+        "light": "84 81% 44%",
+        "dark": "84 81% 84%"
+      }
+    },
+    {
+      "name": "coffeeBrown",
+      "label": "Coffee Brown",
+      "activeColor": {
+        "light": "23 83% 31%",
+        "dark": "23 83% 71%"
+      }
+    },
+    {
+      "name": "electricBlue",
+      "label": "Electric Blue",
+      "activeColor": {
+        "light": "199 89% 48%",
+        "dark": "199 89% 88%"
+      }
+    },
+    {
+      "name": "lavenderMist",
+      "label": "Lavender Mist",
+      "activeColor": {
+        "light": "271 91% 65%",
+        "dark": "271 91% 90%"
+      }
+    },
+    {
+      "name": "charcoalDark",
+      "label": "Charcoal Dark",
+      "activeColor": {
+        "light": "217 19% 27%",
+        "dark": "217 19% 67%"
+      }
+    },
+    {
+      "name": "sunsetPeach",
+      "label": "Sunset Peach",
+      "activeColor": {
+        "light": "27 96% 61%",
+        "dark": "27 96% 90%"
+      }
+    },
+    {
+      "name": "steelGray",
+      "label": "Steel Gray",
+      "activeColor": {
+        "light": "220 9% 46%",
+        "dark": "220 9% 86%"
+      }
+    },
+    {
+      "name": "tropicalCyan",
+      "label": "Tropical Cyan",
+      "activeColor": {
+        "light": "189 94% 43%",
+        "dark": "189 94% 83%"
+      }
+    },
+    {
+      "name": "magentaPop",
+      "label": "Magenta Pop",
+      "activeColor": {
+        "light": "292 84% 61%",
+        "dark": "292 84% 90%"
+      }
+    },
+    {
+      "name": "bronzeCopper",
+      "label": "Bronze Copper",
+      "activeColor": {
+        "light": "17 88% 40%",
+        "dark": "17 88% 80%"
+      }
+    },
+    {
+      "name": "neonPink",
+      "label": "Neon Pink",
+      "activeColor": {
+        "light": "330 100% 50%",
+        "dark": "330 100% 90%"
+      }
+    },
+    {
+      "name": "sageGreen",
+      "label": "Sage Green",
+      "activeColor": {
+        "light": "84 81% 44%",
+        "dark": "84 81% 84%"
+      }
+    },
+    {
+      "name": "modernGradient",
+      "label": "Modern Gradient",
+      "activeColor": {
+        "light": "239 84% 67%",
+        "dark": "239 84% 90%"
+      }
+    },
+    {
+      "name": "modernGlass",
+      "label": "Modern Glass",
+      "activeColor": {
+        "light": "222 47% 11%",
+        "dark": "0 0% 98%"
+      }
+    },
+    {
+      "name": "modernNeon",
+      "label": "Modern Neon",
+      "activeColor": {
+        "light": "258 90% 66%",
+        "dark": "258 90% 90%"
+      }
+    },
+    {
+      "name": "modernAurora",
+      "label": "Modern Aurora",
+      "activeColor": {
+        "light": "330 81% 60%",
+        "dark": "330 81% 90%"
+      }
+    },
+    {
+      "name": "elegantGold",
+      "label": "Elegant Gold",
+      "activeColor": {
+        "light": "32 95% 44%",
+        "dark": "32 95% 84%"
+      }
+    },
+    {
+      "name": "elegantNavy",
+      "label": "Elegant Navy",
+      "activeColor": {
+        "light": "226 71% 40%",
+        "dark": "226 71% 80%"
+      }
+    },
+    {
+      "name": "elegantBurgundy",
+      "label": "Elegant Burgundy",
+      "activeColor": {
+        "light": "0 70% 35%",
+        "dark": "0 70% 75%"
+      }
+    },
+    {
+      "name": "elegantEmerald",
+      "label": "Elegant Emerald",
+      "activeColor": {
+        "light": "161 94% 30%",
+        "dark": "161 94% 70%"
+      }
+    },
+    {
+      "name": "elegantPlatinum",
+      "label": "Elegant Platinum",
+      "activeColor": {
+        "light": "215 14% 34%",
+        "dark": "215 14% 74%"
+      }
+    },
+    {
+      "name": "comicPop",
+      "label": "Comic Pop",
+      "activeColor": {
+        "light": "16 100% 60%",
+        "dark": "16 100% 90%"
+      }
+    },
+    {
+      "name": "comicBubble",
+      "label": "Comic Bubble",
+      "activeColor": {
+        "light": "217 91% 60%",
+        "dark": "217 91% 90%"
+      }
+    },
+    {
+      "name": "comicHero",
+      "label": "Comic Hero",
+      "activeColor": {
+        "light": "0 72% 51%",
+        "dark": "0 72% 90%"
+      }
+    },
+    {
+      "name": "comicRainbow",
+      "label": "Comic Rainbow",
+      "activeColor": {
+        "light": "271 91% 65%",
+        "dark": "271 91% 90%"
+      }
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+---
+title: Introduction
+description: AxionJS is a revolutionary component system for Next.js that gives you full ownership of your UI code. Built on top of Radix UI primitives with accessibility-first design and AI-powered component generation.
+---
+
+**You own your components. We just help you build them better.**
+
+Traditional component libraries lock you into their design decisions and API constraints. You install a package, import components, and hope they fit your needs. When they don't, you're stuck with workarounds, style overrides, or mixing incompatible libraries.
+
+`AxionJS` takes a fundamentally different approach. We give you the actual component code, built on proven foundations, so you can craft exactly what your application needs.
+
+## Core Philosophy
+
+AxionJS is built around these fundamental principles:
+
+- **Code Ownership:** Every component becomes part of your codebase, not a black box dependency.
+- **Accessibility First:** Built on Radix UI primitives ensuring WCAG compliance out of the box.
+- **Intelligent APIs:** Composable interfaces that work predictably across all components.
+- **Zero Lock-in:** Components are yours to modify, extend, or completely rewrite.
+- **AI-Enhanced:** Custom MCP server integration for intelligent component generation and management.
+
+## Beautiful CLI Experience
+
+Our CLI is built with [Clack](https://github.com/natemoo-re/clack) for an exceptional developer experience:
+
+```bash
+npx axionjs init
+```
+
+```bash
+ $npx axionjs init
+
+┌  Welcome to axion.js CLI
+✓ Preflight checks.
+✓ Validating Tailwind CSS.
+✓ Validating import alias.
+◇ Select a color category:
+│ Creative
+│
+◇ Select a theme:
+│ Sunset Orange
+│
+◇ components.json written successfully.
+✓ Checking registry.
+✓ Updating tailwind.config.js
+✓ Updating CSS variables in src\app\globals.css
+✓ Installing dependencies.
+✓ Created 1 file:
+
+Success! Project initialization completed.
+You may now add components.
+
+ $ npx axionjs add
+┌
+◇ Which components would you like to add?
+│
+│ Hint: Space to select. A to toggle all. Enter to submit.
+│ │ chart
+✓ Checking registry.
+✓ Updating CSS variables in src\app\globals.css
+✓ Installing dependencies.
+✓ Created 1 file:
+  - src\components\ui\chart.jsx
+
+ $ npx axionjs add button
+✓ Checking registry.
+✓ Updating CSS variables in src\app\globals.css
+✓ Installing dependencies.
+✓ Created 1 file:
+  - src\components\ui\button.jsx
+```
+
+## Comprehensive Theme System
+
+Choose from **50+ professionally designed themes** or generate unlimited custom themes with AI:
+
+- **Pre-built Collections:** Modern, Elegant, Vibrant, and Nature-inspired themes
+- **AI Theme Generator:** Powered by Google Gemini - describe your vision, get a complete theme
+- **Full Customization:** HSL and OKLCH color formats, custom fonts, animations
+- **Tailwind Integration:** Works seamlessly with both Tailwind CSS v3 and v4
+
+## You Own The Code
+
+When you add a component with AxionJS, you get the complete source code in your project. This means:
+
+- **Complete Control:** Modify behavior, styling, and functionality without constraints
+- **No Version Lock:** Components evolve with your project, not external library updates
+- **Deep Understanding:** See exactly how every interaction and animation works
+- **Team Alignment:** Your entire team works with the same, visible component implementations
+
+```tsx
+// This button is yours - modify it however you need
+export function Button({ variant, size, ...props }) {
+  return (
+    <button className={cn(buttonVariants({ variant, size }))} {...props} />
+  );
+}
+```
+
+## Built on Proven Foundations
+
+Every AxionJS component leverages battle-tested primitives, inspired by and built upon:
+
+- **[Radix UI](https://www.radix-ui.com/)** - Unstyled, accessible components for React
+- **[React Aria](https://react-spectrum.adobe.com/react-aria/)** - Accessibility and behavior hooks
+- **[shadcn/ui](https://ui.shadcn.com/)** - The design philosophy that inspired our approach
+
+This gives you:
+
+- **Accessibility by Default:** ARIA attributes, keyboard navigation, and screen reader support built-in
+- **Behavioral Consistency:** Proven interaction patterns that users expect
+- **Cross-browser Compatibility:** Tested across all modern browsers and devices
+- **Reduced Complexity:** Focus on your design while we handle the accessibility layer
+
+```tsx
+// Accessible dialog with zero extra work
+import * as Dialog from "radix-ui";
+
+export function Modal({ children, ...props }) {
+  return (
+    <Dialog.Root {...props}>
+      <Dialog.Content className="modal-content">{children}</Dialog.Content>
+    </Dialog.Root>
+  );
+}
+```
+
+## Intelligent Component System
+
+AxionJS components share a unified API philosophy that makes them instantly familiar:
+
+- **Predictable Props:** Consistent naming and behavior patterns across all components
+- **Composable Architecture:** Mix and match components to create complex interfaces
+- **Type Safety:** Full TypeScript support with intelligent autocompletion
+- **Design Token Integration:** Seamless integration with your design system variables
+
+## Production-Ready Hooks
+
+Over **30+ custom hooks** for real-world application needs:
+
+```tsx
+// Data fetching and state management
+const { data, loading, error } = useAPI("/api/users");
+const { items, pagination } = usePagination(data, { pageSize: 10 });
+
+// UI interactions
+const { copy, copied } = useClipboard();
+const { theme, setTheme } = useTheme();
+const { isOnline } = useNetworkStatus();
+
+// Form handling
+const { register, errors, submit } = useForm(schema);
+const { upload, progress } = useFileUpload();
+```
+
+## Rich Chart Components
+
+Built on top of [Recharts](https://recharts.org/) with beautiful, customizable designs:
+
+- **Line, Bar, Area Charts** - Interactive and responsive
+- **Pie, Donut, Radar Charts** - Perfect for dashboards
+- **Combo Charts** - Multiple data series support
+- **Real-time Charts** - Live data updates
+- **Custom Themes** - Matches your design system
+
+```bash
+npx axionjs add line-chart
+```
+
+```tsx
+<LineChart
+  data={salesData}
+  xAxis="month"
+  yAxis="revenue"
+  theme="gradient"
+  animate
+/>
+```
+
+## Pre-built UI Blocks
+
+Ready-to-use sections that connect to your API routes or server actions:
+
+- **Hero Sections** - Landing page headers with CTA
+- **Forms** - Contact, newsletter, auth forms
+- **Data Tables** - Sortable, filterable, paginated
+- **Navigation** - Headers, sidebars, breadcrumbs
+- **Pricing** - Subscription tiers and billing
+- **Testimonials** - Customer reviews and ratings
+- **Footers** - Multi-column with social links
+
+```bash
+npx axionjs add hero-app
+```
+
+```bash
+npx axionjs add pricing-comparison
+```
+
+```bash
+npx axionjs add table-complex
+```
+
+## Full-Stack Components
+
+Complete solutions for Next.js App Router applications:
+
+### Authentication System
+
+- **RBAC (Role-Based Access Control)** - User roles and permissions
+- **OAuth Integration** - Google, GitHub, Discord providers
+- **Session Management** - Secure token handling
+
+### Data Management
+
+- **CRUD Tables** - Create, read, update, delete operations
+- **Media Manager** - File upload, optimization
+- **Newsletter** - Email collection and automation
+
+### Database Integration
+
+- **[Prisma ORM](https://www.prisma.io/)** - Type-safe database access
+- **[Auth.js](https://authjs.dev/)** - Authentication for Next.js
+- **[PostgreSQL](https://www.postgresql.org/)** - Production database support
+
+```bash
+npx axionjs add rbac-auth
+```
+
+```bash
+npx axionjs add simple-crud-table
+```
+
+## Accessibility Excellence
+
+Every component follows WCAG 2.1 AA guidelines with integrated accessibility tools:
+
+- **[UserWay](https://userway.org/)** - Accessibility widget integration
+- **Semantic HTML** - Proper element usage and document structure
+- **Keyboard Navigation** - Full keyboard accessibility
+- **Screen Reader Support** - Comprehensive ARIA labels
+- **Focus Management** - Logical focus flow and indicators
+- **Color Contrast** - Meets accessibility requirements
+
+## AI-Powered Development
+
+Transform how you build components with our custom MCP (Model Context Protocol) server:
+
+- **Instant Component Generation:** Describe what you need, get production-ready code
+- **Intelligent Modifications:** AI understands your existing components and suggests improvements
+- **Pattern Recognition:** Learn from your codebase to generate consistent, on-brand components
+- **Minimal Configuration:** Works out of the box with popular AI tools and IDEs
+
+### MCP Server Setup
+
+Connect your favorite AI assistant to AxionJS components:
+
+```json title="mcp-config.json"
+{
+  "servers": {
+    "axionjs": {
+      "command": "npx",
+      "args": ["axionjs", "mcp-server"],
+      "env": {
+        "PROJECT_PATH": "./src/components"
+      }
+    }
+  }
+}
+```
+
+## Credits & Acknowledgments
+
+AxionJS is built on the shoulders of giants. We're grateful to these amazing projects:
+
+- **[Radix UI](https://www.radix-ui.com/)** - Accessible component primitives
+- **[React Aria](https://react-spectrum.adobe.com/react-aria/)** - Accessibility hooks and behaviors
+- **[shadcn/ui](https://ui.shadcn.com/)** - Design system inspiration and philosophy
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[Recharts](https://recharts.org/)** - React chart library
+- **[Clack](https://github.com/natemoo-re/clack)** - Beautiful CLI prompts
+- **[Prisma](https://www.prisma.io/)** - Next-generation ORM
+- **[Auth.js](https://authjs.dev/)** - Authentication for the web
+
+## Getting Started
+
+Ready to own your components? Start building with AxionJS
+Your components. Your code. Your control.

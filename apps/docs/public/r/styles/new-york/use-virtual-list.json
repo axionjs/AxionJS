@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "use-virtual-list",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-virtual-list.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\ninterface UseVirtualListOptions {\n  itemHeight: number;\n  overscan?: number;\n}\n\ninterface UseVirtualListReturn<T> {\n  virtualItems: Array<{\n    index: number;\n    start: number;\n    end: number;\n    item: T;\n  }>;\n  totalHeight: number;\n  scrollToIndex: (index: number) => void;\n}\n\n/**\n * A hook for virtualizing long lists\n * @param items The list items\n * @param options Configuration options\n * @returns Virtual list state and actions\n */\nexport function useVirtualList<T>(\n  items: T[],\n  { itemHeight, overscan = 3 }: UseVirtualListOptions,\n): UseVirtualListReturn<T> {\n  const [scrollTop, setScrollTop] = React.useState(0);\n  const [containerHeight, setContainerHeight] = React.useState(0);\n  const containerRef = React.useRef<HTMLElement | null>(null);\n\n  React.useEffect(() => {\n    if (typeof window === \"undefined\") return;\n\n    const container = containerRef.current;\n    if (!container) return;\n\n    const resizeObserver = new ResizeObserver((entries) => {\n      const { height } = entries[0].contentRect;\n      setContainerHeight(height);\n    });\n\n    resizeObserver.observe(container);\n\n    const handleScroll = () => {\n      setScrollTop(container.scrollTop);\n    };\n\n    container.addEventListener(\"scroll\", handleScroll);\n    setContainerHeight(container.clientHeight);\n\n    return () => {\n      container.removeEventListener(\"scroll\", handleScroll);\n      resizeObserver.disconnect();\n    };\n  }, []);\n\n  const totalHeight = items.length * itemHeight;\n\n  const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);\n  const endIndex = Math.min(\n    items.length - 1,\n    Math.floor((scrollTop + containerHeight) / itemHeight) + overscan,\n  );\n\n  const virtualItems = React.useMemo(() => {\n    return items.slice(startIndex, endIndex + 1).map((item, index) => {\n      const virtualIndex = startIndex + index;\n      return {\n        index: virtualIndex,\n        start: virtualIndex * itemHeight,\n        end: (virtualIndex + 1) * itemHeight,\n        item,\n      };\n    });\n  }, [startIndex, endIndex, items, itemHeight]);\n\n  const scrollToIndex = React.useCallback(\n    (index: number) => {\n      if (containerRef.current) {\n        containerRef.current.scrollTop = index * itemHeight;\n      }\n    },\n    [itemHeight],\n  );\n\n  return {\n    virtualItems,\n    totalHeight,\n    scrollToIndex,\n  };\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

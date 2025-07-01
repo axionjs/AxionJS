@@ -1,0 +1,18 @@
+{
+  "title": "Documentation",
+  "root": "true",
+  "pages": [
+    "---Getting Started---",
+    "(root)",
+    "---Accessibility---",
+    "accessibility",
+    "---Fullstack Components---",
+    "fullstack",
+    "---Layout---",
+    "layouts",
+    "---Components---",
+    "components",
+    "hooks",
+    "modern-ui-blocks"
+  ]
+}

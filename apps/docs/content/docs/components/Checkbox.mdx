@@ -1,0 +1,306 @@
+---
+title: Checkbox
+description: A customizable and accessible checkbox component with advanced use cases, including form validation and multi-select preferences.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import {
+  SimpleCheckboxPreview,
+  FormCheckboxPreview,
+} from "@/app/components/docs/CheckboxPreview.tsx";
+
+## Introduction
+
+The `Checkbox` component is a versatile and accessible component that supports default and advanced use cases such as multi-select preferences with form validation.
+
+---
+
+## Default Use Case: Simple Checkbox
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-96 content-center">
+    <SimpleCheckboxPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+  "use client"
+
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+
+export function CheckboxDemo() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center gap-3">
+        <Checkbox id="terms" />
+        <Label htmlFor="terms">Accept terms and conditions</Label>
+      </div>
+      <div className="flex items-start gap-3">
+        <Checkbox id="terms-2" defaultChecked />
+        <div className="grid gap-2">
+          <Label htmlFor="terms-2">Accept terms and conditions</Label>
+          <p className="text-muted-foreground text-sm">
+            By clicking this checkbox, you agree to the terms and conditions.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-start gap-3">
+        <Checkbox id="toggle" disabled />
+        <Label htmlFor="toggle">Enable notifications</Label>
+      </div>
+      <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
+        <Checkbox
+          id="toggle-2"
+          defaultChecked
+          className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+        />
+        <div className="grid gap-1.5 font-normal">
+          <p className="text-sm leading-none font-medium">
+            Enable notifications
+          </p>
+          <p className="text-muted-foreground text-sm">
+            You can enable or disable notifications at any time.
+          </p>
+        </div>
+      </Label>
+    </div>
+  )
+}
+
+    ```
+  </Tab>
+</Tabs>
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Checkbox` component 
+
+    ```bash
+    npx axionjs add checkbox
+    ```
+
+  </Tab>
+
+  <Tab value="Manual">
+    ### 1. Create the Checkbox Component
+
+  Install the `Checkbox` component and required dependencies using the following command:
+
+    ```bash
+    npm @radix-ui/react-checkbox lucide-react
+    ```
+    Add the following code to `components/ui/checkbox.tsx`:
+
+    ```tsx ts2js
+    import * as React from "react";
+    import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+    import { Check } from "lucide-react";
+
+    import { cn } from "@/lib/utils";
+
+    interface CheckboxProps
+      extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+      id?: string;
+      "aria-label"?: string;
+      "aria-labelledby"?: string;
+    }
+
+    const Checkbox = React.forwardRef<
+      React.ElementRef<typeof CheckboxPrimitive.Root>,
+      CheckboxProps
+    >(
+      (
+        { className, id, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledby, ...props },
+        ref
+      ) => {
+        return (
+          <CheckboxPrimitive.Root
+            ref={ref}
+            id={id}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby}
+            className={cn(
+              "peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow",
+              "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+              "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
+              className
+            )}
+            {...props}
+          >
+            <CheckboxPrimitive.Indicator
+              className="flex items-center justify-center text-current"
+            >
+              <Check className="h-4 w-4" />
+            </CheckboxPrimitive.Indicator>
+          </CheckboxPrimitive.Root>
+        );
+      }
+    );
+
+    Checkbox.displayName = CheckboxPrimitive.Root.displayName;
+
+    export { Checkbox };
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="checkbox.tsx" />
+      
+      </Folder>
+    </Folder>
+    </Folder>
+</Files>
+
+---
+
+## Advanced Use Case: Form with Multi-Select Preferences
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <FormCheckboxPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx
+  // Form with Checkbox Preview
+export function FormCheckboxPreview() {
+  const schema = z.object({
+    preferences: z
+      .array(z.string())
+      .min(1, "Please select at least one preference."),
+  });
+
+  const formMethods = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      preferences: [],
+    },
+  });
+
+  const { control, handleSubmit, formState } = formMethods;
+  const { errors } = formState;
+
+  const onSubmit = (data: any) => {
+    console.log("Form submitted:", data);
+    alert("Form submitted successfully!");
+  };
+
+  return (
+    <Form
+      {...formMethods}
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6 max-w-md"
+      aria-labelledby="form-with-checkbox"
+    >
+      {/* Preferences */}
+      <FormField
+        name="preferences"
+        control={control}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Preferences</FormLabel>
+            <div className="space-y-3">
+              {["Option 1", "Option 2", "Option 3"].map((option) => (
+                <div key={option} className="flex items-center space-x-3">
+                  <Controller
+                    name="preferences"
+                    control={control}
+                    render={({ field: checkboxField }) => (
+                      <Checkbox
+                        id={option}
+                        checked={checkboxField.value.includes(option)}
+                        onCheckedChange={(checked) => {
+                          const updatedValue = checked
+                            ? [...checkboxField.value, option]
+                            : checkboxField.value.filter(
+                                (item: string) => item !== option
+                              );
+                          checkboxField.onChange(updatedValue);
+                        }}
+                      />
+                    )}
+                  />
+                  <Label htmlFor={option}>{option}</Label>
+                </div>
+              ))}
+            </div>
+            <FormMessage>{errors.preferences?.message}</FormMessage>
+          </FormItem>
+        )}
+      />
+
+      {/* Submit Button */}
+      <Button type="submit" className="mt-3">
+        Submit
+      </Button>
+    </Form>
+  );
+}
+    ```
+  </Tab>
+</Tabs>
+
+---
+## Prop Types
+
+<TypeTable
+  type={{
+    id: {
+      description: "The unique ID for the checkbox, used for labeling.",
+      type: "string",
+      required: false,
+    },
+    "aria-label": {
+      description: "The accessible label for the checkbox.",
+      type: "string",
+      required: false,
+    },
+    "aria-labelledby": {
+      description:
+        "Links the checkbox to an external label using the ID of the label element.",
+      type: "string",
+      required: false,
+    },
+    disabled: {
+      description: "Disables the checkbox if set to `true`.",
+      type: "boolean",
+      required: false,
+      default: "false",
+    },
+    checked: {
+      description: "Indicates the current state of the checkbox.",
+      type: "`boolean | 'indeterminate'`",
+      required: false,
+    },
+    onCheckedChange: {
+      description: "Callback when the checkbox's state changes.",
+      type: "(checked: boolean) => void",
+      required: false,
+    },
+  }}
+/>
+---
+## Features
+
+- **Default and Disabled States**:
+  - Use for basic toggles or read-only checks.
+- **Multi-Select Integration**:
+  - Handle complex forms with validation using `react-hook-form` and `zod`.
+- **Accessible**:
+  - Fully compliant with ARIA attributes.
+
+---
+
+## Conclusion
+
+The `Checkbox` component is highly customizable and accessible, making it a perfect choice for basic toggles or advanced forms.

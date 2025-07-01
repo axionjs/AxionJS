@@ -1,0 +1,623 @@
+---
+title: Auth RBAC
+description: A complete Role-Based Access Control authentication system with advanced security features
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { CodeBlock } from "fumadocs-ui/components/codeblock";
+import Image from "next/image";
+import { RegistryViewer } from "@/app/components/docs/RegistryViewer";
+
+# RBAC Authentication System
+
+A comprehensive, production-ready authentication system with Role-Based Access Control (RBAC), built with modern security practices and seamless integration using Next.js Server Actions.
+
+<Image
+  src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1749922935/Screenshot_2025-06-14_223857_nedg98.png"
+  alt="RBAC Auth Dashboard"
+  width={1200}
+  height={800}
+  className="rounded-lg border"
+/>
+
+<div className="my-8">
+  <div
+    className="border rounded-md overflow-scroll"
+    style={{ height: "500px" }}
+  >
+    <RegistryViewer
+      componentName="rbac-auth"
+      style="new-york"
+      className="h-full border-0 bg-transparent"
+      showPreview={true}
+    />
+  </div>
+</div>
+
+<Callout type="info">
+  This authentication system provides enterprise-grade security with minimal
+  setup. Perfect for applications requiring user management, role-based
+  permissions, and advanced security features using Next.js Server Actions for
+  optimal performance.
+</Callout>
+
+## Features
+
+- **Complete Authentication Flow** - Login, Register, Password Reset
+- **Role-Based Access Control** - Admin/User roles with extensible system
+- **Two-Factor Authentication** - Email-based 2FA for enhanced security
+- **Email Verification** - Secure email confirmation system
+- **Profile Management** - Image upload with Cloudinary integration
+- **OAuth Integration** - Google & GitHub authentication
+- **Session Management** - Secure session handling with NextAuth.js
+- **Email Services** - Password reset and verification emails
+- **Modern UI** - Beautiful components with shadcn/ui
+- **Server Actions** - Type-safe server-side operations without API routes
+
+## Tech Stack
+
+- **Framework**: Next.js 14+ with App Router
+- **Authentication**: NextAuth.js v5
+- **Database**: PostgreSQL with Prisma ORM
+- **Validation**: Zod schemas
+- **UI Components**: shadcn/ui + Tailwind CSS
+- **Email**: React Email templates
+- **File Upload**: Cloudinary integration
+- **Security**: bcryptjs for password hashing
+- **Server Actions**: Type-safe server operations
+
+## Installation
+
+<Steps>
+
+<Step>
+### Install the component
+
+```bash
+npx axionjs add rbac-auth
+```
+
+</Step>
+
+<Step>
+### Configure environment variables
+
+Create a `.env.local` file with the following variables:
+
+<Step>
+```env
+DATABASE_URL="postgresql://username:password@host:port/database?sslmode=require"
+
+AUTH_SECRET="your-auth-secret-key"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+GITHUB_CLIENT_ID="your-github-client-id"
+GITHUB_CLIENT_SECRET="your-github-client-secret"
+
+EMAIL_SERVER_HOST="smtp.gmail.com"
+EMAIL_SERVER_PORT="587"
+EMAIL_SERVER_USER="your-email@gmail.com"
+EMAIL_SERVER_PASSWORD="your-app-password"
+EMAIL_FROM="Your App Name"
+
+// For User Avatar
+CLOUDINARY_API_KEY="your-cloudinary-key"
+CLOUDINARY_API_SECRET="your-cloudinary-secret"
+CLOUDINARY_CLOUD_NAME="your-cloud-name"
+
+````
+
+</Step>
+</Step>
+
+<Step>
+### Run database migrations
+
+```bash
+npx prisma db push
+````
+
+</Step>
+
+<Step>
+### Start your application
+
+```bash
+npm run dev
+```
+
+</Step>
+
+</Steps>
+
+## Core Components
+
+### Authentication Forms
+
+The system includes pre-built, accessible forms for all authentication flows:
+
+<Tabs items={['Login', 'Register', 'Password Reset']}>
+<Tab value="Login">
+```tsx ts2js
+import { LoginForm } from "@/components/auth/login-form";
+
+export default function LoginPage() {
+  return <LoginForm />;
+}
+```
+</Tab>
+
+<Tab value="Register">
+```tsx ts2js
+import { RegisterForm } from "@/components/auth/register-form";
+
+export default function RegisterPage() {
+  return <RegisterForm />;
+}
+```
+</Tab>
+
+<Tab value="Password Reset">
+```tsx ts2js
+import { ResetForm } from "@/components/auth/reset-form";
+
+export default function ResetPage() {
+  return <ResetForm />;
+}
+```
+</Tab>
+</Tabs>
+
+### Role-Based Protection
+
+Protect routes and components based on user roles:
+
+```tsx ts2js
+import { RoleGate } from "@/components/auth/role-gate";
+import { UserRole } from "@prisma/client";
+
+export default function AdminPanel() {
+  return (
+    <RoleGate allowedRole={UserRole.ADMIN}>
+      <div>Admin-only content</div>
+    </RoleGate>
+  );
+}
+```
+
+### Settings Management
+
+Complete user settings with profile management:
+
+```tsx ts2js
+import { SettingsForm } from "@/components/auth/settings-form";
+
+export default function SettingsPage() {
+  return <SettingsForm />;
+}
+```
+
+## Server Actions Architecture
+
+This system leverages Next.js Server Actions for type-safe, secure server-side operations without the need for API routes:
+
+### Authentication Actions
+
+```tsx ts2js
+// All authentication logic handled via Server Actions
+import { login, register, logout } from "@/actions/auth-actions";
+
+// Login action
+const handleLogin = async (formData: FormData) => {
+  const result = await login({
+    email: formData.get("email"),
+    password: formData.get("password"),
+    code: formData.get("code"), // For 2FA
+  });
+
+  if (result.error) {
+    // Handle error
+  }
+};
+```
+
+### Profile Management Actions
+
+```tsx ts2js
+// Profile updates via Server Actions
+import {
+  settings,
+  updateUserImage,
+  changePassword,
+} from "@/actions/auth-actions";
+
+// Update user settings
+const updateSettings = async (data) => {
+  const result = await settings(userId, data);
+  return result;
+};
+
+// Change password
+const handlePasswordChange = async (currentPassword, newPassword) => {
+  const result = await changePassword(currentPassword, newPassword);
+  return result;
+};
+```
+
+## Advanced Features
+
+### Two-Factor Authentication
+
+Automatic 2FA setup with email-based verification using Server Actions:
+
+```tsx ts2js
+// 2FA token generation and verification
+const generateTwoFactorToken = async (email: string) => {
+  const token = crypto.randomInt(100_000, 1_000_000).toString();
+  const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
+
+  // Store in database and send email
+  return await db.twoFactorToken.create({
+    data: { email, token, expires },
+  });
+};
+```
+
+### Email Verification
+
+Secure email verification for new registrations and email changes:
+
+```tsx ts2js
+// Server Action for email verification
+export const newVerification = async (token: string) => {
+  const existingToken = await getVerificationTokenByToken(token);
+
+  if (!existingToken) {
+    return { error: "Token does not exist" };
+  }
+
+  // Verify and update user
+  await db.user.update({
+    where: { id: existingUser.id },
+    data: { emailVerified: new Date() },
+  });
+
+  return { success: "Email verified!" };
+};
+```
+
+### Profile Image Upload
+
+Integrated Cloudinary support with Server Actions:
+
+```tsx ts2js
+// Server Action for image upload
+export async function updateUserImage(userId: string, imageData: string) {
+  const uploadResponse = await cloudinary.uploader.upload(imageData, {
+    folder: "user_profiles",
+  });
+
+  await db.user.update({
+    where: { id: userId },
+    data: { image: uploadResponse.secure_url },
+  });
+
+  return { success: "Profile picture updated!" };
+}
+```
+
+## Extending Roles
+
+Add custom roles to your application:
+
+<Steps>
+
+<Step>
+### Update Prisma Schema
+
+```prisma
+enum UserRole {
+  ADMIN
+  USER
+  MODERATOR
+  MANAGER
+  EDITOR
+  VIEWER
+  // Add your custom roles here
+}
+```
+
+</Step>
+
+<Step>
+### Create Role Management Server Actions
+
+```tsx ts2js
+// Server Action for role management
+export const updateUserRole = async (userId: string, role: UserRole) => {
+  const currentUser = await currentUser();
+
+  if (currentUser?.role !== UserRole.ADMIN) {
+    return { error: "Unauthorized" };
+  }
+
+  await db.user.update({
+    where: { id: userId },
+    data: { role },
+  });
+
+  return { success: "Role updated successfully" };
+};
+
+// Server Action to get users by role
+export const getUsersByRole = async (role: UserRole) => {
+  const currentUser = await currentUser();
+
+  if (currentUser?.role !== UserRole.ADMIN) {
+    return { error: "Unauthorized" };
+  }
+
+  const users = await db.user.findMany({
+    where: { role },
+    select: { id: true, name: true, email: true, role: true },
+  });
+
+  return { users };
+};
+```
+
+</Step>
+
+<Step>
+### Implement Role-Based Components
+
+```tsx ts2js
+// Role-based navigation
+export function RoleBasedNavigation() {
+  const { data: session } = useSession();
+
+  return (
+    <nav>
+      {session?.user?.role === UserRole.ADMIN && (
+        <Link href="/admin">Admin Panel</Link>
+      )}
+      {[UserRole.ADMIN, UserRole.MODERATOR].includes(session?.user?.role) && (
+        <Link href="/moderate">Moderation</Link>
+      )}
+      {session?.user?.role === UserRole.EDITOR && (
+        <Link href="/editor">Content Editor</Link>
+      )}
+    </nav>
+  );
+}
+```
+
+</Step>
+
+</Steps>
+
+## Security Features
+
+<Callout type="warn">
+  This system implements multiple security layers to protect your application
+  and users using Server Actions for enhanced security.
+</Callout>
+
+- **Server-Side Validation**: All operations validated on server using Zod schemas
+- **Password Hashing**: bcryptjs with salt rounds
+- **CSRF Protection**: Built-in NextAuth.js protection
+- **Session Security**: Secure HTTP-only cookies
+- **Rate Limiting**: Built-in protection against brute force
+- **Email Verification**: Prevents fake account creation
+- **Token Expiration**: All tokens have configurable expiry
+- **OAuth Security**: Secure third-party authentication
+- **Type Safety**: Full TypeScript support with Server Actions
+
+## Server Actions vs API Routes
+
+This system uses Server Actions instead of traditional API routes for several advantages:
+
+<Tabs items={['Server Actions', 'Benefits', 'Security']}>
+<Tab value="Server Actions">
+```tsx ts2js
+// Direct server function calls
+"use server";
+
+export async function loginUser(formData: FormData) {
+  // Server-side logic
+  const result = await authenticate(formData);
+  return result;
+}
+
+// Usage in component
+const handleSubmit = async (formData: FormData) => {
+const result = await loginUser(formData);
+// Handle result
+};
+
+````
+</Tab>
+
+<Tab value="Benefits">
+- **Type Safety**: Full TypeScript support
+- **Performance**: No additional HTTP requests
+- **Simplicity**: Direct function calls
+- **Caching**: Automatic request deduplication
+- **Error Handling**: Built-in error boundaries
+- **Progressive Enhancement**: Works without JavaScript
+</Tab>
+
+<Tab value="Security">
+- **Server-Only Code**: Sensitive logic never exposed to client
+- **Automatic Validation**: Built-in request validation
+- **CSRF Protection**: Automatic protection against CSRF attacks
+- **Rate Limiting**: Built-in protection mechanisms
+- **Secure by Default**: No accidental client-side exposure
+</Tab>
+</Tabs>
+
+## Authentication Flow
+
+The complete authentication flow using Server Actions:
+
+```tsx ts2js
+// Registration Flow
+export const register = async (values: RegisterFormData) => {
+  // 1. Validate input
+  const validatedFields = RegisterSchema.safeParse(values);
+
+  // 2. Check existing user
+  const existingUser = await getUserByEmail(email);
+
+  // 3. Hash password
+  const hashedPassword = await hashPassword(password);
+
+  // 4. Create user
+  await db.user.create({
+    data: { email, password: hashedPassword, name }
+  });
+
+  // 5. Send verification email
+  const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(email, verificationToken.token);
+
+  return { success: "Confirmation Email Sent!" };
+};
+````
+
+## Customization
+
+### Styling
+
+All components use Tailwind CSS and can be easily customized:
+
+```tsx ts2js
+// Override default styles
+<LoginForm className="custom-login-form" />;
+
+// Custom theme configuration
+const customTheme = {
+  colors: {
+    primary: "your-primary-color",
+    secondary: "your-secondary-color",
+  },
+};
+```
+
+### Email Templates
+
+Customize email templates in `/components/emails/`:
+
+```tsx ts2js
+// Custom verification email
+export default function CustomVerificationEmail({ confirmLink }) {
+  return (
+    <Html>
+      <Head />
+      <Preview>Verify your email address</Preview>
+      <Tailwind>
+        <Body className="bg-white font-sans">
+          <Container className="mx-auto p-4">
+            {/* Your custom email design */}
+            <Button href={confirmLink}>Verify Email</Button>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  );
+}
+```
+
+### Database Schema Extensions
+
+Extend the user model with additional fields:
+
+```prisma
+model User {
+  id              String    @id @default(cuid())
+  name            String?
+  email           String    @unique
+  emailVerified   DateTime?
+  image           String?
+  password        String?
+  role            UserRole  @default(USER)
+  isTwoFactorEnabled Boolean @default(false)
+
+  // Custom fields
+  department      String?
+  phoneNumber     String?
+  lastLoginAt     DateTime?
+  preferences     Json?
+  isActive        Boolean   @default(true)
+
+  // Relations
+  accounts        Account[]
+  sessions        Session[]
+  twoFactorConfirmation TwoFactorConfirmation?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+```
+
+## Production Deployment
+
+<Callout type="info">
+  Ready for production with proper security configurations and optimizations
+  using Server Actions.
+</Callout>
+
+### Environment Setup
+
+- Use strong AUTH_SECRET (32+ characters)
+- Configure proper SMTP settings
+- Set up Cloudinary for image handling
+- Use production database URLs
+- Enable HTTPS in production
+- Configure proper CORS settings
+
+### Performance Optimizations
+
+- **Server Actions Caching**: Automatic request deduplication
+- **Database Connection Pooling**: Efficient database connections
+- **Image Optimization**: Cloudinary CDN integration
+- **Session Management**: Optimized session storage
+- **Bundle Optimization**: Tree shaking and code splitting
+
+### Monitoring and Logging
+
+```tsx ts2js
+// Add logging to Server Actions
+export const loginWithLogging = async (values: LoginFormData) => {
+  try {
+    const result = await login(values);
+
+    // Log successful login
+    console.log(`User logged in: ${values.email}`);
+
+    return result;
+  } catch (error) {
+    // Log error
+    console.error(`Login failed for ${values.email}:`, error);
+    throw error;
+  }
+};
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Database Connection**: Ensure your DATABASE_URL is correct and the database is accessible.
+2. **Email Not Sending**: Check SMTP credentials and enable "Less secure app access" for Gmail.
+3. **OAuth Errors**: Verify client IDs and secrets, and configure redirect URLs properly.
+4. **2FA Not Working**: Ensure email service is configured and tokens aren't expired.
+5. **Server Actions Not Working**: Ensure you have "use server" directive at the top of your action files.
+
+## Conclusion
+
+This RBAC authentication system provides a robust, secure foundation for user management in your Next.js applications. With its modern architecture, advanced security features, and seamless integration using Server Actions, you can focus on building your application while ensuring a secure and scalable authentication solution.

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "composed-area-chart",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "registryDependencies": [
+    "card",
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "charts/composed-area-chart.tsx",
+      "content": "\"use client\";\n\nimport { AreaChart } from \"lucide-react\";\nimport {\n  ComposedChart,\n  Line,\n  Area,\n  XAxis,\n  YAxis,\n  CartesianGrid,\n} from \"recharts\";\n\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n} from \"@/registry/default/ui/card\";\n\nimport {\n  type ChartConfig,\n  ChartContainer,\n  ChartLegend,\n  ChartLegendContent,\n  ChartTooltip,\n  ChartTooltipContent,\n} from \"@/registry/default/ui/chart\";\n\nconst data = [\n  {\n    name: \"Page A\",\n    a: [0, 0],\n    b: 0,\n  },\n  {\n    name: \"Page B\",\n    a: [50, 300],\n    b: 106,\n  },\n  {\n    name: \"Page C\",\n    a: [150, 423],\n  },\n  {\n    name: \"Page D\",\n    b: 312,\n  },\n  {\n    name: \"Page E\",\n    a: [367, 678],\n    b: 451,\n  },\n  {\n    name: \"Page F\",\n    a: [305, 821],\n    b: 623,\n  },\n];\n\nconst chartConfig = {\n  b: {\n    label: \"Series B\",\n    color: \"hsl(var(--chart-1))\",\n  },\n};\n\nexport function ComposedAreaChart() {\n  // Custom render functions to exclude \"a\" from tooltip and legend\n  const CustomizedTooltip = (props) => {\n    const { payload, ...rest } = props;\n    if (payload && payload.length) {\n      const newPayload = payload.filter((x) => x.dataKey !== \"a\");\n      return (\n        <ChartTooltipContent indicator=\"line\" payload={newPayload} {...rest} />\n      );\n    }\n    return <ChartTooltipContent indicator=\"line\" {...rest} />;\n  };\n\n  const CustomizedLegend = (props) => {\n    const { payload, ...rest } = props;\n    if (payload && payload.length) {\n      const newPayload = payload.filter((x) => x.dataKey !== \"a\");\n      return <ChartLegendContent payload={newPayload} {...rest} />;\n    }\n    return <ChartLegendContent {...rest} />;\n  };\n\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle>Composed Area Chart</CardTitle>\n        <CardDescription>\n          Combining area ranges with line series\n        </CardDescription>\n      </CardHeader>\n      <CardContent>\n        <ChartContainer config={chartConfig}>\n          <ComposedChart\n            accessibilityLayer\n            data={data}\n            margin={{\n              top: 10,\n              right: 30,\n              left: 0,\n              bottom: 0,\n            }}\n          >\n            <CartesianGrid vertical={false} strokeDasharray=\"3 3\" />\n            <XAxis\n              dataKey=\"name\"\n              tickLine={false}\n              axisLine={false}\n              tickMargin={8}\n            />\n            <YAxis tickLine={false} axisLine={false} tickMargin={8} />\n            <ChartTooltip cursor={false} content={<CustomizedTooltip />} />\n            <Area\n              type=\"monotone\"\n              dataKey=\"a\"\n              stroke=\"none\"\n              fill=\"#cccccc\"\n              fillOpacity={0.4}\n              connectNulls\n              dot={false}\n              activeDot={false}\n            />\n            <Line\n              type=\"natural\"\n              dataKey=\"b\"\n              stroke=\"var(--color-b)\"\n              connectNulls\n            />\n            <ChartLegend content={<CustomizedLegend />} />\n          </ComposedChart>\n        </ChartContainer>\n      </CardContent>\n      <CardFooter>\n        <div className=\"flex w-full items-start gap-2 text-sm\">\n          <div className=\"grid gap-2\">\n            <div className=\"flex items-center gap-2 font-medium leading-none\">\n              Range areas with trend lines <AreaChart className=\"h-4 w-4\" />\n            </div>\n            <div className=\"flex items-center gap-2 leading-none text-muted-foreground\">\n              Pages A through F with connected nulls\n            </div>\n          </div>\n        </div>\n      </CardFooter>\n    </Card>\n  );\n}\n\nexport default ComposedAreaChart;\n",
+      "type": "registry:block",
+      "target": ""
+    }
+  ],
+  "categories": [
+    "charts",
+    "charts-composed"
+  ]
+}

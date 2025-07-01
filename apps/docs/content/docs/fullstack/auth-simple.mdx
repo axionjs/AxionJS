@@ -1,0 +1,484 @@
+---
+title: Auth Simple
+description: A complete, secure authentication system with login, register, email verification, and password reset functionality built with Next.js server actions.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from 'fumadocs-ui/components/callout'
+import { CodeBlock } from 'fumadocs-ui/components/codeblock'
+import { Card, Cards } from 'fumadocs-ui/components/card'
+import { TypeTable } from 'fumadocs-ui/components/type-table'
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer'
+
+import Image from 'next/image'
+
+# Simple Auth System
+
+A comprehensive, production-ready authentication system that provides secure user management with email verification, password reset, and beautiful UI components. Built with Next.js server actions, Prisma, and modern security practices.
+
+<Image
+  src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1750102011/470da19c-c0d9-47e5-a54f-70704ea6f688.png"
+  alt="Simple Auth System Components"
+  width={1200}
+  height={600}
+  className="rounded-lg"
+/>
+
+<div className="my-8">
+    <div className="border rounded-md overflow-scroll" style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="simple-auth"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+        />
+    </div>
+</div>
+
+## Installation
+
+<Steps>
+<Step>
+Install the component using the AxionJS CLI:
+
+```bash
+npx axionjs add simple-auth
+```
+</Step>
+
+<Step>
+Configure your environment variables in `.env`:
+
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+
+# Authentication
+AUTH_SECRET="your-secure-auth-secret"
+NEXT_PUBLIC_BASE_PATH="http://localhost:3000"
+
+# Email Configuration
+EMAIL_SERVER_HOST="smtp.gmail.com"
+EMAIL_SERVER_PORT="587"
+EMAIL_SERVER_USER="your-email@gmail.com"
+EMAIL_SERVER_PASSWORD="your-app-password"
+EMAIL_FROM="Your App <your-email@gmail.com>"
+```
+</Step>
+
+<Step>
+Set up Prisma schema and push to database:
+
+```bash
+npx prisma db push
+npx prisma generate
+```
+</Step>
+</Steps>
+
+<Callout type="info">
+The component includes complete database models, email templates, server actions, and UI components. Everything is pre-configured for immediate use.
+</Callout>
+
+## Database Schema
+
+Add the following models to your `schema.prisma` file:
+
+```prisma title="schema.prisma"
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("verification_tokens")
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("password_reset_tokens")
+}
+```
+
+## Usage
+
+<Tabs items={['Login Form', 'Register Form', 'Password Reset', 'Authentication Flow']}>
+<Tab value="Login Form">
+
+```tsx ts2js title="app/auth/login/page.tsx"
+import { LoginForm } from "@/components/login-form";
+
+export default function LoginPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <LoginForm />
+    </div>
+  );
+}
+```
+
+The LoginForm component includes:
+- Email and password validation
+- Secure credential verification  
+- Automatic email verification check
+- Redirect handling with callback URLs
+- Loading states and error handling
+
+</Tab>
+<Tab value="Register Form">
+
+```tsx ts2js title="app/auth/register/page.tsx"
+import { RegisterForm } from "@/components/register-form";
+
+export default function RegisterPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <RegisterForm />
+    </div>
+  );
+}
+```
+
+The RegisterForm component provides:
+- Name, email, and password fields
+- Password strength validation (min 6 characters)
+- Duplicate email checking
+- Automatic email verification sending
+- Secure password hashing
+
+</Tab>
+<Tab value="Password Reset">
+
+```tsx ts2js title="app/auth/reset/page.tsx"
+import { ResetForm } from "@/components/reset-form";
+
+export default function ResetPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <ResetForm />
+    </div>
+  );
+}
+```
+
+The password reset flow includes:
+- Email validation and user verification
+- Secure token generation and email delivery
+- New password form with validation
+- Token expiration handling (1 hour)
+
+</Tab>
+<Tab value="Authentication Flow">
+
+Set up the complete authentication flow:
+
+```tsx ts2js title="app/api/auth/[...nextauth]/route.ts"
+import { handlers } from "@/lib/auth";
+export const { GET, POST } = handlers;
+```
+
+```tsx ts2js title="app/auth/verify/page.tsx"
+import { NewVerificationForm } from "@/components/new-verification-form";
+
+export default function VerifyPage() {
+  return <NewVerificationForm />;
+}
+```
+
+</Tab>
+</Tabs>
+
+## Key Features
+
+<Cards>
+<Card title="Secure Authentication" href="#security">
+Password hashing with bcrypt, JWT tokens, and CSRF protection
+</Card>
+<Card title="Email Verification" href="#email-verification">
+Beautiful HTML emails with secure token-based verification
+</Card>
+<Card title="Password Reset" href="#password-reset">
+Secure password reset flow with time-limited tokens
+</Card>
+<Card title="Form Validation" href="#validation">
+Comprehensive validation using Zod schemas with real-time feedback
+</Card>
+<Card title="Server Actions" href="#server-actions">
+Modern Next.js server actions for secure backend operations
+</Card>
+<Card title="Responsive Design" href="#design">
+Mobile-first design with beautiful UI components
+</Card>
+</Cards>
+
+## Server Actions
+
+The authentication system uses Next.js server actions for secure backend operations:
+
+<Tabs items={['Login Action', 'Register Action', 'Password Reset']}>
+<Tab value="Login Action">
+
+```tsx ts2js title="actions/auth-actions.ts"
+export const login = async (
+  values: z.infer<typeof LoginSchema>,
+  callbackUrl?: string | null,
+) => {
+  const validatedFields = LoginSchema.safeParse(values);
+  if (!validatedFields.success) {
+    return { error: "Invalid fields!" };
+  }
+
+  const { email, password } = validatedFields.data;
+  const existingUser = await getUserByEmail(email);
+  
+  if (!existingUser || !existingUser.password) {
+    return { error: "Email does not exist!" };
+  }
+
+  const passwordsMatch = await verifyPassword(password, existingUser.password);
+  
+  if (!existingUser.emailVerified) {
+    if (!passwordsMatch) {
+      return { error: "Invalid credentials!" };
+    }
+    // Send verification email
+    const verificationToken = await generateVerificationToken(existingUser.email);
+    await sendVerificationEmail(verificationToken.email, verificationToken.token);
+    return { success: "Confirmation email sent!" };
+  }
+
+  if (!passwordsMatch) {
+    return { error: "Invalid credentials!" };
+  }
+
+  await signIn("credentials", {
+    email,
+    password,
+    redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+  });
+
+  return { success: "Logged in!" };
+};
+```
+
+</Tab>
+<Tab value="Register Action">
+
+```tsx ts2js title="actions/auth-actions.ts"
+export const register = async (values: z.infer<typeof RegisterSchema>) => {
+  const validatedFields = RegisterSchema.safeParse(values);
+  if (!validatedFields.success) {
+    return { error: "Invalid fields!" };
+  }
+
+  const { email, password, name } = validatedFields.data;
+  const hashedPassword = await hashPassword(password);
+
+  const existingUser = await getUserByEmail(email);
+  if (existingUser) {
+    return { error: "Email already in use!" };
+  }
+
+  await db.user.create({
+    data: {
+      email,
+      password: hashedPassword,
+      name,
+    },
+  });
+
+  const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+  return { success: "Confirmation Email Sent!" };
+};
+```
+
+</Tab>
+<Tab value="Password Reset">
+
+```tsx ts2js title="actions/auth-actions.ts"
+export const reset = async (values: z.infer<typeof ResetSchema>) => {
+  const validatedFields = ResetSchema.safeParse(values);
+  if (!validatedFields.success) return { error: "Invalid email!" };
+
+  const { email } = validatedFields.data;
+  const existingUser = await getUserByEmail(email);
+  if (!existingUser) return { error: "Email not found!" };
+
+  const isOAuthAccount = await db.account.findFirst({
+    where: { userId: existingUser?.id },
+  });
+
+  if (isOAuthAccount) {
+    return { error: "Cannot reset password for OAuth account!" };
+  }
+
+  const passwordResetToken = await generatePasswordResetToken(email);
+  await sendPasswordResetEmail(passwordResetToken.email, passwordResetToken.token);
+
+  return { success: "Reset password email sent" };
+};
+```
+
+</Tab>
+</Tabs>
+
+## Email Templates
+
+The system includes professional, responsive email templates:
+
+<Tabs items={['Verification Email', 'Password Reset Email']}>
+<Tab value="Verification Email">
+
+```tsx ts2js title="emails/verification-email.tsx"
+export default function VerificationEmail({ confirmLink }: { confirmLink: string }) {
+  return (
+    <Html>
+      <Head />
+      <Preview>Verify your email address</Preview>
+      <Tailwind>
+        <Body className="bg-white my-auto mx-auto font-sans">
+          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] w-[465px]">
+            <Section className="mt-[32px]">
+              <Text className="text-black text-[24px] font-medium mb-[0] mt-[0] mx-[0]">
+                Verify your email
+              </Text>
+              <Text className="text-black text-[14px] leading-[24px]">
+                Click the button below to verify your email address.
+              </Text>
+              <Button
+                className="bg-blue-600 rounded text-white font-medium py-[8px] px-[20px]"
+                href={confirmLink}
+              >
+                Confirm Email
+              </Button>
+              <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-[0] w-full" />
+              <Text className="text-[#666666] text-[12px] leading-[24px]">
+                This link will expire in 24 hours.
+              </Text>
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  );
+}
+```
+
+</Tab>
+<Tab value="Password Reset Email">
+
+```tsx ts2js title="emails/reset-password-email.tsx"
+export default function ResetPasswordEmail({ resetLink }: { resetLink: string }) {
+  return (
+    <Html>
+      <Head />
+      <Preview>Reset your password</Preview>
+      <Tailwind>
+        <Body className="bg-white my-auto mx-auto font-sans">
+          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] w-[465px]">
+            <Section className="mt-[32px]">
+              <Text className="text-black text-[24px] font-medium mb-[0] mt-[0] mx-[0]">
+                Reset your password
+              </Text>
+              <Text className="text-black text-[14px] leading-[24px]">
+                Click the button below to reset your password.
+              </Text>
+              <Button
+                className="bg-blue-600 rounded text-white font-medium py-[8px] px-[20px]"
+                href={resetLink}
+              >
+                Reset Password
+              </Button>
+              <Text className="text-black text-[14px] leading-[24px]">
+                If you did not request a password reset, you can safely ignore this email.
+              </Text>
+              <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-[0] w-full" />
+              <Text className="text-[#666666] text-[12px] leading-[24px]">
+                This link will expire in 1 hour.
+              </Text>
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  );
+}
+```
+
+</Tab>
+</Tabs>
+
+## Security Features
+
+The Simple Auth system implements comprehensive security measures:
+
+- **Password Hashing**: Secure bcrypt hashing with salt rounds
+- **JWT Tokens**: Secure session management with NextAuth.js
+- **Email Verification**: Mandatory email verification for new accounts
+- **Token Expiration**: Time-limited tokens for security (24h verification, 1h reset)
+- **CSRF Protection**: Built-in protection against cross-site request forgery
+- **Input Validation**: Comprehensive Zod schema validation
+- **SQL Injection Protection**: Prisma provides built-in protection
+- **Rate Limiting**: Configurable rate limiting for authentication endpoints
+
+<Callout type="warn">
+Always use HTTPS in production and ensure your email provider supports secure authentication. Consider implementing additional security measures like account lockout policies for production use.
+</Callout>
+
+## Component Structure
+
+The authentication system includes the following components:
+
+- **LoginForm**: Handles user login with email verification check
+- **RegisterForm**: User registration with automatic email verification
+- **ResetForm**: Password reset request form
+- **NewPasswordForm**: New password setting after reset
+- **NewVerificationForm**: Email verification handling
+- **CardWrapper**: Reusable card wrapper for consistent styling
+- **FormError/FormSuccess**: Standardized error and success message components
+
+## Conclusion
+
+The Simple Auth system provides a complete, production-ready authentication solution for Next.js applications. With its comprehensive security features, beautiful UI components, and modern server actions integration, it offers both excellent developer experience and robust user authentication capabilities.

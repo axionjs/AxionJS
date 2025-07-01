@@ -1,0 +1,173 @@
+---
+title: Popover
+description: An accessible and customizable popover component for displaying additional content on demand.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { SimplePopoverPreview } from "@/app/components/docs/PopoverPreview.tsx";
+
+## Introduction
+
+The `Popover` component is a highly customizable and accessible floating UI element that displays additional information or content when triggered. It is ideal for tooltips, menus, or additional content sections.
+
+---
+
+## Default Use Case: Simple Popover
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <SimplePopoverPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    "use client";
+
+import * as React from "react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/app/components/ui/popover";
+import { Button } from "@/app/components/ui/button";
+
+export function SimplePopoverPreview() {
+  return (
+    <div className="flex justify-center items-center h-64">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline">Open Popover</Button>
+        </PopoverTrigger>
+        <PopoverContent sideOffset={8} align="center">
+          <p className="text-sm">
+            This is a simple popover content. You can include any text, links,
+            or even custom components here.
+          </p>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
+
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Popover` component:
+
+    ```bash
+    npx axionjs add popover
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Create the Popover Component
+
+    Install the `Popover` component and required dependencies using the following command:
+
+    ```bash
+    npm install @radix-ui/react-popover
+    ```
+
+    ```tsx ts2js
+    "use client";
+
+    import * as React from "react";
+    import * as PopoverPrimitive from "@radix-ui/react-popover";
+
+    import { cn } from "@/lib/utils";
+
+    const Popover = PopoverPrimitive.Root;
+
+    const PopoverTrigger = PopoverPrimitive.Trigger;
+
+    const PopoverAnchor = PopoverPrimitive.Anchor;
+
+    const PopoverContent = React.forwardRef<
+      React.ElementRef<typeof PopoverPrimitive.Content>,
+      React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+    >(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
+      <PopoverPrimitive.Portal>
+        <PopoverPrimitive.Content
+          ref={ref}
+          align={align}
+          sideOffset={sideOffset}
+          className={cn(
+            "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+            className
+          )}
+          {...props}
+        />
+      </PopoverPrimitive.Portal>
+    ));
+    PopoverContent.displayName = PopoverPrimitive.Content.displayName;
+
+    export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor };
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="popover.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+  <File name="global.css" />
+</Files>
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    align: {
+      description: "Defines the alignment of the popover relative to the trigger.",
+      type: `"start" | "center" | "end"`,
+      required: false,
+      default: `"center"`,
+    },
+    sideOffset: {
+      description: "Offset between the trigger and the popover content.",
+      type: "number",
+      required: false,
+      default: "4",
+    },
+    children: {
+      description: "The content to be displayed within the popover.",
+      type: "React.ReactNode",
+      required: true,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Interactive Popovers**:
+  - Trigger popovers on demand with buttons or other components.
+- **Customizable Positioning**:
+  - Adjust alignment, side, and offsets with ease.
+- **Accessible**:
+  - Fully compliant with ARIA roles and attributes.
+
+---
+
+## Conclusion
+
+The `Popover` component is a powerful and flexible tool for displaying contextual content. Its customizable options and built-in accessibility make it suitable for a variety of

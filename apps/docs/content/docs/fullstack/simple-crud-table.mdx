@@ -1,0 +1,424 @@
+---
+title: CRUD Table
+description: A powerful, full-stack CRUD table component with optimistic updates, real-time loading states, sorting, pagination, and seamless Next.js server actions integration.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from 'fumadocs-ui/components/callout'
+import { CodeBlock } from 'fumadocs-ui/components/codeblock'
+import { Card, Cards } from 'fumadocs-ui/components/card'
+import { TypeTable } from 'fumadocs-ui/components/type-table'
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer';
+
+import Image from 'next/image'
+
+# Basic CRUD Table
+
+A comprehensive, full-stack CRUD table component that combines the power of Next.js server actions with an intuitive user interface. Features optimistic updates, real-time loading states, advanced sorting, pagination, and seamless data management capabilities.
+
+{/* replace markdown image with Next.js Image */}
+<Image
+  src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1750071580/f3ad8782-2e33-446a-94fb-e72ff1fbff84.png"
+  alt="Basic CRUD Table Component"
+  width={1200}
+  height={600}
+  className="rounded-lg"
+/>
+
+<div className="my-8">
+    <div   className="border rounded-md overflow-scroll"
+              style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="simple-crud-table"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+            />
+    </div>
+</div>
+
+
+## Installation
+
+<Steps>
+<Step>
+Install the component using the AxionsJS CLI:
+
+```bash
+npx axionjs add simple-crud-table
+```
+</Step>
+
+
+
+<Step>
+Configure your database connection in `.env`:
+
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+```
+</Step>
+
+<Step>
+Set up Prisma (if not already configured):
+
+```bash
+npx prisma db push
+```
+</Step>
+</Steps>
+
+<Callout type="info">
+The component comes with a complete Product model schema and is ready to use out of the box. You can customize the schema to fit your specific needs.
+</Callout>
+
+## Database Schema
+
+The component uses Prisma with the following schema. Add this to your `schema.prisma` file:
+
+```prisma title="schema.prisma"
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  stock       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+```
+
+<Callout type="warn">
+Run `npx prisma db push` or `npx prisma migrate dev` after adding the schema to apply changes to your database.
+</Callout>
+
+## Usage
+
+<Tabs items={['Basic Usage', 'Custom Page', 'Dashboard Integration', 'Advanced']}>
+<Tab value="Basic Usage">
+
+Import and use the SimpleCrudTable component:
+
+```tsx ts2js title="app/products/page.tsx"
+import { SimpleCrudTable } from "@/components/simple-crud-table";
+
+export default function ProductsPage() {
+  return (
+    <div className="container mx-auto py-10">
+      <h1 className="text-3xl font-bold mb-6">Product Management</h1>
+      <SimpleCrudTable />
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Custom Page">
+
+Create a full-featured management page:
+
+```tsx ts2js title="app/admin/products/page.tsx"
+import { SimpleCrudTable } from "@/components/simple-crud-table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+export default function AdminProductsPage() {
+  return (
+    <div className="space-y-6 p-6">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Product Management</h1>
+        <p className="text-muted-foreground">
+          Manage your product inventory with real-time updates and seamless editing.
+        </p>
+      </div>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Products</CardTitle>
+          <CardDescription>
+            Create, edit, and manage your product catalog
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <SimpleCrudTable />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+</Tab>
+<Tab value="Dashboard Integration">
+
+Integrate with your dashboard layout:
+
+```tsx ts2js title="app/dashboard/inventory/page.tsx"
+import { SimpleCrudTable } from "@/components/simple-crud-table";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+
+export default function InventoryPage() {
+  return (
+    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Inventory</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">Inventory Management</h2>
+      </div>
+      
+      <SimpleCrudTable />
+    </div>
+  );
+}
+```
+
+</Tab>
+</Tabs>
+
+## Key Features
+
+<Cards>
+<Card title="Optimistic Updates" href="#optimistic-updates">
+Instant UI feedback with automatic rollback on errors
+</Card>
+<Card title="Real-time Loading States" href="#loading-states">
+Individual loading indicators for each operation
+</Card>
+<Card title="Advanced Sorting" href="#sorting">
+Click-to-sort columns with visual indicators
+</Card>
+<Card title="Smart Pagination" href="#pagination">
+Efficient server-side pagination with navigation
+</Card>
+<Card title="Inline Editing" href="#inline-editing">
+Edit records directly in the table interface
+</Card>
+<Card title="Error Handling" href="#error-handling">
+Comprehensive error handling with user feedback
+</Card>
+</Cards>
+
+
+### Loading States
+
+Individual loading states for different operations ensure users always know what's happening:
+
+- **Creating**: Shows spinner on create button
+- **Updating**: Skeleton placeholders for the row being updated
+- **Deleting**: Red overlay with opacity change for the row being deleted
+- **Fetching**: Skeleton placeholders for all rows during initial load
+
+### Sorting
+
+Click any column header to sort data with visual feedback:
+
+```tsx ts2js
+<TableHead
+  className="cursor-pointer hover:bg-muted/50 transition-colors"
+  onClick={() => handleSort("name")}
+>
+  Name {sortConfig.field === "name" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+</TableHead>
+```
+
+### Pagination
+
+Efficient server-side pagination with comprehensive navigation:
+
+- **Page Navigation**: Previous/Next buttons with state management
+- **Page Information**: "Showing X to Y of Z products"
+- **Dynamic Totals**: Real-time count updates
+- **Keyboard Navigation**: Arrow key support (planned)
+
+## Server Actions
+
+The component utilizes Next.js server actions for seamless full-stack functionality:
+
+<Tabs items={['Create Product', 'Read Products', 'Update Product', 'Delete Product']}>
+<Tab value="Create Product">
+
+```tsx ts2js title="actions/crud-table-actions.ts"
+export async function createProduct(
+  data: Omit<Product, "id" | "createdAt" | "updatedAt">,
+) {
+  console.log("Creating product with data:", data);
+  
+  const product = await db.product.create({ data });
+  revalidatePath("/");
+  return product;
+}
+```
+
+**Features:**
+- Automatic ID generation using `cuid()`
+- Timestamp management (createdAt, updatedAt)
+- Path revalidation for cache invalidation
+- Type-safe data validation
+
+</Tab>
+<Tab value="Read Products">
+
+```tsx ts2js title="actions/crud-table-actions.ts"
+export async function getProducts(
+  page: number = 1,
+  pageSize: number = 5,
+  sortField: string = "name",
+  sortOrder: "asc" | "desc" = "asc",
+) {
+  const skip = (page - 1) * pageSize;
+  
+  const products = await db.product.findMany({
+    skip,
+    take: pageSize,
+    orderBy: {
+      [sortField]: sortOrder,
+    },
+  });
+  
+  const totalCount = await db.product.count();
+  return { products, totalCount };
+}
+```
+
+**Features:**
+- Server-side pagination with `skip` and `take`
+- Dynamic sorting on any field
+- Total count for pagination calculations
+- Optimized database queries
+
+</Tab>
+<Tab value="Update Product">
+
+```tsx ts2js title="actions/crud-table-actions.ts"
+export async function updateProduct(data: Partial<Product> & { id: string }) {
+  const { id, ...updateData } = data;
+  
+  const product = await db.product.update({
+    where: { id },
+    data: updateData,
+  });
+  
+  revalidatePath("/");
+  return product;
+}
+```
+
+**Features:**
+- Partial updates (only changed fields)
+- Automatic `updatedAt` timestamp
+- Type-safe ID validation
+- Optimistic locking support (planned)
+
+</Tab>
+<Tab value="Delete Product">
+
+```tsx ts2js title="actions/crud-table-actions.ts"
+export async function deleteProduct(id: string) {
+  await db.product.delete({ where: { id } });
+  revalidatePath("/");
+}
+```
+
+**Features:**
+- Safe deletion with ID validation
+- Automatic cascade handling
+- Path revalidation
+- Soft delete support (configurable)
+
+</Tab>
+</Tabs>
+
+## Custom Hook: useCrudTable
+
+The `useCrudTable` hook provides comprehensive state management and operations:
+
+### Hook API
+
+<TypeTable
+  type={{
+    initialPageSize: {
+      type: 'number',
+      description: 'Initial number of items per page (default: 5)',
+      default: '5'
+    }
+  }}
+/>
+
+### Return Values
+
+<TypeTable
+  type={{
+    data: {
+      type: '{ products: Product[]; totalCount: number }',
+      description: 'Current data and total count'
+    },
+    loading: {
+      type: 'boolean',
+      description: 'Global loading state for data fetching'
+    },
+    error: {
+      type: 'string | null',
+      description: 'Current error message if any'
+    },
+    page: {
+      type: 'number',
+      description: 'Current page number'
+    },
+    pageSize: {
+      type: 'number',
+      description: 'Number of items per page'
+    },
+    sortConfig: {
+      type: '{ field: string; direction: "asc" | "desc" }',
+      description: 'Current sort configuration'
+    },
+    operationLoading: {
+      type: '{ creating: boolean; updating: string | null; deleting: string | null }',
+      description: 'Individual operation loading states'
+    },
+    setPage: {
+      type: '(page: number) => void',
+      description: 'Set current page'
+    },
+    setPageSize: {
+      type: '(size: number) => void',
+      description: 'Set page size'
+    },
+    handleSort: {
+      type: '(field: string) => void',
+      description: 'Handle column sorting'
+    },
+    handleCreate: {
+      type: '(data: CreateProductData) => Promise<{ success: boolean; error?: string }>',
+      description: 'Create new product'
+    },
+    handleUpdate: {
+      type: '(data: UpdateProductData) => Promise<{ success: boolean; error?: string }>',
+      description: 'Update existing product'
+    },
+    handleDelete: {
+      type: '(id: string) => Promise<{ success: boolean; error?: string }>',
+      description: 'Delete product'
+    },
+    fetchData: {
+      type: '() => Promise<void>',
+      description: 'Manually refresh data'
+    }
+  }}
+/>
+
+
+## Conclusion
+
+The Basic `CRUD Table` component delivers a `robust`, end-to-end solution for data management in Next.js applications. With built-in `server actions` for create/read/update/delete, `optimistic UI` feedback, and flexible customization points, it empowers developers to build rich, responsive `CRUD` interfaces with minimal effort.
+ 

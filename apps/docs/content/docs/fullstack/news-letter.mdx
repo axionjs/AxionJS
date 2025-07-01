@@ -1,0 +1,505 @@
+---
+title: Subscribe Newsletter
+description: A comprehensive, full-stack newsletter management system with subscriber management, campaign creation, email automation, and admin dashboard integration for Next.js applications.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { CodeBlock } from 'fumadocs-ui/components/codeblock';
+import { Card, Cards } from 'fumadocs-ui/components/card';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+import { RegistryViewer } from '@/app/components/docs/RegistryViewer';
+import Image from 'next/image';
+
+# Newsletter Subscription System
+
+A powerful, enterprise-grade newsletter management system that combines elegant user interfaces with robust backend functionality. Features automated email campaigns, subscriber management, unsubscribe handling, and comprehensive admin controls with real-time analytics.
+
+<div className="my-8">
+  <Image
+    src="https://res.cloudinary.com/dmfh8lexl/image/upload/v1750086916/0bc85339-c55f-4bbc-8961-83936dfe5e26.png"
+    alt="Newsletter Subscription System"
+    width={1200}
+    height={600}
+    className="rounded-lg border shadow-lg"
+    priority
+  />
+</div>
+
+
+<div className="my-8">
+    <div   className="border rounded-md overflow-scroll"
+              style={{ height: "500px" }}>
+        <RegistryViewer
+            componentName="subscribe-newsletter"
+            style="new-york"
+            className="h-full border-0 bg-transparent"
+            showPreview={true}
+            />
+    </div>
+</div>
+
+<Callout type="info">
+The component includes complete database models for subscribers, campaigns, and recipient tracking. All email templates and unsubscribe flows are pre-configured and ready to use.
+</Callout>
+
+## Features
+
+<Cards>
+  <Card title="Smart Subscription Management">
+    Intelligent duplicate detection and reactivation handling.
+  </Card>
+  <Card title="Rich Email Campaigns">
+    HTML email support with professional templates.
+  </Card>
+  <Card title="Secure Unsubscribe Flow">
+    Token-based unsubscribe with confirmation.
+  </Card>
+  <Card title="Real-time Analytics">
+    Track opens, clicks, and subscriber engagement.
+  </Card>
+  <Card title="Batch Email Processing">
+    Efficient bulk email sending with rate limiting.
+  </Card>
+  <Card title="Admin Dashboard">
+    Comprehensive management interface.
+  </Card>
+</Cards>
+
+## Installation
+
+<Steps>
+<Step>
+### Install the Component
+
+Install the newsletter system using the AxionJS CLI:
+
+```bash title="Terminal"
+npx axionjs add subscribe-newsletter
+```
+</Step>
+
+<Step>
+### Configure Environment Variables
+
+Configure your email server settings in `.env`:
+
+```env title=".env"
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+EMAIL_SERVER_HOST="smtp.gmail.com"
+EMAIL_SERVER_PORT="587"
+EMAIL_SERVER_USER="your-email@gmail.com"
+EMAIL_SERVER_PASSWORD="your-app-password"
+ADMIN_EMAIL="admin@yoursite.com"
+EMAIL_FROM="Your Site <noreply@yoursite.com>"
+SITE_NAME="Your Site Name"
+NEXT_PUBLIC_APP_URL="https://yoursite.com"
+NEWSLETTER_SECRET="your-secure-secret"
+```
+</Step>
+
+<Step>
+### Database Setup
+
+Set up the database schema with Prisma. Add this to your `schema.prisma` file:
+
+```prisma title="schema.prisma"
+model NewsletterSubscriber {
+  id             String                        @id @default(cuid())
+  email          String                        @unique
+  name           String?
+  status         String                        @default("ACTIVE")
+  token          String?                       @unique
+  tokenCreatedAt DateTime?                     @default(now())
+  createdAt      DateTime                      @default(now())
+  updatedAt      DateTime                      @updatedAt
+  campaigns      NewsletterCampaignRecipient[]
+}
+
+model NewsletterCampaign {
+  id         String                        @id @default(cuid())
+  subject    String
+  content    String                        @db.Text
+  sentAt     DateTime?
+  createdAt  DateTime                      @default(now())
+  updatedAt  DateTime                      @updatedAt
+  recipients NewsletterCampaignRecipient[]
+}
+
+model NewsletterCampaignRecipient {
+  id           String    @id @default(cuid())
+  campaignId   String
+  subscriberId String
+  status       String    @default("PENDING")
+  sentAt       DateTime?
+  openedAt     DateTime?
+  clickedAt    DateTime?
+
+  campaign   NewsletterCampaign   @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  subscriber NewsletterSubscriber @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, subscriberId])
+}
+```
+</Step>
+
+<Step>
+### Run Database Migrations
+
+Apply the schema changes to your database:
+
+```bash title="Terminal"
+npx prisma db push
+```
+</Step>
+</Steps>
+
+<Callout type="warn">
+Make sure to configure your email provider settings before testing. Use app-specific passwords for Gmail.
+</Callout>
+
+## Libraries Used
+
+This component leverages several modern libraries and frameworks:
+
+- **Next.js 14+**: App Router with Server Actions
+- **React Hook Form**: Form state management and validation
+- **Zod**: Schema validation for both client and server
+- **Prisma**: Database ORM for PostgreSQL
+- **Nodemailer**: Email sending functionality
+- **Lucide React**: Modern icon library
+- **date-fns**: Date formatting utilities
+- **Tailwind CSS**: Utility-first CSS framework
+
+## Usage
+
+<Tabs items={['Basic Subscription', 'Admin Dashboard', 'Campaign Management', 'Unsubscribe Flow']}>
+<Tab value="Basic Subscription">
+Add the newsletter subscription form to any page:
+
+```tsx ts2js title="app/page.tsx"
+import NewsletterSubscription from "@/components/newsletter-subscription";
+
+export default function HomePage() {
+  return (
+    <div className="min-h-screen">
+      {/* Your page content */}
+      
+      <NewsletterSubscription />
+    </div>
+  );
+}
+```
+
+The component automatically handles:
+- Form validation and submission
+- Duplicate email detection
+- Confirmation email sending
+- Success/error state management
+- Responsive design
+</Tab>
+
+<Tab value="Admin Dashboard">
+Create a comprehensive admin dashboard:
+
+```tsx ts2js title="app/admin/newsletter/page.tsx"
+import { getAllSubscribers, getAllCampaigns } from "@/actions/subscribe-newsletter-actions";
+import { SubscriberList } from "@/components/subscriber-list";
+import { NewsletterCampaignForm } from "@/components/newsletter-campaign-form";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+export default async function NewsletterAdminPage() {
+  const subscribers = await getAllSubscribers();
+  const campaigns = await getAllCampaigns();
+
+  return (
+    <div className="container mx-auto py-8 space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Newsletter Management</h1>
+        <p className="text-muted-foreground">
+          Manage subscribers and send campaigns to your audience
+        </p>
+      </div>
+
+      <Tabs defaultValue="subscribers" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
+          <TabsTrigger value="campaigns">Send Campaign</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="subscribers">
+          <SubscriberList initialSubscribers={subscribers} />
+        </TabsContent>
+
+        <TabsContent value="campaigns">
+          <Card>
+            <CardHeader>
+              <CardTitle>Create & Send Newsletter</CardTitle>
+              <CardDescription>
+                Compose and send newsletters to all active subscribers
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <NewsletterCampaignForm />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="analytics">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Subscribers</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{subscribers.length}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Campaigns Sent</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{campaigns.length}</div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+```
+</Tab>
+
+<Tab value="Campaign Management">
+Send targeted email campaigns with rich content:
+
+```tsx ts2js title="components/advanced-campaign-form.tsx"
+"use client";
+
+import { useState } from "react";
+import { NewsletterCampaignForm } from "@/components/newsletter-campaign-form";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export function AdvancedCampaignForm() {
+  const [previewMode, setPreviewMode] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [content, setContent] = useState("");
+
+  const handlePreview = () => {
+    setPreviewMode(!previewMode);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Campaign Builder</h2>
+        <Button variant="outline" onClick={handlePreview}>
+          {previewMode ? "Edit" : "Preview"}
+        </Button>
+      </div>
+
+      {previewMode ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Email Preview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="border rounded-lg p-4 bg-background">
+              <h3 className="font-semibold text-lg mb-4">{subject || "Subject Line"}</h3>
+              <div 
+                className="prose max-w-none"
+                dangerouslySetInnerHTML={{ __html: content || "Email content will appear here..." }}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <NewsletterCampaignForm />
+      )}
+    </div>
+  );
+}
+```
+</Tab>
+
+<Tab value="Unsubscribe Flow">
+Implement the complete unsubscribe experience:
+
+```tsx ts2js title="app/unsubscribe/page.tsx"
+import { Suspense } from "react";
+import { Unsubscribe } from "@/components/unsubscribe";
+import { Card, CardContent } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
+
+function UnsubscribeLoading() {
+  return (
+    <Card className="max-w-md w-full">
+      <CardContent className="flex flex-col items-center py-10">
+        <Loader2 className="h-16 w-16 animate-spin mb-4 text-primary" />
+        <p className="text-center">Loading unsubscribe page...</p>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function UnsubscribePage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Suspense fallback={<UnsubscribeLoading />}>
+        <Unsubscribe />
+      </Suspense>
+    </div>
+  );
+}
+```
+</Tab>
+</Tabs>
+
+## Subscription Management
+
+The system intelligently handles various subscription scenarios:
+
+```tsx ts2js title="actions/subscribe-newsletter-actions.ts"
+// Smart duplicate handling
+const existingSubscriber = await db.newsletterSubscriber.findUnique({
+  where: { email },
+});
+
+if (existingSubscriber) {
+  if (existingSubscriber.status === "ACTIVE") {
+    return {
+      success: false,
+      message: "This email is already subscribed to our newsletter.",
+    };
+  } else {
+    // Reactivate unsubscribed users
+    await db.newsletterSubscriber.update({
+      where: { email },
+      data: {
+        status: "ACTIVE",
+        token: generateSecureToken(),
+        tokenCreatedAt: new Date(),
+      },
+    });
+  }
+}
+```
+
+Features include:
+- **Duplicate Prevention**: Prevents multiple subscriptions with same email
+- **Reactivation**: Automatically reactivates previously unsubscribed users
+- **Secure Tokens**: Cryptographically secure unsubscribe tokens
+- **Status Tracking**: Active, unsubscribed, and pending states
+
+
+
+## Server Actions
+
+<Tabs items={['Subscribe Action', 'Campaign Action', 'Unsubscribe Action', 'Admin Actions']}>
+<Tab value="Subscribe Action">
+```tsx ts2js title="actions/subscribe-newsletter-actions.ts"
+export async function subscribeToNewsletter(
+  prevState: SubscribeFormState,
+  formData: FormData,
+): Promise<SubscribeFormState> {
+  // Validate form data
+  const validatedFields = subscribeFormSchema.safeParse({
+    email: formData.get("email"),
+    name: formData.get("name") || "",
+  });
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Please check the form for errors.",
+    };
+  }
+
+  const { email, name } = validatedFields.data;
+  const token = generateSecureToken();
+
+  try {
+    await db.newsletterSubscriber.create({
+      data: {
+        email,
+        name: name || null,
+        status: "ACTIVE",
+        token: token,
+        tokenCreatedAt: new Date(),
+      },
+    });
+
+    await sendConfirmationEmail(email, name || "", token);
+    revalidatePath("/admin/newsletter");
+
+    return {
+      success: true,
+      message: "Thank you for subscribing to our newsletter!",
+    };
+  } catch (error) {
+    console.error("Error subscribing to newsletter:", error);
+    return {
+      success: false,
+      message: "Failed to subscribe. Please try again later.",
+    };
+  }
+}
+```
+
+Features:
+- Zod validation for type safety
+- Secure token generation
+- Automatic confirmation emails
+- Error handling and user feedback
+</Tab>
+</Tabs>
+
+
+
+## API Reference
+
+### Server Actions
+
+<TypeTable
+  type={{
+    subscribeToNewsletter: {
+      type: '(prevState: SubscribeFormState, formData: FormData) => Promise<SubscribeFormState>',
+      description: 'Subscribe a user to the newsletter with validation and confirmation email'
+    },
+    createAndSendCampaign: {
+      type: '(prevState: CampaignFormState, formData: FormData) => Promise<CampaignFormState>',
+      description: 'Create and send email campaign to all active subscribers'
+    },
+    unsubscribeByToken: {
+      type: '(token: string) => Promise<{ success: boolean; message: string }>',
+      description: 'Unsubscribe user using secure token from email link'
+    },
+    getAllSubscribers: {
+      type: '() => Promise<NewsletterSubscriber[]>',
+      description: 'Fetch all newsletter subscribers for admin dashboard'
+    },
+    getAllCampaigns: {
+      type: '() => Promise<NewsletterCampaign[]>',
+      description: 'Fetch recent email campaigns with recipient counts'
+    },
+    deleteSubscriber: {
+      type: '(id: string) => Promise<{ success: boolean; error?: string }>',
+      description: 'Permanently delete a subscriber from the database'
+    },
+    verifyUnsubscribeToken: {
+      type: '(token: string) => Promise<string | null>',
+      description: 'Verify unsubscribe token and return associated email'
+    }
+  }}
+/>
+
+
+## Conclusion
+This newsletter subscription provides a complete solution for managing email campaigns, subscribers, and analytics. With its robust backend, elegant UI components, and seamless integration with Next.js, it empowers developers to build powerful newsletter features quickly and efficiently.

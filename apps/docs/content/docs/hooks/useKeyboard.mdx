@@ -1,0 +1,552 @@
+---
+title: useKeyboard
+description: A hook that handles keyboard events with a simple key-to-handler mapping.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { KeyboardPreview, GameControlsPreview } from "@/app/components/docs/UseKeyboardPreview";
+
+# useKeyboard
+
+The `useKeyboard` hook provides a simple and declarative way to handle keyboard events in React components. Instead of manually setting up event listeners, you can define a mapping of keys to handler functions, making your keyboard interaction code more readable and maintainable.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <KeyboardPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState, useEffect } from "react";
+    import { useKeyboard } from "@/hooks/use-keyboard";
+    
+    function KeyboardDemo() {
+      const [pressedKeys, setPressedKeys] = useState([]);
+      const [lastKey, setLastKey] = useState(null);
+      
+      // Clear pressed keys after a delay
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          setPressedKeys([]);
+        }, 2000);
+        
+        return () => clearTimeout(timer);
+      }, [pressedKeys]);
+      
+      // Setup keyboard handlers
+      useKeyboard({
+        arrowup: (e) => {
+          e.preventDefault();
+          setLastKey("↑");
+          setPressedKeys((prev) => [...prev, "↑"]);
+        },
+        arrowdown: (e) => {
+          e.preventDefault();
+          setLastKey("↓");
+          setPressedKeys((prev) => [...prev, "↓"]);
+        },
+        arrowleft: (e) => {
+          e.preventDefault();
+          setLastKey("←");
+          setPressedKeys((prev) => [...prev, "←"]);
+        },
+        arrowright: (e) => {
+          e.preventDefault();
+          setLastKey("→");
+          setPressedKeys((prev) => [...prev, "→"]);
+        },
+        space: (e) => {
+          e.preventDefault();
+          setLastKey("Space");
+          setPressedKeys((prev) => [...prev, "Space"]);
+        },
+        enter: (e) => {
+          e.preventDefault();
+          setLastKey("Enter");
+          setPressedKeys((prev) => [...prev, "Enter"]);
+        },
+        esc: (e) => {
+          e.preventDefault();
+          setPressedKeys([]);
+          setLastKey(null);
+        },
+      });
+      
+      return (
+        <div>
+          <h2>Press a key</h2>
+          
+          {lastKey && <div className="last-key">{lastKey}</div>}
+          
+          <div className="key-history">
+            {pressedKeys.map((key, i) => (
+              <span key={i} className="key-badge">
+                {key}
+              </span>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useKeyboard hook using:
+    ```bash
+    npx axionjs add hook use-keyboard
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-keyboard.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useEffect, useCallback } from "react";
+
+    export type KeyHandler = (event: KeyboardEvent) => void;
+    export type KeyHandlers = Record<string, KeyHandler>;
+
+    export function useKeyboard(
+      handlers: KeyHandlers,
+      options: {
+        target?: Window | HTMLElement | null;
+        event?: 'keydown' | 'keyup' | 'keypress';
+        enabled?: boolean;
+      } = {}
+    ): void {
+      const {
+        target = typeof window !== 'undefined' ? window : null,
+        event = 'keydown',
+        enabled = true,
+      } = options;
+
+      const handleKeyEvent = useCallback(
+        (e: KeyboardEvent) => {
+          // Get the normalized key from the event
+          // Convert to lowercase and remove 'Key' prefix
+          const key = e.key.toLowerCase().replace(/^key/, '');
+          
+          // Check for specific keys with handler
+          if (handlers[key]) {
+            handlers[key](e);
+          }
+          
+          // Check for aliases (e.g., "esc" for "escape")
+          if (key === 'escape' && handlers.esc) {
+            handlers.esc(e);
+          }
+          if (key === 'enter' && handlers.return) {
+            handlers.return(e);
+          }
+        },
+        [handlers]
+      );
+
+      useEffect(() => {
+        if (!enabled || !target) return;
+
+        // Add the event listener
+        target.addEventListener(event, handleKeyEvent as EventListener);
+
+        // Clean up
+        return () => {
+          target.removeEventListener(event, handleKeyEvent as EventListener);
+        };
+      }, [target, event, handleKeyEvent, enabled]);
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-keyboard.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    handlers: {
+      description: "Object mapping key names to handler functions",
+      type: "Record<string, (event: KeyboardEvent) => void>",
+      default: "Required",
+    },
+    options: {
+      description: "Configuration options",
+      type: "Object",
+      default: "{}",
+    },
+  }}
+/>
+
+### Options
+
+<TypeTable
+  type={{
+    target: {
+      description: "DOM element to attach the event listener to",
+      type: "Window | HTMLElement | null",
+      default: "window",
+    },
+    event: {
+      description: "Keyboard event type to listen for",
+      type: "'keydown' | 'keyup' | 'keypress'",
+      default: "'keydown'",
+    },
+    enabled: {
+      description: "Whether the keyboard handlers are active",
+      type: "boolean",
+      default: "true",
+    },
+  }}
+/>
+
+## Examples
+
+### Game Controls
+
+Implement keyboard controls for a simple game:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <GameControlsPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState } from "react";
+    import { useKeyboard } from "@/hooks/use-keyboard";
+    
+    function GameControls() {
+      const [position, setPosition] = useState({ x: 50, y: 50 });
+      const [size, setSize] = useState(30);
+      const speed = 5;
+      
+      useKeyboard({
+        arrowup: (e) => {
+          e.preventDefault();
+          setPosition(prev => ({ ...prev, y: Math.max(0, prev.y - speed) }));
+        },
+        arrowdown: (e) => {
+          e.preventDefault();
+          setPosition(prev => ({ ...prev, y: Math.min(100, prev.y + speed) }));
+        },
+        arrowleft: (e) => {
+          e.preventDefault();
+          setPosition(prev => ({ ...prev, x: Math.max(0, prev.x - speed) }));
+        },
+        arrowright: (e) => {
+          e.preventDefault();
+          setPosition(prev => ({ ...prev, x: Math.min(100, prev.x + speed) }));
+        },
+        "+": (e) => {
+          e.preventDefault();
+          setSize(prev => Math.min(60, prev + 2));
+        },
+        "-": (e) => {
+          e.preventDefault();
+          setSize(prev => Math.max(20, prev - 2));
+        },
+      });
+      
+      return (
+        <div className="game-area">
+          <div 
+            className="player"
+            style={{
+              left: `${position.x}%`,
+              top: `${position.y}%`,
+              width: `${size}px`,
+              height: `${size}px`,
+            }}
+          />
+          <div className="instructions">
+            <p>Use arrow keys to move</p>
+            <p>Use +/- to resize</p>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Modal with Keyboard Navigation
+
+Create a modal that can be closed with the Escape key:
+
+```tsx ts2js
+import { useState } from "react";
+import { useKeyboard } from "@/hooks/use-keyboard";
+
+function KeyboardModal() {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // Only enable keyboard handling when modal is open
+  useKeyboard(
+    {
+      escape: () => setIsOpen(false),
+      enter: (e) => {
+        e.preventDefault();
+        // Handle confirm action
+        console.log("Confirmed!");
+        setIsOpen(false);
+      },
+    },
+    { enabled: isOpen }
+  );
+  
+  return (
+    <div>
+      <button onClick={() => setIsOpen(true)}>Open Modal</button>
+      
+      {isOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Keyboard Navigation</h2>
+            <p>Press ESC to close or ENTER to confirm</p>
+            <button onClick={() => setIsOpen(false)}>Close</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### Form Keyboard Shortcuts
+
+Add keyboard shortcuts to a form:
+
+```tsx ts2js
+import { useRef } from "react";
+import { useKeyboard } from "@/hooks/use-keyboard";
+
+function ShortcutForm() {
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const messageRef = useRef(null);
+  const submitRef = useRef(null);
+  
+  useKeyboard({
+    // Alt+1, Alt+2, etc. to focus different fields
+    "1": (e) => {
+      if (e.altKey) {
+        e.preventDefault();
+        nameRef.current?.focus();
+      }
+    },
+    "2": (e) => {
+      if (e.altKey) {
+        e.preventDefault();
+        emailRef.current?.focus();
+      }
+    },
+    "3": (e) => {
+      if (e.altKey) {
+        e.preventDefault();
+        messageRef.current?.focus();
+      }
+    },
+    "s": (e) => {
+      // Ctrl+S to submit
+      if (e.ctrlKey) {
+        e.preventDefault();
+        submitRef.current?.click();
+      }
+    },
+  });
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Submit form logic
+  };
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Name (Alt+1)</label>
+        <input ref={nameRef} type="text" />
+      </div>
+      
+      <div>
+        <label>Email (Alt+2)</label>
+        <input ref={emailRef} type="email" />
+      </div>
+      
+      <div>
+        <label>Message (Alt+3)</label>
+        <textarea ref={messageRef}></textarea>
+      </div>
+      
+      <button ref={submitRef} type="submit">
+        Submit (Ctrl+S)
+      </button>
+    </form>
+  );
+}
+```
+
+## Supported Keys
+
+This hook works with standard key names as provided by the `event.key` property in the browser. Here are some commonly used keys:
+
+- Arrow keys: `arrowup`, `arrowdown`, `arrowleft`, `arrowright`
+- Special keys: `enter`, `tab`, `escape` (or `esc`), `space`, `backspace`
+- Letter keys: `a`, `b`, `c`, etc.
+- Number keys: `0`, `1`, `2`, etc.
+- Symbol keys: `+`, `-`, `/`, etc.
+
+For a complete list of key values, refer to the [MDN KeyboardEvent key reference](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values).
+
+## Modifier Keys
+
+The hook passes the full `KeyboardEvent` to your handlers, so you can check for modifier keys:
+
+```tsx ts2js
+useKeyboard({
+  s: (e) => {
+    if (e.ctrlKey) {
+      e.preventDefault();
+      console.log("Ctrl+S pressed");
+      // Save action
+    }
+  },
+  p: (e) => {
+    if (e.ctrlKey && e.shiftKey) {
+      e.preventDefault();
+      console.log("Ctrl+Shift+P pressed");
+      // Print action
+    }
+  },
+});
+```
+
+## Use Cases
+
+- **Keyboard Shortcuts**: Implement application-wide or component-specific shortcuts
+- **Games**: Handle directional controls for games
+- **Accessibility**: Enhance keyboard navigation
+- **Modal/Dialog Controls**: Close with Escape or confirm with Enter
+- **Form Navigation**: Move between fields with keyboard
+- **Media Controls**: Play/pause/skip with keyboard
+- **Slideshows**: Navigate between slides with arrow keys
+- **Command Palettes**: Trigger command interfaces with keyboard
+- **Drawing Applications**: Tool selection with keyboard
+- **Text Editors**: Key bindings for editing actions
+
+## Multiple Key Combinations
+
+For detecting multiple keys pressed simultaneously (beyond just modifier keys), you can track key state:
+
+```tsx ts2js
+function KeyComboDemo() {
+  const [keysPressed, setKeysPressed] = useState(new Set());
+  
+  const checkCombo = useCallback(() => {
+    if (keysPressed.has("control") && keysPressed.has("shift") && keysPressed.has("a")) {
+      console.log("Ctrl+Shift+A detected!");
+    }
+  }, [keysPressed]);
+  
+  useKeyboard({
+    // Track key down
+    control: (e) => {
+      setKeysPressed(prev => {
+        const next = new Set(prev);
+        next.add("control");
+        return next;
+      });
+      checkCombo();
+    },
+    shift: (e) => {
+      setKeysPressed(prev => {
+        const next = new Set(prev);
+        next.add("shift");
+        return next;
+      });
+      checkCombo();
+    },
+    a: (e) => {
+      setKeysPressed(prev => {
+        const next = new Set(prev);
+        next.add("a");
+        return next;
+      });
+      checkCombo();
+    },
+  }, { event: 'keydown' });
+  
+  // Clear keys on key up
+  useKeyboard({
+    control: () => {
+      setKeysPressed(prev => {
+        const next = new Set(prev);
+        next.delete("control");
+        return next;
+      });
+    },
+    shift: () => {
+      setKeysPressed(prev => {
+        const next = new Set(prev);
+        next.delete("shift");
+        return next;
+      });
+    },
+    a: () => {
+      setKeysPressed(prev => {
+        const next = new Set(prev);
+        next.delete("a");
+        return next;
+      });
+    },
+  }, { event: 'keyup' });
+  
+  return (
+    <div>
+      <h2>Try pressing: Ctrl+Shift+A</h2>
+      <div>
+        Currently pressed: {Array.from(keysPressed).join(", ")}
+      </div>
+    </div>
+  );
+}
+```
+
+## Accessibility
+
+When implementing keyboard shortcuts, consider these accessibility guidelines:
+
+- Use common keyboard patterns that match user expectations
+- Provide visible indicators for available keyboard shortcuts
+- Avoid overriding browser or screen reader shortcuts
+- Make sure all functionality is also available without keyboard shortcuts
+- Test with screen readers and keyboard-only navigation
+- Consider adding a keyboard shortcuts help section
+
+## Browser Compatibility
+
+The hook uses the standard `KeyboardEvent` API which is well-supported across modern browsers. The `event.key` property (used for key identification) is supported in all major browsers.
+
+## Performance Considerations
+
+- Consider performance implications when handling fast key presses (e.g., in games)
+- For complex key handling, such as in games, you might want to implement your own key state tracking for better performance
+
+## Best Practices
+
+- Use `preventDefault()` when implementing shortcuts to avoid triggering browser defaults
+- Focus on the target element when using the hook with specific DOM elements
+- Consider conflict management when implementing global shortcuts
+- Document keyboard shortcuts for users
+- Group related shortcuts in a consistent manner
+- Consider keyboard layout differences for international users
+- Use descriptive names for handler functions
+- Disable handlers when components are inactive to prevent interference

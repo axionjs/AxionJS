@@ -1,0 +1,411 @@
+---
+title: Input Tag
+description: A dynamic tag input component for adding, editing, and managing tags with optional limits and layout configurations.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import {
+  SimpleTagInputPreview,
+  LimitedTagInputPreview,
+  AdvancedTagInputPreview,
+} from "@/app/components/docs/TagInputPreview";
+
+
+## Previews with Code
+
+### Example 1: Simple Tag Input
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <SimpleTagInputPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    import { useId, useState } from "react";
+    import { Tag, TagInput } from "emblor";
+    
+    export function SimpleTagInputExample() {
+      const id = useId();
+      const [tags, setTags] = useState<Tag[]>([]);
+      
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Simple Tag Input</h3>
+          <TagInput
+            id={id}
+            tags={tags}
+            setTags={setTags}
+            placeholder="Add a tag"
+            styleClasses={{
+              inlineTagsContainer:
+                "border-input rounded-lg bg-background shadow-sm shadow-black/5 transition-shadow focus-within:border-ring focus-within:outline-none focus-within:ring-[3px] focus-within:ring-ring/20 p-1 gap-1",
+              input:
+                "w-full min-w-[80px] focus-visible:outline-none shadow-none px-2 h-7",
+              tag: {
+                body: "h-7 relative bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7",
+                closeButton:
+                  "absolute -inset-y-px -end-px p-0 rounded-e-lg flex size-7 transition-colors outline-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground",
+              },
+            }}
+          />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Tag Input with Custom Limit
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <LimitedTagInputPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    import { useId, useState } from "react";
+    import { Tag, TagInput } from "emblor";
+    
+    export function LimitedTagInputExample() {
+      const id = useId();
+      const maxTags = 3;
+      const [tags, setTags] = useState<Tag[]>([]);
+      
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Tag Input with Custom Limit</h3>
+          <TagInput
+            id={id}
+            tags={tags}
+            setTags={(newTags) => {
+              if (newTags.length <= maxTags) {
+                setTags(newTags);
+              }
+            }}
+            placeholder="Add a tag (Max 3)"
+            styleClasses={{
+              inlineTagsContainer:
+                "border-input rounded-lg bg-background shadow-sm shadow-black/5 transition-shadow focus-within:border-ring focus-within:outline-none focus-within:ring-[3px] focus-within:ring-ring/20 p-1 gap-1",
+              input:
+                "w-full min-w-[80px] focus-visible:outline-none shadow-none px-2 h-7",
+              tag: {
+                body: "h-7 relative bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7",
+                closeButton:
+                  "absolute -inset-y-px -end-px p-0 rounded-e-lg flex size-7 transition-colors outline-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground",
+              },
+            }}
+          />
+          <p className="text-sm text-muted-foreground">
+            {tags.length}/{maxTags} tags added
+          </p>
+          {tags.length >= maxTags && (
+            <p className="text-sm text-red-500">
+              You have reached the maximum number of tags ({maxTags}).
+            </p>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 3: Advanced Tag Input with Stacked Layout
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <AdvancedTagInputPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    import { useId, useState } from "react";
+    import { Tag, TagInput } from "emblor";
+    import { Label } from "@/components/ui/label";
+    
+    const initialTags = [
+      { id: "1", text: "React" },
+      { id: "2", text: "NextJS" },
+      { id: "3", text: "TypeScript" },
+    ];
+    
+    export function AdvancedTagInputExample() {
+      const id = useId();
+      const [tags, setTags] = useState<Tag[]>(initialTags);
+      const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
+      
+      return (
+        <div className="*:not-first:mt-2">
+          <Label htmlFor={id}>Input with tags</Label>
+          <TagInput
+            id={id}
+            tags={tags}
+            setTags={setTags}
+            placeholder="Add a tag"
+            styleClasses={{
+              tagList: {
+                container: "gap-1",
+              },
+              input:
+                "rounded-md transition-[color,box-shadow] placeholder:text-muted-foreground/70 focus-visible:border-ring outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+              tag: {
+                body: "relative h-7 bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7",
+                closeButton:
+                  "absolute -inset-y-px -end-px p-0 rounded-s-none rounded-e-md flex size-7 transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] text-muted-foreground/80 hover:text-foreground",
+              },
+            }}
+            activeTagIndex={activeTagIndex}
+            setActiveTagIndex={setActiveTagIndex}
+            inlineTags={false}
+            inputFieldPosition="top"
+          />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `TagInput` component allows users to dynamically add and manage tags with flexible layout options and styling.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add tag-input
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install emblor
+    ```
+
+    ### 2. Add the Component
+
+    Create a `tag-input.tsx` file in your `components/ui` directory with the component code below.
+
+```tsx ts2js
+"use client";
+
+import { useState } from "react";
+import { Label } from "@/components/ui/label";
+import { Tag, TagInput as EmblorTagInput } from "emblor";
+
+interface TagInputProps {
+  id: string;
+  label?: string;
+  maxTags?: number;
+  placeholder?: string;
+  inlineTags?: boolean;
+  inputFieldPosition?: "top" | "bottom" | "inline";
+  initialTags?: Tag[];
+}
+
+export function TagInput({
+  id,
+  label,
+  maxTags = 5,
+  placeholder = "Add a tag",
+  inlineTags = true,
+  inputFieldPosition = "inline",
+  initialTags = [],
+}: TagInputProps) {
+  const [tags, setTags] = useState<Tag[]>(initialTags);
+  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
+
+  const handleSetTags = (newTags: Tag[]) => {
+    if (newTags.length <= maxTags) {
+      setTags(newTags);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      {label && <Label htmlFor={id}>{label}</Label>}
+      <EmblorTagInput
+        id={id}
+        tags={tags}
+        setTags={handleSetTags}
+        placeholder={placeholder}
+        activeTagIndex={activeTagIndex}
+        setActiveTagIndex={setActiveTagIndex}
+        inlineTags={inlineTags}
+        inputFieldPosition={inputFieldPosition}
+        styleClasses={{
+          inlineTagsContainer:
+            "border-input rounded-lg bg-background shadow-sm shadow-black/5 transition-shadow focus-within:border-ring focus-within:outline-none focus-within:ring-[3px] focus-within:ring-ring/20 p-1 gap-1",
+          input:
+            "w-full min-w-[80px] focus-visible:outline-none shadow-none px-2 h-7 rounded-md transition-[color,box-shadow] placeholder:text-muted-foreground/70",
+          tagList: {
+            container: "gap-1",
+          },
+          tag: {
+            body: "h-7 relative bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7",
+            closeButton:
+              "absolute -inset-y-px -end-px p-0 rounded-e-lg flex size-7 transition-colors outline-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground",
+          },
+        }}
+      />
+      {tags.length >= maxTags && (
+        <p className="text-sm text-red-500">
+          You have reached the maximum number of tags ({maxTags}).
+        </p>
+      )}
+      {!inlineTags && (
+        <p className="text-sm text-muted-foreground">
+          {tags.length}/{maxTags} tags added
+        </p>
+      )}
+    </div>
+  );
+}
+```
+
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="tag-input.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+### TagInput Props
+
+<TypeTable
+  type={{
+    id: {
+      description: "The unique identifier for the tag input.",
+      type: "string",
+      required: true,
+    },
+    label: {
+      description: "The label for the tag input field.",
+      type: "string",
+      required: false,
+    },
+    maxTags: {
+      description: "The maximum number of tags allowed.",
+      type: "number",
+      default: "5",
+    },
+    placeholder: {
+      description: "Placeholder text for the input field.",
+      type: "string",
+      default: "\"Add a tag\"",
+    },
+    inlineTags: {
+      description: "Whether to display tags inline with the input field.",
+      type: "boolean",
+      default: "true",
+    },
+    inputFieldPosition: {
+      description: "Position of the input field relative to tags when not inline.",
+      type: "\"top\" | \"bottom\" | \"inline\"",
+      default: "\"inline\"",
+    },
+    initialTags: {
+      description: "Initial tags to populate the component.",
+      type: "Tag[]",
+      default: "[]",
+    },
+  }}
+/>
+
+### Tag Interface
+
+```tsx
+interface Tag {
+  id: string;
+  text: string;
+}
+```
+
+---
+
+## Features
+
+- **Dynamic Tag Management**:
+  - Add, remove, and navigate between tags with keyboard support.
+- **Flexible Layouts**:
+  - Choose between inline, stacked, or custom tag layouts.
+- **Customizable Limits**:
+  - Set maximum tag counts with visual feedback.
+- **Pre-populated Tags**:
+  - Initialize with existing tags for editing workflows.
+- **Advanced Styling**:
+  - Comprehensive style customization for all component parts.
+- **Keyboard Navigation**:
+  - Navigate and edit tags using keyboard shortcuts.
+
+---
+
+## Accessibility
+
+The `TagInput` component includes:
+
+- Proper labeling with associated form elements
+- Keyboard navigation between tags
+- Focus management
+- Screen reader announcements for tag actions
+- Clear visual indicators for interactive elements
+
+---
+
+## Usage with Form Libraries
+
+The TagInput component works well with popular form libraries:
+
+### With React Hook Form
+
+```tsx ts2js
+import { useForm, Controller } from "react-hook-form";
+import { TagInput } from "@/components/ui/tag-input";
+
+const form = useForm({
+  defaultValues: {
+    tags: [],
+  },
+});
+
+// In your component:
+<Controller
+  name="tags"
+  control={form.control}
+  render={({ field }) => (
+    <TagInput
+      id="form-tags"
+      label="Tags"
+      initialTags={field.value}
+      setTags={(newTags) => field.onChange(newTags)}
+      maxTags={5}
+    />
+  )}
+/>
+```
+
+---
+
+## Conclusion
+
+The `TagInput` component provides a flexible solution for tag management in forms and interfaces. With support for various layouts, keyboard navigation, and comprehensive styling options, it adapts to many different use cases and design requirements.

@@ -1,0 +1,404 @@
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Thin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Regular") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-ExtraBold") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Geist Mono Font Faces */
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-UltraBlack.woff2") format("woff2");
+  font-weight: 950;
+  font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --tertiary: 240 8% 95%;
+    --tertiary-foreground: 240 8% 20%;
+    --neutral: 240 5% 90%;
+    --neutral-foreground: 240 5% 15%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
+    --gradient-start: 220 50% 40%;
+    --gradient-end: 280 40% 30%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --chart-6: 300 70% 50%;
+    --radius: 0.5rem;
+    --fd-layout-width: 1600px;
+    --fd-sidebar-width: 550px;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-5: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-2: 340 75% 55%;
+  }
+  body {
+    @apply font-sans;
+  }
+}
+
+.rounded-lg {
+  border-radius: var(--radius);
+}
+
+.rounded-md {
+  border-radius: calc(var(--radius) * 0.75);
+}
+
+.rounded-sm {
+  border-radius: calc(var(--radius) * 0.5);
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+/* Accessibility Tool CSS */
+/* High contrast example (very simplistic) */
+
+/* Accessibility Tool CSS */
+/* Contrast Levels */
+.contrast-medium {
+  filter: contrast(150%);
+}
+.contrast-high {
+  filter: contrast(200%);
+}
+
+/* Windows-like Contrast Modes */
+.contrast-windows-inverted {
+  filter: invert(100%);
+  background-color: black !important;
+  color: white !important;
+}
+.contrast-windows-dark {
+  background-color: #1a1a1a !important; /* Dark background */
+  color: #f0f0f0 !important; /* Light text */
+}
+.contrast-windows-light {
+  background-color: #f0f0f0 !important; /* Light background */
+  color: #1a1a1a !important; /* Dark text */
+}
+
+/* Highlight links - different levels */
+.highlight-links-medium a {
+  outline: 2px solid yellow;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.15em !important;
+  text-underline-offset: 0.2em !important;
+}
+.highlight-links-high a {
+  outline: 3px solid yellow;
+  background-color: yellow;
+  color: black !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.2em !important;
+  text-underline-offset: 0.3em !important;
+  padding: 0 0.15em;
+}
+
+/* Text Size */
+.text-size-medium {
+  font-size: 1.2em !important;
+}
+.text-size-high {
+  font-size: 1.5em !important;
+}
+
+/* Text Spacing */
+.text-spacing-medium * {
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.1em !important;
+}
+.text-spacing-high * {
+  letter-spacing: 0.1em !important;
+  word-spacing: 0.2em !important;
+}
+
+/* Hide images */
+.hide-images img,
+.hide-images svg:not(.accessibility-icon),
+.hide-images video,
+.hide-images canvas,
+.hide-images [role="img"] {
+  display: none !important;
+}
+
+/* Dyslexia friendly */
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("../app/fonts/OpenDyslexic-Regular.otf") format("woff2");
+}
+.dyslexia-friendly * {
+  font-family: "OpenDyslexic", sans-serif !important;
+}
+
+/* Line height - different levels */
+.line-height-medium * {
+  line-height: 1.6 !important;
+}
+.line-height-high * {
+  line-height: 2 !important;
+}
+
+/* Saturation - different levels */
+.saturation-medium {
+  filter: saturate(50%);
+}
+.saturation-high {
+  filter: grayscale(100%);
+}
+
+/* Cursor Size */
+/*
+   For more precise control over cursor appearance, especially for "medium" and "big",
+   it's often necessary to use custom SVG or .cur files, or a JavaScript-driven
+   custom cursor component that replaces the native cursor.
+   These are example SVG data URLs for demonstration. You might want to
+   create more sophisticated cursor designs.
+*/
+.cursor-medium {
+  cursor:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mouse-pointer-icon lucide-mouse-pointer"><path d="M12.586 12.586 19 19"/><path d="M3.688 3.037a.497.497 0 0 0-.651.651l6.5 15.999a.501.501 0 0 0 .947-.062l1.569-6.083a2 2 0 0 1 1.448-1.479l6.124-1.579a.5.5 0 0 0 .063-.947z"/></svg>')
+      12 12,
+    auto !important;
+}
+.cursor-high {
+  cursor:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mouse-pointer-icon lucide-mouse-pointer"><path d="M12.586 12.586 19 19"/><path d="M3.688 3.037a.497.497 0 0 0-.651.651l6.5 15.999a.501.501 0 0 0 .947-.062l1.569-6.083a2 2 0 0 1 1.448-1.479l6.124-1.579a.5.5 0 0 0 .063-.947z"/></svg>')
+      18 18,
+    auto !important;
+}
+
+/* Screen reader highlighting */
+.screen-reader-highlight {
+  outline: 3px solid #4299e1 !important;
+  background-color: rgba(66, 153, 225, 0.15) !important;
+}
+
+/* Improved color contrast for text */
+.high-contrast-text {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+/* Focus mode - reduce distractions */
+.focus-mode *:not(:focus):not(:active) {
+  opacity: 0.7;
+}
+.focus-mode:focus,
+.focus-mode:active {
+  opacity: 1 !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5) !important;
+}
+
+/* Animations control */
+.reduce-animations * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Print-friendly */
+@media print {
+  .print-friendly {
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+    color: #000 !important;
+    background: #fff !important;
+  }
+  .print-friendly a {
+    text-decoration: underline !important;
+    color: #000 !important;
+  }
+}
+/* Improved keyboard navigation indicators */
+.keyboard-navigation:focus {
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.8) !important;
+}
+.fd-codeblock code {
+  display: grid;
+  font-size: 16px;
+}
+* {
+  scroll-behavior: smooth;
+  scrollbar-width: 2px;
+}
+
+/* ----------------- */
+/* ----------------- */
+/* ----------------- */
+/* ----------------- */
+/* ----------------- */
+/* ----------------- */
+#nd-nav {
+  max-width: none !important;
+  width: 100% !important;
+
+  left: 0 !important;
+  transform: none !important;
+
+  border-radius: 0 !important;
+  margin-top: 0 !important;
+
+  border: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  box-shadow: rgba(70, 70, 70, 0.05) 0px 1px 2px 0px !important;
+  /* border-bottom-width: 0.5px !important;
+  border-bottom-style: solid !important; */
+  /* border-bottom-color: #e50909 !important; */
+  padding: 8px !important;
+}
+/* -------------------- */
+/* -------------------- */
+/* @media (min-width: 768px) {
+  /* .md\:\[--fd-sidebar-width\:260px\] {
+    --fd-sidebar-width: 300px !important;
+  } */
+/* .md\:ms-auto {
+    margin-inline-start: 50px !important;
+  } */
+/* .md\:border-e {
+    border-inline-end-width: 0px !important;
+  } */

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "custom-pie-chart",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "registryDependencies": [
+    "card",
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "charts/custom-pie-chart.tsx",
+      "content": "\"use client\";\n\nimport { TrendingUp } from \"lucide-react\";\nimport { Cell, Pie, PieChart, Sector } from \"recharts\";\nimport { useState } from \"react\";\n\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n} from \"@/registry/new-york/ui/card\";\nimport {\n  type ChartConfig,\n  ChartContainer,\n  ChartTooltip,\n  ChartTooltipContent,\n} from \"@/registry/new-york/ui/chart\";\n\nconst chartData = [\n  { name: \"Mobile\", value: 45, fill: \"var(--color-mobile)\" },\n  { name: \"Desktop\", value: 35, fill: \"var(--color-desktop)\" },\n  { name: \"Tablet\", value: 20, fill: \"var(--color-tablet)\" },\n];\n\nconst chartConfig = {\n  mobile: {\n    label: \"Mobile\",\n    color: \"hsl(var(--chart-1))\",\n  },\n  desktop: {\n    label: \"Desktop\",\n    color: \"hsl(var(--chart-2))\",\n  },\n  tablet: {\n    label: \"Tablet\",\n    color: \"hsl(var(--chart-3))\",\n  },\n} satisfies ChartConfig;\n\nconst renderActiveShape = (props: any) => {\n  const {\n    cx,\n    cy,\n    innerRadius,\n    outerRadius,\n    startAngle,\n    endAngle,\n    fill,\n    payload,\n    percent,\n    value,\n  } = props;\n\n  return (\n    <g>\n      <text\n        x={cx}\n        y={cy - 10}\n        dy={8}\n        textAnchor=\"middle\"\n        fill=\"var(--foreground)\"\n        className=\"text-lg font-bold\"\n      >\n        {payload.name}\n      </text>\n      <text\n        x={cx}\n        y={cy + 10}\n        dy={8}\n        textAnchor=\"middle\"\n        fill=\"var(--foreground)\"\n        className=\"text-sm\"\n      >\n        {value + \" (\" + (percent * 100).toFixed(0) + \"%)\"}\n      </text>\n      <Sector\n        cx={cx}\n        cy={cy}\n        innerRadius={innerRadius}\n        outerRadius={outerRadius + 10}\n        startAngle={startAngle}\n        endAngle={endAngle}\n        fill={fill}\n      />\n    </g>\n  );\n};\n\nexport function CustomPieChart() {\n  const [activeIndex, setActiveIndex] = useState(0);\n\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle>Interactive Pie Chart</CardTitle>\n        <CardDescription>Device usage distribution</CardDescription>\n      </CardHeader>\n      <CardContent>\n        <ChartContainer config={chartConfig}>\n          <PieChart\n            accessibilityLayer\n            width={500}\n            height={300}\n            margin={{ top: 20, right: 20, bottom: 20, left: 20 }}\n          >\n            <ChartTooltip\n              content={\n                <ChartTooltipContent\n                  formatter={(value) =>\n                    value + \" users (\" + ((value / 100) * 100).toFixed(0) + \"%)\"\n                  }\n                />\n              }\n            />\n            <Pie\n              activeIndex={activeIndex}\n              activeShape={renderActiveShape}\n              data={chartData}\n              cx=\"50%\"\n              cy=\"50%\"\n              innerRadius={60}\n              outerRadius={80}\n              dataKey=\"value\"\n              onMouseEnter={(_, index) => setActiveIndex(index)}\n              onClick={(_, index) => setActiveIndex(index)}\n            >\n              {chartData.map((entry, index) => (\n                <Cell\n                  key={\"cell-\" + index}\n                  fill={entry.fill}\n                  className=\"transition-colors duration-300 outline-none\"\n                  tabIndex={0}\n                  role=\"button\"\n                  aria-label={entry.name + \": \" + entry.value + \" users\"}\n                />\n              ))}\n            </Pie>\n          </PieChart>\n        </ChartContainer>\n      </CardContent>\n      <CardFooter className=\"flex-col items-start gap-2 text-sm\">\n        <div className=\"flex gap-2 font-medium leading-none\">\n          Mobile usage leads at 45% <TrendingUp className=\"h-4 w-4\" />\n        </div>\n        <div className=\"leading-none text-muted-foreground\">\n          Hover or click on segments for details\n        </div>\n      </CardFooter>\n    </Card>\n  );\n}\n",
+      "type": "registry:block",
+      "target": ""
+    }
+  ],
+  "categories": [
+    "charts",
+    "charts-pie"
+  ]
+}

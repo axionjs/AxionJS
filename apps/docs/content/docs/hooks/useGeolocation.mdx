@@ -1,0 +1,827 @@
+---
+title: useGeolocation
+description: A hook for accessing and watching browser geolocation with permission management and error handling.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { UseGeolocationPreview, LocationTrackerPreview } from "@/app/components/docs/UseGeolocationPreview";
+
+# useGeolocation
+
+The `useGeolocation` hook provides a convenient way to access the browser's Geolocation API. It handles permission management, position watching, and error states, supporting both one-time location requests and continuous tracking.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <UseGeolocationPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useGeolocation } from "@/hooks/use-geolocation";
+    
+    function LocationComponent() {
+      const {
+        isSupported,
+        position,
+        error,
+        isLoading,
+        permissionState,
+        getPosition,
+        stopWatching,
+      } = useGeolocation({
+        watch: false,
+        enableHighAccuracy: true,
+      });
+      
+      if (!isSupported) {
+        return <div>Geolocation is not supported in your browser.</div>;
+      }
+      
+      if (error) {
+        return <div>Error: {error.message}</div>;
+      }
+      
+      return (
+        <div>
+          <div>
+            <button onClick={getPosition} disabled={isLoading}>
+              {isLoading ? "Loading..." : "Get My Location"}
+            </button>
+          </div>
+          
+          {position && (
+            <div>
+              <h3>Your Location</h3>
+              <p>Latitude: {position.latitude}</p>
+              <p>Longitude: {position.longitude}</p>
+              <p>Accuracy: ±{position.accuracy} meters</p>
+            </div>
+          )}
+          
+          <div>
+            <p>Permission: {permissionState || "unknown"}</p>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useGeolocation hook using:
+    ```bash
+    npx axionjs add hook use-geolocation
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-geolocation.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useEffect, useCallback, useRef } from 'react';
+
+    interface GeolocationOptions {
+      /** Whether to watch position continuously (default: false) */
+      watch?: boolean;
+      /** Geolocation API enableHighAccuracy option (default: false) */
+      enableHighAccuracy?: boolean;
+      /** Geolocation API timeout in milliseconds (default: 10000) */
+      timeout?: number;
+      /** Geolocation API maximumAge in milliseconds (default: 0) */
+      maximumAge?: number;
+      /** Automatically request permission on mount (default: true) */
+      autoRequest?: boolean;
+    }
+
+    interface GeolocationPosition {
+      latitude: number;
+      longitude: number;
+      accuracy: number;
+      altitude: number | null;
+      altitudeAccuracy: number | null;
+      heading: number | null;
+      speed: number | null;
+      timestamp: number;
+    }
+
+    interface GeolocationState {
+      isSupported: boolean;
+      position: GeolocationPosition | null;
+      error: GeolocationPositionError | null;
+      isLoading: boolean;
+      permissionState: PermissionState | null;
+    }
+
+    export function useGeolocation(options: GeolocationOptions = {}) {
+      const {
+        watch = false,
+        enableHighAccuracy = false,
+        timeout = 10000,
+        maximumAge = 0,
+        autoRequest = true,
+      } = options;
+
+      const [state, setState] = useState<GeolocationState>({
+        isSupported: typeof navigator !== 'undefined' && 'geolocation' in navigator,
+        position: null,
+        error: null,
+        isLoading: false,
+        permissionState: null,
+      });
+
+      const watchIdRef = useRef<number | null>(null);
+      const isMountedRef = useRef(true);
+
+      // Check permission status
+      const checkPermission = useCallback(async () => {
+        if (typeof navigator === 'undefined' || !('permissions' in navigator)) {
+          return null;
+        }
+        
+        try {
+          const permission = await navigator.permissions.query({ name: 'geolocation' as PermissionName });
+          
+          if (isMountedRef.current) {
+            setState((prev) => ({ ...prev, permissionState: permission.state }));
+          }
+          
+          // Listen for permission changes
+          permission.addEventListener('change', () => {
+            if (isMountedRef.current) {
+              setState((prev) => ({ ...prev, permissionState: permission.state }));
+            }
+          });
+          
+          return permission.state;
+        } catch (error) {
+          console.error('Error checking geolocation permission:', error);
+          return null;
+        }
+      }, []);
+
+      // Get current position
+      const getPosition = useCallback(() => {
+        if (!state.isSupported) {
+          setState((prev) => ({
+            ...prev,
+            error: {
+              code: 0,
+              message: 'Geolocation is not supported in this browser',
+              PERMISSION_DENIED: 1,
+              POSITION_UNAVAILABLE: 2,
+              TIMEOUT: 3,
+            } as GeolocationPositionError,
+            isLoading: false,
+          }));
+          return;
+        }
+
+        setState((prev) => ({ ...prev, isLoading: true }));
+
+        const geoOptions: PositionOptions = {
+          enableHighAccuracy,
+          timeout,
+          maximumAge,
+        };
+
+        if (watch) {
+          if (watchIdRef.current) {
+            navigator.geolocation.clearWatch(watchIdRef.current);
+          }
+
+          watchIdRef.current = navigator.geolocation.watchPosition(
+            (position) => {
+              if (isMountedRef.current) {
+                setState((prev) => ({
+                  ...prev,
+                  position: {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    accuracy: position.coords.accuracy,
+                    altitude: position.coords.altitude,
+                    altitudeAccuracy: position.coords.altitudeAccuracy,
+                    heading: position.coords.heading,
+                    speed: position.coords.speed,
+                    timestamp: position.timestamp,
+                  },
+                  error: null,
+                  isLoading: false,
+                }));
+              }
+            },
+            (error) => {
+              if (isMountedRef.current) {
+                setState((prev) => ({
+                  ...prev,
+                  error,
+                  isLoading: false,
+                }));
+              }
+            },
+            geoOptions
+          );
+        } else {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              if (isMountedRef.current) {
+                setState((prev) => ({
+                  ...prev,
+                  position: {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    accuracy: position.coords.accuracy,
+                    altitude: position.coords.altitude,
+                    altitudeAccuracy: position.coords.altitudeAccuracy,
+                    heading: position.coords.heading,
+                    speed: position.coords.speed,
+                    timestamp: position.timestamp,
+                  },
+                  error: null,
+                  isLoading: false,
+                }));
+              }
+            },
+            (error) => {
+              if (isMountedRef.current) {
+                setState((prev) => ({
+                  ...prev,
+                  error,
+                  isLoading: false,
+                }));
+              }
+            },
+            geoOptions
+          );
+        }
+      }, [state.isSupported, enableHighAccuracy, timeout, maximumAge, watch]);
+
+      // Stop watching position
+      const stopWatching = useCallback(() => {
+        if (watchIdRef.current !== null) {
+          navigator.geolocation.clearWatch(watchIdRef.current);
+          watchIdRef.current = null;
+        }
+      }, []);
+
+      // Initialize
+      useEffect(() => {
+        isMountedRef.current = true;
+        checkPermission();
+        
+        if (autoRequest) {
+          getPosition();
+        }
+        
+        return () => {
+          isMountedRef.current = false;
+          stopWatching();
+        };
+      }, [autoRequest, checkPermission, getPosition, stopWatching]);
+
+      return {
+        ...state,
+        getPosition,
+        stopWatching,
+        checkPermission,
+      };
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-geolocation.ts" />
+  </Folder>
+</Files>
+
+## Parameters
+
+<TypeTable
+  type={{
+    options: {
+      description: "Configuration options for geolocation",
+      type: "GeolocationOptions",
+      default: "{}",
+      properties: {
+        watch: {
+          description: "Whether to watch position continuously",
+          type: "boolean",
+          default: "false",
+        },
+        enableHighAccuracy: {
+          description: "Get more accurate position (may be slower)",
+          type: "boolean",
+          default: "false",
+        },
+        timeout: {
+          description: "Maximum time (ms) to wait for a position",
+          type: "number",
+          default: "10000",
+        },
+        maximumAge: {
+          description: "Maximum age (ms) of a cached position",
+          type: "number",
+          default: "0",
+        },
+        autoRequest: {
+          description: "Whether to request position on mount",
+          type: "boolean",
+          default: "true",
+        },
+      },
+    },
+  }}
+/>
+
+## Return Value
+
+<TypeTable
+  type={{
+    isSupported: {
+      description: "Whether geolocation is supported in this browser",
+      type: "boolean",
+    },
+    position: {
+      description: "The current geolocation position",
+      type: "GeolocationPosition | null",
+    },
+    error: {
+      description: "Error object if geolocation failed",
+      type: "GeolocationPositionError | null",
+    },
+    isLoading: {
+      description: "Whether position is currently being fetched",
+      type: "boolean",
+    },
+    permissionState: {
+      description: "Current permission state",
+      type: "PermissionState | null",
+    },
+    getPosition: {
+      description: "Function to request current position",
+      type: "() => void",
+    },
+    stopWatching: {
+      description: "Function to stop watching position",
+      type: "() => void",
+    },
+    checkPermission: {
+      description: "Function to check permission status",
+      type: "() => Promise<PermissionState | null>",
+    },
+  }}
+/>
+
+## Examples
+
+### Location Tracker
+
+A location tracker application that continuously monitors position and calculates distance.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <LocationTrackerPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useState, useEffect } from "react";
+    import { useGeolocation } from "@/hooks/use-geolocation";
+    
+    interface LocationPoint {
+      latitude: number;
+      longitude: number;
+      timestamp: number;
+    }
+    
+    function LocationTracker() {
+      const [tracking, setTracking] = useState(false);
+      const [locations, setLocations] = useState<LocationPoint[]>([]);
+      
+      const {
+        position,
+        error,
+        isSupported,
+        permissionState,
+        getPosition,
+        stopWatching,
+      } = useGeolocation({
+        watch: tracking,
+        enableHighAccuracy: true,
+        autoRequest: false,
+      });
+      
+      // Add location to path when position updates
+      useEffect(() => {
+        if (tracking && position) {
+          setLocations(prev => [
+            ...prev,
+            {
+              latitude: position.latitude,
+              longitude: position.longitude,
+              timestamp: position.timestamp,
+            }
+          ]);
+        }
+      }, [tracking, position]);
+      
+      const startTracking = () => {
+        setLocations([]);
+        setTracking(true);
+        getPosition(); // Start watching
+      };
+      
+      const stopTracking = () => {
+        setTracking(false);
+        stopWatching();
+      };
+      
+      // Calculate total distance
+      const calculateTotalDistance = () => {
+        if (locations.length < 2) return 0;
+        
+        let distance = 0;
+        for (let i = 1; i < locations.length; i++) {
+          distance += calculateDistance(
+            locations[i-1].latitude,
+            locations[i-1].longitude,
+            locations[i].latitude,
+            locations[i].longitude
+          );
+        }
+        
+        return distance;
+      };
+      
+      // Haversine formula for calculating distance between coordinates
+      const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371e3; // Earth radius in meters
+        const φ1 = lat1 * Math.PI/180;
+        const φ2 = lat2 * Math.PI/180;
+        const Δφ = (lat2-lat1) * Math.PI/180;
+        const Δλ = (lon2-lon1) * Math.PI/180;
+        
+        const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                  Math.cos(φ1) * Math.cos(φ2) *
+                  Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        
+        return R * c; // Distance in meters
+      };
+      
+      // Calculate elapsed time
+      const calculateElapsedTime = () => {
+        if (locations.length < 2) return 0;
+        return locations[locations.length-1].timestamp - locations[0].timestamp;
+      };
+      
+      if (!isSupported) {
+        return <div>Geolocation is not supported in your browser.</div>;
+      }
+      
+      if (permissionState === "denied") {
+        return <div>You need to grant location permission to use this feature.</div>;
+      }
+      
+      return (
+        <div>
+          <div>
+            <h2>Location Tracker</h2>
+            <div>
+              {tracking ? (
+                <button onClick={stopTracking}>Stop Tracking</button>
+              ) : (
+                <button onClick={startTracking}>Start Tracking</button>
+              )}
+            </div>
+          </div>
+          
+          <div>
+            <h3>Stats</h3>
+            <p>Distance: {(calculateTotalDistance() / 1000).toFixed(2)} km</p>
+            <p>Time: {(calculateElapsedTime() / 1000 / 60).toFixed(1)} min</p>
+            <p>Points: {locations.length}</p>
+          </div>
+          
+          {error && <div>Error: {error.message}</div>}
+          
+          {position && (
+            <div>
+              <h3>Current Position</h3>
+              <p>Lat: {position.latitude.toFixed(6)}</p>
+              <p>Lng: {position.longitude.toFixed(6)}</p>
+              <p>Accuracy: ±{position.accuracy.toFixed(1)}m</p>
+            </div>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Weather by Location
+
+```tsx ts2js
+import { useEffect, useState } from "react";
+import { useGeolocation } from "@/hooks/use-geolocation";
+
+function WeatherByLocation() {
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
+  const {
+    position,
+    error,
+    isLoading: locationLoading,
+    getPosition,
+  } = useGeolocation({
+    autoRequest: true,
+    enableHighAccuracy: false,
+  });
+  
+  useEffect(() => {
+    const fetchWeather = async () => {
+      if (!position) return;
+      
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&units=metric&appid=YOUR_API_KEY`
+        );
+        
+        if (!response.ok) {
+          throw new Error("Failed to fetch weather data");
+        }
+        
+        const data = await response.json();
+        setWeather(data);
+      } catch (err) {
+        console.error("Weather fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchWeather();
+  }, [position]);
+  
+  if (error) {
+    return (
+      <div>
+        <h2>Error getting location</h2>
+        <p>{error.message}</p>
+        <button onClick={getPosition}>Try Again</button>
+      </div>
+    );
+  }
+  
+  return (
+    <div>
+      <h2>Weather Near You</h2>
+      
+      {locationLoading || loading ? (
+        <p>Loading weather data...</p>
+      ) : weather ? (
+        <div>
+          <h3>{weather.name}</h3>
+          <div>
+            <img 
+              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} 
+              alt={weather.weather[0].description}
+            />
+            <p>{weather.weather[0].main}</p>
+          </div>
+          <p>Temperature: {weather.main.temp}°C</p>
+          <p>Feels like: {weather.main.feels_like}°C</p>
+          <p>Humidity: {weather.main.humidity}%</p>
+          <p>Wind: {weather.wind.speed} m/s</p>
+        </div>
+      ) : (
+        <p>Unable to get weather data. Make sure location access is enabled.</p>
+      )}
+      
+      {position && (
+        <div>
+          <p>
+            Your location: {position.latitude.toFixed(4)}, {position.longitude.toFixed(4)}
+          </p>
+          <button onClick={getPosition}>Refresh Location</button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Advanced Usage
+
+### Distance Calculation
+
+Calculate the distance between two geographic coordinates using the Haversine formula:
+
+```tsx ts2js
+/**
+ * Calculate distance between two coordinates in meters
+ */
+export function getDistanceBetweenCoordinates(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371e3; // Earth's radius in meters
+  const φ1 = lat1 * Math.PI / 180;
+  const φ2 = lat2 * Math.PI / 180;
+  const Δφ = (lat2 - lat1) * Math.PI / 180;
+  const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+          Math.cos(φ1) * Math.cos(φ2) *
+          Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+  return R * c;
+}
+
+function DistanceCalculator() {
+  const { position } = useGeolocation();
+  const destination = { latitude: 40.7128, longitude: -74.0060 }; // New York
+  
+  if (!position) {
+    return <div>Getting your location...</div>;
+  }
+  
+  const distance = getDistanceBetweenCoordinates(
+    position.latitude,
+    position.longitude,
+    destination.latitude,
+    destination.longitude
+  );
+  
+  return (
+    <div>
+      <h2>Distance Calculator</h2>
+      <p>You are {(distance / 1000).toFixed(1)} km from New York</p>
+    </div>
+  );
+}
+```
+
+### Geofencing
+
+Create a simple geofencing system to detect when a user enters or leaves a defined area:
+
+```tsx ts2js
+import { useEffect, useState } from "react";
+import { useGeolocation } from "@/hooks/use-geolocation";
+
+interface GeoFence {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  radius: number; // in meters
+}
+
+function GeoFencingExample() {
+  const geofences: GeoFence[] = [
+    { id: "home", name: "Home", latitude: 34.052235, longitude: -118.243683, radius: 100 },
+    { id: "work", name: "Work", latitude: 34.043675, longitude: -118.266072, radius: 200 },
+    { id: "gym", name: "Gym", latitude: 34.046490, longitude: -118.257749, radius: 50 },
+  ];
+  
+  const [activeGeofences, setActiveGeofences] = useState<string[]>([]);
+  
+  const { position } = useGeolocation({
+    watch: true,
+    enableHighAccuracy: true,
+  });
+  
+  useEffect(() => {
+    if (!position) return;
+    
+    const newActiveGeofences = geofences.filter(fence => {
+      const distance = getDistanceBetweenCoordinates(
+        position.latitude,
+        position.longitude,
+        fence.latitude,
+        fence.longitude
+      );
+      
+      return distance <= fence.radius;
+    }).map(fence => fence.id);
+    
+    // Check for entered geofences
+    const enteredFences = newActiveGeofences.filter(id => !activeGeofences.includes(id));
+    if (enteredFences.length > 0) {
+      enteredFences.forEach(id => {
+        const fence = geofences.find(f => f.id === id);
+        console.log(`Entered: ${fence?.name}`);
+        // You could trigger notifications or other actions here
+      });
+    }
+    
+    // Check for exited geofences
+    const exitedFences = activeGeofences.filter(id => !newActiveGeofences.includes(id));
+    if (exitedFences.length > 0) {
+      exitedFences.forEach(id => {
+        const fence = geofences.find(f => f.id === id);
+        console.log(`Exited: ${fence?.name}`);
+        // You could trigger notifications or other actions here
+      });
+    }
+    
+    setActiveGeofences(newActiveGeofences);
+  }, [position, geofences, activeGeofences]);
+  
+  return (
+    <div>
+      <h2>Geofencing</h2>
+      
+      <div>
+        <h3>Current Position</h3>
+        {position ? (
+          <p>
+            {position.latitude.toFixed(6)}, {position.longitude.toFixed(6)}
+          </p>
+        ) : (
+          <p>Getting position...</p>
+        )}
+      </div>
+      
+      <div>
+        <h3>Geofences</h3>
+        <ul>
+          {geofences.map(fence => (
+            <li key={fence.id}>
+              {fence.name} - 
+              {activeGeofences.includes(fence.id) ? (
+                <span style={{ color: "green" }}>Inside</span>
+              ) : (
+                <span style={{ color: "red" }}>Outside</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function getDistanceBetweenCoordinates(lat1, lon1, lat2, lon2) {
+  // Haversine formula implementation (same as above)
+  // ...
+}
+```
+
+## Use Cases
+
+- **Location-Based Services**: Delivery tracking, ride-sharing, local search
+- **Fitness Applications**: Run tracking, cycling apps, hiking maps
+- **Navigation**: Turn-by-turn directions, trip planning
+- **Social Applications**: Check-ins, location sharing, nearby friends
+- **Geofencing**: Location-based notifications, automated actions when entering/leaving areas
+- **Weather Applications**: Local forecasts based on user's position
+- **Augmented Reality**: Placing virtual objects in physical locations
+- **Emergency Services**: Sending precise location data for help
+
+## Browser Support and Limitations
+
+The Geolocation API is supported in all modern browsers, but there are some limitations to be aware of:
+
+- **Secure Context**: Geolocation only works in secure contexts (HTTPS)
+- **User Permission**: Always requires explicit user permission
+- **Battery Impact**: Continuous watching can impact battery life
+- **Indoor Accuracy**: May be less accurate indoors or in urban canyons
+- **Mobile vs Desktop**: Mobile devices often provide more accurate GPS-based locations
+
+## Performance Considerations
+
+- **High Accuracy Mode**: Using `enableHighAccuracy: true` provides better position data but uses more battery and may take longer
+- **Watch Frequency**: In watch mode, positions might not update at a consistent rate
+- **Caching**: The `maximumAge` parameter can be increased to use cached positions
+- **Batch Processing**: For location tracking, consider batching position updates instead of processing each one
+
+## Accessibility
+
+- Provide fallbacks for users who deny location access
+- Clearly communicate why location access is needed
+- Ensure error messages are descriptive and helpful
+- Allow manual location input as an alternative
+
+## Best Practices
+
+- Always check `isSupported` before attempting to use geolocation
+- Handle permission states appropriately (prompt, granted, denied)
+- Implement proper error handling
+- Stop watching when component unmounts
+- Be transparent about how location data is used
+- Only request location when necessary
+- Provide visual feedback during location acquisition
+- Consider the privacy implications of tracking user location

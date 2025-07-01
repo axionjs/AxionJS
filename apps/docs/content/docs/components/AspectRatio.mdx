@@ -1,0 +1,269 @@
+---
+title: Aspect Ratio
+description: A utility component for maintaining consistent aspect ratios with responsive designs for images, videos, and other media.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { Callout } from "fumadocs-ui/components/callout";
+import { Steps } from "fumadocs-ui/components/steps";
+import { 
+  MultipleAspectRatios, 
+  ContentCardWithAspectRatio, 
+  VideoAspectRatio 
+} from "@/app/components/docs/AspectRatioPreview";
+
+## Introduction
+
+The `AspectRatio` component is a utility that ensures consistent width-to-height proportions for responsive media like images, videos, or custom layouts. Built with `@radix-ui/react-aspect-ratio`, it provides a robust solution for maintaining proportional content in modern applications.
+
+---
+
+## Common Aspect Ratio Examples
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-72 content-center">
+    <MultipleAspectRatios />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx
+    import { AspectRatio } from "@/components/ui/aspect-ratio";
+
+    export function MultipleAspectRatios() {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl mx-auto">
+          <div>
+            <p className="text-sm font-medium mb-2 text-center">Square (1:1)</p>
+            <AspectRatio ratio={1} className="bg-muted overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+                alt="Square aspect ratio"
+                className="h-full w-full rounded-md object-cover"
+              />
+            </AspectRatio>
+          </div>
+          
+          <div>
+            <p className="text-sm font-medium mb-2 text-center">Standard (4:3)</p>
+            <AspectRatio ratio={4/3} className="bg-muted overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+                alt="Standard aspect ratio"
+                className="h-full w-full rounded-md object-cover"
+              />
+            </AspectRatio>
+          </div>
+          
+          <div>
+            <p className="text-sm font-medium mb-2 text-center">Widescreen (16:9)</p>
+            <AspectRatio ratio={16/9} className="bg-muted overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+                alt="Widescreen aspect ratio"
+                className="h-full w-full rounded-md object-cover"
+              />
+            </AspectRatio>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Content Card Example
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto content-center">
+    <ContentCardWithAspectRatio />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx
+    import { AspectRatio } from "@/components/ui/aspect-ratio";
+
+    export function ContentCardWithAspectRatio() {
+      return (
+        <div className="max-w-sm mx-auto rounded-lg overflow-hidden shadow-lg border">
+          <AspectRatio ratio={16/9} className="bg-muted overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+              alt="Card image"
+              className="h-full w-full object-cover"
+            />
+          </AspectRatio>
+          <div className="p-5">
+            <h3 className="text-lg font-semibold mb-2">Card with AspectRatio</h3>
+            <p className="text-sm text-muted-foreground">
+              Using aspect ratio ensures the image maintains the same proportions regardless of card width.
+            </p>
+          </div>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `AspectRatio` component using the following command:
+    ```bash
+    npx axionjs add aspect-ratio
+    ```
+  </Tab>
+  <Tab value="Manual">
+    <Steps>
+      ### Install Dependencies
+
+      Ensure you have the required dependency:
+      ```bash
+      npm install @radix-ui/react-aspect-ratio
+      ```
+
+      ### Add AspectRatio Component
+
+      Create the `aspect-ratio.tsx` file in your `components/ui` directory:
+      ```tsx ts2js
+      "use client";
+
+      import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
+
+      const AspectRatio = AspectRatioPrimitive.Root;
+
+      export { AspectRatio };
+      ```
+    </Steps>
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <Folder name="ui" defaultOpen>
+      <File name="aspect-ratio.tsx" />
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+<TypeTable
+  type={{
+    ratio: {
+      description: "Defines the aspect ratio as a decimal (e.g., 16/9 or 4/3).",
+      type: "number",
+      required: true,
+    },
+    children: {
+      description: "The content to render inside the aspect ratio container.",
+      type: "React.ReactNode",
+      required: true,
+    },
+    className: {
+      description: "Optional class names for additional styling.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Common Aspect Ratios
+
+Here are some commonly used aspect ratios for different content types:
+
+| Ratio | Decimal | Common Use Case |
+|-------|---------|-----------------|
+| 1:1   | 1       | Social media profile pictures, album covers |
+| 4:3   | 1.33    | Standard TV, older computer monitors |
+| 16:9  | 1.78    | Widescreen TV, most modern videos |
+| 21:9  | 2.33    | Ultrawide/cinematic format |
+| 3:2   | 1.5     | Classic 35mm photography |
+| 2:3   | 0.67    | Portrait photography, mobile screens |
+| 9:16  | 0.56    | Vertical videos (TikTok, Instagram Stories) |
+
+<Callout>
+  When providing a ratio, use a simple division to calculate the decimal value. For example, a 16:9 ratio would be written as `ratio={16/9}`.
+</Callout>
+
+---
+
+## Usage Notes
+
+When using the AspectRatio component:
+
+1. **Container Size**: The parent element determines the width, while the height is calculated automatically based on the ratio.
+2. **Child Sizing**: Child elements should use `h-full w-full` to fill the aspect ratio container.
+3. **Object Fit**: Use `object-cover` or `object-contain` for images based on your needs.
+4. **Background Colors**: Add a background color for better aesthetics while images load.
+
+Example with best practices:
+
+```tsx
+<AspectRatio ratio={16/9} className="bg-muted overflow-hidden">
+  <img
+    src="/path/to/image.jpg"
+    alt="Descriptive alt text"
+    className="h-full w-full object-cover rounded-md"
+  />
+</AspectRatio>
+```
+
+---
+
+## Features
+
+The `AspectRatio` component provides the following features:
+
+- **Dynamic Aspect Ratios**:  
+  Easily enforce consistent width-to-height ratios for images, videos, or custom content.
+- **Responsive Design**:  
+  Ensures media scales proportionally across devices without manual adjustments.
+- **Lightweight**:  
+  Built with `@radix-ui/react-aspect-ratio` for minimal overhead.
+- **Versatile Content Support**:  
+  Works with images, videos, iframes, or any other HTML content.
+
+---
+
+## Accessibility
+
+The `AspectRatio` component ensures accessibility by:
+
+- **Preserving Semantics**:  
+  Acts as a non-disruptive wrapper for its child content, allowing native roles and attributes to remain intact.
+- **Keyboard and Screen Reader Support**:  
+  Works naturally with semantic children such as `img` or `iframe`.
+- **Focus Management**:  
+  Ensures focusable child elements remain navigable and interactive.
+
+<Callout type="warning">
+  When using iframes or videos, ensure you provide proper attributes like `title` for screen readers and `allowFullScreen` for user control.
+</Callout>
+
+---
+
+## Best Practices
+
+- **Set a Background Color**: Add a background color while images load to prevent layout shifts
+- **Use Correct Aspect Ratios**: Choose ratios that match your content's intended display format
+- **Combine with Container Queries**: AspectRatio works great with container queries for responsive layouts
+- **Consider Art Direction**: Use different aspect ratios at different breakpoints if needed
+
+---
+
+## Conclusion
+
+The `AspectRatio` component simplifies responsive design by ensuring media like images and videos maintain their intended proportions. Lightweight and accessible, it's the perfect utility for creating beautiful, proportional layouts across different screen sizes.

@@ -1,0 +1,14 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "use-keyboard",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-keyboard.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\ntype KeyHandler = (event: KeyboardEvent) => void;\ntype KeyMap = Record<string, KeyHandler>;\n\ninterface UseKeyboardOptions {\n  target?: React.RefObject<HTMLElement> | null;\n  event?: \"keydown\" | \"keyup\" | \"keypress\";\n  enabled?: boolean;\n}\n\n/**\n * A hook for handling keyboard events\n * @param keyMap Map of keys to handlers\n * @param options Configuration options\n */\nexport function useKeyboard(\n  keyMap: KeyMap,\n  { target = null, event = \"keydown\", enabled = true }: UseKeyboardOptions = {},\n) {\n  React.useEffect(() => {\n    if (!enabled || typeof window === \"undefined\") return;\n\n    const targetElement = target?.current ?? document;\n\n    const handler = (e: KeyboardEvent) => {\n      const key = e.key.toLowerCase();\n      if (key in keyMap) {\n        keyMap[key](e);\n      }\n    };\n\n    targetElement.addEventListener(event, handler);\n    return () => targetElement.removeEventListener(event, handler);\n  }, [keyMap, target, event, enabled]);\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

@@ -1,0 +1,277 @@
+---
+title: useCopyToClipboard
+description: A hook that provides copy to clipboard functionality with success/error handling.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { CopyToClipboardPreview, CodeBlockCopyPreview, ShareLinkPreview } from "@/app/components/docs/UseCopyToClipboardPreview";
+
+# useCopyToClipboard
+
+The `useCopyToClipboard` hook provides a simple way to copy text to the user's clipboard with built-in state tracking for success or failure. It's perfect for "Copy" buttons in your UI, like sharing links or copying code snippets.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <CopyToClipboardPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+    
+    function CopyButton({ textToCopy }) {
+      const { copy, isCopied } = useCopyToClipboard();
+      
+      const handleCopy = async () => {
+        const success = await copy(textToCopy);
+        
+        if (success) {
+          // Optional: show a success notification
+          toast.success("Copied to clipboard!");
+        }
+      };
+      
+      return (
+        <button onClick={handleCopy}>
+          {isCopied ? "Copied!" : "Copy"}
+        </button>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useCopyToClipboard hook using:
+    ```bash
+    npx axionjs add hook use-copy-to-clipboard
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-copy-to-clipboard.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useCallback, useEffect } from "react";
+
+    export function useCopyToClipboard() {
+      const [isCopied, setIsCopied] = useState(false);
+      
+      // Reset the isCopied state after a delay
+      useEffect(() => {
+        if (isCopied) {
+          const timerId = setTimeout(() => {
+            setIsCopied(false);
+          }, 3000);
+          
+          return () => clearTimeout(timerId);
+        }
+      }, [isCopied]);
+      
+      const copy = useCallback(async (text: string): Promise<boolean> => {
+        if (!navigator?.clipboard) {
+          console.warn("Clipboard API not available");
+          return false;
+        }
+        
+        try {
+          await navigator.clipboard.writeText(text);
+          setIsCopied(true);
+          return true;
+        } catch (error) {
+          console.error("Failed to copy text: ", error);
+          setIsCopied(false);
+          return false;
+        }
+      }, []);
+      
+      return { isCopied, copy };
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-copy-to-clipboard.ts" />
+  </Folder>
+</Files>
+
+## Return Value
+
+<TypeTable
+  type={{
+    copy: {
+      description: "Function to copy text to clipboard",
+      type: "(text: string) => Promise<boolean>",
+    },
+    isCopied: {
+      description: "Whether the text was successfully copied (resets after 3 seconds)",
+      type: "boolean",
+    },
+  }}
+/>
+
+## Examples
+
+### Share Link Button
+
+Create a share link button with clipboard functionality:
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <ShareLinkPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+    
+    function ShareButton({ url }) {
+      const { copy, isCopied } = useCopyToClipboard();
+      
+      const handleShare = async () => {
+        if (navigator.share) {
+          // Use native share if available
+          try {
+            await navigator.share({
+              title: "Check this out!",
+              url: url,
+            });
+          } catch (error) {
+            console.error("Error sharing:", error);
+          }
+        } else {
+          // Fall back to clipboard
+          await copy(url);
+        }
+      };
+      
+      return (
+        <button onClick={handleShare}>
+          {isCopied ? "Link copied!" : "Share"}
+        </button>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Custom Reset Duration
+
+If you need a different reset duration for the `isCopied` state:
+
+```tsx ts2js
+function useCustomCopyToClipboard(resetDuration = 2000) {
+  const [isCopied, setIsCopied] = useState(false);
+  
+  useEffect(() => {
+    if (isCopied) {
+      const timerId = setTimeout(() => {
+        setIsCopied(false);
+      }, resetDuration);
+      
+      return () => clearTimeout(timerId);
+    }
+  }, [isCopied, resetDuration]);
+  
+  const copy = useCallback(async (text: string): Promise<boolean> => {
+    if (!navigator?.clipboard) {
+      return false;
+    }
+    
+    try {
+      await navigator.clipboard.writeText(text);
+      setIsCopied(true);
+      return true;
+    } catch (error) {
+      setIsCopied(false);
+      return false;
+    }
+  }, []);
+  
+  return { isCopied, copy };
+}
+```
+
+## Use Cases
+
+- **Code Blocks**: Add a copy button to code snippets or examples
+- **Share Links**: Create easy-to-copy shareable URLs
+- **Form Data**: Allow users to copy generated content like API keys
+- **Citation**: Copy properly formatted citations or references
+- **Configuration**: Copy configuration snippets or environment variables
+- **Contact Information**: Copy email addresses, phone numbers or addresses
+- **Terminal Commands**: Copy shell commands without manually selecting text
+
+## Accessibility
+
+When implementing clipboard functionality, consider these accessibility improvements:
+
+- Provide clear visual feedback when content is copied
+- Add appropriate ARIA labels to copy buttons (e.g., `aria-label="Copy to clipboard"`)
+- Ensure the copy button is keyboard accessible
+- Consider adding a tooltip to indicate the button's purpose
+- Provide screen reader feedback via ARIA live regions when content is copied
+
+## Browser Support
+
+The Clipboard API is supported in all modern browsers, but there are some limitations:
+
+- Only works in secure contexts (HTTPS)
+- May require user permission in some browsers
+- Older browsers may not support the Clipboard API
+
+For better cross-browser compatibility, you could extend this hook with a fallback mechanism:
+
+```tsx ts2js
+const copy = useCallback(async (text: string): Promise<boolean> => {
+  // Try modern Clipboard API first
+  if (navigator?.clipboard) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setIsCopied(true);
+      return true;
+    } catch (error) {
+      // Fall back to document.execCommand
+      console.warn("Clipboard API failed, trying fallback...", error);
+    }
+  }
+  
+  // Fallback for older browsers
+  try {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    const successful = document.execCommand("copy");
+    document.body.removeChild(textArea);
+    
+    if (successful) {
+      setIsCopied(true);
+      return true;
+    }
+  } catch (error) {
+    console.error("Fallback clipboard method failed", error);
+  }
+  
+  setIsCopied(false);
+  return false;
+}, []);
+```
+
+## Best Practices
+
+- Always provide visual feedback when content is copied
+- Reset the copied state after a reasonable timeout (2-3 seconds)
+- Handle errors gracefully and provide fallbacks when possible
+- Consider the content length when copying large amounts of text
+- Respect user permissions and handle rejection gracefully
+- Test on multiple browsers and devices to ensure compatibility

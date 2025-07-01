@@ -1,0 +1,492 @@
+---
+title: useAsync
+description: A hook that manages async operations with loading, success, and error states.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { AsyncPreview, DataFetchingPreview } from "@/app/components/docs/UseAsyncPreview";
+
+# useAsync
+
+The `useAsync` hook provides a structured way to manage the lifecycle of asynchronous operations in React components. It handles loading states, success results, and error handling with a clean API that reduces boilerplate and helps prevent common async bugs like race conditions.
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <AsyncPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx ts2js
+    import { useAsync } from "@/hooks/use-async";
+    
+    function UserProfile({ userId }) {
+      // Define the async function
+      const fetchUser = async (id) => {
+        const response = await fetch(`/api/users/${id}`);
+        if (!response.ok) throw new Error("Failed to fetch user");
+        return response.json();
+      };
+      
+      // Use the hook
+      const [state, actions] = useAsync(fetchUser);
+      
+      // Trigger the fetch when userId changes
+      useEffect(() => {
+        actions.execute(userId);
+      }, [userId, actions]);
+      
+      // Handle different states
+      if (state.status === "pending") return <p>Loading...</p>;
+      if (state.status === "error") return <p>Error: {state.error.message}</p>;
+      if (state.status === "success") {
+        return (
+          <div>
+            <h1>{state.value.name}</h1>
+            <p>{state.value.email}</p>
+          </div>
+        );
+      }
+      
+      return <p>Click the button to load user</p>;
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the useAsync hook using:
+    ```bash
+    npx axionjs add hook use-async
+    ```
+  </Tab>
+  <Tab value="Manual">
+    Create the `use-async.ts` file in your `hooks` directory:
+    ```tsx ts2js
+    import { useState, useCallback, useRef } from "react";
+
+    export type AsyncStatus = "idle" | "pending" | "success" | "error";
+
+    export interface AsyncState<T, E = Error> {
+      status: AsyncStatus;
+      value: T | null;
+      error: E | null;
+    }
+
+    export interface AsyncActions<T, P extends any[]> {
+      execute: (...args: P) => Promise<T | undefined>;
+      reset: () => void;
+    }
+
+    export function useAsync<T, E = Error, P extends any[] = any[]>(
+      asyncFunction: (...args: P) => Promise<T>,
+      initialState?: Partial<AsyncState<T, E>>
+    ): [AsyncState<T, E>, AsyncActions<T, P>] {
+      const [state, setState] = useState<AsyncState<T, E>>({
+        status: "idle",
+        value: null,
+        error: null,
+        ...initialState,
+      });
+
+      // Keep track of the latest call to prevent race conditions
+      const latestCallId = useRef<number>(0);
+
+      // Execute the async function
+      const execute = useCallback(
+        async (...args: P): Promise<T | undefined> => {
+          const callId = ++latestCallId.current;
+          
+          // Set pending state
+          setState((prevState) => ({
+            ...prevState,
+            status: "pending",
+          }));
+
+          try {
+            const value = await asyncFunction(...args);
+            
+            // Check if this is still the latest call
+            if (callId === latestCallId.current) {
+              setState({
+                status: "success",
+                value,
+                error: null,
+              });
+            }
+            
+            return value;
+          } catch (error) {
+            // Check if this is still the latest call
+            if (callId === latestCallId.current) {
+              setState({
+                status: "error",
+                value: null,
+                error: error as E,
+              });
+            }
+          }
+        },
+        [asyncFunction]
+      );
+
+      // Reset the state
+      const reset = useCallback(() => {
+        setState({
+          status: "idle",
+          value: null,
+          error: null,
+        });
+      }, []);
+
+      return [state, { execute, reset }];
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## File Structure
+
+<Files>
+  <Folder name="hooks" defaultOpen>
+    <File name="use-async.ts" />
+  </Folder>
+</Files>
+
+## API
+
+### Parameters
+
+<TypeTable
+  type={{
+    asyncFunction: {
+      description: "The async function to execute",
+      type: "(...args: P) => Promise<T>",
+      default: "Required",
+    },
+    initialState: {
+      description: "Optional initial state for the async operation",
+      type: "Partial<AsyncState<T, E>>",
+      default: "{ status: 'idle', value: null, error: null }",
+    },
+  }}
+/>
+
+### Return Value
+
+<TypeTable
+  type={{
+    state: {
+      description: "Current state of the async operation",
+      type: "AsyncState<T, E>",
+    },
+    actions: {
+      description: "Actions to control the async operation",
+      type: "AsyncActions<T, P>",
+    },
+  }}
+/>
+
+### AsyncState
+
+<TypeTable
+  type={{
+    status: {
+      description: "Current status of the async operation",
+      type: "'idle' | 'pending' | 'success' | 'error'",
+    },
+    value: {
+      description: "Result value from the successful async operation",
+      type: "T | null",
+    },
+    error: {
+      description: "Error thrown during the async operation",
+      type: "E | null",
+    },
+  }}
+/>
+
+### AsyncActions
+
+<TypeTable
+  type={{
+    execute: {
+      description: "Function to execute the async operation",
+      type: "(...args: P) => Promise<T | undefined>",
+    },
+    reset: {
+      description: "Function to reset the state to idle",
+      type: "() => void",
+    },
+  }}
+/>
+
+## Examples
+
+### Form Submission
+
+Using useAsync for form submission:
+
+```tsx ts2js
+function ContactForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  
+  // Define the async function for form submission
+  const submitForm = async (data) => {
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Failed to submit form");
+    }
+    
+    return response.json();
+  };
+  
+  // Use the hook
+  const [submitState, submitActions] = useAsync(submitForm);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    submitActions.execute(formData);
+  };
+  
+  // Reset form after successful submission
+  useEffect(() => {
+    if (submitState.status === "success") {
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+    }
+  }, [submitState.status]);
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Form fields */}
+      <input
+        type="text"
+        value={formData.name}
+        onChange={(e) => setFormData({...formData, name: e.target.value})}
+        required
+      />
+      <input
+        type="email"
+        value={formData.email}
+        onChange={(e) => setFormData({...formData, email: e.target.value})}
+        required
+      />
+      <textarea
+        value={formData.message}
+        onChange={(e) => setFormData({...formData, message: e.target.value})}
+        required
+      />
+      
+      {/* Submit button shows loading state */}
+      <button 
+        type="submit"
+        disabled={submitState.status === "pending"}
+      >
+        {submitState.status === "pending" ? "Sending..." : "Submit"}
+      </button>
+      
+      {/* Success message */}
+      {submitState.status === "success" && (
+        <div className="success">Message sent successfully!</div>
+      )}
+      
+      {/* Error message */}
+      {submitState.status === "error" && (
+        <div className="error">{submitState.error.message}</div>
+      )}
+    </form>
+  );
+}
+```
+
+### Multiple Async Operations
+
+Managing multiple async operations in a single component:
+
+```tsx ts2js
+function UserDashboard({ userId }) {
+  // User profile async operation
+  const fetchUserProfile = async (id) => {
+    const response = await fetch(`/api/users/${id}`);
+    if (!response.ok) throw new Error("Failed to fetch user profile");
+    return response.json();
+  };
+  
+  const [profileState, profileActions] = useAsync(fetchUserProfile);
+  
+  // User orders async operation
+  const fetchUserOrders = async (id) => {
+    const response = await fetch(`/api/users/${id}/orders`);
+    if (!response.ok) throw new Error("Failed to fetch user orders");
+    return response.json();
+  };
+  
+  const [ordersState, ordersActions] = useAsync(fetchUserOrders);
+  
+  // Load data on component mount or userId change
+  useEffect(() => {
+    profileActions.execute(userId);
+    ordersActions.execute(userId);
+  }, [userId, profileActions, ordersActions]);
+  
+  return (
+    <div>
+      <section>
+        <h2>Profile</h2>
+        {profileState.status === "pending" && <p>Loading profile...</p>}
+        {profileState.status === "error" && <p>Error: {profileState.error.message}</p>}
+        {profileState.status === "success" && profileState.value && (
+          <div>
+            <h3>{profileState.value.name}</h3>
+            <p>{profileState.value.email}</p>
+          </div>
+        )}
+      </section>
+      
+      <section>
+        <h2>Orders</h2>
+        {ordersState.status === "pending" && <p>Loading orders...</p>}
+        {ordersState.status === "error" && <p>Error: {ordersState.error.message}</p>}
+        {ordersState.status === "success" && ordersState.value && (
+          <ul>
+            {ordersState.value.map(order => (
+              <li key={order.id}>
+                Order #{order.id}: ${order.total}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
+  );
+}
+```
+
+## Race Condition Prevention
+
+The useAsync hook automatically prevents race conditions when multiple async calls are made in quick succession. It tracks the latest call and only updates the state for that call, ensuring older calls that complete later don't overwrite newer results.
+
+```tsx ts2js
+function SearchComponent() {
+  const [query, setQuery] = useState("");
+  
+  const searchAPI = async (searchQuery) => {
+    console.log(`Searching for: ${searchQuery}`);
+    // Simulate API delay that's longer for shorter queries
+    await new Promise(r => setTimeout(r, 2000 - searchQuery.length * 100));
+    return `Results for ${searchQuery}`;
+  };
+  
+  const [searchState, searchActions] = useAsync(searchAPI);
+  
+  // This is safe - only the latest search will update the UI
+  const handleSearch = (e) => {
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    searchActions.execute(newQuery);
+  };
+  
+  return (
+    <div>
+      <input 
+        type="text"
+        value={query}
+        onChange={handleSearch}
+        placeholder="Search..."
+      />
+      <div>
+        {searchState.status === "pending" && <p>Searching...</p>}
+        {searchState.status === "success" && <p>{searchState.value}</p>}
+      </div>
+    </div>
+  );
+}
+```
+
+## Use Cases
+
+- **API Requests**: Handle fetch, axios, or other API calls
+- **Form Submissions**: Manage submission states and responses
+- **Data Processing**: Handle heavy data processing operations
+- **Authentication**: Manage login, logout, and registration flows
+- **File Operations**: Handle file uploads and downloads
+- **Animations**: Manage complex animation sequences
+- **External Services**: Interact with third-party services or APIs
+- **Database Operations**: Handle database queries in client-side databases
+
+## Benefits
+
+1. **Consistent State Management**: Standardized approach for all async operations
+2. **Race Condition Prevention**: Handles overlapping async calls gracefully
+3. **Type Safety**: Fully typed with TypeScript for improved developer experience
+4. **Reduced Boilerplate**: Eliminates repetitive loading/error state management
+5. **Clean Component Logic**: Separates async logic from rendering logic
+6. **Reusable**: Can be used with any async function
+7. **Flexible**: Works with parameters, returns proper types, and supports error handling
+
+## Accessibility
+
+When implementing async operations that affect the UI, consider these accessibility improvements:
+
+- Use ARIA live regions to announce status changes to screen reader users
+- Disable controls while operations are pending to prevent multiple submissions
+- Provide clear error messages that identify the issue and suggest solutions
+- Maintain focus appropriately after async operations complete
+- Show loading states with both visual and text indicators
+
+## Error Handling
+
+The useAsync hook captures errors thrown during the async function execution. To handle specific error types or status codes:
+
+```tsx ts2js
+const fetchData = async () => {
+  try {
+    const response = await fetch('/api/data');
+    
+    if (response.status === 401) {
+      throw new Error('Unauthorized');
+    } else if (response.status === 404) {
+      throw new Error('Not found');
+    } else if (!response.ok) {
+      throw new Error('Server error');
+    }
+    
+    return response.json();
+  } catch (error) {
+    // You can transform or customize the error before it's handled by useAsync
+    if (error.message === 'Failed to fetch') {
+      throw new Error('Network error. Please check your connection.');
+    }
+    throw error;
+  }
+};
+
+const [state, actions] = useAsync(fetchData);
+```
+
+## Best Practices
+
+- Keep async functions outside component definitions when possible to prevent recreating them on every render
+- Use useCallback for async functions defined inside components
+- Initialize with appropriate initialState when you have default values
+- Reset the state when necessary (e.g., when changing major parameters)
+- Combine with other hooks like useEffect for auto-execution when dependencies change
+- Consider extending the hook to include caching or retry mechanisms for specific use cases
+- Provide fallback UI for each possible state (idle, pending, success, error)

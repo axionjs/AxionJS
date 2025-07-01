@@ -1,0 +1,325 @@
+---
+title: Draggable
+description: A versatile draggable list component with customizable items and smooth reordering.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import {
+  SimpleDraggableListPreview,
+  CustomDraggableListPreview,
+} from "@/app/components/docs/DraggablePreview";
+
+## Previews with Code
+
+### Example 1: Simple Draggable List
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <SimpleDraggableListPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function SimpleDraggableListPreview() {
+      const [items, setItems] = useState([
+        { id: 1, name: "Item 1" },
+        { id: 2, name: "Item 2" },
+        { id: 3, name: "Item 3" },
+        { id: 4, name: "Item 4" },
+      ]);
+
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Simple Draggable List</h3>
+          <Draggable
+            items={items}
+            onItemsChange={setItems}
+            renderItem={(item) => <div>{item.name}</div>}
+          />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Example 2: Custom Draggable List
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview" className="m-auto h-auto pb-8 content-center">
+    <CustomDraggableListPreview />
+  </Tab>
+  <Tab value="Code" className="w-auto h-auto">
+    ```tsx ts2js
+    export function CustomDraggableListPreview() {
+      const [items, setItems] = useState([
+        { id: 1, title: "Task 1", description: "Description of Task 1" },
+        { id: 2, title: "Task 2", description: "Description of Task 2" },
+        { id: 3, title: "Task 3", description: "Description of Task 3" },
+        { id: 4, title: "Task 4", description: "Description of Task 4" },
+      ]);
+
+      return (
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Custom Draggable List</h3>
+          <Draggable
+            items={items}
+            onItemsChange={setItems}
+            renderItem={(item) => (
+              <div>
+                <h4 className="font-semibold">{item.title}</h4>
+                <p className="text-sm text-muted-foreground">{item.description}</p>
+              </div>
+            )}
+          />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+The `Draggable` component is a powerful tool for building sortable lists with custom rendering capabilities and smooth drag-and-drop interactions.
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Quickly add the component using:
+    ```bash
+    npx axionjs add draggable
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### 1. Install Dependencies
+
+    Ensure you have the following dependencies installed:
+    ```bash
+    npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
+    ```
+
+    ### 2. Add the Component
+
+    Create a `draggable.tsx` file in your `components/ui` directory:
+    ```tsx ts2js
+import React from "react";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { GripVertical } from "lucide-react";
+
+interface DraggableProps<T> {
+  items: T[];
+  onItemsChange: (items: T[]) => void;
+  renderItem: (item: T, index: number) => React.ReactNode;
+  idKey?: keyof T;
+  className?: string;
+}
+
+const Draggable = <T extends { id: string | number }>({
+  items,
+  onItemsChange,
+  renderItem,
+  idKey = "id",
+  className,
+}: DraggableProps<T>) => {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = items.findIndex((item) => item[idKey] === active.id);
+      const newIndex = items.findIndex((item) => item[idKey] === over?.id);
+
+      const newItems = arrayMove(items, oldIndex, newIndex);
+      onItemsChange(newItems);
+    }
+  };
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={items.map((item) => item[idKey])}
+        strategy={verticalListSortingStrategy}
+      >
+        <div className={cn("space-y-2", className)}>
+          {items.map((item, index) => (
+            <SortableItem
+              key={item[idKey]}
+              id={item[idKey]}
+              item={item}
+              index={index}
+              renderItem={renderItem}
+              idKey={idKey}
+            />
+          ))}
+        </div>
+      </SortableContext>
+    </DndContext>
+  );
+};
+
+interface SortableItemProps<T> {
+  id: string | number;
+  item: T;
+  index: number;
+  renderItem: (item: T, index: number) => React.ReactNode;
+  idKey: keyof T;
+}
+
+const SortableItem = <T extends { id: string | number }>({
+  id,
+  item,
+  index,
+  renderItem,
+  idKey,
+}: SortableItemProps<T>) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "p-4 bg-background border border-border rounded-md shadow-sm flex items-center justify-between",
+        isDragging && "z-50",
+      )}
+      {...attributes}
+      {...listeners}
+    >
+      <div className="flex-1">{renderItem(item, index)}</div>
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label={`Drag handle for item ${index + 1}`}
+        className="ml-2"
+        {...listeners}
+      >
+        <GripVertical />
+      </Button>
+    </div>
+  );
+};
+
+export default Draggable;
+    ```
+
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="draggable.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+---
+
+## Props
+
+### Draggable Props
+
+<TypeTable
+  type={{
+    items: {
+      description: "The array of items to render and sort.",
+      type: "T[]",
+      required: true,
+    },
+    onItemsChange: {
+      description: "Callback triggered when items are reordered.",
+      type: "(items: T[]) => void",
+      required: true,
+    },
+    renderItem: {
+      description: "Function to render each item in the list.",
+      type: "(item: T, index: number) => React.ReactNode",
+      required: true,
+    },
+    idKey: {
+      description: "Key used to identify items uniquely.",
+      type: "keyof T",
+      default: `"id"`,
+    },
+    className: {
+      description: "Additional classes for styling the container.",
+      type: "string",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Drag-and-Drop Sorting**:
+  - Rearrange list items via drag-and-drop with smooth animations.
+- **Custom Rendering**:
+  - Render items dynamically using the `renderItem` prop.
+- **Keyboard Accessibility**:
+  - Fully supports keyboard interactions for reordering items.
+- **Flexibility**:
+  - Compatible with any array structure by defining a custom `idKey`.
+
+---
+
+## Accessibility
+
+The `Draggable` component supports full keyboard navigation and includes ARIA attributes for screen readers, ensuring WCAG compliance.
+
+---
+
+## Conclusion
+
+The `Draggable` component is a highly flexible and accessible solution for building sortable lists with custom rendering and seamless drag-and-drop interactions.

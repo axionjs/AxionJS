@@ -1,0 +1,13 @@
+{
+  "title": "Get Started",
+  "pages": [
+    "index",
+    "[Installation](/docs/Installation)",
+    "Components-json",
+    "Theming",
+    "[Dark Mode](/docs/Dark-Mode)",
+    "[CLI](/docs/CLI)",
+    "Javascript",
+    "blocks"
+  ]
+}

@@ -1,0 +1,292 @@
+---
+title: Pagination
+description: A fully accessible and customizable pagination component for navigating through pages.
+---
+
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Files, Folder, File } from "fumadocs-ui/components/files";
+import { TypeTable } from "fumadocs-ui/components/type-table";
+
+import { SimplePaginationPreview } from "@/app/components/docs/PaginationPreview";
+
+## Introduction
+
+The `Pagination` component is an accessible and flexible tool for navigating multi-page content. It includes features such as previous/next navigation, page numbers, ellipsis, and ARIA attributes for accessibility.
+
+---
+
+## Default Use Case
+
+<Tabs items={["Preview", "Code"]}>
+  <Tab value="Preview">
+    <SimplePaginationPreview />
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import { 
+      Pagination, 
+      PaginationContent, 
+      PaginationItem, 
+      PaginationLink, 
+      PaginationPrevious, 
+      PaginationNext, 
+      PaginationEllipsis 
+    } from "@/components/ui/pagination";
+
+    export function SimplePaginationPreview() {
+      return (
+        <Pagination>
+          <PaginationContent>
+            <PaginationPrevious />
+            <PaginationItem>
+              <PaginationLink href="#" isActive>
+                1
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">2</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationEllipsis />
+            <PaginationItem>
+              <PaginationLink href="#">10</PaginationLink>
+            </PaginationItem>
+            <PaginationNext />
+          </PaginationContent>
+        </Pagination>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+    Install the `Pagination` component:
+    ```bash
+    npx axionjs add pagination
+    ```
+  </Tab>
+  <Tab value="Manual">
+    ### Step 1: Install Dependencies
+    ```bash
+    npm install class-variance-authority lucide-react
+    ```
+
+    ### Step 2: Add the Component
+    Create a file `components/ui/pagination.tsx`:
+    ```tsx ts2js
+import * as React from "react";
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { ButtonProps, buttonVariants } from "@/components/ui/button";
+
+const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
+  <nav
+    role="navigation"
+    aria-label="pagination"
+    className={cn("mx-auto flex w-full justify-center", className)}
+    {...props}
+  />
+);
+Pagination.displayName = "Pagination";
+
+const PaginationContent = React.forwardRef<
+  HTMLUListElement,
+  React.ComponentProps<"ul">
+>(({ className, ...props }, ref) => (
+  <ul
+    ref={ref}
+    className={cn("flex flex-row items-center gap-1", className)}
+    {...props}
+  />
+));
+PaginationContent.displayName = "PaginationContent";
+
+const PaginationItem = React.forwardRef<
+  HTMLLIElement,
+  React.ComponentProps<"li">
+>(({ className, ...props }, ref) => (
+  <li ref={ref} className={cn("", className)} {...props} />
+));
+PaginationItem.displayName = "PaginationItem";
+
+type PaginationLinkProps = {
+  isActive?: boolean;
+} & Pick<ButtonProps, "size"> &
+  React.ComponentProps<"a">;
+
+const PaginationLink = ({
+  className,
+  isActive,
+  size = "icon",
+  ...props
+}: PaginationLinkProps) => (
+  <a
+    aria-current={isActive ? "page" : undefined}
+    className={cn(
+      buttonVariants({
+        variant: isActive ? "outline" : "ghost",
+        size,
+      }),
+      className,
+    )}
+    {...props}
+  />
+);
+PaginationLink.displayName = "PaginationLink";
+
+const PaginationPrevious = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink
+    aria-label="Go to previous page"
+    size="default"
+    className={cn("gap-1 pl-2.5", className)}
+    {...props}
+  >
+    <ChevronLeft className="h-4 w-4" />
+    <span>Previous</span>
+  </PaginationLink>
+);
+PaginationPrevious.displayName = "PaginationPrevious";
+
+const PaginationNext = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink
+    aria-label="Go to next page"
+    size="default"
+    className={cn("gap-1 pr-2.5", className)}
+    {...props}
+  >
+    <span>Next</span>
+    <ChevronRight className="h-4 w-4" />
+  </PaginationLink>
+);
+PaginationNext.displayName = "PaginationNext";
+
+const PaginationEllipsis = ({
+  className,
+  ...props
+}: React.ComponentProps<"span">) => (
+  <span
+    aria-hidden
+    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    {...props}
+  >
+    <MoreHorizontal className="h-4 w-4" />
+    <span className="sr-only">More pages</span>
+  </span>
+);
+PaginationEllipsis.displayName = "PaginationEllipsis";
+
+export {
+  Pagination,
+  PaginationContent,
+  PaginationLink,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+};
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## File Structure
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="components" defaultOpen>
+      <Folder name="ui" defaultOpen>
+        <File name="pagination.tsx" />
+      </Folder>
+     
+    </Folder>
+  </Folder>
+</Files>
+
+
+---
+
+## Prop Types
+
+<TypeTable
+  type={{
+    "Pagination": {
+      description: "Wrapper for the pagination navigation.",
+      type: "React.ComponentProps<'nav'>",
+      required: false,
+    },
+    "PaginationContent": {
+      description: "Container for pagination items.",
+      type: "React.ComponentProps<'ul'>",
+      required: false,
+    },
+    "PaginationItem": {
+      description: "Individual pagination item.",
+      type: "React.ComponentProps<'li'>",
+      required: false,
+    },
+    "PaginationLink": {
+      description: "Clickable link for pagination navigation.",
+      type: "`React.ComponentProps<'a'> & { isActive?: boolean; size?: string; }`",
+      required: false,
+    },
+    "PaginationPrevious": {
+      description: "Link to the previous page.",
+      type: "React.ComponentProps<typeof PaginationLink>",
+      required: false,
+    },
+    "PaginationNext": {
+      description: "Link to the next page.",
+      type: "React.ComponentProps<typeof PaginationLink>",
+      required: false,
+    },
+    "PaginationEllipsis": {
+      description: "Ellipsis indicating skipped pages.",
+      type: "React.ComponentProps<'span'>",
+      required: false,
+    },
+  }}
+/>
+
+---
+
+## Features
+
+- **Simple Navigation**:
+  - Navigate through pages with "Previous", "Next", and page numbers.
+- **Advanced Customization**:
+  - Add ellipsis for skipped pages or active state for the current page.
+- **Fully Accessible**:
+  - Built-in ARIA roles and screen-reader-friendly descriptions.
+
+---
+
+## Accessibility
+
+- **Keyboard Navigation**:
+  - Use `Tab` and arrow keys to move through pagination items.
+- **Screen Reader Support**:
+  - ARIA labels (`aria-current`, `aria-hidden`) ensure the component is accessible.
+- **Focus Management**:
+  - Maintains focus state for smoother navigation.
+
+---
+
+## Conclusion
+
+The `Pagination` component is a flexible and accessible solution for navigating multi-page content. Its ARIA support and customizable design make it ideal for modern web applications.

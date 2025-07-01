@@ -1,0 +1,15 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "progressive-blur",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "A progressive blur component.",
+  "files": [
+    {
+      "path": "blocks/progressive-blur.tsx",
+      "content": "\"use client\";\nimport { cn } from \"@/lib/utils\";\n\ninterface ProgressiveBlurProps {\n  className?: string;\n  direction?: \"left\" | \"right\" | \"top\" | \"bottom\";\n  blurIntensity?: number;\n  size?: number;\n}\n\nexport function ProgressiveBlur({\n  className,\n  direction = \"right\",\n  blurIntensity = 5,\n  size = 100,\n}: ProgressiveBlurProps) {\n  // Create a gradient based on the direction\n  const getGradient = () => {\n    switch (direction) {\n      case \"left\":\n        return `linear-gradient(to left, transparent, rgba(var(--background), ${blurIntensity}))`;\n      case \"right\":\n        return `linear-gradient(to right, transparent, rgba(var(--background), ${blurIntensity}))`;\n      case \"top\":\n        return `linear-gradient(to top, transparent, rgba(var(--background), ${blurIntensity}))`;\n      case \"bottom\":\n        return `linear-gradient(to bottom, transparent, rgba(var(--background), ${blurIntensity}))`;\n      default:\n        return `linear-gradient(to right, transparent, rgba(var(--background), ${blurIntensity}))`;\n    }\n  };\n\n  return (\n    <div\n      className={cn(\"absolute\", className)}\n      style={{\n        background: getGradient(),\n        width:\n          direction === \"left\" || direction === \"right\" ? `${size}px` : \"100%\",\n        height:\n          direction === \"top\" || direction === \"bottom\" ? `${size}px` : \"100%\",\n        left: direction === \"right\" ? \"auto\" : 0,\n        right: direction === \"left\" ? \"auto\" : 0,\n        top: direction === \"bottom\" ? \"auto\" : 0,\n        bottom: direction === \"top\" ? \"auto\" : 0,\n        pointerEvents: \"none\",\n      }}\n      aria-hidden=\"true\"\n    />\n  );\n}\n",
+      "type": "registry:component",
+      "target": ""
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "name": "checkbox",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "@radix-ui/react-checkbox"
+  ],
+  "files": [
+    {
+      "path": "ui/checkbox.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport * as CheckboxPrimitive from \"@radix-ui/react-checkbox\";\nimport { Check } from \"lucide-react\";\n\nimport { cn } from \"@/lib/utils\";\n\ninterface CheckboxProps\n  extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {\n  id?: string;\n  \"aria-label\"?: string;\n  \"aria-labelledby\"?: string;\n}\n\nconst Checkbox = React.forwardRef<\n  React.ElementRef<typeof CheckboxPrimitive.Root>,\n  CheckboxProps\n>(\n  (\n    {\n      className,\n      id,\n      \"aria-label\": ariaLabel,\n      \"aria-labelledby\": ariaLabelledby,\n      ...props\n    },\n    ref,\n  ) => {\n    return (\n      <CheckboxPrimitive.Root\n        ref={ref}\n        id={id}\n        aria-label={ariaLabel}\n        aria-labelledby={ariaLabelledby}\n        className={cn(\n          \"peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow\",\n          \"focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring\",\n          \"disabled:cursor-not-allowed disabled:opacity-50\",\n          \"data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground\",\n          className,\n        )}\n        {...props}\n      >\n        <CheckboxPrimitive.Indicator className=\"flex items-center justify-center text-current\">\n          <Check className=\"h-4 w-4\" />\n        </CheckboxPrimitive.Indicator>\n      </CheckboxPrimitive.Root>\n    );\n  },\n);\n\nCheckbox.displayName = CheckboxPrimitive.Root.displayName;\n\nexport { Checkbox };\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}
