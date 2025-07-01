@@ -3,7 +3,10 @@ name: Release CLI
 on:
   push:
     branches:
-      - cli
+      - main
+    paths:
+      - "packages/cli/**"
+      - ".github/workflows/release-cli.yml"
 
 permissions:
   contents: write
