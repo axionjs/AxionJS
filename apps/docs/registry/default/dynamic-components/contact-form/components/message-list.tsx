@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/registry/default/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,

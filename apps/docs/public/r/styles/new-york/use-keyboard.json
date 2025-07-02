@@ -1,12 +1,12 @@
 {
-  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
   "name": "use-keyboard",
   "type": "registry:hook",
   "author": "axionjs (https://www.axionjs.com)",
   "files": [
     {
       "path": "hooks/use-keyboard.tsx",
-      "content": "\"use client\";\n\nimport * as React from \"react\";\n\ntype KeyHandler = (event: KeyboardEvent) => void;\ntype KeyMap = Record<string, KeyHandler>;\n\ninterface UseKeyboardOptions {\n  target?: React.RefObject<HTMLElement> | null;\n  event?: \"keydown\" | \"keyup\" | \"keypress\";\n  enabled?: boolean;\n}\n\n/**\n * A hook for handling keyboard events\n * @param keyMap Map of keys to handlers\n * @param options Configuration options\n */\nexport function useKeyboard(\n  keyMap: KeyMap,\n  { target = null, event = \"keydown\", enabled = true }: UseKeyboardOptions = {},\n) {\n  React.useEffect(() => {\n    if (!enabled || typeof window === \"undefined\") return;\n\n    const targetElement = target?.current ?? document;\n\n    const handler = (e: KeyboardEvent) => {\n      const key = e.key.toLowerCase();\n      if (key in keyMap) {\n        keyMap[key](e);\n      }\n    };\n\n    targetElement.addEventListener(event, handler);\n    return () => targetElement.removeEventListener(event, handler);\n  }, [keyMap, target, event, enabled]);\n}\n",
+      "content": "\"use client\";\r\n\r\nimport * as React from \"react\";\r\n\r\ntype KeyHandler = (event: KeyboardEvent) => void;\r\ntype KeyMap = Record<string, KeyHandler>;\r\n\r\ninterface UseKeyboardOptions {\r\n  target?: React.RefObject<HTMLElement> | null;\r\n  event?: \"keydown\" | \"keyup\" | \"keypress\";\r\n  enabled?: boolean;\r\n}\r\n\r\n/**\r\n * A hook for handling keyboard events\r\n * @param keyMap Map of keys to handlers\r\n * @param options Configuration options\r\n */\r\nexport function useKeyboard(\r\n  keyMap: KeyMap,\r\n  { target = null, event = \"keydown\", enabled = true }: UseKeyboardOptions = {},\r\n) {\r\n  React.useEffect(() => {\r\n    if (!enabled || typeof window === \"undefined\") return;\r\n\r\n    const targetElement = target?.current ?? document;\r\n\r\n    const handler = (e: KeyboardEvent) => {\r\n      const key = e.key.toLowerCase();\r\n      if (key in keyMap) {\r\n        keyMap[key](e);\r\n      }\r\n    };\r\n\r\n    targetElement.addEventListener(event, handler);\r\n    return () => targetElement.removeEventListener(event, handler);\r\n  }, [keyMap, target, event, enabled]);\r\n}\r\n",
       "type": "registry:hook",
       "target": ""
     }

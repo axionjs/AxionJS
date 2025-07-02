@@ -42,7 +42,6 @@ export function DefaultContainerPreview() {
   </Tab>
 </Tabs>
 
-
 ---
 
 ## Installation
@@ -68,29 +67,30 @@ The `Container` component provides consistent width and spacing for layout manag
 
     Create a `container.tsx` file in your `components/ui` directory:
     ```tsx ts2js
+
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils"; // your shadcn-style utility for merging classes
 
 const containerVariants = cva("mx-auto w-full", {
-  variants: {
-    variant: {
-      default: "max-w-7xl px-4 sm:px-6 lg:px-8",
-      sm: "max-w-sm px-4 sm:px-6",
-      md: "max-w-md px-4 sm:px-6",
-      lg: "max-w-lg px-4 sm:px-6",
-      xl: "max-w-xl px-4 sm:px-6",
-      "2xl": "max-w-2xl px-4 sm:px-6",
-      "3xl": "max-w-3xl px-4 sm:px-6",
-      "4xl": "max-w-4xl px-4 sm:px-6",
-      "5xl": "max-w-5xl px-4 sm:px-6",
-      "6xl": "max-w-6xl px-4 sm:px-6",
-      "7xl": "max-w-7xl px-4 sm:px-6",
-    },
-  },
-  defaultVariants: {
-    variant: "default",
-  },
+variants: {
+variant: {
+default: "max-w-7xl px-4 sm:px-6 lg:px-8",
+sm: "max-w-sm px-4 sm:px-6",
+md: "max-w-md px-4 sm:px-6",
+lg: "max-w-lg px-4 sm:px-6",
+xl: "max-w-xl px-4 sm:px-6",
+"2xl": "max-w-2xl px-4 sm:px-6",
+"3xl": "max-w-3xl px-4 sm:px-6",
+"4xl": "max-w-4xl px-4 sm:px-6",
+"5xl": "max-w-5xl px-4 sm:px-6",
+"6xl": "max-w-6xl px-4 sm:px-6",
+"7xl": "max-w-7xl px-4 sm:px-6",
+},
+},
+defaultVariants: {
+variant: "default",
+},
 });
 
 export interface ContainerProps
@@ -110,14 +110,14 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
 );
 
 Container.displayName = "Container";
-    ```
+```
 
   </Tab>
 </Tabs>
 
 ---
 
-### Variant Container 
+### Variant Container
 
 <Tabs items={["Preview", "Code"]}>
   <Tab value="Preview" className="px-4 h-auto pb-8 content-center">
@@ -144,45 +144,47 @@ export function VariantContainerPreview() {
     "7xl",
   ];
 
-  return (
-    <div className="space-y-8 max-w-7xl mx-auto not-prose">
-      {variants.map((variant) => (
-        <Container key={variant} variant={variant}>
-          <div className="p-4 bg-gray-100 border rounded-lg">
-            This is a `{variant}` container.
-          </div>
-        </Container>
-      ))}
-    </div>
-  );
-}   
- ```
-  </Tab>
+return (
+<div className="space-y-8 max-w-7xl mx-auto not-prose">
+{variants.map((variant) => (
+<Container key={variant} variant={variant}>
+<div className="p-4 bg-gray-100 border rounded-lg">
+This is a `{variant}` container.
+</div>
+</Container>
+))}
+</div>
+);
+}
+
+````
+ </Tab>
 </Tabs>
 
-### Styled Container 
+### Styled Container
 
 <Tabs items={["Preview", "Code"]}>
-  <Tab value="Preview" className="px-4 h-48 pb-8 content-center">
-    <StyledContainerPreview />
-  </Tab>
-  <Tab value="Code" className="w-auto h-auto">
-    ```tsx ts2js
+ <Tab value="Preview" className="px-4 h-48 pb-8 content-center">
+   <StyledContainerPreview />
+ </Tab>
+ <Tab value="Code" className="w-auto h-auto">
+   ```tsx ts2js
 "use client";
 
 import React from "react";
 import { Container } from "@/app/components/container";
 
 export function StyledContainerPreview() {
-  return (
-    <div className="space-y-4 max-w-7xl mx-auto not-prose">
-      <Container className="bg-blue-50 border-2 border-blue-200 rounded-xl">
-        <div className="p-4">Custom styled container content.</div>
-      </Container>
-    </div>
-  );
-}   
- ```
+ return (
+   <div className="space-y-4 max-w-7xl mx-auto not-prose">
+     <Container className="bg-blue-50 border-2 border-blue-200 rounded-xl">
+       <div className="p-4">Custom styled container content.</div>
+     </Container>
+   </div>
+ );
+}
+````
+
   </Tab>
 </Tabs>
 
@@ -196,7 +198,7 @@ The `Container` component provides consistent width and spacing for layout manag
   <Tab value="CLI">
     Quickly add the component using:
     ```bash
-    npx axionjs add container
+    npx axionjs-ui add container
     ```
   </Tab>
   <Tab value="Manual">
@@ -211,29 +213,30 @@ The `Container` component provides consistent width and spacing for layout manag
 
     Create a `container.tsx` file in your `components/ui` directory:
     ```tsx ts2js
+
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils"; // your shadcn-style utility for merging classes
 
 const containerVariants = cva("mx-auto w-full", {
-  variants: {
-    variant: {
-      default: "max-w-7xl px-4 sm:px-6 lg:px-8",
-      sm: "max-w-sm px-4 sm:px-6",
-      md: "max-w-md px-4 sm:px-6",
-      lg: "max-w-lg px-4 sm:px-6",
-      xl: "max-w-xl px-4 sm:px-6",
-      "2xl": "max-w-2xl px-4 sm:px-6",
-      "3xl": "max-w-3xl px-4 sm:px-6",
-      "4xl": "max-w-4xl px-4 sm:px-6",
-      "5xl": "max-w-5xl px-4 sm:px-6",
-      "6xl": "max-w-6xl px-4 sm:px-6",
-      "7xl": "max-w-7xl px-4 sm:px-6",
-    },
-  },
-  defaultVariants: {
-    variant: "default",
-  },
+variants: {
+variant: {
+default: "max-w-7xl px-4 sm:px-6 lg:px-8",
+sm: "max-w-sm px-4 sm:px-6",
+md: "max-w-md px-4 sm:px-6",
+lg: "max-w-lg px-4 sm:px-6",
+xl: "max-w-xl px-4 sm:px-6",
+"2xl": "max-w-2xl px-4 sm:px-6",
+"3xl": "max-w-3xl px-4 sm:px-6",
+"4xl": "max-w-4xl px-4 sm:px-6",
+"5xl": "max-w-5xl px-4 sm:px-6",
+"6xl": "max-w-6xl px-4 sm:px-6",
+"7xl": "max-w-7xl px-4 sm:px-6",
+},
+},
+defaultVariants: {
+variant: "default",
+},
 });
 
 export interface ContainerProps
@@ -253,7 +256,7 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
 );
 
 Container.displayName = "Container";
-    ```
+```
 
   </Tab>
 </Tabs>

@@ -1,6 +1,6 @@
 # AxionJS CLI
 
-A command-line tool to add components and utilities to your AxionJS project.
+A command-line tool to add components and utilities to your project.
 
 ## Installation
 
@@ -11,19 +11,26 @@ npm install axionjs-ui
 ## Usage
 
 ```sh
-axionjs <command> [options]
+axionjs-ui <command> [options]
 ```
 
 ### Common Commands
 
-- `axionjs add <component>` – Add a component to your project
-- `axionjs init` – Initialize AxionJS in your project
+- `axionjs-ui add <component>` – Add a component to your project
+- `axionjs-ui init` – Initialize AxionJS in your project
 
 ### Options
 
-- `--path <path>`: Specify the target directory
-- `--overwrite`: Overwrite existing files
-- `--silent`: Mute output
+- `-y, --yes` : Skip confirmation prompt. (default: false)
+- `-d, --defaults` : Use default configuration. (default: false)
+- `-f, --force` : Force overwrite of existing configuration. (default: false)
+- `-c, --cwd <cwd>` : The working directory. Defaults to the current directory.
+- `-s, --silent` : Mute output. (default: false)
+- `--src-dir` : Use the `src` directory when creating a new project. (default: false)
+- `--no-src-dir` : Do not use the `src` directory when creating a new project.
+- `--css-variables` : Use CSS variables for theming. (default: true)
+- `--no-css-variables` : Do not use CSS variables for theming.
+- `-h, --help` : Display help for command.
 
 ## Contributing
 

@@ -1,5 +1,5 @@
 {
-  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
   "name": "royalPurple",
   "type": "registry:theme",
   "label": "Royal Purple",

@@ -397,7 +397,7 @@ async function buildStyles(registry: Registry) {
       }
 
       const payload = registryItemSchema.safeParse({
-        $schema: "http://localhost:3001/schema/registry-item.json",
+        $schema: "https://www.axionjs.com/schema/registry-item.json",
         author: "axionjs (https://www.axionjs.com)",
         ...item,
         files,

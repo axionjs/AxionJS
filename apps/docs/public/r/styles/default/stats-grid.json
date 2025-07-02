@@ -1,5 +1,5 @@
 {
-  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
   "name": "stats-grid",
   "type": "registry:block",
   "author": "axionjs (https://www.axionjs.com)",
@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "blocks/stats-grid.tsx",
-      "content": "export default function StatsGrid() {\n  return (\n    <section className=\"py-12 md:py-20\">\n      <div className=\"mx-auto max-w-5xl space-y-8 px-6 md:space-y-16\">\n        <div className=\"relative z-10 mx-auto max-w-xl space-y-6 text-center\">\n          <h2 className=\"text-4xl font-medium lg:text-5xl\">\n            Axion.js in numbers\n          </h2>\n          <p>\n            Our component library is more than just code. It supports an entire\n            ecosystem of developers and businesses helping them innovate faster.\n          </p>\n        </div>\n\n        <div className=\"grid gap-12 divide-y *:text-center md:grid-cols-3 md:gap-2 md:divide-x md:divide-y-0\">\n          <div className=\"space-y-4\">\n            <div className=\"text-5xl font-bold\">+1200</div>\n            <p>Stars on GitHub</p>\n          </div>\n          <div className=\"space-y-4\">\n            <div className=\"text-5xl font-bold\">22 Million</div>\n            <p>Active Users</p>\n          </div>\n          <div className=\"space-y-4\">\n            <div className=\"text-5xl font-bold\">+500</div>\n            <p>Powered Apps</p>\n          </div>\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+      "content": "export default function StatsGrid() {\r\n  return (\r\n    <section className=\"py-12 md:py-20\">\r\n      <div className=\"mx-auto max-w-5xl space-y-8 px-6 md:space-y-16\">\r\n        <div className=\"relative z-10 mx-auto max-w-xl space-y-6 text-center\">\r\n          <h2 className=\"text-4xl font-medium lg:text-5xl\">\r\n            Axion.js in numbers\r\n          </h2>\r\n          <p>\r\n            Our component library is more than just code. It supports an entire\r\n            ecosystem of developers and businesses helping them innovate faster.\r\n          </p>\r\n        </div>\r\n\r\n        <div className=\"grid gap-12 divide-y *:text-center md:grid-cols-3 md:gap-2 md:divide-x md:divide-y-0\">\r\n          <div className=\"space-y-4\">\r\n            <div className=\"text-5xl font-bold\">+1200</div>\r\n            <p>Stars on GitHub</p>\r\n          </div>\r\n          <div className=\"space-y-4\">\r\n            <div className=\"text-5xl font-bold\">22 Million</div>\r\n            <p>Active Users</p>\r\n          </div>\r\n          <div className=\"space-y-4\">\r\n            <div className=\"text-5xl font-bold\">+500</div>\r\n            <p>Powered Apps</p>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  );\r\n}\r\n",
       "type": "registry:component",
       "target": ""
     }

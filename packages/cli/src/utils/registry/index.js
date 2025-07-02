@@ -22,7 +22,7 @@ import { HttpsProxyAgent } from "https-proxy-agent";
 import fetch from "node-fetch";
 import { z } from "zod";
 
-const REGISTRY_URL = process.env.REGISTRY_URL ?? "http://localhost:3001/r";
+const REGISTRY_URL = process.env.REGISTRY_URL ?? "https://www.axionjs.com/r";
 
 const agent = process.env.https_proxy
   ? new HttpsProxyAgent(process.env.https_proxy)
@@ -538,7 +538,7 @@ function getRegistryUrl(path) {
     return url.toString();
   }
 
-  return `${REGISTRY_URL}/${path.toLowerCase()}`;
+  return `${REGISTRY_URL}/${path}`;
 }
 
 export function isUrl(path) {

@@ -6,7 +6,10 @@ description: A hook that delays the updating of a value until a specified time h
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 import { TypeTable } from "fumadocs-ui/components/type-table";
 import { Files, Folder, File } from "fumadocs-ui/components/files";
-import { DebouncedSearchPreview, BasicDebouncePreview } from "@/app/components/docs/UseDebouncedSearchPreview";
+import {
+  DebouncedSearchPreview,
+  BasicDebouncePreview,
+} from "@/app/components/docs/UseDebouncedSearchPreview";
 
 # useDebounce
 
@@ -51,7 +54,7 @@ The `useDebounce` hook delays the updating of a value until a specified time has
   <Tab value="CLI">
     Install the useDebounce hook using:
     ```bash
-    npx axionjs add hook use-debounce
+    npx axionjs-ui add hook use-debounce
     ```
   </Tab>
   <Tab value="Manual">
@@ -75,6 +78,7 @@ The `useDebounce` hook delays the updating of a value until a specified time has
       return debouncedValue;
     }
     ```
+
   </Tab>
 </Tabs>
 
@@ -186,10 +190,10 @@ function WindowSizeTracker() {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  
+
   // Debounce window size to avoid excessive re-renders
   const debouncedWindowSize = useDebounce(windowSize, 200);
-  
+
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -197,11 +201,11 @@ function WindowSizeTracker() {
         height: window.innerHeight,
       });
     };
-    
+
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  
+
   return (
     <div>
       <p>Debounced Width: {debouncedWindowSize.width}px</p>

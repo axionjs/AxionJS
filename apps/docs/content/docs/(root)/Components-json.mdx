@@ -3,13 +3,14 @@ title: components.json
 description: Configuration file for your AxionJS project.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Callout } from "fumadocs-ui/components/callout";
 
-The `components.json` file holds configuration for your project. 
-It's created automatically when you run `npx axionjs init`.
+The `components.json` file holds configuration for your project.
+It's created automatically when you run `npx axionjs-ui init`.
 
 <Callout>
-You can use the `components.json` file to customize the import paths, component library, and styling for your project.
+  You can use the `components.json` file to customize the import paths,
+  component library, and styling for your project.
 </Callout>
 
 ## Schema
@@ -83,13 +84,13 @@ Whether to use TypeScript for components.
 
 Configuration for Tailwind CSS.
 
-| Option | Type | Description |
-| --- | --- | --- |
-| `config` | string | Path to the tailwind config file |
-| `css` | string | Path to the CSS file |
-| `baseColor` | string | Base color for your project |
-| `cssVariables` | boolean | Whether to use CSS variables |
-| `prefix` | string | Prefix to use for utility classes |
+| Option         | Type    | Description                       |
+| -------------- | ------- | --------------------------------- |
+| `config`       | string  | Path to the tailwind config file  |
+| `css`          | string  | Path to the CSS file              |
+| `baseColor`    | string  | Base color for your project       |
+| `cssVariables` | boolean | Whether to use CSS variables      |
+| `prefix`       | string  | Prefix to use for utility classes |
 
 ### aliases
 
@@ -130,6 +131,6 @@ You can customize the configuration to match your project structure. For example
 ```
 
 <Callout type="warn">
-Always restart your development server after making changes to `components.json`.
+  Always restart your development server after making changes to
+  `components.json`.
 </Callout>
-

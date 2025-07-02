@@ -224,7 +224,7 @@ export async function getProjectConfig(cwd, defaultProjectInfo = null) {
   }
 
   const config = {
-    $schema: "http://localhost:3001/schema.json",
+    $schema: "https://www.axionjs.com/schema.json",
     rsc: projectInfo.isRSC,
     tsx: projectInfo.isTsx,
     style: "new-york",

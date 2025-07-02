@@ -1,5 +1,5 @@
 {
-  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
   "name": "cta-centered",
   "type": "registry:block",
   "author": "axionjs (https://www.axionjs.com)",
@@ -10,7 +10,7 @@
   "files": [
     {
       "path": "blocks/cta-centered.tsx",
-      "content": "import { Button } from \"@/registry/new-york/ui/button\";\nimport Link from \"next/link\";\nimport { ArrowRight } from \"lucide-react\";\n\nexport default function CTACentered() {\n  return (\n    <section className=\"py-12 md:py-24 lg:py-32\">\n      <div className=\"container px-4 md:px-6\">\n        <div className=\"flex flex-col items-center justify-center space-y-4 text-center\">\n          <div className=\"space-y-2\">\n            <h2 className=\"text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl\">\n              Ready to get started?\n            </h2>\n            <p className=\"mx-auto max-w-[700px] text-muted-foreground md:text-xl\">\n              Join thousands of developers building modern, responsive web\n              applications with our component library.\n            </p>\n          </div>\n          <div className=\"flex flex-col gap-2 min-[400px]:flex-row\">\n            <Button asChild size=\"lg\">\n              <Link href=\"#get-started\">\n                Get Started\n                <ArrowRight className=\"ml-2 h-4 w-4\" />\n              </Link>\n            </Button>\n            <Button asChild variant=\"outline\" size=\"lg\">\n              <Link href=\"#contact\">Contact Sales</Link>\n            </Button>\n          </div>\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+      "content": "import { Button } from \"@/registry/new-york/ui/button\";\r\nimport Link from \"next/link\";\r\nimport { ArrowRight } from \"lucide-react\";\r\n\r\nexport default function CTACentered() {\r\n  return (\r\n    <section className=\"py-12 md:py-24 lg:py-32\">\r\n      <div className=\"container px-4 md:px-6\">\r\n        <div className=\"flex flex-col items-center justify-center space-y-4 text-center\">\r\n          <div className=\"space-y-2\">\r\n            <h2 className=\"text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl\">\r\n              Ready to get started?\r\n            </h2>\r\n            <p className=\"mx-auto max-w-[700px] text-muted-foreground md:text-xl\">\r\n              Join thousands of developers building modern, responsive web\r\n              applications with our component library.\r\n            </p>\r\n          </div>\r\n          <div className=\"flex flex-col gap-2 min-[400px]:flex-row\">\r\n            <Button asChild size=\"lg\">\r\n              <Link href=\"#get-started\">\r\n                Get Started\r\n                <ArrowRight className=\"ml-2 h-4 w-4\" />\r\n              </Link>\r\n            </Button>\r\n            <Button asChild variant=\"outline\" size=\"lg\">\r\n              <Link href=\"#contact\">Contact Sales</Link>\r\n            </Button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  );\r\n}\r\n",
       "type": "registry:component",
       "target": ""
     }

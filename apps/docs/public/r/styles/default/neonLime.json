@@ -1,5 +1,5 @@
 {
-  "$schema": "http://localhost:3001/schema/registry-item.json",
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
   "name": "neonLime",
   "type": "registry:theme",
   "label": "Neon Lime",

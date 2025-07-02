@@ -232,14 +232,15 @@ async function promptForConfig(defaultConfig = null) {
       message: `Where is your ${highlighter.info("global CSS")} file?`,
       initialValue: defaultConfig?.tailwind.css ?? DEFAULT_TAILWIND_CSS,
     }),
-    tailwindCssVariables: typeof opts.cssVariables === "boolean"
-      ? opts.cssVariables
-      : await confirm({
-          message: `Would you like to use ${highlighter.info("CSS variables")} for theming?`,
-          initialValue: defaultConfig?.tailwind.cssVariables ?? true,
-          active: "yes",
-          inactive: "no",
-        }),
+    tailwindCssVariables:
+      typeof opts.cssVariables === "boolean"
+        ? opts.cssVariables
+        : await confirm({
+            message: `Would you like to use ${highlighter.info("CSS variables")} for theming?`,
+            initialValue: defaultConfig?.tailwind.cssVariables ?? true,
+            active: "yes",
+            inactive: "no",
+          }),
     tailwindPrefix: await text({
       message: `Are you using a custom ${highlighter.info(
         "tailwind prefix eg. tw-"
@@ -271,7 +272,7 @@ async function promptForConfig(defaultConfig = null) {
   };
 
   return rawConfigSchema.parse({
-    $schema: "http://localhost:3001/schema.json",
+    $schema: "https://www.axionjs.com/schema.json",
     style: "new-york",
     tailwind: {
       config: options.tailwindConfig,
@@ -335,12 +336,13 @@ async function promptForMinimalConfig(defaultConfig, opts) {
     // ---------------------------------------------------
 
     // Handle CSS variables toggle (respect CLI flag)
-    options.tailwindCssVariables = typeof opts.cssVariables === "boolean"
-      ? opts.cssVariables
-      : await confirm({
-          message: `Would you like to use ${highlighter.info("CSS variables")} for theming?`,
-          initialValue: defaultConfig?.tailwind.cssVariables,
-        });
+    options.tailwindCssVariables =
+      typeof opts.cssVariables === "boolean"
+        ? opts.cssVariables
+        : await confirm({
+            message: `Would you like to use ${highlighter.info("CSS variables")} for theming?`,
+            initialValue: defaultConfig?.tailwind.cssVariables,
+          });
 
     // Assign results
     style = options.style;
