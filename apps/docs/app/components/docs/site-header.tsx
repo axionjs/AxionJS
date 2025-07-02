@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { source } from "@/lib/source";
 import { CommandMenu } from "@/app/components/docs/command-menu";
-import { GitHubLink } from "@/app/components/docs/github-link";
+import GitHubLink from "@/app/components/docs/github-link";
 import { Icons } from "@/app/components/docs/icons";
 import { MainNav } from "@/app/components/docs/main-nav";
 import { MobileNav } from "@/app/components/docs/mobile-nav";

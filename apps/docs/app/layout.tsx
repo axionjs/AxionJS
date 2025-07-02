@@ -15,6 +15,9 @@ import { SiteHeader } from "@/app/components/docs/site-header";
 
 import "./global.css";
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+  ),
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
