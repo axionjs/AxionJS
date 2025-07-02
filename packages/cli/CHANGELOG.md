@@ -1,5 +1,11 @@
 # axionjs-ui
 
+## 1.1.0
+
+### Minor Changes
+
+- e6133d6: fix: registry url
+
 ## 1.0.0
 
 ### Major Changes
