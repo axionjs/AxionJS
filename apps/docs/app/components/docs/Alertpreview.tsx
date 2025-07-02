@@ -6,7 +6,7 @@ import {
   AlertTitle,
 } from "@/registry/new-york/ui/alert";
 
-export default function AlertPreview() {
+export function AlertPreview() {
   return (
     <div className="grid w-full max-w-xl items-start gap-4">
       <Alert>

@@ -56,7 +56,8 @@ export async function GET(request: Request) {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1353.18 313.41"
-            {...props}
+            width="200"
+            height="46"
           >
             <g>
               <g>
