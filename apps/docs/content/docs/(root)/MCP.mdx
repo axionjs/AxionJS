@@ -1,0 +1,212 @@
+---
+title: MCP
+description: Learn how to use the Model Context Protocol with AxionJS components.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Steps, Step } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { CodeBlock } from 'fumadocs-ui/components/codeblock';
+
+AxionJS now has an official MCP server 🎉.
+
+[MCP](https://modelcontextprotocol.com/) is an open protocol that standardizes how applications provide context to LLMs.
+This is useful for AxionJS because you can now give your AI-assisted IDE direct access to all AxionJS components and documentation so that it can generate code with minimal errors.
+
+## Installation
+
+<Steps>
+<Step>
+### Add MCP Server Configuration
+
+Add the following configuration to your IDE's MCP config file:
+
+<Tabs items={['Cursor', 'Claude Desktop', 'Github Copilot', 'Trae IDE']}>
+<Tab value="Cursor">
+**Cursor AI** - Add to `.cursor/mcp_servers.json`:
+
+```json
+{
+  "mcpServers": {
+    "axionsjs-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "axionsjs-mcp-server@latest"],
+      "env": {
+        "AXIONJS_REGISTRY_URL": "https://www.axionjs.com/"
+      }
+    }
+  }
+}
+```
+</Tab>
+
+<Tab value="Claude Desktop">
+**Claude Desktop** - Add to MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "axionsjs-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "axionsjs-mcp-server@latest"],
+      "env": {
+        "AXIONJS_REGISTRY_URL": "https://www.axionjs.com/"
+      }
+    }
+  }
+}
+```
+</Tab>
+
+<Tab value="Github Copilot">
+**GitHub Copilot** - Add to MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "axionsjs-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "axionsjs-mcp-server@latest"],
+      "env": {
+        "AXIONJS_REGISTRY_URL": "https://www.axionjs.com/"
+      }
+    }
+  }
+}
+```
+</Tab>
+
+<Tab value="Trae IDE">
+**Trae IDE** - Add to MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "axionsjs-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "axionsjs-mcp-server@latest"],
+      "env": {
+        "AXIONJS_REGISTRY_URL": "https://www.axionjs.com/"
+      }
+    }
+  }
+}
+```
+</Tab>
+</Tabs>
+</Step>
+
+<Step>
+### Restart Your IDE
+
+After adding the configuration, restart your IDE to enable the MCP server.
+</Step>
+</Steps>
+
+## Usage Examples
+
+<Callout>
+The MCP server provides access to AxionJS documentation, component templates, and best practices directly in your IDE.
+</Callout>
+
+
+
+The MCP server provides **23 powerful tools** for AxionJS development:
+
+- **Project Management**: Initialize new projects and manage component installations
+- **Component Discovery**: Search, browse, and explore thousands of AxionJS components
+- **Code Generation**: Generate customized component code with themes and styling options
+- **Page Creation**: Build complete pages using multiple components with automatic dependency resolution
+- **Documentation lookup**: Look up AxionJS documentation directly in your IDE
+
+
+
+## Configuration Options
+
+<Callout type="warn">
+Make sure to set the `AXIONJS_REGISTRY_URL` environment variable to access the latest AxionJS components and documentation.
+</Callout>
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `AXIONJS_REGISTRY_URL` | URL to the AxionJS registry | `https://www.axionjs.com/` |
+
+## IDE-Specific Setup
+
+<Tabs items={['cursor', 'claude', 'github', 'trae']}>
+<Tab value="cursor">
+### Cursor AI Setup
+
+1. Open Cursor AI settings
+2. Navigate to **Extensions** → **MCP Servers**
+3. Add the configuration JSON above
+4. Restart Cursor AI
+
+<Callout>
+In agent mode, Cursor AI will automatically use the AxionJS MCP server for component suggestions and code generation.
+</Callout>
+</Tab>
+
+<Tab value="claude">
+### Claude Desktop Setup
+
+1. Open Claude Desktop
+2. Go to **Settings** → **Developer** → **MCP Servers**
+3. Add the configuration JSON above
+4. Restart Claude Desktop
+
+<Callout>
+Claude Desktop will now have access to AxionJS components and documentation for better code assistance.
+</Callout>
+</Tab>
+
+<Tab value="github">
+### GitHub Copilot Setup
+
+1. Open your IDE with GitHub Copilot
+2. Configure MCP servers in your IDE settings
+3. Add the AxionJS MCP server configuration
+4. Restart your IDE
+
+<Callout>
+GitHub Copilot will use the AxionJS MCP server to provide better suggestions for AxionJS development.
+</Callout>
+</Tab>
+
+<Tab value="trae">
+### Trae IDE Setup
+
+1. Open Trae IDE
+2. Navigate to **Settings** → **MCP Configuration**
+3. Add the server configuration
+4. Enable agent mode for automatic AxionJS assistance
+
+<Callout>
+In agent mode, Trae IDE provides intelligent AxionJS code completion and component suggestions.
+</Callout>
+</Tab>
+</Tabs>
+
+## Troubleshooting
+
+<Callout type="warn">
+If the MCP server fails to start, ensure you have Node.js installed and the `npx` command is available in your PATH.
+</Callout>
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| Server not starting | Check Node.js installation and network connectivity |
+| Components not loading | Verify the `AXIONJS_REGISTRY_URL` environment variable |
+| IDE not recognizing server | Restart your IDE after configuration changes |
+| Permission errors | Ensure `npx` has proper permissions to install packages |
+
+### Getting Help
+
+If you continue to experience issues:
+
+1. Check the [AxionJS GitHub](https://github.com/axionjs/AxionJS)
+3. Review the [MCP documentation](https://modelcontextprotocol.com/)
