@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "gradient-chart",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "registryDependencies": [
+    "card",
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "charts/gradient-chart.tsx",
+      "content": "\"use client\";\n\nimport { TrendingUp } from \"lucide-react\";\nimport { Area, AreaChart, CartesianGrid, XAxis, YAxis } from \"recharts\";\n\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n} from \"@/registry/default/ui/card\";\nimport {\n  type ChartConfig,\n  ChartContainer,\n  ChartTooltip,\n  ChartTooltipContent,\n} from \"@/registry/default/ui/chart\";\n\nconst chartData = [\n  { month: \"Jan\", value: 4000 },\n  { month: \"Feb\", value: 5000 },\n  { month: \"Mar\", value: 4500 },\n  { month: \"Apr\", value: 6000 },\n  { month: \"May\", value: 7000 },\n  { month: \"Jun\", value: 8000 },\n];\n\nconst chartConfig = {\n  value: {\n    label: \"Revenue\",\n    color: \"hsl(var(--chart-1))\",\n  },\n} satisfies ChartConfig;\n\nexport function GradientChart() {\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle>Gradient Chart</CardTitle>\n        <CardDescription>Monthly revenue with gradient fill</CardDescription>\n      </CardHeader>\n      <CardContent>\n        <ChartContainer config={chartConfig}>\n          <AreaChart\n            accessibilityLayer\n            data={chartData}\n            margin={{ top: 20, right: 20, bottom: 20, left: 20 }}\n          >\n            <defs>\n              <linearGradient id=\"colorValue\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">\n                <stop\n                  offset=\"5%\"\n                  stopColor=\"var(--color-value)\"\n                  stopOpacity={0.8}\n                />\n                <stop\n                  offset=\"95%\"\n                  stopColor=\"var(--color-value)\"\n                  stopOpacity={0.1}\n                />\n              </linearGradient>\n            </defs>\n            <CartesianGrid strokeDasharray=\"3 3\" />\n            <XAxis dataKey=\"month\" tickLine={false} axisLine={false} />\n            <YAxis\n              tickLine={false}\n              axisLine={false}\n              tickFormatter={(value) => \"$\" + value}\n            />\n            <ChartTooltip\n              content={\n                <ChartTooltipContent formatter={(value) => \"$\" + value} />\n              }\n            />\n            <Area\n              type=\"monotone\"\n              dataKey=\"value\"\n              stroke=\"var(--color-value)\"\n              fillOpacity={1}\n              fill=\"url(#colorValue)\"\n            />\n          </AreaChart>\n        </ChartContainer>\n      </CardContent>\n      <CardFooter className=\"flex-col items-start gap-2 text-sm\">\n        <div className=\"flex gap-2 font-medium leading-none\">\n          Revenue doubled from January to June{\" \"}\n          <TrendingUp className=\"h-4 w-4\" />\n        </div>\n        <div className=\"leading-none text-muted-foreground\">\n          First half of 2024 revenue data\n        </div>\n      </CardFooter>\n    </Card>\n  );\n}\n",
+      "type": "registry:block",
+      "target": ""
+    }
+  ],
+  "categories": [
+    "charts",
+    "charts-gradient"
+  ]
+}

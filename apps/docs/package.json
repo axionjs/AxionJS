@@ -11,7 +11,8 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "postinstall": "fumadocs-mdx",
-    "build:registry": "tsx --tsconfig ./tsconfig.scripts.json ./scripts/build-registry.mts && prettier --log-level silent --write \"registry/**/*.{ts,tsx,mdx}\" --cache"
+    "build:registry": "tsx --tsconfig ./tsconfig.scripts.json ./scripts/build-registry.mts && prettier --log-level silent --write \"registry/**/*.{ts,tsx,mdx}\" --cache",
+    "build:registryV4": "tsx --tsconfig ./tsconfig.scripts.json ./scripts/build-registry-v4.mts && prettier --log-level silent --write \"registry_v4/**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {
     "@ai-sdk/google": "^1.2.18",

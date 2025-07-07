@@ -1,0 +1,1116 @@
+[
+  {
+    "name": "accordion",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-accordion"
+    ],
+    "files": [
+      {
+        "path": "ui/accordion.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "tailwind": {
+      "config": {
+        "theme": {
+          "extend": {
+            "keyframes": {
+              "accordion-down": {
+                "from": {
+                  "height": "0"
+                },
+                "to": {
+                  "height": "var(--radix-accordion-content-height)"
+                }
+              },
+              "accordion-up": {
+                "from": {
+                  "height": "var(--radix-accordion-content-height)"
+                },
+                "to": {
+                  "height": "0"
+                }
+              }
+            },
+            "animation": {
+              "accordion-down": "accordion-down 0.2s ease-out",
+              "accordion-up": "accordion-up 0.2s ease-out"
+            }
+          }
+        }
+      }
+    },
+    "version": "4.0.0"
+  },
+  {
+    "name": "accessibility",
+    "type": "registry:ui",
+    "dependencies": [
+      "zustand"
+    ],
+    "registryDependencies": [
+      "dialog",
+      "switch",
+      "button",
+      "avatar",
+      "tabs",
+      "tooltip",
+      "slider"
+    ],
+    "files": [
+      {
+        "path": "ui/accessibility/components/AccessibilityUI.tsx",
+        "type": "registry:ui"
+      },
+      {
+        "path": "ui/accessibility/lib/accessibility-store.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "ui/accessibility/lib/screen-reader-service.ts",
+        "type": "registry:lib"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "alert",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/alert.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "alert-dialog",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-alert-dialog"
+    ],
+    "registryDependencies": [
+      "button"
+    ],
+    "files": [
+      {
+        "path": "ui/alert-dialog.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "aspect-ratio",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-aspect-ratio"
+    ],
+    "files": [
+      {
+        "path": "ui/aspect-ratio.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "avatar",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-avatar"
+    ],
+    "devDependencies": [
+      "@radix-ui/react-avatar"
+    ],
+    "files": [
+      {
+        "path": "ui/avatar.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "badge",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/badge.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "bento",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-icons"
+    ],
+    "registryDependencies": [
+      "button"
+    ],
+    "files": [
+      {
+        "path": "ui/bento.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "button",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-slot"
+    ],
+    "files": [
+      {
+        "path": "ui/button.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "calendar",
+    "type": "registry:ui",
+    "dependencies": [
+      "react-day-picker@8.10.1",
+      "date-fns"
+    ],
+    "registryDependencies": [
+      "button"
+    ],
+    "files": [
+      {
+        "path": "ui/calendar.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "card",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/card.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "carousel",
+    "type": "registry:ui",
+    "dependencies": [
+      "embla-carousel-react"
+    ],
+    "registryDependencies": [
+      "button"
+    ],
+    "files": [
+      {
+        "path": "ui/carousel.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "chart",
+    "type": "registry:ui",
+    "dependencies": [
+      "recharts"
+    ],
+    "files": [
+      {
+        "path": "ui/chart.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "checkbox",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-checkbox"
+    ],
+    "files": [
+      {
+        "path": "ui/checkbox.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "collapsible",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-collapsible"
+    ],
+    "files": [
+      {
+        "path": "ui/collapsible.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "command",
+    "type": "registry:ui",
+    "dependencies": [
+      "cmdk@1.0.0"
+    ],
+    "registryDependencies": [
+      "dialog"
+    ],
+    "files": [
+      {
+        "path": "ui/command.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "container",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/container.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "context-menu",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-context-menu"
+    ],
+    "files": [
+      {
+        "path": "ui/context-menu.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "dialog",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-dialog"
+    ],
+    "files": [
+      {
+        "path": "ui/dialog.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "drawer",
+    "type": "registry:ui",
+    "dependencies": [
+      "vaul"
+    ],
+    "files": [
+      {
+        "path": "ui/drawer.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "dot",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/dot.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "dropdown-menu",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-dropdown-menu"
+    ],
+    "files": [
+      {
+        "path": "ui/dropdown-menu.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "draggable",
+    "type": "registry:ui",
+    "dependencies": [
+      "@dnd-kit/core",
+      "@dnd-kit/sortable",
+      "@dnd-kit/utilities"
+    ],
+    "registryDependencies": [
+      "button"
+    ],
+    "files": [
+      {
+        "path": "ui/draggable.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "flex",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-slot"
+    ],
+    "files": [
+      {
+        "path": "ui/flex.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "form",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-label",
+      "@radix-ui/react-slot",
+      "@hookform/resolvers",
+      "zod",
+      "react-hook-form"
+    ],
+    "registryDependencies": [
+      "button",
+      "label"
+    ],
+    "files": [
+      {
+        "path": "ui/form.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "hover-card",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-hover-card"
+    ],
+    "files": [
+      {
+        "path": "ui/hover-card.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "input",
+    "type": "registry:ui",
+    "dependencies": [
+      "zod"
+    ],
+    "files": [
+      {
+        "path": "ui/input.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "input-otp",
+    "type": "registry:ui",
+    "dependencies": [
+      "input-otp"
+    ],
+    "files": [
+      {
+        "path": "ui/input-otp.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "label",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-label"
+    ],
+    "files": [
+      {
+        "path": "ui/label.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "limited-input",
+    "type": "registry:ui",
+    "dependencies": [
+      "zod"
+    ],
+    "registryDependencies": [
+      "input"
+    ],
+    "files": [
+      {
+        "path": "ui/limited-input.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "marquee",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/marquee.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "menubar",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-menubar"
+    ],
+    "files": [
+      {
+        "path": "ui/menubar.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "navigation-menu",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-navigation-menu"
+    ],
+    "files": [
+      {
+        "path": "ui/navigation-menu.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "pagination",
+    "type": "registry:ui",
+    "registryDependencies": [
+      "button"
+    ],
+    "files": [
+      {
+        "path": "ui/pagination.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "password-input",
+    "type": "registry:ui",
+    "registryDependencies": [
+      "input"
+    ],
+    "files": [
+      {
+        "path": "ui/password-input.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "popover",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-popover"
+    ],
+    "files": [
+      {
+        "path": "ui/popover.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "progress",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-progress"
+    ],
+    "files": [
+      {
+        "path": "ui/progress.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "radio-group",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-radio-group"
+    ],
+    "files": [
+      {
+        "path": "ui/radio-group.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "resizable",
+    "type": "registry:ui",
+    "dependencies": [
+      "react-resizable-panels"
+    ],
+    "files": [
+      {
+        "path": "ui/resizable.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "scroll-area",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-scroll-area"
+    ],
+    "files": [
+      {
+        "path": "ui/scroll-area.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "select",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-select"
+    ],
+    "files": [
+      {
+        "path": "ui/select.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "separator",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-separator"
+    ],
+    "files": [
+      {
+        "path": "ui/separator.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "sheet",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-dialog"
+    ],
+    "files": [
+      {
+        "path": "ui/sheet.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "skeleton",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/skeleton.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "slider",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-slider"
+    ],
+    "files": [
+      {
+        "path": "ui/slider.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "sonner",
+    "type": "registry:ui",
+    "dependencies": [
+      "sonner",
+      "next-themes"
+    ],
+    "files": [
+      {
+        "path": "ui/sonner.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "switch",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-switch"
+    ],
+    "files": [
+      {
+        "path": "ui/switch.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "table",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/table.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "tabs",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-tabs"
+    ],
+    "files": [
+      {
+        "path": "ui/tabs.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "tag-input",
+    "type": "registry:ui",
+    "dependencies": [
+      "emblor"
+    ],
+    "registryDependencies": [
+      "label"
+    ],
+    "files": [
+      {
+        "path": "ui/tag-input.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "textarea",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "ui/textarea.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "toast",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-toast"
+    ],
+    "files": [
+      {
+        "path": "ui/toast.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "toaster",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-toast"
+    ],
+    "registryDependencies": [
+      "toast",
+      "use-toast"
+    ],
+    "files": [
+      {
+        "path": "ui/toaster.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "toggle",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-toggle"
+    ],
+    "files": [
+      {
+        "path": "ui/toggle.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "toggle-group",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-toggle-group"
+    ],
+    "registryDependencies": [
+      "toggle"
+    ],
+    "files": [
+      {
+        "path": "ui/toggle-group.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "tooltip",
+    "type": "registry:ui",
+    "dependencies": [
+      "@radix-ui/react-tooltip"
+    ],
+    "files": [
+      {
+        "path": "ui/tooltip.tsx",
+        "type": "registry:ui"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-async",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-async.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-click-outside",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-click-outside.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-copy-to-clipboard",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-copy-to-clipboard.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-debounce",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-debounce.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-form",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-form.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-fullscreen",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-fullscreen.ts",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-geolocation",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-geolocation.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-idle-timeout",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-idle-timeout.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-infinite-scroll",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-infinite-scroll.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-intersection-observer",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-intersection-observer.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-keyboard",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-keyboard.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-local-storage",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-local-storage.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-media-query",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-media-query.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-mobile",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-mobile.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-pagination",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-pagination.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-polling",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-polling.ts",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-scroll-position",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-scroll-position.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-sse-listener",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-sse-listener.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-theme",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-theme.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-toast",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-toast.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-toggle",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-toggle.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-undo-redo",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-undo-redo.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-virtual-list",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-virtual-list.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  },
+  {
+    "name": "use-web-socket",
+    "type": "registry:hook",
+    "files": [
+      {
+        "path": "hooks/use-web-socket.tsx",
+        "type": "registry:hook"
+      }
+    ],
+    "version": "4.0.0"
+  }
+]

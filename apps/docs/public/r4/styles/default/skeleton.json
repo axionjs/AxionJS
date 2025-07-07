@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "skeleton",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "ui/skeleton.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\n\nfunction Skeleton({\n  className,\n  ...props\n}: React.HTMLAttributes<HTMLDivElement>) {\n  return (\n    <div\n      className={cn(\"animate-pulse rounded-md bg-primary/10\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Skeleton };\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

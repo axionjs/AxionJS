@@ -1,0 +1,18 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "hero-simple",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "A simple hero component.",
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "blocks/hero-simple.tsx",
+      "content": "\"use client\";\n\nimport { useState, useEffect } from \"react\";\nimport Link from \"next/link\";\nimport { ArrowRight } from \"lucide-react\";\nimport { Button } from \"@/registry/default/ui/button\";\nimport { cn } from \"@/lib/utils\";\n\nexport default function HeroSimple() {\n  const [isVisible, setIsVisible] = useState(false);\n\n  useEffect(() => {\n    const timer = setTimeout(() => {\n      setIsVisible(true);\n    }, 100);\n\n    return () => clearTimeout(timer);\n  }, []);\n\n  return (\n    <section className=\"relative overflow-hidden py-20 md:py-32\">\n      <div className=\"container px-4 md:px-6\">\n        <div className=\"flex flex-col items-center justify-center space-y-4 text-center\">\n          <div\n            className={cn(\n              \"space-y-2 transition-all duration-1000 ease-in-out\",\n              isVisible\n                ? \"translate-y-0 opacity-100\"\n                : \"translate-y-8 opacity-0\",\n            )}\n          >\n            <h1 className=\"text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl\">\n              Build Beautiful Interfaces{\" \"}\n              <span className=\"text-primary\">Faster</span>\n            </h1>\n            <p className=\"mx-auto max-w-[700px] text-muted-foreground md:text-xl\">\n              A modern UI component library designed for rapid development of\n              responsive, accessible web applications.\n            </p>\n          </div>\n          <div\n            className={cn(\n              \"flex flex-col gap-2 min-[400px]:flex-row transition-all duration-1000 ease-in-out delay-300\",\n              isVisible\n                ? \"translate-y-0 opacity-100\"\n                : \"translate-y-8 opacity-0\",\n            )}\n          >\n            <Button asChild size=\"lg\">\n              <Link href=\"#get-started\">\n                Get Started\n                <ArrowRight className=\"ml-2 h-4 w-4\" />\n              </Link>\n            </Button>\n            <Button asChild variant=\"outline\" size=\"lg\">\n              <Link href=\"#documentation\">Documentation</Link>\n            </Button>\n          </div>\n        </div>\n      </div>\n\n      {/* Background elements */}\n      <div className=\"absolute inset-0 -z-10 overflow-hidden\">\n        <div\n          className={cn(\n            \"absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[1000px] rounded-full bg-primary/10 blur-3xl transition-all duration-1000 ease-in-out\",\n            isVisible ? \"opacity-100\" : \"opacity-0\",\n          )}\n        ></div>\n      </div>\n    </section>\n  );\n}\n",
+      "type": "registry:component",
+      "target": ""
+    }
+  ]
+}

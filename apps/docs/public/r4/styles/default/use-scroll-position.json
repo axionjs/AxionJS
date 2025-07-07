@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "use-scroll-position",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-scroll-position.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\ninterface ScrollPosition {\n  x: number;\n  y: number;\n}\n\n/**\n * A hook that tracks the scroll position\n * @param element The element to track (defaults to window)\n * @returns The current scroll position\n */\nexport function useScrollPosition(\n  element?: React.RefObject<HTMLElement>,\n): ScrollPosition {\n  const [scrollPosition, setScrollPosition] = React.useState<ScrollPosition>({\n    x: 0,\n    y: 0,\n  });\n\n  const updateScrollPosition = React.useCallback(() => {\n    if (typeof window === \"undefined\") return;\n\n    if (element?.current) {\n      setScrollPosition({\n        x: element.current.scrollLeft,\n        y: element.current.scrollTop,\n      });\n    } else {\n      setScrollPosition({\n        x: window.scrollX,\n        y: window.scrollY,\n      });\n    }\n  }, [element]);\n\n  React.useEffect(() => {\n    if (typeof window === \"undefined\") return;\n\n    const target = element?.current ?? window;\n\n    target.addEventListener(\"scroll\", updateScrollPosition, { passive: true });\n    updateScrollPosition();\n\n    return () => target.removeEventListener(\"scroll\", updateScrollPosition);\n  }, [element, updateScrollPosition]);\n\n  return scrollPosition;\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

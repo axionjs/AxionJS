@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "use-click-outside",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-click-outside.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\n/**\n * A hook that detects clicks outside of an element\n * @param handler The callback to run when a click outside is detected\n * @param active Whether the detection is active\n * @returns A ref to attach to the element\n */\nexport function useClickOutside<T extends HTMLElement = HTMLElement>(\n  handler: () => void,\n  active = true,\n): React.RefObject<T> {\n  const ref = React.useRef<T>(null);\n\n  React.useEffect(() => {\n    if (!active || typeof window === \"undefined\") return;\n\n    const handleClick = (e: MouseEvent) => {\n      if (ref.current && !ref.current.contains(e.target as Node)) {\n        handler();\n      }\n    };\n\n    document.addEventListener(\"mousedown\", handleClick);\n    document.addEventListener(\"touchstart\", handleClick);\n\n    return () => {\n      document.removeEventListener(\"mousedown\", handleClick);\n      document.removeEventListener(\"touchstart\", handleClick);\n    };\n  }, [handler, active]);\n\n  return ref;\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

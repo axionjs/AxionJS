@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "tag-input",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "emblor"
+  ],
+  "registryDependencies": [
+    "label"
+  ],
+  "files": [
+    {
+      "path": "ui/tag-input.tsx",
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport { Label } from \"@/registry/default/ui/label\";\nimport { Tag, TagInput as EmblorTagInput } from \"emblor\";\n\ninterface TagInputProps {\n  id: string;\n  label?: string;\n  maxTags?: number;\n  placeholder?: string;\n  inlineTags?: boolean;\n  inputFieldPosition?: \"top\" | \"bottom\" | \"inline\";\n  initialTags?: Tag[];\n}\n\nexport function TagInput({\n  id,\n  label,\n  maxTags = 5,\n  placeholder = \"Add a tag\",\n  inlineTags = true,\n  inputFieldPosition = \"inline\",\n  initialTags = [],\n}: TagInputProps) {\n  const [tags, setTags] = useState<Tag[]>(initialTags);\n  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);\n\n  const handleSetTags = (newTags: Tag[]) => {\n    if (newTags.length <= maxTags) {\n      setTags(newTags);\n    }\n  };\n\n  return (\n    <div className=\"space-y-2\">\n      {label && <Label htmlFor={id}>{label}</Label>}\n      <EmblorTagInput\n        id={id}\n        tags={tags}\n        setTags={handleSetTags}\n        placeholder={placeholder}\n        activeTagIndex={activeTagIndex}\n        setActiveTagIndex={setActiveTagIndex}\n        inlineTags={inlineTags}\n        inputFieldPosition={inputFieldPosition}\n        styleClasses={{\n          inlineTagsContainer:\n            \"border-input rounded-lg bg-background shadow-sm shadow-black/5 transition-shadow focus-within:border-ring focus-within:outline-none focus-within:ring-[3px] focus-within:ring-ring/20 p-1 gap-1\",\n          input:\n            \"w-full min-w-[80px] focus-visible:outline-none shadow-none px-2 h-7 rounded-md transition-[color,box-shadow] placeholder:text-muted-foreground/70\",\n          tagList: {\n            container: \"gap-1\",\n          },\n          tag: {\n            body: \"h-7 relative bg-background border border-input hover:bg-background rounded-md font-medium text-xs ps-2 pe-7\",\n            closeButton:\n              \"absolute -inset-y-px -end-px p-0 rounded-e-lg flex size-7 transition-colors outline-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 text-muted-foreground/80 hover:text-foreground\",\n          },\n        }}\n      />\n      {tags.length >= maxTags && (\n        <p className=\"text-sm text-red-500\">\n          You have reached the maximum number of tags ({maxTags}).\n        </p>\n      )}\n      {!inlineTags && (\n        <p className=\"text-sm text-muted-foreground\">\n          {tags.length}/{maxTags} tags added\n        </p>\n      )}\n    </div>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

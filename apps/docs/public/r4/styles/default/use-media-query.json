@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "use-media-query",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-media-query.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\n/**\n * A hook that returns true if the media query matches\n * @param query The media query to match\n * @returns Whether the media query matches\n */\nexport function useMediaQuery(query: string): boolean {\n  const [matches, setMatches] = React.useState(false);\n\n  React.useEffect(() => {\n    if (typeof window === \"undefined\") return;\n\n    const media = window.matchMedia(query);\n    const updateMatch = () => setMatches(media.matches);\n\n    // Set initial value\n    updateMatch();\n\n    // Listen for changes\n    media.addEventListener(\"change\", updateMatch);\n\n    return () => media.removeEventListener(\"change\", updateMatch);\n  }, [query]);\n\n  return matches;\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}

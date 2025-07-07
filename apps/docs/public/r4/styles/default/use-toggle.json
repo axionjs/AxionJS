@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "use-toggle",
+  "type": "registry:hook",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "hooks/use-toggle.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\n/**\n * A hook that provides toggle functionality\n * @param initialValue The initial state\n * @returns The current state and toggle function\n */\nexport function useToggle(initialValue = false): [boolean, () => void] {\n  const [value, setValue] = React.useState(initialValue);\n\n  const toggle = React.useCallback(() => {\n    setValue((v) => !v);\n  }, []);\n\n  return [value, toggle];\n}\n",
+      "type": "registry:hook",
+      "target": ""
+    }
+  ]
+}
