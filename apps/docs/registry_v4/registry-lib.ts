@@ -1,4 +1,4 @@
-import { type Registry } from "@/registry/schema";
+import { type Registry } from "@/registry_v4/schema";
 
 export const lib: Registry["items"] = [
   {

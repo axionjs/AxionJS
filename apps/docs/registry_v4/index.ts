@@ -1,11 +1,11 @@
-import { type Registry } from "@/registry/schema";
-import { lib } from "@/registry/registry-lib";
-import { themes } from "@/registry/registry-themes";
-import { ui } from "@/registry/registry-ui";
-import { hooks } from "@/registry/registry-hooks";
-import { blocks } from "@/registry/registry-blocks";
-import { dynamicComponents } from "./registry-dynamic-components";
-import { charts } from "./registry-charts";
+import { type Registry } from "@/registry_v4/schema";
+import { lib } from "@/registry_v4/registry-lib";
+import { themes } from "@/registry_v4/registry-themes";
+import { ui } from "@/registry_v4/registry-ui";
+import { hooks } from "@/registry_v4/registry-hooks";
+import { blocks } from "@/registry_v4/registry-blocks";
+import { dynamicComponents } from "@/registry_v4/registry-dynamic-components";
+import { charts } from "@/registry_v4/registry-charts";
 
 export const registry = {
   name: "axionjs",

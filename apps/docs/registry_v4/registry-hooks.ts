@@ -1,4 +1,4 @@
-import { Registry } from "@/registry/schema";
+import { Registry } from "@/registry_v4/schema";
 
 export const hooks: Registry["items"] = [
   {
