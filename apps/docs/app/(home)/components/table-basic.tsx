@@ -77,61 +77,80 @@ export default function TableBasic() {
   };
 
   return (
-    <div className="p-6 bg-background rounded-lg border lg:h-[400px]">
-      <h2 className="text-2xl font-bold mb-6">
+    <div className="p-3 sm:p-6 bg-background rounded-lg border h-full min-h-[300px] sm:min-h-[400px] flex flex-col">
+      <h2 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6">
         <Badge variant="secondary" className="text-xs">
           Team Members
         </Badge>
       </h2>
-      <div className="overflow-x-auto">
-        <motion.div variants={container} initial="hidden" animate="show">
-          <Table>
+      <div className="overflow-x-auto flex-1">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="min-w-full"
+        >
+          <Table className="min-w-[600px]">
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Balance</TableHead>
+                <TableHead className="text-xs sm:text-sm">Name</TableHead>
+                <TableHead className="text-xs sm:text-sm hidden sm:table-cell">
+                  Email
+                </TableHead>
+                <TableHead className="text-xs sm:text-sm hidden md:table-cell">
+                  Location
+                </TableHead>
+                <TableHead className="text-xs sm:text-sm">Status</TableHead>
+                <TableHead className="text-right text-xs sm:text-sm">
+                  Balance
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {users.map((user) => (
                 <motion.tr key={user.id} variants={item} className="group">
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar>
+                  <TableCell className="py-2 sm:py-4">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <Avatar className="w-6 h-6 sm:w-8 sm:h-8">
                         <AvatarImage src={user.image} alt={user.name} />
-                        <AvatarFallback>
+                        <AvatarFallback className="text-xs">
                           {user.name
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <div className="font-medium group-hover:text-primary transition-colors">
+                      <div className="min-w-0">
+                        <div className="font-medium group-hover:text-primary transition-colors text-sm sm:text-base truncate">
                           {user.name}
                         </div>
-                        <span className="mt-0.5 text-xs text-muted-foreground">
+                        <span className="mt-0.5 text-xs text-muted-foreground block sm:hidden">
+                          {user.username}
+                        </span>
+                        <span className="mt-0.5 text-xs text-muted-foreground hidden sm:block">
                           {user.username}
                         </span>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.location}</TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell text-xs sm:text-sm">
+                    {user.email}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell text-xs sm:text-sm">
+                    {user.location}
+                  </TableCell>
+                  <TableCell className="py-2 sm:py-4">
                     <Badge
                       variant={
                         user.status === "Active" ? "default" : "secondary"
                       }
+                      className="text-xs"
                     >
                       {user.status}
                     </Badge>
                   </TableCell>
                   <TableCell
-                    className={`text-right font-medium ${
+                    className={`text-right font-medium text-xs sm:text-sm py-2 sm:py-4 ${
                       user.balance.startsWith("-")
                         ? "text-red-500"
                         : user.balance !== "$0.00"

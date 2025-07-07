@@ -422,7 +422,7 @@ function EnhancedColorPicker({
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-80 p-0" side="left" align="start">
+        <PopoverContent className="w-80 p-0" side="bottom" align="start">
           <div className="p-4 space-y-4">
             {/* Color Preview */}
             <div className="flex items-center gap-3">
@@ -795,7 +795,7 @@ function ThemeControlsContent({ isMobile = false }: { isMobile?: boolean }) {
   );
 
   return (
-    <div className={cn("space-y-6", isMobile ? "p-6" : "p-6")}>
+    <div className="space-y-6 px-6">
       {/* Enhanced Primary Color Picker */}
       <EnhancedColorPicker
         value={activeThemeData.colors.primary || "#3b82f6"}
@@ -1178,8 +1178,8 @@ export default function ThemeControls() {
 
   return (
     <>
-      {/* Desktop Sidebar (md and up) - Fixed height 100vh */}
-      <div className="hidden md:flex w-0 lg:w-72 border-l border-border h-screen fixed right-0 top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      {/* Desktop Sidebar (md and up) - Fixed height 100vh, wider on larger screens */}
+      <div className="hidden md:flex md:w-64 lg:w-80 xl:w-96 border-l border-border h-screen fixed right-0 top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex flex-col w-full h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border shrink-0">
@@ -1196,7 +1196,7 @@ export default function ThemeControls() {
       {/* Mobile Settings Button (below md) */}
       <Button
         onClick={() => setIsSheetOpen(true)}
-        className="md:hidden fixed top-[10%] right-[5%] z-50 h-10 w-10 p-0 rounded-full shadow-lg"
+        className="md:hidden absolute top-4 right-4 z-50 h-10 w-10 p-0 rounded-full shadow-lg"
         size="sm"
       >
         <Settings className="h-4 w-4" />
@@ -1206,17 +1206,7 @@ export default function ThemeControls() {
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetContent side="right" className="w-full sm:w-96 p-0">
           <SheetHeader className="p-6 border-b">
-            <div className="flex items-center justify-between">
-              <SheetTitle>Theme Settings</SheetTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSheetOpen(false)}
-                className="h-8 w-8 p-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+            <SheetTitle>Theme Settings</SheetTitle>
           </SheetHeader>
           <ScrollArea className="h-[calc(100vh-80px)]">
             <ThemeControlsContent isMobile={true} />

@@ -14,31 +14,29 @@ import {
 export default function CardRadio() {
   const id = useId();
   return (
-    <Card className="lg:h-[400px] shadow-none">
-      <CardHeader>
-        <CardTitle>
+    <Card className="h-full min-h-[300px] sm:min-h-[400px] shadow-none flex flex-col">
+      <CardHeader className="pb-3 sm:pb-4">
+        <CardTitle className="text-lg sm:text-xl">
           <Badge variant="secondary" className="text-xs">
             Card Radio
           </Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        {" "}
-        {/* added */}
-        <RadioGroup defaultValue="1" className="grid gap-2">
+      <CardContent className="space-y-2 flex-1 px-3 sm:px-6">
+        <RadioGroup defaultValue="1" className="grid gap-2 sm:gap-3">
           {/* Radio card #1 */}
           <Label
             htmlFor={`${id}-1`}
-            className="group flex items-start gap-3 border border-input rounded-md p-4 cursor-pointer data-[state=checked]:border-primary transition"
+            className="group flex items-start gap-2 sm:gap-3 border border-input rounded-md p-3 sm:p-4 cursor-pointer data-[state=checked]:border-primary transition"
           >
             <RadioGroupItem
               value="1"
               id={`${id}-1`}
               aria-describedby={`${id}-1-description`}
-              className="shrink-0 after:absolute after:inset-0"
+              className="shrink-0 after:absolute after:inset-0 mt-0.5"
             />
             <svg
-              className="shrink-0"
+              className="shrink-0 w-6 h-4 sm:w-8 sm:h-6"
               width={32}
               height={24}
               viewBox="0 0 32 24"
@@ -59,8 +57,8 @@ export default function CardRadio() {
                 fill="#F79E1B"
               />
             </svg>
-            <div className="grid grow gap-2">
-              <CardTitle className="text-base">
+            <div className="grid grow gap-1 sm:gap-2 min-w-0">
+              <CardTitle className="text-sm sm:text-base truncate">
                 Label{" "}
                 <span className="text-muted-foreground text-xs font-normal">
                   (Sublabel)
@@ -68,7 +66,7 @@ export default function CardRadio() {
               </CardTitle>
               <CardDescription
                 id={`${id}-1-description`}
-                className="text-xs text-muted-foreground"
+                className="text-xs text-muted-foreground leading-tight"
               >
                 You can use this card with a label and a description.
               </CardDescription>
@@ -78,16 +76,16 @@ export default function CardRadio() {
           {/* Radio card #2 */}
           <Label
             htmlFor={`${id}-2`}
-            className="group flex items-start gap-3 border border-input rounded-md p-4 cursor-pointer data-[state=checked]:border-primary transition"
+            className="group flex items-start gap-2 sm:gap-3 border border-input rounded-md p-3 sm:p-4 cursor-pointer data-[state=checked]:border-primary transition"
           >
             <RadioGroupItem
               value="2"
               id={`${id}-2`}
               aria-describedby={`${id}-2-description`}
-              className="shrink-0 after:absolute after:inset-0"
+              className="shrink-0 after:absolute after:inset-0 mt-0.5"
             />
             <svg
-              className="shrink-0"
+              className="shrink-0 w-6 h-4 sm:w-8 sm:h-6"
               width={32}
               height={24}
               viewBox="0 0 32 24"
@@ -120,8 +118,8 @@ export default function CardRadio() {
                 </clipPath>
               </defs>
             </svg>
-            <div className="grid grow gap-2">
-              <CardTitle className="text-base">
+            <div className="grid grow gap-1 sm:gap-2 min-w-0">
+              <CardTitle className="text-sm sm:text-base truncate">
                 Label{" "}
                 <span className="text-muted-foreground text-xs font-normal">
                   (Sublabel)
@@ -129,7 +127,7 @@ export default function CardRadio() {
               </CardTitle>
               <CardDescription
                 id={`${id}-2-description`}
-                className="text-xs text-muted-foreground"
+                className="text-xs text-muted-foreground leading-tight"
               >
                 You can use this card with a label and a description.
               </CardDescription>
@@ -137,7 +135,7 @@ export default function CardRadio() {
           </Label>
         </RadioGroup>
       </CardContent>
-      <CardFooter className="text-xs text-muted-foreground p-4">
+      <CardFooter className="text-xs text-muted-foreground p-3 sm:p-4 pt-0">
         You can use it to select options in a more visual way.
       </CardFooter>
     </Card>

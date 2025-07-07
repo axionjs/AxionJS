@@ -28,7 +28,7 @@ export function AxionTerminalDemo() {
   return (
     <div
       ref={scrollRef}
-      className="h-[400px] w-full px-0"
+      className="h-full min-h-[300px] sm:min-h-[400px] w-full px-0"
       style={{
         scrollbarWidth: "thin",
         scrollbarColor: "rgba(100,116,139,0.4) transparent",
@@ -47,25 +47,28 @@ export function AxionTerminalDemo() {
         }
       `}</style>
 
-      <Terminal className="w-full">
+      <Terminal className="w-full h-full">
         <TypingAnimation>$ npx axionjs-ui add</TypingAnimation>
 
         <AnimatedSpan delay={1500}>
           <span>┌</span>
         </AnimatedSpan>
 
-        <AnimatedSpan delay={2000} className="text-pink-500">
-          <span>◇ Which components would you like to add?</span>
+        <AnimatedSpan
+          delay={2000}
+          className="text-pink-500 flex flex-col sm:flex-row"
+        >
+          <span>◇ Which components would you </span>
+          <span>like to add?</span>
         </AnimatedSpan>
 
         <AnimatedSpan delay={2500}>
           <span>│</span>
         </AnimatedSpan>
 
-        <AnimatedSpan delay={2800}>
-          <span>
-            │ ◇ Hint: Space to select. A to toggle all. Enter to submit.
-          </span>
+        <AnimatedSpan delay={2800} className="flex flex-col sm:flex-row">
+          <span>│ ◇ Hint: Space to select.</span>
+          <span className="sm:ml-1">A to toggle all. Enter to submit.</span>
         </AnimatedSpan>
 
         <AnimatedSpan delay={3100}>
@@ -76,8 +79,12 @@ export function AxionTerminalDemo() {
           <span>✓ Checking registry.</span>
         </AnimatedSpan>
 
-        <AnimatedSpan delay={3900} className="text-pink-500">
-          <span>✓ Updating CSS variables in src\app\globals.css</span>
+        <AnimatedSpan
+          delay={3900}
+          className="text-pink-500 flex flex-col sm:flex-row"
+        >
+          <span>✓ Updating CSS variables </span>
+          <span className="sm:ml-1">in src\app\globals.css</span>
         </AnimatedSpan>
 
         <AnimatedSpan delay={4300} className="text-pink-500">

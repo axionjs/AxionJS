@@ -605,7 +605,7 @@ export default function RootLayout({
     <Sheet open={isExportPanelOpen} onOpenChange={setExportPanelOpen}>
       <SheetContent
         side="right"
-        className="w-[1100px] sm:max-w-none p-0 flex flex-col h-full overflow-hidden"
+        className="w-full sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px] sm:max-w-none p-0 flex flex-col h-full overflow-hidden"
       >
         <SheetHeader className="p-6 bg-gradient-to-r from-primary/10 to-secondary/10 border-b shrink-0">
           <div className="flex items-center gap-2">

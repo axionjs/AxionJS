@@ -7,7 +7,8 @@ import ThemeExportPanel from "./components/theme-editor/theme-export-panel";
 import AiGeneratePanel from "./components/theme-editor/ai-generate-panel";
 import ThemeControls from "./components/theme-editor/theme-controls";
 import ThemeBottomNav from "./components/theme-editor/theme-bottom-nav";
-import { ThemeProvider } from "./components/theme-editor/theme-provider";
+import { IsolatedThemeProvider } from "./components/theme-editor/isolated-theme-provider";
+import "./theme-editor.css";
 
 export default function ThemeEditorPage() {
   const { isExportPanelOpen, isAiPanelOpen, loadThemeFromStorage } =
@@ -19,7 +20,7 @@ export default function ThemeEditorPage() {
   }, [loadThemeFromStorage]);
 
   return (
-    <ThemeProvider>
+    <IsolatedThemeProvider>
       <div className="flex overflow-hidden pt-4">
         {/* Main Content Area */}
         <div className="flex-1 overflow-y-auto pb-20">
@@ -42,6 +43,6 @@ export default function ThemeEditorPage() {
         {/* AI Generate Panel */}
         {isAiPanelOpen && <AiGeneratePanel />}
       </div>
-    </ThemeProvider>
+    </IsolatedThemeProvider>
   );
 }

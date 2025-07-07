@@ -98,7 +98,7 @@ export default function AiGeneratePanel() {
     <Sheet open={isAiPanelOpen} onOpenChange={setAiPanelOpen}>
       <SheetContent
         side="right"
-        className="w-[600px] sm:max-w-none p-0 flex flex-col h-full"
+        className="w-full sm:w-[600px] sm:max-w-none p-0 flex flex-col h-full"
       >
         <SheetHeader className="p-6 bg-gradient-to-r from-primary/10 to-secondary/10 border-b shrink-0">
           <div className="flex items-center gap-2">

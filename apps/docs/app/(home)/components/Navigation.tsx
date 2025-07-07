@@ -101,7 +101,7 @@ export default function BottomNavigation({
 
   // Preview mode component
   const PreviewMode = () => (
-    <div className="w-full max-w-md mx-auto ">
+    <div className="w-full h-full">
       {showToggle && (
         <div className="flex justify-center mb-4">
           <Button
@@ -117,26 +117,26 @@ export default function BottomNavigation({
           </Button>
         </div>
       )}
-      <Card className="relative overflow-hidden h-[400px] bg-gradient-to-br from-background to-muted/20 border-2 border-dashed border-muted-foreground/20">
-        <CardHeader>
-          <CardTitle>
+      <Card className="relative overflow-hidden h-full min-h-[300px] sm:min-h-[400px] bg-gradient-to-br from-background to-muted/20 border-2 border-dashed border-muted-foreground/20 flex flex-col">
+        <CardHeader className="pb-3 sm:pb-4">
+          <CardTitle className="text-lg sm:text-xl">
             <Badge variant="secondary" className="text-xs">
               Bottom Navigation
             </Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-2">
+        <CardContent className="p-2 sm:p-3 flex-1 flex flex-col">
           {/* Mock screen content */}
-          <div className="space-y-4 mb-2">
-            <div className="grid grid-cols-2 gap-4 mt-2">
-              <div className="h-20 bg-muted rounded animate-pulse" />
-              <div className="h-20 bg-muted rounded animate-pulse" />
+          <div className="space-y-3 sm:space-y-4 flex-1">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="h-16 sm:h-20 bg-muted rounded animate-pulse" />
+              <div className="h-16 sm:h-20 bg-muted rounded animate-pulse" />
             </div>
-            <div className="h-32 bg-muted rounded animate-pulse" />
+            <div className="h-20 sm:h-32 bg-muted rounded animate-pulse" />
           </div>
 
           {/* Bottom navigation preview */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+          <div className="mt-auto pt-3 sm:pt-4 flex justify-center">
             <NavigationBar isPreview={true} />
           </div>
         </CardContent>
