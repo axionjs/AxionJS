@@ -1,0 +1,15 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "stats-grid",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "A stats grid component.",
+  "files": [
+    {
+      "path": "blocks/stats-grid.tsx",
+      "content": "export default function StatsGrid() {\n  return (\n    <section className=\"py-12 md:py-20\">\n      <div className=\"mx-auto max-w-5xl space-y-8 px-6 md:space-y-16\">\n        <div className=\"relative z-10 mx-auto max-w-xl space-y-6 text-center\">\n          <h2 className=\"text-4xl font-medium lg:text-5xl\">\n            Axion.js in numbers\n          </h2>\n          <p>\n            Our component library is more than just code. It supports an entire\n            ecosystem of developers and businesses helping them innovate faster.\n          </p>\n        </div>\n\n        <div className=\"grid gap-12 divide-y *:text-center md:grid-cols-3 md:gap-2 md:divide-x md:divide-y-0\">\n          <div className=\"space-y-4\">\n            <div className=\"text-5xl font-bold\">+1200</div>\n            <p>Stars on GitHub</p>\n          </div>\n          <div className=\"space-y-4\">\n            <div className=\"text-5xl font-bold\">22 Million</div>\n            <p>Active Users</p>\n          </div>\n          <div className=\"space-y-4\">\n            <div className=\"text-5xl font-bold\">+500</div>\n            <p>Powered Apps</p>\n          </div>\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+      "type": "registry:component",
+      "target": ""
+    }
+  ]
+}

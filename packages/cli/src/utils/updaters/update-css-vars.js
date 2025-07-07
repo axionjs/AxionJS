@@ -4,20 +4,27 @@ import { highlighter } from "../highlighter.js";
 import { spinner } from "../spinner.js";
 import postcss from "postcss";
 import AtRule from "postcss/lib/at-rule";
-
-export async function updateCssVars(cssVars, config, options) {
+import { getProjectTailwindVersionFromConfig } from "../get-project-info.js";
+export async function updateCssVars(tree, config, options) {
+  let cssVars = tree.cssVars || {};
+  let cssVarsV4 = tree.cssVarsV4 || {};
   if (!config.resolvedPaths.tailwindCss) {
     return;
   }
 
+  // Fix: Get the actual project version
+  const projectTailwindVersion =
+    await getProjectTailwindVersionFromConfig(config);
+
   options = {
     cleanupDefaultNextStyles: false,
     silent: false,
-    tailwindVersion: "v3",
-    overwriteCssVars: false,
+    tailwindVersion: projectTailwindVersion === "v4" ? "v4" : "v3",
+    overwriteCssVars: true, // Fix: Always overwrite for theme changes
     initIndex: true,
     ...options,
   };
+
   const cssFilepath = config.resolvedPaths.tailwindCss;
   const cssFilepathRelative = path.relative(
     config.resolvedPaths.cwd,
@@ -25,18 +32,21 @@ export async function updateCssVars(cssVars, config, options) {
   );
   const cssVarsSpinner = spinner(
     `Updating CSS variables in ${highlighter.info(cssFilepathRelative)}`,
-    {
-      silent: options.silent,
-    }
+    { silent: options.silent }
   ).start();
+
   const raw = await fs.readFile(cssFilepath, "utf8");
-  let output = await transformCssVars(raw, cssVars ?? {}, config, {
+  // Fix: Use the correct CSS vars based on version
+  const resolvedCssVars =
+    options.tailwindVersion === "v4" && cssVarsV4 ? cssVarsV4 : cssVars || {};
+  let output = await transformCssVars(raw, resolvedCssVars, config, {
     cleanupDefaultNextStyles: options.cleanupDefaultNextStyles,
     tailwindVersion: options.tailwindVersion,
     tailwindConfig: options.tailwindConfig,
     overwriteCssVars: options.overwriteCssVars,
     initIndex: options.initIndex,
   });
+
   await fs.writeFile(cssFilepath, output, "utf8");
   cssVarsSpinner.succeed();
 }
@@ -60,17 +70,17 @@ export async function transformCssVars(input, cssVars, config, options) {
   if (options.tailwindVersion === "v4") {
     plugins = [];
 
-    // Only add tw-animate-css if project does not have tailwindcss-animate
-    if (config.resolvedPaths?.cwd) {
-      const packageInfo = getPackageInfo(config.resolvedPaths.cwd);
-      if (
-        !packageInfo?.dependencies?.["tailwindcss-animate"] &&
-        !packageInfo?.devDependencies?.["tailwindcss-animate"] &&
-        options.initIndex
-      ) {
-        plugins.push(addCustomImport({ params: "tw-animate-css" }));
-      }
-    }
+    // // Only add tw-animate-css if project does not have tailwindcss-animate
+    // if (config.resolvedPaths?.cwd) {
+    //   const packageInfo = getPackageInfo(config.resolvedPaths.cwd);
+    //   if (
+    //     !packageInfo?.dependencies?.["tailwindcss-animate"] &&
+    //     !packageInfo?.devDependencies?.["tailwindcss-animate"] &&
+    //     options.initIndex
+    //   ) {
+    //     plugins.push(addCustomImport({ params: "tw-animate-css" }));
+    //   }
+    // }
 
     plugins.push(addCustomVariant({ params: "dark (&:is(.dark *))" }));
 
@@ -339,7 +349,7 @@ function addOrUpdateVars(baseLayer, selector, vars) {
   });
 }
 
-function updateCssVarsPluginV4(cssVars) {
+function updateCssVarsPluginV4(cssVars, options) {
   return {
     postcssPlugin: "update-css-vars-v4",
     Once(root) {
@@ -361,20 +371,10 @@ function updateCssVarsPluginV4(cssVars) {
               (node) => node.type === "decl" && node.prop === prop
             );
 
-            // Only overwrite if overwriteCssVars is true
-            // i.e for registry:theme and registry:style
-            // We do not want new components to overwrite existing vars.
-            // Keep user defined vars.
-            if (options.overwriteCssVars) {
-              if (existingDecl) {
-                existingDecl.replaceWith(newDecl);
-              } else {
-                themeNode?.append(newDecl);
-              }
+            if (existingDecl) {
+              existingDecl.replaceWith(newDecl);
             } else {
-              if (!existingDecl) {
-                themeNode?.append(newDecl);
-              }
+              themeNode?.append(newDecl);
             }
           });
           return;
@@ -397,37 +397,44 @@ function updateCssVarsPluginV4(cssVars) {
         Object.entries(vars).forEach(([key, value]) => {
           let prop = `--${key.replace(/^--/, "")}`;
 
-          // Special case for sidebar-background.
           if (prop === "--sidebar-background") {
             prop = "--sidebar";
           }
 
-          if (isLocalHSLValue(value)) {
-            value = `hsl(${value})`;
+          // Fix: Handle different value types properly
+          let finalValue = value;
+
+          // Handle font variables
+          if (
+            key.includes("font") &&
+            !value.startsWith('"') &&
+            !value.startsWith("'")
+          ) {
+            finalValue = `"${value}"`;
+          }
+          // Handle color values - but don't wrap OKLCH values
+          else if (isLocalHSLValue(value) && !value.startsWith("oklch")) {
+            finalValue = `hsl(${value})`;
+          }
+          // For OKLCH, RGB, HSL, and other values, use as-is
+          else {
+            finalValue = value;
           }
 
           const newDecl = postcss.decl({
             prop,
-            value,
+            value: finalValue,
             raws: { semicolon: true },
           });
+
           const existingDecl = ruleNode?.nodes.find(
             (node) => node.type === "decl" && node.prop === prop
           );
-          // Only overwrite if overwriteCssVars is true
-          // i.e for registry:theme and registry:style
-          // We do not want new components to overwrite existing vars.
-          // Keep user defined vars.
-          if (options.overwriteCssVars) {
-            if (existingDecl) {
-              existingDecl.replaceWith(newDecl);
-            } else {
-              ruleNode?.append(newDecl);
-            }
+
+          if (existingDecl) {
+            existingDecl.replaceWith(newDecl);
           } else {
-            if (!existingDecl) {
-              ruleNode?.append(newDecl);
-            }
+            ruleNode?.append(newDecl);
           }
         });
       });
@@ -439,7 +446,7 @@ function updateThemePlugin(cssVars) {
   return {
     postcssPlugin: "update-theme",
     Once(root) {
-      // Find unique color names from light and dark.
+      // Get all variables from light and dark themes
       const variables = Array.from(
         new Set(
           Object.keys(cssVars).flatMap((key) => Object.keys(cssVars[key] || {}))
@@ -451,10 +458,6 @@ function updateThemePlugin(cssVars) {
       }
 
       const themeNode = upsertThemeNode(root);
-
-      const themeVarNodes = themeNode.nodes?.filter(
-        (node) => node.type === "decl" && node.prop.startsWith("--")
-      );
 
       for (const variable of variables) {
         const value = Object.values(cssVars).find((vars) => vars[variable])?.[
@@ -478,28 +481,41 @@ function updateThemePlugin(cssVars) {
               value,
               raws: { semicolon: true },
             });
-            if (
-              themeNode?.nodes?.find(
-                (node) => node.type === "decl" && node.prop === cssVarNode.prop
-              )
-            ) {
-              continue;
+            const existingDecl = themeNode?.nodes?.find(
+              (node) => node.type === "decl" && node.prop === cssVarNode.prop
+            );
+            if (!existingDecl) {
+              themeNode?.append(cssVarNode);
             }
-            themeNode?.append(cssVarNode);
           }
           continue;
         }
 
-        let prop =
-          isLocalHSLValue(value) || isColorValue(value)
-            ? `--color-${variable.replace(/^--/, "")}`
-            : `--${variable.replace(/^--/, "")}`;
-        if (prop === "--color-sidebar-background") {
-          prop = "--color-sidebar";
+        // Fix: Handle font variables properly
+        let prop;
+        let propValue;
+
+        if (variable.includes("font")) {
+          if (variable === "font-display") {
+            prop = "--font-display";
+            propValue = "var(--display-family)";
+          } else if (variable === "font-text") {
+            prop = "--font-text";
+            propValue = "var(--text-family)";
+          } else {
+            prop = `--${variable.replace(/^--/, "")}`;
+            propValue = `var(--${variable})`;
+          }
+        } else {
+          prop =
+            isLocalHSLValue(value) || isColorValue(value)
+              ? `--color-${variable.replace(/^--/, "")}`
+              : `--${variable.replace(/^--/, "")}`;
+          propValue = `var(--${variable})`;
         }
 
-        let propValue = `var(--${variable})`;
-        if (prop === "--color-sidebar") {
+        if (prop === "--color-sidebar-background") {
+          prop = "--color-sidebar";
           propValue = "var(--sidebar)";
         }
 
@@ -508,18 +524,13 @@ function updateThemePlugin(cssVars) {
           value: propValue,
           raws: { semicolon: true },
         });
+
         const existingDecl = themeNode?.nodes?.find(
           (node) => node.type === "decl" && node.prop === cssVarNode.prop
         );
+
         if (!existingDecl) {
-          if (themeVarNodes?.length) {
-            themeNode?.insertAfter(
-              themeVarNodes[themeVarNodes.length - 1],
-              cssVarNode
-            );
-          } else {
-            themeNode?.append(cssVarNode);
-          }
+          themeNode?.append(cssVarNode);
         }
       }
     },
@@ -797,29 +808,39 @@ function getQuoteType(root) {
   return "double";
 }
 
-export function isLocalHSLValue(value) {
-  if (
-    value.startsWith("hsl") ||
-    value.startsWith("rgb") ||
-    value.startsWith("#") ||
-    value.startsWith("oklch")
-  ) {
-    return false;
-  }
-
-  const chunks = value.split(" ");
-
-  return (
-    chunks.length === 3 &&
-    chunks.slice(1, 3).every((chunk) => chunk.includes("%"))
-  );
-}
-
 export function isColorValue(value) {
   return (
     value.startsWith("hsl") ||
     value.startsWith("rgb") ||
     value.startsWith("#") ||
     value.startsWith("oklch")
+  );
+}
+
+// Fix: Update the HSL check to properly exclude OKLCH
+export function isLocalHSLValue(value) {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  // Exclude any value that already has a color function
+  if (
+    value.startsWith("hsl(") ||
+    value.startsWith("rgb(") ||
+    value.startsWith("oklch(") ||
+    value.startsWith("#") ||
+    value.startsWith("var(") ||
+    value.includes("calc(") ||
+    value.includes("clamp(")
+  ) {
+    return false;
+  }
+
+  // Check if it's a local HSL value (space-separated numbers
+  const chunks = value.split(" ");
+
+  return (
+    chunks.length === 3 &&
+    chunks.slice(1, 3).every((chunk) => chunk.includes("%"))
   );
 }

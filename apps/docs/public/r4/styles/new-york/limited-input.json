@@ -1,0 +1,20 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "limited-input",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "zod"
+  ],
+  "registryDependencies": [
+    "input"
+  ],
+  "files": [
+    {
+      "path": "ui/limited-input.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Label } from \"@/registry/new-york/ui/label\";\nimport { Input } from \"@/registry/new-york/ui/input\";\n\ninterface LimitedInputProps\n  extends Omit<\n    React.InputHTMLAttributes<HTMLInputElement>,\n    \"value\" | \"onChange\" | \"required\"\n  > {\n  label?: string;\n  id?: string;\n  value?: string;\n  onChange?: (value: string) => void;\n  characterLimit?: number;\n  required?: boolean;\n  helperText?: string;\n  error?: string;\n}\n\nconst LimitedInput = ({\n  label = \"Input Label\",\n  id = \"limited-input\",\n  value = \"\",\n  onChange,\n  characterLimit = 50,\n  required = false,\n  helperText,\n  error,\n  ...props\n}: LimitedInputProps) => {\n  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n    const newValue = e.target.value;\n    if (newValue.length <= characterLimit) {\n      onChange?.(newValue);\n    }\n  };\n\n  return (\n    <div>\n      {helperText && (\n        <p className=\"my-1 pb-1 text-sm font-medium text-foreground/80\">\n          {helperText}\n        </p>\n      )}\n\n      <Input\n        id={id}\n        value={value}\n        onChange={handleInputChange}\n        required={required}\n        {...props}\n      />\n\n      <p className=\"mt-1 text-sm text-foreground/80\">\n        {value.length}/{characterLimit}\n      </p>\n\n      {value.length === characterLimit && (\n        <p className=\"mt-1 text-sm text-destructive\">\n          You can not enter more than {characterLimit} characters.\n        </p>\n      )}\n\n      {error && <p className=\"mt-1 text-sm text-destructive\">{error}</p>}\n    </div>\n  );\n};\n\nexport default LimitedInput;\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

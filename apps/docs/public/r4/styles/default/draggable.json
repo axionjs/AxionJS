@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "draggable",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "@dnd-kit/core",
+    "@dnd-kit/sortable",
+    "@dnd-kit/utilities"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "ui/draggable.tsx",
+      "content": "import React from \"react\";\nimport {\n  DndContext,\n  closestCenter,\n  PointerSensor,\n  KeyboardSensor,\n  useSensor,\n  useSensors,\n  DragEndEvent,\n} from \"@dnd-kit/core\";\nimport {\n  arrayMove,\n  SortableContext,\n  useSortable,\n  sortableKeyboardCoordinates,\n  verticalListSortingStrategy,\n} from \"@dnd-kit/sortable\";\nimport { CSS } from \"@dnd-kit/utilities\";\nimport { cn } from \"@/lib/utils\";\nimport { Button } from \"@/registry/default/ui/button\";\nimport { GripVertical } from \"lucide-react\";\n\ninterface DraggableProps<T> {\n  items: T[];\n  onItemsChange: (items: T[]) => void;\n  renderItem: (item: T, index: number) => React.ReactNode;\n  idKey?: keyof T;\n  className?: string;\n}\n\nconst Draggable = <T extends { id: string | number }>({\n  items,\n  onItemsChange,\n  renderItem,\n  idKey = \"id\",\n  className,\n}: DraggableProps<T>) => {\n  const sensors = useSensors(\n    useSensor(PointerSensor),\n    useSensor(KeyboardSensor, {\n      coordinateGetter: sortableKeyboardCoordinates,\n    }),\n  );\n\n  const handleDragEnd = (event: DragEndEvent) => {\n    const { active, over } = event;\n\n    if (active.id !== over?.id) {\n      const oldIndex = items.findIndex((item) => item[idKey] === active.id);\n      const newIndex = items.findIndex((item) => item[idKey] === over?.id);\n\n      const newItems = arrayMove(items, oldIndex, newIndex);\n      onItemsChange(newItems);\n    }\n  };\n\n  return (\n    <DndContext\n      sensors={sensors}\n      collisionDetection={closestCenter}\n      onDragEnd={handleDragEnd}\n    >\n      <SortableContext\n        items={items.map((item) => item[idKey])}\n        strategy={verticalListSortingStrategy}\n      >\n        <div className={cn(\"space-y-2\", className)}>\n          {items.map((item, index) => (\n            <SortableItem\n              key={item[idKey]}\n              id={item[idKey]}\n              item={item}\n              index={index}\n              renderItem={renderItem}\n              idKey={idKey}\n            />\n          ))}\n        </div>\n      </SortableContext>\n    </DndContext>\n  );\n};\n\ninterface SortableItemProps<T> {\n  id: string | number;\n  item: T;\n  index: number;\n  renderItem: (item: T, index: number) => React.ReactNode;\n  idKey: keyof T;\n}\n\nconst SortableItem = <T extends { id: string | number }>({\n  id,\n  item,\n  index,\n  renderItem,\n  idKey,\n}: SortableItemProps<T>) => {\n  const {\n    attributes,\n    listeners,\n    setNodeRef,\n    transform,\n    transition,\n    isDragging,\n  } = useSortable({ id });\n\n  const style = {\n    transform: CSS.Transform.toString(transform),\n    transition,\n    opacity: isDragging ? 0.5 : 1,\n  };\n\n  return (\n    <div\n      ref={setNodeRef}\n      style={style}\n      className={cn(\n        \"p-4 bg-background border border-border rounded-md shadow-sm flex items-center justify-between\",\n        isDragging && \"z-50\",\n      )}\n      {...attributes}\n      {...listeners}\n    >\n      <div className=\"flex-1\">{renderItem(item, index)}</div>\n      <Button\n        variant=\"ghost\"\n        size=\"icon\"\n        aria-label={`Drag handle for item ${index + 1}`}\n        className=\"ml-2\"\n        {...listeners}\n      >\n        <GripVertical />\n      </Button>\n    </div>\n  );\n};\n\nexport default Draggable;\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

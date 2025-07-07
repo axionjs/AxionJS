@@ -1,0 +1,17 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "radio-group",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "@radix-ui/react-radio-group"
+  ],
+  "files": [
+    {
+      "path": "ui/radio-group.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport * as RadioGroupPrimitive from \"@radix-ui/react-radio-group\";\nimport { Circle as CircleIcon } from \"lucide-react\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst RadioGroup = React.forwardRef<\n  React.ElementRef<typeof RadioGroupPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>\n>(({ className, ...props }, ref) => {\n  return (\n    <RadioGroupPrimitive.Root\n      ref={ref}\n      data-slot=\"radio-group\"\n      className={cn(\"grid gap-3\", className)}\n      {...props}\n    />\n  );\n});\nRadioGroup.displayName = RadioGroupPrimitive.Root.displayName;\n\nconst RadioGroupItem = React.forwardRef<\n  React.ElementRef<typeof RadioGroupPrimitive.Item>,\n  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>\n>(({ className, ...props }, ref) => {\n  return (\n    <RadioGroupPrimitive.Item\n      ref={ref}\n      data-slot=\"radio-group-item\"\n      className={cn(\n        \"relative aspect-square h-4 w-4 rounded-full border border-primary text-primary\",\n        \"transition-colors duration-200 ease-in-out shadow-xs outline-none\",\n        \"focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30\",\n        \"focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20\",\n        \"dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30\",\n        \"disabled:cursor-not-allowed disabled:opacity-50\",\n        className,\n      )}\n      {...props}\n    >\n      <RadioGroupPrimitive.Indicator\n        data-slot=\"radio-group-indicator\"\n        className={cn(\n          \"relative flex items-center justify-center transform scale-0\",\n          \"transition-transform duration-200 data-[state=checked]:scale-100\",\n        )}\n      >\n        <CircleIcon\n          className=\"fill-primary absolute top-1/2 left-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2\"\n          aria-hidden=\"true\"\n          focusable=\"false\"\n        />\n      </RadioGroupPrimitive.Indicator>\n    </RadioGroupPrimitive.Item>\n  );\n});\nRadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;\n\nexport { RadioGroup, RadioGroupItem };\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

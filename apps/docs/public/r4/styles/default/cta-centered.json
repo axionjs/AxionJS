@@ -1,0 +1,18 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "cta-centered",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "A centered call to action block.",
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "blocks/cta-centered.tsx",
+      "content": "import { Button } from \"@/registry/default/ui/button\";\nimport Link from \"next/link\";\nimport { ArrowRight } from \"lucide-react\";\n\nexport default function CTACentered() {\n  return (\n    <section className=\"py-12 md:py-24 lg:py-32\">\n      <div className=\"container px-4 md:px-6\">\n        <div className=\"flex flex-col items-center justify-center space-y-4 text-center\">\n          <div className=\"space-y-2\">\n            <h2 className=\"text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl\">\n              Ready to get started?\n            </h2>\n            <p className=\"mx-auto max-w-[700px] text-muted-foreground md:text-xl\">\n              Join thousands of developers building modern, responsive web\n              applications with our component library.\n            </p>\n          </div>\n          <div className=\"flex flex-col gap-2 min-[400px]:flex-row\">\n            <Button asChild size=\"lg\">\n              <Link href=\"#get-started\">\n                Get Started\n                <ArrowRight className=\"ml-2 h-4 w-4\" />\n              </Link>\n            </Button>\n            <Button asChild variant=\"outline\" size=\"lg\">\n              <Link href=\"#contact\">Contact Sales</Link>\n            </Button>\n          </div>\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+      "type": "registry:component",
+      "target": ""
+    }
+  ]
+}

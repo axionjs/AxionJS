@@ -35,5 +35,5 @@
     "components/ui/button.jsx",
     "components/docs/button-preview.jsx"
   ],
-  "exclude": ["node_modules","__registry__"]
+  "exclude": ["node_modules", "__registry__", "__registryV4__"]
 }

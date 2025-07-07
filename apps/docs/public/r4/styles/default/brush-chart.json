@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "brush-chart",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "registryDependencies": [
+    "card",
+    "chart"
+  ],
+  "files": [
+    {
+      "path": "charts/brush-chart.tsx",
+      "content": "\"use client\";\n\nimport { TrendingUp } from \"lucide-react\";\nimport { Area, AreaChart, Brush, CartesianGrid, XAxis, YAxis } from \"recharts\";\n\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n} from \"@/registry/default/ui/card\";\nimport {\n  type ChartConfig,\n  ChartContainer,\n  ChartTooltip,\n  ChartTooltipContent,\n} from \"@/registry/default/ui/chart\";\n\nconst chartData = [\n  { date: \"2024-01-01\", value: 4000 },\n  { date: \"2024-01-15\", value: 4200 },\n  { date: \"2024-02-01\", value: 5000 },\n  { date: \"2024-02-15\", value: 5200 },\n  { date: \"2024-03-01\", value: 4500 },\n  { date: \"2024-03-15\", value: 4700 },\n  { date: \"2024-04-01\", value: 6000 },\n  { date: \"2024-04-15\", value: 6200 },\n  { date: \"2024-05-01\", value: 7000 },\n  { date: \"2024-05-15\", value: 7200 },\n  { date: \"2024-06-01\", value: 8000 },\n  { date: \"2024-06-15\", value: 8200 },\n];\n\nconst chartConfig = {\n  value: {\n    label: \"Stock Price\",\n    color: \"hsl(var(--chart-1))\",\n  },\n} satisfies ChartConfig;\n\nexport function BrushChart() {\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle>Brush Chart</CardTitle>\n        <CardDescription>Stock price with time range selection</CardDescription>\n      </CardHeader>\n      <CardContent>\n        <ChartContainer config={chartConfig}>\n          <AreaChart\n            accessibilityLayer\n            data={chartData}\n            margin={{ top: 20, right: 20, bottom: 20, left: 20 }}\n          >\n            <CartesianGrid strokeDasharray=\"3 3\" />\n            <XAxis\n              dataKey=\"date\"\n              tickLine={false}\n              axisLine={false}\n              tickFormatter={(value) => {\n                const date = new Date(value);\n                return date.getMonth() + 1 + \"/\" + date.getDate();\n              }}\n            />\n            <YAxis\n              tickLine={false}\n              axisLine={false}\n              tickFormatter={(value) => \"$\" + value}\n            />\n            <ChartTooltip\n              content={\n                <ChartTooltipContent\n                  formatter={(value) => \"$\" + value}\n                  labelFormatter={(label) => {\n                    const date = new Date(label);\n                    return date.toLocaleDateString(\"en-US\", {\n                      month: \"short\",\n                      day: \"numeric\",\n                    });\n                  }}\n                />\n              }\n            />\n            <Area\n              type=\"monotone\"\n              dataKey=\"value\"\n              stroke=\"var(--color-value)\"\n              fill=\"var(--color-value)\"\n              fillOpacity={0.3}\n            />\n            <Brush\n              dataKey=\"date\"\n              height={30}\n              stroke=\"var(--color-value)\"\n              tickFormatter={(value) => {\n                const date = new Date(value);\n                return date.getMonth() + 1 + \"/\" + date.getDate();\n              }}\n              startIndex={2}\n              endIndex={8}\n            />\n          </AreaChart>\n        </ChartContainer>\n      </CardContent>\n      <CardFooter className=\"flex-col items-start gap-2 text-sm\">\n        <div className=\"flex gap-2 font-medium leading-none\">\n          Stock price up 105% in 6 months <TrendingUp className=\"h-4 w-4\" />\n        </div>\n        <div className=\"leading-none text-muted-foreground\">\n          Use the brush below to select a time range\n        </div>\n      </CardFooter>\n    </Card>\n  );\n}\n",
+      "type": "registry:block",
+      "target": ""
+    }
+  ],
+  "categories": [
+    "charts",
+    "charts-brush"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "accordion",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "@radix-ui/react-accordion"
+  ],
+  "files": [
+    {
+      "path": "ui/accordion.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport * as AccordionPrimitive from \"@radix-ui/react-accordion\";\nimport { ChevronDown } from \"lucide-react\";\n\nimport { cn } from \"@/lib/utils\";\n\n// 1. Accordion Root\n// ------------------------------------------------------------\n// Allows you to pass global accessibility attributes like\n// aria-label, aria-labelledby, role, etc. directly in usage.\nconst Accordion = React.forwardRef<\n  React.ElementRef<typeof AccordionPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>\n>(({ className, children, ...props }, ref) => (\n  <AccordionPrimitive.Root\n    ref={ref}\n    className={cn(\"w-full\", className)}\n    {...props}\n  >\n    {children}\n  </AccordionPrimitive.Root>\n));\nAccordion.displayName = \"Accordion\";\n\n// 2. Accordion Item\n// ------------------------------------------------------------\n// A single collapsible item in the Accordion. Pass any additional\n// accessibility attributes (e.g., aria-label) from usage.\nconst AccordionItem = React.forwardRef<\n  React.ElementRef<typeof AccordionPrimitive.Item>,\n  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>\n>(({ className, children, ...props }, ref) => (\n  <AccordionPrimitive.Item\n    ref={ref}\n    className={cn(\"border-b\", className)}\n    {...props}\n  >\n    {children}\n  </AccordionPrimitive.Item>\n));\nAccordionItem.displayName = \"AccordionItem\";\n\nconst AccordionTrigger = React.forwardRef<\n  React.ElementRef<typeof AccordionPrimitive.Trigger>,\n  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>\n>(({ className, children, ...props }, ref) => (\n  <AccordionPrimitive.Header asChild>\n    <AccordionPrimitive.Trigger\n      ref={ref}\n      className={cn(\n        \"group flex w-full items-center justify-between py-4 text-left text-sm font-medium\",\n        \"transition-all hover:underline\",\n        \"[&[data-state=open]>svg]:rotate-180\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n      <ChevronDown\n        className=\"h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200\"\n        aria-hidden=\"true\"\n      />\n    </AccordionPrimitive.Trigger>\n  </AccordionPrimitive.Header>\n));\nAccordionTrigger.displayName = \"AccordionTrigger\";\n\nconst AccordionContent = React.forwardRef<\n  React.ElementRef<typeof AccordionPrimitive.Content>,\n  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>\n>(({ className, children, ...props }, ref) => (\n  <AccordionPrimitive.Content\n    ref={ref}\n    className={cn(\n      \"overflow-hidden text-sm\",\n      // Radix UI data attributes for tailwind-based animations\n      \"data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down\",\n      className,\n    )}\n    {...props}\n  >\n    <div className=\"pb-4 pt-0\">{children}</div>\n  </AccordionPrimitive.Content>\n));\nAccordionContent.displayName = \"AccordionContent\";\n\nexport { Accordion, AccordionItem, AccordionTrigger, AccordionContent };\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ],
+  "tailwind": {
+    "config": {
+      "theme": {
+        "extend": {
+          "keyframes": {
+            "accordion-down": {
+              "from": {
+                "height": "0"
+              },
+              "to": {
+                "height": "var(--radix-accordion-content-height)"
+              }
+            },
+            "accordion-up": {
+              "from": {
+                "height": "var(--radix-accordion-content-height)"
+              },
+              "to": {
+                "height": "0"
+              }
+            }
+          },
+          "animation": {
+            "accordion-down": "accordion-down 0.2s ease-out",
+            "accordion-up": "accordion-up 0.2s ease-out"
+          }
+        }
+      }
+    }
+  }
+}

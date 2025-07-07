@@ -1,0 +1,19 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "cta-card",
+  "type": "registry:block",
+  "author": "axionjs (https://www.axionjs.com)",
+  "description": "A simple call to action card block.",
+  "registryDependencies": [
+    "button",
+    "card"
+  ],
+  "files": [
+    {
+      "path": "blocks/cta-card.tsx",
+      "content": "import { Button } from \"@/registry/new-york/ui/button\";\nimport { Card, CardContent } from \"@/registry/new-york/ui/card\";\nimport Link from \"next/link\";\nimport { ArrowRight, Check } from \"lucide-react\";\n\nexport default function CTACard() {\n  const features = [\n    \"Responsive components\",\n    \"Accessible by default\",\n    \"Dark mode support\",\n    \"Customizable themes\",\n  ];\n\n  return (\n    <section className=\"py-12 md:py-24\">\n      <div className=\"container px-4 md:px-6\">\n        <Card className=\"mx-auto max-w-4xl overflow-hidden border-none bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5\">\n          <CardContent className=\"p-8 md:p-12\">\n            <div className=\"grid gap-6 md:grid-cols-2 md:gap-12\">\n              <div className=\"space-y-4\">\n                <h2 className=\"text-3xl font-bold tracking-tight\">\n                  Start building today\n                </h2>\n                <p className=\"text-muted-foreground\">\n                  Our component library provides everything you need to build\n                  beautiful, accessible web applications.\n                </p>\n                <div className=\"space-y-2\">\n                  {features.map((feature, i) => (\n                    <div key={i} className=\"flex items-center gap-2\">\n                      <Check className=\"h-4 w-4 text-primary\" />\n                      <span className=\"text-sm\">{feature}</span>\n                    </div>\n                  ))}\n                </div>\n              </div>\n              <div className=\"flex flex-col justify-center space-y-4\">\n                <div className=\"rounded-lg bg-background p-6 shadow-sm\">\n                  <div className=\"space-y-4\">\n                    <h3 className=\"text-xl font-bold\">Get started for free</h3>\n                    <p className=\"text-sm text-muted-foreground\">\n                      No credit card required. Upgrade anytime.\n                    </p>\n                    <Button asChild className=\"w-full\" size=\"lg\">\n                      <Link href=\"#get-started\">\n                        Start Building\n                        <ArrowRight className=\"ml-2 h-4 w-4\" />\n                      </Link>\n                    </Button>\n                  </div>\n                </div>\n                <p className=\"text-center text-sm text-muted-foreground\">\n                  Already have an account?{\" \"}\n                  <Link\n                    href=\"#login\"\n                    className=\"font-medium text-primary hover:underline\"\n                  >\n                    Sign in\n                  </Link>\n                </p>\n              </div>\n            </div>\n          </CardContent>\n        </Card>\n      </div>\n    </section>\n  );\n}\n",
+      "type": "registry:component",
+      "target": ""
+    }
+  ]
+}
