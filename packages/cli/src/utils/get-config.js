@@ -187,6 +187,5 @@ export async function getRawConfig(cwd) {
 
 // TODO: Cache this call.
 export async function getTargetStyleFromConfig(cwd, fallback) {
-  const projectInfo = await getProjectInfo(cwd);
-  return projectInfo?.tailwindVersion === "v4" ? "new-york-v4" : fallback;
+  return fallback;
 }

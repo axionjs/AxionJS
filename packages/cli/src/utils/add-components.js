@@ -71,7 +71,8 @@ export async function addComponents(components, config, options) {
     silent: options.silent,
     tailwindVersion,
   });
-  await updateCssVars(tree.cssVars, config, {
+
+  await updateCssVars(tree, config, {
     cleanupDefaultNextStyles: options.isNewProject,
     silent: options.silent,
     tailwindVersion,
