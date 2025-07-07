@@ -1,5 +1,11 @@
 # axionjs-ui
 
+## 1.2.0
+
+### Minor Changes
+
+- a605cff: Ensure v4 compatiblity for themes and components
+
 ## 1.1.0
 
 ### Minor Changes
