@@ -59,7 +59,10 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [`${process.env.NEXT_PUBLIC_APP_URL}/opengraph-image.png`],
-    creator: "@shadcn",
+    creator: "@axionjs",
+  },
+  verification: {
+    google: "K1mjmukGl6iM9PYr8lZ9XoLMWyc5v94Ms8UMo78-2qg",
   },
   icons: {
     icon: "/favicon.ico",
