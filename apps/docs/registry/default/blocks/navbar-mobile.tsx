@@ -6,11 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/registry/default/ui/logo";
 import { Button } from "@/registry/default/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/registry/default/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/registry/default/ui/sheet";
 import { ModeToggle } from "@/registry/default/ui/mode-toggle";
 import { Menu, Home, FileText, Settings, Users, BarChart2 } from "lucide-react";
 import { motion } from "motion/react";

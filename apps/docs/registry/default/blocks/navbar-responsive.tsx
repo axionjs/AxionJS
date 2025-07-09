@@ -5,11 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/registry/default/ui/button";
 import { Input } from "@/registry/default/ui/input";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/registry/default/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/registry/default/ui/sheet";
 import {
   Search,
   Menu,

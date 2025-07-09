@@ -220,6 +220,18 @@ export const ui: Registry["items"] = [
     ],
   },
   {
+    name: "color-picker",
+    type: "registry:ui",
+    dependencies: ["react-colorful"],
+    registryDependencies: ["button", "input", "popover"],
+    files: [
+      {
+        path: "ui/color-picker.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
     name: "container",
     type: "registry:ui",
     files: [
@@ -376,6 +388,16 @@ export const ui: Registry["items"] = [
     files: [
       {
         path: "ui/limited-input.tsx",
+        type: "registry:ui",
+      },
+    ],
+  },
+  {
+    name: "logo",
+    type: "registry:ui",
+    files: [
+      {
+        path: "ui/logo.tsx",
         type: "registry:ui",
       },
     ],

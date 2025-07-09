@@ -1,0 +1,22 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "color-picker",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "dependencies": [
+    "react-colorful"
+  ],
+  "registryDependencies": [
+    "button",
+    "input",
+    "popover"
+  ],
+  "files": [
+    {
+      "path": "ui/color-picker.tsx",
+      "content": "\"use client\";\n\nimport type React from \"react\";\nimport { forwardRef, useMemo, useState, useEffect, useRef } from \"react\";\nimport { HexColorPicker } from \"react-colorful\";\nimport { cn } from \"@/registry/default/lib/utils\";\nimport type { ButtonProps } from \"@/registry/default/ui/button\";\nimport { Button } from \"@/registry/default/ui/button\";\nimport {\n  Popover,\n  PopoverContent,\n  PopoverTrigger,\n} from \"@/registry/default/ui/popover\";\nimport { Input } from \"@/registry/default/ui/input\";\n\nexport function useForwardedRef<T>(ref: React.ForwardedRef<T>) {\n  const innerRef = useRef<T>(null);\n\n  useEffect(() => {\n    if (!ref) return;\n\n    if (typeof ref === \"function\") {\n      ref(innerRef.current);\n    } else {\n      (ref as React.MutableRefObject<T | null>).current = innerRef.current;\n    }\n  });\n\n  return innerRef;\n}\n\ninterface ColorPickerProps {\n  value: string;\n  onChange: (value: string) => void;\n  onBlur?: () => void;\n}\n\nconst ColorPicker = forwardRef<\n  HTMLInputElement,\n  Omit<ButtonProps, \"value\" | \"onChange\" | \"onBlur\"> & ColorPickerProps\n>(\n  (\n    { disabled, value, onChange, onBlur, name, className, ...props },\n    forwardedRef,\n  ) => {\n    const ref = useForwardedRef(forwardedRef);\n    const [open, setOpen] = useState(false);\n\n    const parsedValue = useMemo(() => {\n      return value || \"#FFFFFF\";\n    }, [value]);\n\n    return (\n      <Popover onOpenChange={setOpen} open={open}>\n        <PopoverTrigger asChild disabled={disabled} onBlur={onBlur}>\n          <Button\n            {...props}\n            ref={ref}\n            className={cn(\n              \"h-8 w-8 p-0\",\n              \"flex items-center justify-center\",\n              \"border\",\n            )}\n            name={name}\n            onClick={() => {\n              setOpen(true);\n            }}\n            size=\"icon\" // Use icon size for a small square button\n            type=\"button\" // Explicitly set type to button\n            variant=\"outline\"\n          >\n            {/* Inner div to display the color */}\n            <div\n              className=\"h-4 w-4 rounded border\"\n              style={{ backgroundColor: parsedValue }}\n            />\n            <span className=\"sr-only\">Pick a color</span> {/* Accessibility */}\n          </Button>\n        </PopoverTrigger>\n        <PopoverContent className=\"w-auto p-2\">\n          <HexColorPicker\n            color={parsedValue}\n            onChange={onChange}\n            style={{ width: \"100%\", height: \"150px\", marginBottom: \"8px\" }} // Add some styling\n          />\n          <Input\n            ref={ref} // Attach the ref here for the input element\n            id={name ? `color-input-${name}` : \"color-input\"} // Add id for label association\n            className=\"mt-2 h-8\" // Add margin top and control height\n            maxLength={7}\n            onChange={(e) => {\n              onChange(e.currentTarget.value);\n            }}\n            onBlur={onBlur} // Pass onBlur to Input as well\n            value={parsedValue}\n            aria-label=\"Hex color input\" // Accessibility\n          />\n        </PopoverContent>\n      </Popover>\n    );\n  },\n);\nColorPicker.displayName = \"ColorPicker\";\n\nexport { ColorPicker };\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

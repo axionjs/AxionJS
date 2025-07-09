@@ -252,6 +252,24 @@
       ]
     },
     {
+      "name": "color-picker",
+      "type": "registry:ui",
+      "dependencies": [
+        "react-colorful"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "popover"
+      ],
+      "files": [
+        {
+          "path": "ui/color-picker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "command",
       "type": "registry:ui",
       "dependencies": [
@@ -455,6 +473,16 @@
       "files": [
         {
           "path": "ui/limited-input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "logo",
+      "type": "registry:ui",
+      "files": [
+        {
+          "path": "ui/logo.tsx",
           "type": "registry:ui"
         }
       ]

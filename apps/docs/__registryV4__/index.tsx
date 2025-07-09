@@ -253,6 +253,22 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
+    "color-picker": {
+      name: "color-picker",
+      description: "",
+      type: "registry:ui",
+      version: "4.0.0",
+      registryDependencies: ["button","input","popover"],
+      files: [{
+        path: "registry/new-york/ui/color-picker.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/ui/color-picker.tsx")),
+      source: "",
+      meta: undefined,
+    },
     "command": {
       name: "command",
       description: "",
@@ -490,6 +506,22 @@ export const Index: Record<string, any> = {
       }],
       categories: undefined,
       component: React.lazy(() => import("@/registry/new-york/ui/limited-input.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "logo": {
+      name: "logo",
+      description: "",
+      type: "registry:ui",
+      version: "4.0.0",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/new-york/ui/logo.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/new-york/ui/logo.tsx")),
       source: "",
       meta: undefined,
     },
@@ -3882,6 +3914,22 @@ export const Index: Record<string, any> = {
       source: "",
       meta: undefined,
     },
+    "color-picker": {
+      name: "color-picker",
+      description: "",
+      type: "registry:ui",
+      version: "4.0.0",
+      registryDependencies: ["button","input","popover"],
+      files: [{
+        path: "registry/default/ui/color-picker.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/ui/color-picker.tsx")),
+      source: "",
+      meta: undefined,
+    },
     "command": {
       name: "command",
       description: "",
@@ -4119,6 +4167,22 @@ export const Index: Record<string, any> = {
       }],
       categories: undefined,
       component: React.lazy(() => import("@/registry/default/ui/limited-input.tsx")),
+      source: "",
+      meta: undefined,
+    },
+    "logo": {
+      name: "logo",
+      description: "",
+      type: "registry:ui",
+      version: "4.0.0",
+      registryDependencies: undefined,
+      files: [{
+        path: "registry/default/ui/logo.tsx",
+        type: "registry:ui",
+        target: ""
+      }],
+      categories: undefined,
+      component: React.lazy(() => import("@/registry/default/ui/logo.tsx")),
       source: "",
       meta: undefined,
     },

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://www.axionjs.com/schema/registry-item.json",
+  "name": "logo",
+  "type": "registry:ui",
+  "author": "axionjs (https://www.axionjs.com)",
+  "files": [
+    {
+      "path": "ui/logo.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\n\ninterface LogoProps {\n  className?: string;\n}\n\nexport function Logo({ className }: LogoProps) {\n  return (\n    <svg\n      xmlns=\"http://www.w3.org/2000/svg\"\n      viewBox=\"0 0 24 24\"\n      fill=\"none\"\n      stroke=\"currentColor\"\n      strokeWidth=\"2\"\n      strokeLinecap=\"round\"\n      strokeLinejoin=\"round\"\n      className={cn(\"h-6 w-6\", className)}\n    >\n      <path d=\"M12 2L2 7l10 5 10-5-10-5z\" />\n      <path d=\"M2 17l10 5 10-5\" />\n      <path d=\"M2 12l10 5 10-5\" />\n    </svg>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

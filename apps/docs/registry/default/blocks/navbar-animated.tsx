@@ -10,11 +10,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/registry/default/ui/avatar";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/registry/default/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/registry/default/ui/sheet";
 import { Logo } from "@/registry/default/ui/logo";
 
 const navItems = [
