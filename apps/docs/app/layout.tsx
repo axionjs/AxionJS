@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_APP_URL}/opengraph-image.png`,
+        url: `/opengraph-image.jpg`,
         width: 1200,
         height: 630,
         alt: siteConfig.name,
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [`${process.env.NEXT_PUBLIC_APP_URL}/opengraph-image.png`],
+    images: [`/opengraph-image.jpg`],
     creator: "@axionjs",
   },
   verification: {
