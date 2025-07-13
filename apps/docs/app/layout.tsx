@@ -14,6 +14,7 @@ import { SiteFooter } from "@/app/components/docs/site-footer";
 import { SiteHeader } from "@/app/components/docs/site-header";
 
 import "./global.css";
+import { docs } from "@/source.config";
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
@@ -30,6 +31,13 @@ export const metadata: Metadata = {
     "Components",
     "axionjs",
     "fullstack",
+    "shadcn/ui",
+    "shadcn",
+    "UI Components",
+    "UI Library",
+    "axionjs/ui",
+    "axionjs/components",
+    "axionjs docs",
   ],
   authors: [
     {
@@ -38,27 +46,10 @@ export const metadata: Metadata = {
     },
   ],
   creator: "axionjs",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: process.env.NEXT_PUBLIC_APP_URL!,
-    title: siteConfig.name,
-    description: siteConfig.description,
-    siteName: siteConfig.name,
-    images: [
-      {
-        url: `/opengraph-image.jpg`,
-        width: 1200,
-        height: 630,
-        alt: siteConfig.name,
-      },
-    ],
-  },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [`/opengraph-image.jpg`],
     creator: "@axionjs",
   },
   verification: {

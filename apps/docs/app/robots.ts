@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://axionjs.com/sitemap.xml",
-    host: "https://axionjs.com",
+    sitemap: "https://www.axionjs.com/sitemap.xml",
+    host: "https://www.axionjs.com",
   };
 }
