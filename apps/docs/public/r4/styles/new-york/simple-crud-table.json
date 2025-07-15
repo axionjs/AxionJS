@@ -16,7 +16,8 @@
     "input",
     "table",
     "use-toast",
-    "toaster"
+    "toaster",
+    "skeleton"
   ],
   "files": [
     {

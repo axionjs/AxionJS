@@ -9586,7 +9586,8 @@
         "input",
         "table",
         "use-toast",
-        "toaster"
+        "toaster",
+        "skeleton"
       ],
       "dependencies": [
         "nodemailer",
@@ -9631,7 +9632,8 @@
         "table",
         "badge",
         "dropdown-menu",
-        "tabs"
+        "tabs",
+        "skeleton"
       ],
       "dependencies": [
         "nodemailer",
@@ -9705,7 +9707,9 @@
         "button",
         "alert-dialog",
         "card",
-        "progress"
+        "progress",
+        "badge",
+        "scroll-area"
       ],
       "dependencies": [
         "prisma",
@@ -9754,7 +9758,8 @@
         "input",
         "select",
         "use-toast",
-        "form"
+        "form",
+        "separator"
       ],
       "dependencies": [
         "prisma",

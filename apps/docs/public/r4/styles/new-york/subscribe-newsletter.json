@@ -24,7 +24,8 @@
     "table",
     "badge",
     "dropdown-menu",
-    "tabs"
+    "tabs",
+    "skeleton"
   ],
   "files": [
     {

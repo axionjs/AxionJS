@@ -22,7 +22,8 @@
     "input",
     "select",
     "use-toast",
-    "form"
+    "form",
+    "separator"
   ],
   "files": [
     {

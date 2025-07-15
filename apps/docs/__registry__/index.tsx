@@ -2575,7 +2575,7 @@ export const Index: Record<string, any> = {
       name: "simple-crud-table",
       description: "A simple CRUD table with create, read, update, and delete functionality.",
       type: "registry:dynamic-component",
-      registryDependencies: ["button","input","table","use-toast","toaster"],
+      registryDependencies: ["button","input","table","use-toast","toaster","skeleton"],
       files: [{
         path: "registry/new-york/dynamic-components/simple-crud-table/actions/crud-table-actions.ts",
         type: "registry:actions",
@@ -2602,7 +2602,7 @@ export const Index: Record<string, any> = {
       name: "subscribe-newsletter",
       description: "A newsletter subscription form with email functionality.",
       type: "registry:dynamic-component",
-      registryDependencies: ["button","textarea","input","label","alert","card","use-toast","toaster","table","badge","dropdown-menu","tabs"],
+      registryDependencies: ["button","textarea","input","label","alert","card","use-toast","toaster","table","badge","dropdown-menu","tabs","skeleton"],
       files: [{
         path: "registry/new-york/dynamic-components/subscribe-newsletter/actions/subscribe-newsletter-actions.ts",
         type: "registry:actions",
@@ -2661,7 +2661,7 @@ export const Index: Record<string, any> = {
       name: "media-uploader",
       description: "A media uploader with image and video support.",
       type: "registry:dynamic-component",
-      registryDependencies: ["button","alert-dialog","card","progress"],
+      registryDependencies: ["button","alert-dialog","card","progress","badge","scroll-area"],
       files: [{
         path: "registry/new-york/dynamic-components/media-uploader/actions/media-actions.ts",
         type: "registry:actions",
@@ -2692,7 +2692,7 @@ export const Index: Record<string, any> = {
       name: "inventory-manager",
       description: "An inventory manager with CRUD functionality.",
       type: "registry:dynamic-component",
-      registryDependencies: ["button","alert","alert-dialog","dialog","toaster","skeleton","badge","dropdown-menu","table","input","select","use-toast","form"],
+      registryDependencies: ["button","alert","alert-dialog","dialog","toaster","skeleton","badge","dropdown-menu","table","input","select","use-toast","form","separator"],
       files: [{
         path: "registry/new-york/dynamic-components/inventory-manager/actions/inventory.ts",
         type: "registry:actions",
@@ -6044,7 +6044,7 @@ export const Index: Record<string, any> = {
       name: "simple-crud-table",
       description: "A simple CRUD table with create, read, update, and delete functionality.",
       type: "registry:dynamic-component",
-      registryDependencies: ["button","input","table","use-toast","toaster"],
+      registryDependencies: ["button","input","table","use-toast","toaster","skeleton"],
       files: [{
         path: "registry/default/dynamic-components/simple-crud-table/actions/crud-table-actions.ts",
         type: "registry:actions",
@@ -6071,7 +6071,7 @@ export const Index: Record<string, any> = {
       name: "subscribe-newsletter",
       description: "A newsletter subscription form with email functionality.",
       type: "registry:dynamic-component",
-      registryDependencies: ["button","textarea","input","label","alert","card","use-toast","toaster","table","badge","dropdown-menu","tabs"],
+      registryDependencies: ["button","textarea","input","label","alert","card","use-toast","toaster","table","badge","dropdown-menu","tabs","skeleton"],
       files: [{
         path: "registry/default/dynamic-components/subscribe-newsletter/actions/subscribe-newsletter-actions.ts",
         type: "registry:actions",
@@ -6130,7 +6130,7 @@ export const Index: Record<string, any> = {
       name: "media-uploader",
       description: "A media uploader with image and video support.",
       type: "registry:dynamic-component",
-      registryDependencies: ["button","alert-dialog","card","progress"],
+      registryDependencies: ["button","alert-dialog","card","progress","badge","scroll-area"],
       files: [{
         path: "registry/default/dynamic-components/media-uploader/actions/media-actions.ts",
         type: "registry:actions",
@@ -6161,7 +6161,7 @@ export const Index: Record<string, any> = {
       name: "inventory-manager",
       description: "An inventory manager with CRUD functionality.",
       type: "registry:dynamic-component",
-      registryDependencies: ["button","alert","alert-dialog","dialog","toaster","skeleton","badge","dropdown-menu","table","input","select","use-toast","form"],
+      registryDependencies: ["button","alert","alert-dialog","dialog","toaster","skeleton","badge","dropdown-menu","table","input","select","use-toast","form","separator"],
       files: [{
         path: "registry/default/dynamic-components/inventory-manager/actions/inventory.ts",
         type: "registry:actions",

@@ -454,7 +454,14 @@ export const dynamicComponents: Registry["items"] = [
   {
     name: "simple-crud-table",
     type: "registry:dynamic-component",
-    registryDependencies: ["button", "input", "table", "use-toast", "toaster"],
+    registryDependencies: [
+      "button",
+      "input",
+      "table",
+      "use-toast",
+      "toaster",
+      "skeleton",
+    ],
     dependencies: ["nodemailer", "zod", "date-fns", "prisma", "@prisma/client"],
     files: [
       {
@@ -494,6 +501,7 @@ export const dynamicComponents: Registry["items"] = [
       "badge",
       "dropdown-menu",
       "tabs",
+      "skeleton",
     ],
     dependencies: [
       "nodemailer",
@@ -563,7 +571,14 @@ export const dynamicComponents: Registry["items"] = [
   {
     name: "media-uploader",
     type: "registry:dynamic-component",
-    registryDependencies: ["button", "alert-dialog", "card", "progress"],
+    registryDependencies: [
+      "button",
+      "alert-dialog",
+      "card",
+      "progress",
+      "badge",
+      "scroll-area",
+    ],
     dependencies: ["prisma", "@prisma/client", "cloudinary"],
     files: [
       {
@@ -608,6 +623,7 @@ export const dynamicComponents: Registry["items"] = [
       "select",
       "use-toast",
       "form",
+      "separator",
     ],
     dependencies: ["prisma", "@prisma/client", "@tanstack/react-table"],
     files: [

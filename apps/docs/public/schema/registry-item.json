@@ -22,7 +22,8 @@
         "registry:actions",
         "registry:schemas",
         "registry:api",
-        "registry:email"
+        "registry:email",
+        "registry:dynamic-component"
       ]
     },
     "description": {

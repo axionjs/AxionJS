@@ -13,7 +13,9 @@
     "button",
     "alert-dialog",
     "card",
-    "progress"
+    "progress",
+    "badge",
+    "scroll-area"
   ],
   "files": [
     {

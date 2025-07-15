@@ -1,5 +1,6 @@
 import { InventoryDataTable } from "@/registry/new-york/dynamic-components/inventory-manager/components/inventory-data-table";
 import { CreateInventoryItem } from "@/registry/new-york/dynamic-components/inventory-manager/components/inventory-form";
+import { Separator } from "@/registry/new-york/ui/separator";
 import { Skeleton } from "@/registry/new-york/ui/skeleton";
 import { Package } from "lucide-react";
 import { Suspense } from "react";
